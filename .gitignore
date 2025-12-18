@@ -1,0 +1,5 @@
+/release
+/assets/dist
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
