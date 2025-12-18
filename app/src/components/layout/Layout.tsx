@@ -28,6 +28,12 @@ export default function Layout() {
               <span className="hidden sm:inline">{__('Settings')}</span>
             </NavLink>
           </HeaderNavMenuItem>
+          <HeaderNavMenuItem asChild className="group">
+            <NavLink to="/customize" className="px-3">
+              <SettingIcon className="group-aria-[current=page]:text-ring" />
+              <span className="hidden sm:inline">{__('Customize')}</span>
+            </NavLink>
+          </HeaderNavMenuItem>
         </HeaderNavMenuList>
         <div className="flex h-full items-center gap-1.5 md:gap-5">
           <Tooltip>

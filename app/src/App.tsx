@@ -3,6 +3,7 @@ import { createHashRouter, redirect, RouterProvider } from 'react-router';
 
 import Layout from '@/components/layout/Layout';
 import Settings from '@/components/settings/Settings';
+import Customize from '@/components/customize/Customize';
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,10 @@ const router = createHashRouter([
       {
         path: 'settings',
         element: <Settings />,
+      },
+      {
+        path: 'customize',
+        element: <Customize />,
       },
     ],
   },
