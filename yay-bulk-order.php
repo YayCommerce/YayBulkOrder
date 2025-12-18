@@ -71,7 +71,7 @@ require_once __DIR__ . '/autoloader.php';
 if ( ! function_exists( 'YayBulkOrder\\plugins_loaded' ) ) {
 	function plugins_loaded() {
 		\YayBulkOrder\YayCommerceMenu\RegisterMenu::get_instance();
-		\YayBulkOrder\License\LicenseHandler::get_instance();
+		// \YayBulkOrder\License\LicenseHandler::get_instance();
 
 		// $license = new \YayBulkOrder\License\License( 'yay-bulk-order' );
 		// if ( ! $license->is_active() ) {
@@ -105,6 +105,3 @@ if ( ! function_exists( 'YayBulkOrder\\required_woocommerce_notice' ) ) {
 }
 
 add_action( 'plugins_loaded', 'YayBulkOrder\\plugins_loaded' );
-
-register_activation_hook( __FILE__, array( 'YayBulkOrder\\Plugin', 'activate' ) );
-register_deactivation_hook( __FILE__, array( 'YayBulkOrder\\Plugin', 'deactivate' ) );
