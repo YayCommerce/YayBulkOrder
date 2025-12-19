@@ -57,7 +57,7 @@ export default function Layout() {
                 className="cursor-pointer"
                 onClick={() =>
                   window.open(
-                    'https://docs.yaycommerce.com/yaybulkorder/',
+                    'https://docs.yaycommerce.com/yay-bulk-order/',
                     '_blank',
                   )
                 }
