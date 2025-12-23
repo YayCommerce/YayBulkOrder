@@ -14,6 +14,8 @@ namespace YayBulkOrder;
 
 use YayBulkOrder\Init\Settings;
 use YayBulkOrder\Engines\Registries\RegisterFacade;
+use YayBulkOrder\Test\Shortcode\BulkOrderTable;
+use YayBulkOrder\Test\Api\ProductsAPI;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -81,6 +83,10 @@ if ( ! function_exists( 'YayBulkOrder\\plugins_loaded' ) ) {
 		I18n::getInstance();
 		Settings::getInstance();
 		
+		// Register Test Shortcode and API
+		BulkOrderTable::getInstance();
+		ProductsAPI::getInstance();
+
 		// Register Facade
 		RegisterFacade::getInstance();
 		add_action( 'admin_notices', 'YayBulkOrder\\required_woocommerce_notice' );

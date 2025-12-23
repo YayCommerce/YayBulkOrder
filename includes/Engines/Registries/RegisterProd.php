@@ -22,6 +22,9 @@ class RegisterProd {
     public function register_all_scripts() {
         $deps = array( 'react', 'react-dom', 'wp-hooks', 'wp-i18n' );
 
-        wp_register_script( ScriptName::PAGE_SETTINGS, YAY_BULK_ORDER_PLUGIN_URL . 'assets/dist/main.js', $deps, YAY_BULK_ORDER_VERSION, true );
+        // wp_register_script( ScriptName::PAGE_SETTINGS, YAY_BULK_ORDER_PLUGIN_URL . 'assets/dist/main.js', $deps, YAY_BULK_ORDER_VERSION, true );
+
+        // For testing purpose, will be deleted after testing
+        wp_register_script( ScriptName::PAGE_SETTINGS, YAY_BULK_ORDER_PLUGIN_URL . 'assets/dist/main.test.js', $deps, YAY_BULK_ORDER_VERSION, true );
     }
 }

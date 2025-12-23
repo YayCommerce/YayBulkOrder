@@ -43,7 +43,10 @@ class RegisterFacade {
     }
 
     public function register_all_assets() {
-        wp_register_style( ScriptName::STYLE_SETTINGS, YAY_BULK_ORDER_PLUGIN_URL . 'assets/dist/style.css', array(), YAY_BULK_ORDER_VERSION );
+        // wp_register_style( ScriptName::STYLE_SETTINGS, YAY_BULK_ORDER_PLUGIN_URL . 'assets/dist/style.css', array(), YAY_BULK_ORDER_VERSION );
+
+        // For testing purpose, will be deleted after testing
+        wp_register_style( ScriptName::STYLE_SETTINGS, YAY_BULK_ORDER_PLUGIN_URL . 'assets/dist/style.test.css', array(), YAY_BULK_ORDER_VERSION );
     }
 
 }
