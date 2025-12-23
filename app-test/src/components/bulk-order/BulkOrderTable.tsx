@@ -14,7 +14,7 @@ import { CalendarIcon, ChevronDown, X } from 'lucide-react';
 import { DateRange } from 'react-day-picker';
 import { useDebounce } from 'react-use';
 
-import { getProducts, ProductParams } from '@/lib/queries';
+import { getProducts, ProductParams, addToCart } from '@/lib/queries';
 import { __, formatDateRange } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
@@ -37,7 +37,7 @@ import {
 } from '@/components/ui/table';
 
 import ProductsTableSkeleton from './ProductsTableSkeleton';
-import { columns } from './ProductsColumns';
+import { createColumns } from './ProductsColumns';
 
 type StockStatusFilter = (typeof STOCK_STATUS_OPTIONS)[number];
 
@@ -59,6 +59,8 @@ export default function BulkOrderTable() {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [open, setOpen] = useState(false);
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
+  const [quantities, setQuantities] = useState<Record<number, number>>({});
+  const [isAddingToCart, setIsAddingToCart] = useState<Record<number, boolean>>({});
 
   const productQueryParams: ProductParams = useMemo(
     () => ({
@@ -102,6 +104,33 @@ export default function BulkOrderTable() {
 
     table.firstPage();
   };
+
+  const handleQuantityChange = (productId: number, quantity: number) => {
+    setQuantities((prev) => ({
+      ...prev,
+      [productId]: quantity,
+    }));
+  };
+
+  const handleAddToCart = async (productId: number, quantity: number) => {
+    setIsAddingToCart((prev) => ({ ...prev, [productId]: true }));
+    try {
+      await addToCart(productId, quantity);
+      // Optionally show success message or refresh cart
+    } catch (error) {
+      console.error('Failed to add to cart:', error);
+      // Optionally show error message
+    } finally {
+      setIsAddingToCart((prev) => ({ ...prev, [productId]: false }));
+    }
+  };
+
+  const columns = createColumns({
+    quantities,
+    onQuantityChange: handleQuantityChange,
+    onAddToCart: handleAddToCart,
+    isAddingToCart,
+  });
 
   const table = useReactTable({
     data: products?.data || [],

@@ -43,6 +43,34 @@ class ProductsAPI {
 				),
 			)
 		);
+
+		register_rest_route(
+			'yay-bulk-order/v1',
+			'/cart/add',
+			array(
+				'methods'             => \WP_REST_Server::CREATABLE,
+				'callback'            => array( $this, 'add_to_cart' ),
+				'permission_callback' => '__return_true',
+				'args'                => array(
+					'product_id' => array(
+						'required'          => true,
+						'type'              => 'integer',
+						'sanitize_callback' => 'absint',
+						'validate_callback' => function( $param ) {
+							return is_numeric( $param ) && $param > 0;
+						},
+					),
+					'quantity' => array(
+						'default'           => 1,
+						'type'              => 'integer',
+						'sanitize_callback' => 'absint',
+						'validate_callback' => function( $param ) {
+							return is_numeric( $param ) && $param > 0;
+						},
+					),
+				),
+			)
+		);
 	}
 
 	/**
@@ -122,6 +150,95 @@ class ProductsAPI {
 		$response->header( 'X-WP-TotalPages', $total_pages );
 		
 		return $response;
+	}
+
+	/**
+	 * Add product to cart
+	 */
+	public function add_to_cart( $request ) {
+		if ( ! function_exists( 'WC' ) ) {
+			return new \WP_Error(
+				'woocommerce_not_active',
+				__( 'WooCommerce is not active.', 'yay-bulk-order' ),
+				array( 'status' => 400 )
+			);
+		}
+
+		if ( ! WC()->cart ) {
+			wc_load_cart();
+		}
+
+		if ( ! WC()->cart ) {
+			return new \WP_Error(
+				'cart_not_available',
+				__( 'Cart is not available.', 'yay-bulk-order' ),
+				array( 'status' => 500 )
+			);
+		}
+
+		$product_id = $request->get_param( 'product_id' );
+		$quantity   = $request->get_param( 'quantity' ) ? absint( $request->get_param( 'quantity' ) ) : 1;
+
+		// Validate product exists
+		$product = wc_get_product( $product_id );
+		if ( ! $product ) {
+			return new \WP_Error(
+				'product_not_found',
+				__( 'Product not found.', 'yay-bulk-order' ),
+				array( 'status' => 404 )
+			);
+		}
+
+		// Check if product is purchasable
+		if ( ! $product->is_purchasable() ) {
+			return new \WP_Error(
+				'product_not_purchasable',
+				__( 'Product is not purchasable.', 'yay-bulk-order' ),
+				array( 'status' => 400 )
+			);
+		}
+
+		// Check stock status
+		if ( ! $product->is_in_stock() ) {
+			return new \WP_Error(
+				'product_out_of_stock',
+				__( 'Product is out of stock.', 'yay-bulk-order' ),
+				array( 'status' => 400 )
+			);
+		}
+
+		// Check if quantity exceeds stock
+		if ( $product->managing_stock() && $quantity > $product->get_stock_quantity() ) {
+			return new \WP_Error(
+				'quantity_exceeds_stock',
+				__( 'Quantity exceeds available stock.', 'yay-bulk-order' ),
+				array( 'status' => 400 )
+			);
+		}
+
+		// Add to cart
+		$cart_item_key = WC()->cart->add_to_cart( $product_id, $quantity );
+
+		if ( ! $cart_item_key ) {
+			return new \WP_Error(
+				'add_to_cart_failed',
+				__( 'Failed to add product to cart.', 'yay-bulk-order' ),
+				array( 'status' => 500 )
+			);
+		}
+
+		// Return success response
+		$response_data = array(
+			'success'    => true,
+			'message'    => sprintf(
+				/* translators: %s: Product name */
+				__( '"%s" has been added to your cart.', 'yay-bulk-order' ),
+				$product->get_name()
+			),
+			'cart_count' => WC()->cart->get_cart_contents_count(),
+		);
+
+		return rest_ensure_response( $response_data );
 	}
 }
 

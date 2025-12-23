@@ -6,6 +6,7 @@ import { __ } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Input } from '@/components/ui/input';
 
 const SortableHeader = ({ column, children }: { column: any; children: React.ReactNode }) => {
   const isSorted = column.getIsSorted();
@@ -30,7 +31,19 @@ const SortableHeader = ({ column, children }: { column: any; children: React.Rea
 
 const columnHelper = createColumnHelper<Product>();
 
-export const columns = [
+interface ColumnProps {
+  quantities: Record<number, number>;
+  onQuantityChange: (productId: number, quantity: number) => void;
+  onAddToCart: (productId: number, quantity: number) => void;
+  isAddingToCart: Record<number, boolean>;
+}
+
+export const createColumns = ({
+  quantities,
+  onQuantityChange,
+  onAddToCart,
+  isAddingToCart,
+}: ColumnProps) => [
   columnHelper.accessor('id', {
     header: ({ table }) => (
       <Checkbox
@@ -132,12 +145,43 @@ export const columns = [
     },
   }),
   columnHelper.display({
+    id: 'quantity',
+    header: __('Quantity'),
+    cell: ({ row }) => {
+      const product = row.original;
+      const quantity = quantities[product.id] || 1;
+      return (
+        <Input
+          type="number"
+          min="1"
+          // value={quantity}
+          onChange={(e) => {
+            const newQuantity = parseInt(e.target.value, 10) || 1;
+            console.log('newQuantity', newQuantity);
+            // onQuantityChange(product.id, Math.max(1, newQuantity));
+          }}
+          className="w-20"
+          disabled={!product.in_stock}
+        />
+      );
+    },
+  }),
+  columnHelper.display({
     id: 'actions',
     header: __('Actions'),
     cell: ({ row }) => {
       const product = row.original;
+      const quantity = quantities[product.id] || 1;
+      const isLoading = isAddingToCart[product.id] || false;
       return (
-       <Button variant="outline" size="sm">{__('Add to Cart')}</Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => onAddToCart(product.id, quantity)}
+          disabled={!product.in_stock || isLoading || quantity < 1}
+        >
+          {isLoading ? __('Adding...') : __('Add to Cart')}
+        </Button>
       );
     },
   }),
