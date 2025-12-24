@@ -1,12 +1,12 @@
 import { createColumnHelper } from '@tanstack/react-table';
 import { ChevronDown, ChevronsUpDown, ChevronUp, ExternalLink } from 'lucide-react';
 
-import { Product } from '@/lib/queries';
+import { type Product } from '@/lib/schema';
 import { __ } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Input } from '@/components/ui/input';
+import { QuantityInput } from '@/components/custom/QuantityInput';
 
 const SortableHeader = ({ column, children }: { column: any; children: React.ReactNode }) => {
   const isSorted = column.getIsSorted();
@@ -151,16 +151,10 @@ export const createColumns = ({
       const product = row.original;
       const quantity = quantities[product.id] || 1;
       return (
-        <Input
-          type="number"
-          min="1"
-          // value={quantity}
-          onChange={(e) => {
-            const newQuantity = parseInt(e.target.value, 10) || 1;
-            console.log('newQuantity', newQuantity);
-            // onQuantityChange(product.id, Math.max(1, newQuantity));
-          }}
-          className="w-20"
+        <QuantityInput
+          productId={product.id}
+          initialQuantity={quantity}
+          onQuantityChange={onQuantityChange}
           disabled={!product.in_stock}
         />
       );

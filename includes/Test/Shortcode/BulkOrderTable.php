@@ -48,8 +48,9 @@ class BulkOrderTable {
 				'YAY_BULK_ORDER_PLUGIN_PATH' => YAY_BULK_ORDER_PLUGIN_PATH,
 				'YAY_BULK_ORDER_PLUGIN_URL'  => YAY_BULK_ORDER_PLUGIN_URL,
 				'YAY_BULK_ORDER_SITE_URL'    => YAY_BULK_ORDER_SITE_URL,
-				'restUrl'                    => rest_url( 'yay-bulk-order/v1/' ),
-				'nonce'                      => wp_create_nonce( 'wp_rest' ),
+				'restUrl'                    => esc_url_raw( rest_url() ),
+				'restNonce'                  => wp_create_nonce( 'wp_rest' ),
+				'restBase'                   => 'yay-bulk-order/v1',
 				'i18n'                       => I18n::getTranslation(),
 			)
 		);

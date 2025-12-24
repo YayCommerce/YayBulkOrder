@@ -14,7 +14,7 @@ import { CalendarIcon, ChevronDown, X } from 'lucide-react';
 import { DateRange } from 'react-day-picker';
 import { useDebounce } from 'react-use';
 
-import { getProducts, ProductParams, addToCart } from '@/lib/queries';
+import { getProducts, addToCart } from '@/lib/queries';
 import { __, formatDateRange } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
@@ -38,6 +38,7 @@ import {
 
 import ProductsTableSkeleton from './ProductsTableSkeleton';
 import { createColumns } from './ProductsColumns';
+import { ProductParams } from '@/lib/schema';
 
 type StockStatusFilter = (typeof STOCK_STATUS_OPTIONS)[number];
 

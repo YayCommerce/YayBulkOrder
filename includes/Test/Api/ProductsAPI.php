@@ -31,16 +31,6 @@ class ProductsAPI {
 				'methods'             => \WP_REST_Server::READABLE,
 				'callback'            => array( $this, 'get_products' ),
 				'permission_callback' => '__return_true',
-				'args'                => array(
-					'page' => array(
-						'default'           => 1,
-						'sanitize_callback' => 'absint',
-					),
-					'limit' => array(
-						'default'           => 10,
-						'sanitize_callback' => 'absint',
-					),
-				),
 			)
 		);
 
@@ -51,24 +41,6 @@ class ProductsAPI {
 				'methods'             => \WP_REST_Server::CREATABLE,
 				'callback'            => array( $this, 'add_to_cart' ),
 				'permission_callback' => '__return_true',
-				'args'                => array(
-					'product_id' => array(
-						'required'          => true,
-						'type'              => 'integer',
-						'sanitize_callback' => 'absint',
-						'validate_callback' => function( $param ) {
-							return is_numeric( $param ) && $param > 0;
-						},
-					),
-					'quantity' => array(
-						'default'           => 1,
-						'type'              => 'integer',
-						'sanitize_callback' => 'absint',
-						'validate_callback' => function( $param ) {
-							return is_numeric( $param ) && $param > 0;
-						},
-					),
-				),
 			)
 		);
 	}
@@ -176,8 +148,32 @@ class ProductsAPI {
 			);
 		}
 
-		$product_id = $request->get_param( 'product_id' );
-		$quantity   = $request->get_param( 'quantity' ) ? absint( $request->get_param( 'quantity' ) ) : 1;
+		// Get parameters from JSON body or request params
+		$json_params = $request->get_json_params();
+		
+		// If get_json_params() returns null, try parsing the body manually
+		if ( null === $json_params ) {
+			$body = $request->get_body();
+			if ( ! empty( $body ) ) {
+				$json_params = json_decode( $body, true );
+			}
+		}
+		
+		// Fallback to get_param() which works for both JSON body and query params
+		$product_id = isset( $json_params['product_id'] ) ? $json_params['product_id'] : $request->get_param( 'product_id' );
+		$quantity = isset( $json_params['quantity'] ) ? $json_params['quantity'] : ( $request->get_param( 'quantity' ) ? $request->get_param( 'quantity' ) : 1 );
+		
+		// Validate required parameter
+		if ( empty( $product_id ) ) {
+			return new \WP_Error(
+				'missing_product_id',
+				__( 'Missing parameter(s): product_id', 'yay-bulk-order' ),
+				array( 'status' => 400 )
+			);
+		}
+		
+		$product_id = absint( $product_id );
+		$quantity   = absint( $quantity );
 
 		// Validate product exists
 		$product = wc_get_product( $product_id );

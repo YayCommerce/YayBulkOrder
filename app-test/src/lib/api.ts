@@ -5,7 +5,7 @@ const YayBulkOrderConfig = window?.yayBulkOrderWpData || {};
 let _ky = ky.create({
   prefixUrl: YayBulkOrderConfig.restUrl,
   headers: {
-    'X-WP-Nonce': YayBulkOrderConfig.nonce,
+    'X-WP-Nonce': YayBulkOrderConfig.restNonce,
   },
   hooks: {
     afterResponse: [
@@ -39,16 +39,11 @@ interface AbstractApi {
 class PrettyApi implements AbstractApi {
   readonly base: string;
 
-  constructor(base = YayBulkOrderConfig.restUrl) {
+  constructor(base = YayBulkOrderConfig.restBase) {
     this.base = base;
   }
 
   _getPath(input: string): string {
-    // If base is the same as restUrl, don't prepend it (prefixUrl already has it)
-    if (this.base === YayBulkOrderConfig.restUrl) {
-      return input;
-    }
-    // Otherwise, prepend the base path
     return `${this.base}/${input}`;
   }
 
@@ -136,7 +131,7 @@ export function createApi(base: string): AbstractApi {
   }
 }
 
-export const yayBulkOrderApi = createApi(YayBulkOrderConfig.restUrl);
+export const yayBulkOrderApi = createApi(YayBulkOrderConfig.restBase);
 export const wordpressApi = createApi('wp/v2');
 
 export const api = yayBulkOrderApi;

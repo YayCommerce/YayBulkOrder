@@ -9,7 +9,8 @@ declare global {
   interface Window {
     yayBulkOrderWpData: {
       restUrl: string;
-      nonce: string;
+      restNonce: string;
+      restBase: string;
       YAY_BULK_ORDER_PLUGIN_PATH: string;
       YAY_BULK_ORDER_PLUGIN_URL: string;
       YAY_BULK_ORDER_SITE_URL: string;
