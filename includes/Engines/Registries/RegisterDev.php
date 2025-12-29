@@ -22,6 +22,10 @@ class RegisterDev {
         add_action( 'admin_footer', array( $this, 'render_dev_refresh' ), 5 );
 
         add_action( 'init', array( $this, 'register_all_scripts' ) );
+
+        // For testing purpose, will be deleted after testing
+        add_action( 'wp_footer', array( $this, 'render_dev_refresh' ), 5 );
+
     }
 
     public function render_dev_refresh() {
