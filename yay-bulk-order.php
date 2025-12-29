@@ -24,8 +24,6 @@ if ( function_exists( 'YayBulkOrder\\initialize_plugin' ) ) {
             deactivate_plugins( plugin_basename( __FILE__ ) );
         }
     );
-    // Short circuit the plugin initialization
-    return;
 }
 
 define( 'YAY_BULK_ORDER_VERSION', '1.0.0' );
@@ -36,19 +34,21 @@ define( 'YAY_BULK_ORDER_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 
 define( 'YAY_BULK_ORDER_IS_DEVELOPMENT', true );
 
-require_once __DIR__ . '/autoloader.php';
+if ( ! function_exists( 'YayBulkOrder\\initialize_plugin' ) ) {
+    require_once __DIR__ . '/autoloader.php';
+    function initialize_plugin() {
+        \YayBulkOrder\YayCommerceMenu\RegisterMenu::get_instance();
 
-function initialize_plugin() {
-    \YayBulkOrder\YayCommerceMenu\RegisterMenu::get_instance();
+        // \YayBulkOrder\License\LicenseHandler::get_instance();
+        // $license = new \YayBulkOrder\License\License( 'yay-bulk-order' );
+        // if ( ! $license->is_active() ) {
+        // return;
+        // }
 
-    // \YayBulkOrder\License\LicenseHandler::get_instance();
-    // $license = new \YayBulkOrder\License\License( 'yay-bulk-order' );
-    // if ( ! $license->is_active() ) {
-    // return;
-    // }
-
-    \YayBulkOrder\Initialize::get_instance();
+        \YayBulkOrder\Initialize::get_instance();
+    }
 }
+
 
 if ( ! wp_installing() ) {
     add_action( 'plugins_loaded', 'YayBulkOrder\\initialize_plugin' );

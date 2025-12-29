@@ -61,8 +61,9 @@ class SettingsPage {
             ScriptName::PAGE_SETTINGS,
             'yayBulkOrderData',
             [
-                'restUrl' => rest_url( 'yay-bulk-order/v1/' ),
-                'nonce'   => wp_create_nonce( 'wp_rest' ),
+                'assetsUrl' => YAY_BULK_ORDER_PLUGIN_URL . 'assets/',
+                'restUrl'   => rest_url( 'yay-bulk-order/v1/' ),
+                'nonce'     => wp_create_nonce( 'wp_rest' ),
             ]
         );
     }

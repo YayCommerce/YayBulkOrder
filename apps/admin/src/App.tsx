@@ -1,9 +1,9 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createHashRouter, redirect, RouterProvider } from 'react-router';
 
+import Customize from '@/components/customize/Customize';
 import Layout from '@/components/layout/Layout';
 import Settings from '@/components/settings/Settings';
-import Customize from '@/components/customize/Customize';
 
 const queryClient = new QueryClient();
 

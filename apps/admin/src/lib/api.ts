@@ -1,11 +1,11 @@
 import ky, { Options, ResponsePromise } from 'ky';
 
-const YayBulkOrderConfig = window?.yayBulkOrderWpData || {};
+const { restUrl, nonce } = window.yayBulkOrderData;
 
 let _ky = ky.create({
-  prefixUrl: YayBulkOrderConfig.restUrl,
+  prefixUrl: restUrl,
   headers: {
-    'X-WP-Nonce': YayBulkOrderConfig.nonce,
+    'X-WP-Nonce': nonce,
   },
   hooks: {
     afterResponse: [
@@ -39,13 +39,13 @@ interface AbstractApi {
 class PrettyApi implements AbstractApi {
   readonly base: string;
 
-  constructor(base = YayBulkOrderConfig.restUrl) {
+  constructor(base = restUrl) {
     this.base = base;
   }
 
   _getPath(input: string): string {
     // If base is the same as restUrl, don't prepend it (prefixUrl already has it)
-    if (this.base === YayBulkOrderConfig.restUrl) {
+    if (this.base === restUrl) {
       return input;
     }
     // Otherwise, prepend the base path
@@ -126,7 +126,7 @@ class UglyApi implements AbstractApi {
 }
 
 export function createApi(base: string): AbstractApi {
-  const baseUrl = new URL(`${YayBulkOrderConfig.restUrl}${base}`);
+  const baseUrl = new URL(`${restUrl}${base}`);
   const restRoute = baseUrl.searchParams.get('rest_route');
 
   if (!restRoute) {
@@ -136,7 +136,7 @@ export function createApi(base: string): AbstractApi {
   }
 }
 
-export const yayBulkOrderApi = createApi(YayBulkOrderConfig.restUrl);
+export const yayBulkOrderApi = createApi(restUrl);
 export const wordpressApi = createApi('wp/v2');
 
 export const api = yayBulkOrderApi;

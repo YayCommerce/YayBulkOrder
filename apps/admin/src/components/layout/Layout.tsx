@@ -16,7 +16,7 @@ export default function Layout() {
       <div className="bg-background relative flex h-[54px] items-end justify-between gap-4 py-0 pr-3 sm:gap-5 lg:pr-6">
         <div className="justify-left flex h-full items-center border-r border-gray-100 p-[10px]">
           <img
-            src={window.yayBulkOrderWpData.YAY_BULK_ORDER_PLUGIN_URL + '/assets/img/YayBulkOrder.svg'}
+            src={window.yayBulkOrderData.assetsUrl + '/img/YayBulkOrder.svg'}
             alt="YayBulkOrder"
             className="w-[30px] rounded-sm"
           />
@@ -56,10 +56,7 @@ export default function Layout() {
                 variant="outline"
                 className="cursor-pointer"
                 onClick={() =>
-                  window.open(
-                    'https://docs.yaycommerce.com/yay-bulk-order/',
-                    '_blank',
-                  )
+                  window.open('https://docs.yaycommerce.com/yay-bulk-order/', '_blank')
                 }
               >
                 <DocumentIcon />
