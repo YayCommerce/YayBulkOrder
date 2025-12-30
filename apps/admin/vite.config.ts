@@ -63,7 +63,7 @@ export default defineConfig({
     terserOptions: terserOptions,
     manifest: false,
     emptyOutDir: true,
-    outDir: path.resolve('../assets', 'dist'),
+    outDir: path.resolve('../../assets', 'dist'),
     assetsDir: '',
     cssCodeSplit: false,
     rollupOptions: {
