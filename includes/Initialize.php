@@ -22,6 +22,8 @@ class Initialize {
 
         \YayBulkOrder\Engines\Register\RegisterFacade::get_instance();
         \YayBulkOrder\Engines\Admin\SettingsPage::get_instance();
+
+        \YayBulkOrder\Research\ResearchInit::get_instance();
     }
 
     public function required_woocommerce_notice() {

@@ -12,6 +12,8 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true
   },
+
+  "intelephense.diagnostics.undefinedFunctions": false,
   "intelephense.stubs": [
     "wordpress",
     "apache",
