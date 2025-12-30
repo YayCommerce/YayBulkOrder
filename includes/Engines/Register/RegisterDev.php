@@ -31,7 +31,7 @@ class RegisterDev {
     public function register_all_scripts() {
         $deps = [ 'react', 'react-dom', 'wp-hooks', 'wp-i18n' ];
 
-        wp_register_script( ScriptName::PAGE_SETTINGS, 'http://localhost:3000/page-settings.tsx', $deps, null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
-        wp_set_script_translations( ScriptName::PAGE_SETTINGS, 'yay-bulk-order', YAY_BULK_ORDER_PLUGIN_PATH . 'languages' );
+        wp_register_script( ScriptName::APP_ADMIN, 'http://localhost:3000/app-admin.tsx', $deps, null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+        wp_set_script_translations( ScriptName::APP_ADMIN, 'yay-bulk-order', YAY_BULK_ORDER_PLUGIN_PATH . 'languages' );
     }
 }

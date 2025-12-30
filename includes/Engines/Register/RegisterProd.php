@@ -16,7 +16,7 @@ class RegisterProd {
     public function register_all_scripts() {
         $deps = [ 'react', 'react-dom', 'wp-hooks', 'wp-i18n' ];
 
-        wp_register_script( ScriptName::PAGE_SETTINGS, YAY_BULK_ORDER_PLUGIN_URL . 'assets/dist/page-settings.js', $deps, YAY_BULK_ORDER_VERSION, true );
-        wp_set_script_translations( ScriptName::PAGE_SETTINGS, 'yay-bulk-order', YAY_BULK_ORDER_PLUGIN_PATH . 'languages' );
+        wp_register_script( ScriptName::APP_ADMIN, YAY_BULK_ORDER_PLUGIN_URL . 'assets/dist/app-admin.js', $deps, YAY_BULK_ORDER_VERSION, true );
+        wp_set_script_translations( ScriptName::APP_ADMIN, 'yay-bulk-order', YAY_BULK_ORDER_PLUGIN_PATH . 'languages' );
     }
 }

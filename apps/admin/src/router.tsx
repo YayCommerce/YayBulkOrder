@@ -1,8 +1,8 @@
 import { createHashRouter, redirect } from 'react-router';
 
-import Layout from './Layout';
-import PageBulkOrderTables from './PageBulkOrderTables';
-import PageCustomize from './PageCustomize';
+import Layout from './routes/Layout';
+import PageBulkOrderTables from './routes/PageBulkOrderTables';
+import PageCustomize from './routes/PageCustomize';
 
 export const router = createHashRouter([
   {

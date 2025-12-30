@@ -54,11 +54,11 @@ class SettingsPage {
             return;
         }
 
-        wp_enqueue_script( ScriptName::PAGE_SETTINGS );
+        wp_enqueue_script( ScriptName::APP_ADMIN );
         wp_enqueue_style( ScriptName::STYLE_BULK_ORDER );
 
         wp_localize_script(
-            ScriptName::PAGE_SETTINGS,
+            ScriptName::APP_ADMIN,
             'yayBulkOrderData',
             [
                 'assetsUrl' => YAY_BULK_ORDER_PLUGIN_URL . 'assets/',

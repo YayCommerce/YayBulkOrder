@@ -68,7 +68,7 @@ export default defineConfig({
     cssCodeSplit: false,
     rollupOptions: {
       input: {
-        ['page-settings']: path.resolve(__dirname, 'src/page-settings.tsx'),
+        ['app-admin']: path.resolve(__dirname, 'src/app-admin.tsx'),
       },
       output: {
         entryFileNames: '[name].js',
