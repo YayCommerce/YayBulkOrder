@@ -12,7 +12,7 @@ package.json
 package-lock.json
 release.sh
 
-/app
+/apps
 /release
 
 yay-bulk-order.zip
