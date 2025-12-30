@@ -1,6 +1,6 @@
+import { __ } from '@wordpress/i18n';
 import { NavLink, Outlet } from 'react-router';
 
-import { __ } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { HeaderNavMenuItem, HeaderNavMenuList } from '@/components/ui/navmenu-header';
 import { Toaster } from '@/components/ui/sonner';
@@ -14,24 +14,24 @@ export default function Layout() {
     <>
       <Toaster />
       <div className="bg-background relative flex h-[54px] items-end justify-between gap-4 py-0 pr-3 sm:gap-5 lg:pr-6">
-        <div className="justify-left flex h-full items-center border-r border-gray-100 p-[10px]">
+        <div className="flex h-full items-center border-r p-2.5">
           <img
             src={window.yayBulkOrderData.assetsUrl + '/img/YayBulkOrder.svg'}
             alt="YayBulkOrder"
-            className="w-[30px] rounded-sm"
+            className="w-7.5 rounded-sm"
           />
         </div>
         <HeaderNavMenuList className="h-full justify-start gap-1.5 md:gap-7.5">
           <HeaderNavMenuItem asChild className="group">
-            <NavLink to="/settings" className="px-3">
+            <NavLink to="/bulk-order-tables" className="px-3">
               <SettingIcon className="group-aria-[current=page]:text-ring" />
-              <span className="hidden sm:inline">{__('Settings')}</span>
+              <span className="hidden sm:inline">{__('Product Tables', 'yay-bulk-order')}</span>
             </NavLink>
           </HeaderNavMenuItem>
           <HeaderNavMenuItem asChild className="group">
             <NavLink to="/customize" className="px-3">
               <SettingIcon className="group-aria-[current=page]:text-ring" />
-              <span className="hidden sm:inline">{__('Customize')}</span>
+              <span className="hidden sm:inline">{__('Design', 'yay-bulk-order')}</span>
             </NavLink>
           </HeaderNavMenuItem>
         </HeaderNavMenuList>
@@ -47,7 +47,7 @@ export default function Layout() {
               </Button>
             </TooltipTrigger>
             <TooltipContent>
-              <p>{__('Support')}</p>
+              <p>{__('Support', 'yay-bulk-order')}</p>
             </TooltipContent>
           </Tooltip>
           <Tooltip>
@@ -63,7 +63,7 @@ export default function Layout() {
               </Button>
             </TooltipTrigger>
             <TooltipContent>
-              <p>{__('Documentation')}</p>
+              <p>{__('Documentation', 'yay-bulk-order')}</p>
             </TooltipContent>
           </Tooltip>
         </div>

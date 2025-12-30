@@ -1,9 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { createHashRouter, redirect, RouterProvider } from 'react-router';
+import { RouterProvider } from 'react-router';
 
-import Customize from '@/components/customize/Customize';
-import Layout from '@/components/layout/Layout';
-import Settings from '@/components/settings/Settings';
+import { router } from './routes/router';
 
 const queryClient = new QueryClient();
 
@@ -14,27 +12,3 @@ export default function App() {
     </QueryClientProvider>
   );
 }
-
-const router = createHashRouter([
-  {
-    path: '/',
-    element: <Layout />,
-    children: [
-      {
-        index: true,
-        element: <div>This should never be shown</div>,
-        loader: () => {
-          return redirect('/settings');
-        },
-      },
-      {
-        path: 'settings',
-        element: <Settings />,
-      },
-      {
-        path: 'customize',
-        element: <Customize />,
-      },
-    ],
-  },
-]);

@@ -21,4 +21,3 @@ const DocumentIcon = ({ className = '', ...props }) => (
 );
 
 export default DocumentIcon;
-

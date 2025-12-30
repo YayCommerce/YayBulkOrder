@@ -16,16 +16,6 @@ namespace YayBulkOrder;
 
 defined( 'ABSPATH' ) || exit;
 
-if ( function_exists( 'YayBulkOrder\\initialize_plugin' ) ) {
-    require_once plugin_dir_path( __FILE__ ) . 'includes/Fallback.php';
-    add_action(
-        'admin_init',
-        function () {
-            deactivate_plugins( plugin_basename( __FILE__ ) );
-        }
-    );
-}
-
 define( 'YAY_BULK_ORDER_VERSION', '1.0.0' );
 define( 'YAY_BULK_ORDER_FILE', __FILE__ );
 define( 'YAY_BULK_ORDER_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
