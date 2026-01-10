@@ -1,11 +1,1 @@
-declare global {
-  interface Window {
-    yayBulkOrderData: {
-      assetsUrl: string;
-      restUrl: string;
-      nonce: string;
-    };
-  }
-}
-
-export {};
+/// <reference types="@bulk-order/common/types/localize.d.ts" />

@@ -41,4 +41,4 @@ const storeDef = {
 
 type Store = ServerState & typeof storeDef;
 
-const { state } = store<Store>('create-block', storeDef);
+const { state } = store<Store>('yay-bulk-order/bulk-order-form', storeDef);

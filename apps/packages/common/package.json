@@ -1,0 +1,10 @@
+{
+	"name": "@bulk-order/common",
+	"version": "0.1.0",
+	"description": "Common config and types for Yay Bulk Order",
+	"author": "YayCommerce",
+	"files": [
+		"src", 
+		"types"
+	]
+}

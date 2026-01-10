@@ -3,7 +3,11 @@ import { BlockEditProps } from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
 import { FormAttributes } from './type';
 
-export default function Edit(props: BlockEditProps<FormAttributes>) {
+export default function Edit({
+  attributes,
+  setAttributes,
+  ...props
+}: BlockEditProps<FormAttributes>) {
   const blockProps = useBlockProps();
 
   return (

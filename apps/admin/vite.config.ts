@@ -38,6 +38,7 @@ const externalOptions: Options = {
       react: 'React',
       'react-dom': 'ReactDOM',
       'react-dom/client': 'ReactDOM',
+      '@bulk-order/utils': 'YayBulkOrder.utils',
     },
   },
 };

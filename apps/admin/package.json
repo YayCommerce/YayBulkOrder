@@ -14,6 +14,7 @@
     "dev": "vite"
   },
   "dependencies": {
+    "@bulk-order/utils": "workspace:*",
     "@hookform/resolvers": "^5.0.1",
     "@phosphor-icons/react": "^2.1.10",
     "@radix-ui/react-checkbox": "^1.3.2",
@@ -48,6 +49,7 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@bulk-order/common": "workspace:*",
     "@ianvs/prettier-plugin-sort-imports": "^4.4.1",
     "@tailwindcss/vite": "^4.1.3",
     "@types/node": "^22.14.0",
