@@ -39,7 +39,6 @@ if ( ! function_exists( 'YayBulkOrder\\initialize_plugin' ) ) {
     }
 }
 
-
 if ( ! wp_installing() ) {
     add_action( 'plugins_loaded', 'YayBulkOrder\\initialize_plugin' );
 }

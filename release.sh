@@ -8,7 +8,7 @@ rm -rf "$BUILD_PATH"
 mkdir -p "$DEST_PATH"
 
 echo "Installing PHP and JS dependencies..."
-cd app/
+cd apps/
 pnpm install
 echo "Running JS Build..."
 pnpm build

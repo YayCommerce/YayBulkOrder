@@ -1,0 +1,17 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "yay-bulk-order/bulk-order-form",
+	"version": "0.1.0",
+	"title": "Bulk Order Form",
+	"category": "woocommerce",
+	"icon": "cart",
+	"description": "A block variation for WooCommerce Product Collection optimized for bulk ordering.",
+	"supports": {
+		"interactivity": true
+	},
+	"textdomain": "yay-bulk-order",
+	"render": "file:./render.php",
+	"viewScriptModule": "file:./view.ts",
+	"editorScript": "file:./index.js"
+}
