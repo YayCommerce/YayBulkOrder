@@ -10,7 +10,7 @@
   "author": "YayCommerce",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
-    "build": "pnpm -r --workspace-concurrency=Infinity",
+    "build": "pnpm -r --workspace-concurrency=Infinity run build",
     "dev:admin": "pnpm --filter 'yay-bulk-order-admin-page' run dev",
     "test": "pnpm -r test",
     "lint": "pnpm -r lint"

@@ -8,4 +8,6 @@ class ScriptName {
     public const ADMIN_PAGE    = 'yay-bulk-order/module/admin-page';
 
     public const STYLE_ADMIN_PAGE = 'yay-bulk-order/style/admin-page';
+
+    public const UTILS_SCRIPT = 'yay-bulk-order/utils';
 }

@@ -9,12 +9,12 @@ import { Toaster } from '@/components/ui/sonner';
 export default function Layout() {
   return (
     <>
-      <div className="bg-background relative flex h-14 items-end justify-between gap-4 py-0 pr-3 sm:gap-5 lg:pr-6">
-        <div className="flex h-full items-center">
+      <div className="bg-background relative flex h-13.5 items-end justify-between gap-4 py-0 pr-3 sm:gap-5 lg:pr-6">
+        <div className="flex aspect-square h-full items-center justify-center border-r">
           <img
             src={window.yayBulkOrderAdminData.path.assetsUrl + '/img/YayBulkOrder.svg'}
             alt="YayBulkOrder"
-            className="size-full"
+            className="size-8 rounded-sm"
           />
         </div>
         <HeaderNavMenuList>

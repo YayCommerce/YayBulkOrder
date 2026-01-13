@@ -1,0 +1,16 @@
+{
+  "name": "@yay-bulk-order/utils",
+  "version": "0.1.0",
+  "description": "Utility functions for Yay Bulk Order. This should not depend on any other packages. And ready in all other packages, app, scripts.",
+  "author": "YayCommerce",
+  "type": "module",
+  "main": "src/utils.index.ts",
+  "scripts": {
+    "start": "wp-scripts start ./src/utils.entry.ts --output-path=../../../assets/dist/utils",
+    "build": "wp-scripts build ./src/utils.entry.ts --output-path=../../../assets/dist/utils"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@yay-bulk-order/common": "workspace:*"
+  }
+}

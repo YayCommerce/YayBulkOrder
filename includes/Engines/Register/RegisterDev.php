@@ -29,9 +29,12 @@ class RegisterDev {
     }
 
     public function register_all_scripts() {
-        $deps = [ 'react', 'react-dom', 'wp-hooks', 'wp-i18n' ];
+        $deps = [ 'react', 'react-dom', 'wp-hooks', 'wp-i18n', ScriptName::UTILS_SCRIPT ];
 
         wp_register_script( ScriptName::ADMIN_PAGE, 'http://localhost:3000/admin-page.tsx', $deps, null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
         wp_set_script_translations( ScriptName::ADMIN_PAGE, 'yay-bulk-order', YAY_BULK_ORDER_PLUGIN_PATH . 'languages' );
+
+        wp_register_script( ScriptName::UTILS_SCRIPT, false, [], null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+        wp_set_script_translations( ScriptName::UTILS_SCRIPT, 'yay-bulk-order', YAY_BULK_ORDER_PLUGIN_PATH . 'languages' );
     }
 }

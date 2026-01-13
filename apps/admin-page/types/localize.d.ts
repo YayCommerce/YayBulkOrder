@@ -1,3 +1,5 @@
+import type { Settings } from '@yay-bulk-order/common/types/settings.type';
+
 declare global {
   interface Window {
     yayBulkOrderAdminData: {
@@ -9,19 +11,7 @@ declare global {
         restUrl: string;
         nonce: string;
       };
-      settings: {
-        general: {
-          defaultCartQuantity: number;
-        };
-        colors: {
-          primary: string;
-          text: string;
-          background: string;
-        };
-        styles: {
-          borderRadius: 'small' | 'medium' | 'large';
-        };
-      };
+      settings: Settings;
     };
   }
 }

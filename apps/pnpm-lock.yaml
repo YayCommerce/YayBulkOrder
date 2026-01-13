@@ -135,6 +135,9 @@ importers:
       '@wordpress/i18n':
         specifier: ^6.10.0
         version: 6.10.0
+      '@yay-bulk-order/utils':
+        specifier: workspace:*
+        version: link:../packages/utils
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -171,6 +174,18 @@ importers:
       zod:
         specifier: ^3.24.2
         version: 3.25.76
+    devDependencies:
+      '@yay-bulk-order/common':
+        specifier: workspace:*
+        version: link:../packages/common
+
+  packages/common: {}
+
+  packages/utils:
+    devDependencies:
+      '@yay-bulk-order/common':
+        specifier: workspace:*
+        version: link:../common
 
 packages:
 
