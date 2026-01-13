@@ -7,11 +7,11 @@ use YayBulkOrder\Utils\SingletonTrait;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Admin Settings Page
+ * Add admin page to the WordPress admin
  *
- * @method static SettingsPage get_instance()
+ * @method static AdminPage get_instance()
  */
-class SettingsPage {
+class AdminPage {
     use SingletonTrait;
 
     private $hook_suffix;
@@ -40,7 +40,7 @@ class SettingsPage {
 
     public function plugin_action_links( $links ) {
         $action_links = [
-            'settings' => '<a href="' . admin_url( 'admin.php?page=yay-bulk-order' ) . '" aria-label="' . esc_attr__( 'YayBulkOrder', 'yay-bulk-order' ) . '">' . esc_html__( 'Settings', 'yay-bulk-order' ) . '</a>',
+            'admin-page' => '<a href="' . admin_url( 'admin.php?page=yay-bulk-order' ) . '" aria-label="' . esc_attr__( 'YayBulkOrder', 'yay-bulk-order' ) . '">' . esc_html__( 'Admin Page', 'yay-bulk-order' ) . '</a>',
         ];
         return array_merge( $action_links, $links );
     }
@@ -54,11 +54,11 @@ class SettingsPage {
             return;
         }
 
-        wp_enqueue_script( ScriptName::PAGE_SETTINGS );
-        wp_enqueue_style( ScriptName::STYLE_BULK_ORDER );
+        wp_enqueue_script( ScriptName::ADMIN_PAGE );
+        wp_enqueue_style( ScriptName::STYLE_ADMIN_PAGE );
 
         wp_localize_script(
-            ScriptName::PAGE_SETTINGS,
+            ScriptName::ADMIN_PAGE,
             'yayBulkOrderData',
             [
                 'assetsUrl' => YAY_BULK_ORDER_PLUGIN_URL . 'assets/',

@@ -1,13 +1,11 @@
 <?php
 namespace YayBulkOrder\Engines\Register;
 
-/**
- * Script Name Constants
- */
+/** Script name constants */
 class ScriptName {
 
     public const MODULE_PREFIX = 'yay-bulk-order/module/';
-    public const PAGE_SETTINGS = 'yay-bulk-order/module/page-settings';
+    public const ADMIN_PAGE    = 'yay-bulk-order/module/admin-page';
 
-    public const STYLE_BULK_ORDER = 'yay-bulk-order/style/bulk-order';
+    public const STYLE_ADMIN_PAGE = 'yay-bulk-order/style/admin-page';
 }
