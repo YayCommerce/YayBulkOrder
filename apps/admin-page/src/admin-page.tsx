@@ -3,10 +3,8 @@ import './main.css';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 
-import App from './App';
-
-createRoot(document.getElementById('yay-bulk-order') as HTMLElement).render(
+createRoot(document.getElementById('yay-bulk-order-admin-page') as HTMLElement).render(
   <React.StrictMode>
-    <App />
+    <div>Hello World</div>
   </React.StrictMode>,
 );

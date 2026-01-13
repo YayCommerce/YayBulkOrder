@@ -46,7 +46,7 @@ class AdminPage {
     }
 
     public function settings_page() {
-        echo '<div id="yay-bulk-order" class="yay-ui"></div>';
+        echo '<div id="yay-bulk-order-admin-page" class="yay-ui"></div>';
     }
 
     public function enqueue_bulk_order_settings_scripts( $screen_id ) {

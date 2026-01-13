@@ -16,6 +16,11 @@
 
 * {
   @apply border-border outline-ring/50 hover:ring-primary-accent ring-primary;
+
+  &:focus-visible,
+  &:focus {
+    outline: none;
+  }
 }
 
 /* Override wp styles */

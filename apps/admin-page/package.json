@@ -1,0 +1,56 @@
+{
+    "name": "yay-bulk-order-admin",
+    "description": "Admin React application",
+    "private": true,
+    "version": "1.0.0",
+    "type": "module",
+    "keywords": [
+      "YayBulkOrder"
+    ],
+    "author": "YayCommerce",
+    "scripts": {
+      "preinstall": "npx only-allow pnpm",
+      "build": "tsc --noEmit && vite build --base=/wp-content/plugins/yay-bulk-order/assets/dist/",
+      "dev": "vite"
+    },
+    "dependencies": {
+    },
+    "devDependencies": {
+    },
+    "prettier": {
+      "printWidth": 100,
+      "semi": true,
+      "singleQuote": true,
+      "tabWidth": 2,
+      "trailingComma": "all",
+      "importOrder": [
+        "^(react/(.*)$)|^(react$)",
+        "<THIRD_PARTY_MODULES>",
+        "",
+        "^types$",
+        "^@/types/(.*)$",
+        "^@/config/(.*)$",
+        "^@/lib/(.*)$",
+        "^@/hooks/(.*)$",
+        "^@/components/ui/(.*)$",
+        "^@/components/(.*)$",
+        "^@/styles/(.*)$",
+        "",
+        "^[./]"
+      ],
+      "importOrderSeparation": false,
+      "importOrderSortSpecifiers": true,
+      "importOrderBuiltinModulesToTop": true,
+      "importOrderParserPlugins": [
+        "typescript",
+        "jsx",
+        "decorators-legacy"
+      ],
+      "importOrderMergeDuplicateImports": true,
+      "importOrderCombineTypeAndValueImports": true,
+      "plugins": [
+        "@ianvs/prettier-plugin-sort-imports",
+        "prettier-plugin-tailwindcss"
+      ]
+    }
+  }

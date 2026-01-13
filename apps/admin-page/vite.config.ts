@@ -1,12 +1,14 @@
-import path from 'path';
-import tailwindcss from '@tailwindcss/vite';
-import react from '@vitejs/plugin-react';
-// import analyze from "rollup-plugin-analyzer"
+import path from "path";
+import tailwindcss from "@tailwindcss/vite";
+import react from "@vitejs/plugin-react";
 // import { visualizer } from 'rollup-plugin-visualizer';
-import { defineConfig, loadEnv } from 'vite';
-import pluginExternal, { Options } from 'vite-plugin-external';
+import { defineConfig, loadEnv } from "vite";
+import pluginExternal, { Options } from "vite-plugin-external";
 
-process.env = { ...process.env, ...loadEnv(process.env.mode || 'development', process.cwd()) };
+process.env = {
+  ...process.env,
+  ...loadEnv(process.env.mode || "development", process.cwd()),
+};
 
 const terserOptions = {
   output: {
@@ -16,38 +18,38 @@ const terserOptions = {
     passes: 2,
   },
   mangle: {
-    reserved: ['__', '_n', '_nx', '_x'],
+    reserved: ["__", "_n", "_nx", "_x"],
   },
 };
 
 const externalOptions: Options = {
   /** @type 'auto' */
-  interop: 'auto',
+  interop: "auto",
 
   development: {
     externals: {
-      '@wordpress/hooks': 'wp.hooks',
-      '@wordpress/i18n': 'wp.i18n',
+      "@wordpress/hooks": "wp.hooks",
+      "@wordpress/i18n": "wp.i18n",
     },
   },
 
   production: {
     externals: {
-      '@wordpress/hooks': 'wp.hooks',
-      '@wordpress/i18n': 'wp.i18n',
-      react: 'React',
-      'react-dom': 'ReactDOM',
-      'react-dom/client': 'ReactDOM',
+      "@wordpress/hooks": "wp.hooks",
+      "@wordpress/i18n": "wp.i18n",
+      react: "React",
+      "react-dom": "ReactDOM",
+      "react-dom/client": "ReactDOM",
     },
   },
 };
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  root: './src',
+  root: "./src",
 
   plugins: [
-    react({ jsxRuntime: 'classic' }),
+    react({ jsxRuntime: "classic" }),
     tailwindcss(),
     pluginExternal(externalOptions),
     // visualizer({ template: 'network', emitFile: true, filename: 'stats.html' }),
@@ -55,28 +57,25 @@ export default defineConfig({
 
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
+      "@": path.resolve(__dirname, "./src"),
     },
   },
   build: {
-    minify: 'terser',
+    minify: "terser",
     terserOptions: terserOptions,
     manifest: false,
     emptyOutDir: true,
-    outDir: path.resolve('../assets', 'dist'),
-    assetsDir: '',
+    outDir: path.resolve("../../assets", "dist/admin-page"),
+    assetsDir: "",
     cssCodeSplit: false,
     rollupOptions: {
       input: {
-        ['page-settings']: path.resolve(__dirname, 'src/page-settings.tsx'),
+        "admin-page": path.resolve(__dirname, "src/admin-page.tsx"),
       },
       output: {
-        entryFileNames: '[name].js',
-        assetFileNames: '[name].[ext]',
+        entryFileNames: "[name].js",
+        assetFileNames: "[name].[ext]",
       },
-      plugins: [
-        // analyze({ summaryOnly: true, limit:10 }),
-      ],
     },
   },
   server: {
@@ -86,8 +85,8 @@ export default defineConfig({
     origin: `${process.env.VITE_SERVER_ORIGIN}`,
     hmr: {
       port: 3000,
-      host: 'localhost',
-      protocol: 'ws',
+      host: "localhost",
+      protocol: "ws",
     },
   },
 });
