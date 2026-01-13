@@ -36,5 +36,9 @@ class RegisterDev {
 
         wp_register_script( ScriptName::UTILS_SCRIPT, false, [], null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
         wp_set_script_translations( ScriptName::UTILS_SCRIPT, 'yay-bulk-order', YAY_BULK_ORDER_PLUGIN_PATH . 'languages' );
+
+        $view_asset = require_once YAY_BULK_ORDER_PLUGIN_PATH . 'assets/dist/view/bulk-order-view.asset.php';
+        wp_register_script_module( ScriptName::VIEW_MODULE, YAY_BULK_ORDER_PLUGIN_URL . 'assets/dist/view/bulk-order-view.js', $view_asset['dependencies'], $view_asset['version'], true );
+        wp_set_script_translations( ScriptName::VIEW_MODULE, 'yay-bulk-order', YAY_BULK_ORDER_PLUGIN_PATH . 'languages' );
     }
 }
