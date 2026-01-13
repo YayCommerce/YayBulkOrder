@@ -1,6 +1,6 @@
 import ky, { Options, ResponsePromise } from 'ky';
 
-const { restUrl, nonce } = window.yayBulkOrderData;
+const { restUrl, nonce } = window.yayBulkOrderAdminData.path;
 
 let _ky = ky.create({
   prefixUrl: restUrl,

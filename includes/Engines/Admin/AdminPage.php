@@ -2,6 +2,7 @@
 namespace YayBulkOrder\Engines\Admin;
 
 use YayBulkOrder\Engines\Register\ScriptName;
+use YayBulkOrder\Services\SettingsService;
 use YayBulkOrder\Utils\SingletonTrait;
 
 defined( 'ABSPATH' ) || exit;
@@ -14,9 +15,13 @@ defined( 'ABSPATH' ) || exit;
 class AdminPage {
     use SingletonTrait;
 
+    private $settings_service;
+
     private $hook_suffix;
 
     private function __construct() {
+        $this->settings_service = SettingsService::get_instance();
+
         add_action( 'admin_menu', [ $this, 'settings_menu' ], YAY_BULK_ORDER_MENU_PRIORITY );
         add_filter( 'admin_body_class', [ $this, 'admin_body_class' ] );
         add_filter( 'plugin_action_links_' . YAY_BULK_ORDER_PLUGIN_BASENAME, [ $this, 'plugin_action_links' ] );
@@ -59,11 +64,17 @@ class AdminPage {
 
         wp_localize_script(
             ScriptName::ADMIN_PAGE,
-            'yayBulkOrderData',
+            'yayBulkOrderAdminData',
             [
-                'assetsUrl' => YAY_BULK_ORDER_PLUGIN_URL . 'assets/',
-                'restUrl'   => rest_url( 'yay-bulk-order/v1/' ),
-                'nonce'     => wp_create_nonce( 'wp_rest' ),
+                'path'     => [
+                    'assetsUrl' => YAY_BULK_ORDER_PLUGIN_URL . 'assets/',
+                    'restUrl'   => rest_url( 'yay-bulk-order/v1/' ),
+                    'nonce'     => wp_create_nonce( 'wp_rest' ),
+                ],
+                'metadata' => [
+                    'isBlockTheme' => wp_is_block_theme(),
+                ],
+                'settings' => $this->settings_service->get_settings(),
             ]
         );
     }

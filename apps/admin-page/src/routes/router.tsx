@@ -1,8 +1,9 @@
 import { createHashRouter, redirect } from 'react-router';
 
 import Layout from './Layout';
-import PageBulkOrderTables from './PageBulkOrderTables';
-import PageCustomize from './PageCustomize';
+import PageDashboard from './PageDashboard';
+import PageSettings from './PageSettings';
+import PageShortcodes from './PageShortcodes';
 
 export const router = createHashRouter([
   {
@@ -13,24 +14,28 @@ export const router = createHashRouter([
         index: true,
         element: <div>This should never be shown</div>,
         loader: () => {
-          return redirect('/bulk-order-tables');
+          return redirect('/dashboard');
         },
       },
       {
-        path: 'bulk-order-tables',
-        element: <PageBulkOrderTables />,
+        path: 'dashboard',
+        element: <PageDashboard />,
       },
       {
-        path: 'bulk-order-tables/new',
-        element: <PageBulkOrderTables />,
+        path: 'shortcodes',
+        element: <PageShortcodes />,
       },
       {
-        path: 'bulk-order-tables/:tableId',
-        element: <PageBulkOrderTables />,
+        path: 'shortcodes/new',
+        element: <PageShortcodes />,
       },
       {
-        path: 'customize',
-        element: <PageCustomize />,
+        path: 'shortcodes/:formId',
+        element: <PageShortcodes />,
+      },
+      {
+        path: 'settings',
+        element: <PageSettings />,
       },
     ],
   },

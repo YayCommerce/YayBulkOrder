@@ -1,56 +1,80 @@
 {
-    "name": "yay-bulk-order-admin",
-    "description": "Admin React application",
-    "private": true,
-    "version": "1.0.0",
-    "type": "module",
-    "keywords": [
-      "YayBulkOrder"
+  "name": "yay-bulk-order-admin-page",
+  "description": "Admin React application",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "keywords": [
+    "YayBulkOrder"
+  ],
+  "author": "YayCommerce",
+  "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "build": "tsc --noEmit && vite build",
+    "dev": "vite"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^5.0.1",
+    "@phosphor-icons/react": "^2.1.10",
+    "lucide-react": "^0.562.0",
+    "@radix-ui/react-checkbox": "^1.3.2",
+    "@radix-ui/react-label": "^2.1.3",
+    "@radix-ui/react-popover": "^1.1.5",
+    "@radix-ui/react-select": "^2.2.6",
+    "@radix-ui/react-separator": "^1.1.8",
+    "@radix-ui/react-dialog": "^1.1.5",
+    "@radix-ui/react-slot": "^1.2.0",
+    "@radix-ui/react-tooltip": "^1.2.7",
+    "@tanstack/react-query": "^5.74.7",
+    "@wordpress/i18n": "^6.10.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "cmdk": "^1.1.1",
+    "date-fns": "^4.1.0",
+    "ky": "^1.8.1",
+    "react-colorful": "^5.6.1",
+    "react-hook-form": "^7.55.0",
+    "react-router": "^7.11.0",
+    "sonner": "^2.0.7",
+    "tailwind-merge": "^3.2.0",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+  },
+  "prettier": {
+    "printWidth": 100,
+    "semi": true,
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "all",
+    "importOrder": [
+      "^(react/(.*)$)|^(react$)",
+      "<THIRD_PARTY_MODULES>",
+      "",
+      "^types$",
+      "^@/types/(.*)$",
+      "^@/config/(.*)$",
+      "^@/lib/(.*)$",
+      "^@/hooks/(.*)$",
+      "^@/components/ui/(.*)$",
+      "^@/components/(.*)$",
+      "^@/styles/(.*)$",
+      "",
+      "^[./]"
     ],
-    "author": "YayCommerce",
-    "scripts": {
-      "preinstall": "npx only-allow pnpm",
-      "build": "tsc --noEmit && vite build --base=/wp-content/plugins/yay-bulk-order/assets/dist/",
-      "dev": "vite"
-    },
-    "dependencies": {
-    },
-    "devDependencies": {
-    },
-    "prettier": {
-      "printWidth": 100,
-      "semi": true,
-      "singleQuote": true,
-      "tabWidth": 2,
-      "trailingComma": "all",
-      "importOrder": [
-        "^(react/(.*)$)|^(react$)",
-        "<THIRD_PARTY_MODULES>",
-        "",
-        "^types$",
-        "^@/types/(.*)$",
-        "^@/config/(.*)$",
-        "^@/lib/(.*)$",
-        "^@/hooks/(.*)$",
-        "^@/components/ui/(.*)$",
-        "^@/components/(.*)$",
-        "^@/styles/(.*)$",
-        "",
-        "^[./]"
-      ],
-      "importOrderSeparation": false,
-      "importOrderSortSpecifiers": true,
-      "importOrderBuiltinModulesToTop": true,
-      "importOrderParserPlugins": [
-        "typescript",
-        "jsx",
-        "decorators-legacy"
-      ],
-      "importOrderMergeDuplicateImports": true,
-      "importOrderCombineTypeAndValueImports": true,
-      "plugins": [
-        "@ianvs/prettier-plugin-sort-imports",
-        "prettier-plugin-tailwindcss"
-      ]
-    }
+    "importOrderSeparation": false,
+    "importOrderSortSpecifiers": true,
+    "importOrderBuiltinModulesToTop": true,
+    "importOrderParserPlugins": [
+      "typescript",
+      "jsx",
+      "decorators-legacy"
+    ],
+    "importOrderMergeDuplicateImports": true,
+    "importOrderCombineTypeAndValueImports": true,
+    "plugins": [
+      "@ianvs/prettier-plugin-sort-imports",
+      "prettier-plugin-tailwindcss"
+    ]
   }
+}
