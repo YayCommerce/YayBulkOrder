@@ -1,4 +1,4 @@
-PLUGIN_SLUG="yay-bulk-order-pro"
+PLUGIN_SLUG="yay-bulk-order"
 PROJECT_PATH=$(pwd)
 BUILD_PATH="${PROJECT_PATH}/release"
 DEST_PATH="$BUILD_PATH/$PLUGIN_SLUG"

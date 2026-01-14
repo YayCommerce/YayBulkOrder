@@ -20,8 +20,9 @@ class Initialize {
             return;
         }
 
+        \YayBulkOrder\Engines\Blocks\RegisterBlocks::get_instance();
         \YayBulkOrder\Engines\Register\RegisterFacade::get_instance();
-        \YayBulkOrder\Engines\Admin\SettingsPage::get_instance();
+        \YayBulkOrder\Engines\Admin\AdminPage::get_instance();
     }
 
     public function required_woocommerce_notice() {
@@ -30,7 +31,7 @@ class Initialize {
                 <p>
                 <?php
                 // translators: %s: search WooCommerce plugin link
-                printf( 'YayBulkOrder ' . esc_html__( 'is enabled but not effective. It requires %1$sWooCommerce%2$s in order to work.', 'yay-bulk-order' ), '<a href="' . esc_url( admin_url( 'plugin-install.php?s=woocommerce&tab=search&type=term' ) ) . '">', '</a>' );
+                printf( 'Yay Bulk Order ' . esc_html__( 'is enabled but not effective. It requires %1$sWooCommerce%2$s in order to work.', 'yay-bulk-order' ), '<a href="' . esc_url( admin_url( 'plugin-install.php?s=woocommerce&tab=search&type=term' ) ) . '">', '</a>' );
                 ?>
                 </p>
             </div>

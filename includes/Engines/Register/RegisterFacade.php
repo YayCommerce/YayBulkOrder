@@ -26,12 +26,11 @@ class RegisterFacade {
     }
 
     public function add_entry_as_module( $tag, $handle ) {
-
         if ( strpos( $handle, ScriptName::MODULE_PREFIX ) === false ) {
             return $tag;
         }
 
-        // $handle could has special characters bookster/module/block-booking-button
+        // $handle could has special characters yay-plugin/module/admin-page
         $handle_regex = str_replace( '/', '\/', $handle );
         // find the string begin with '<script' and end with '</script>' between having 'id="' . $handle . '-js"'
         $pattern = '/<script[^>]*id="' . $handle_regex . '-js"[^>]*>.*?<\/script>/';
@@ -53,6 +52,14 @@ class RegisterFacade {
     }
 
     public function register_all_assets() {
-        wp_register_style( ScriptName::STYLE_BULK_ORDER, YAY_BULK_ORDER_PLUGIN_URL . 'assets/dist/admin/style.css', [], YAY_BULK_ORDER_VERSION );
+        wp_register_style( ScriptName::STYLE_ADMIN_PAGE, YAY_BULK_ORDER_PLUGIN_URL . 'assets/dist/admin-page/style.css', [], YAY_BULK_ORDER_VERSION );
+
+        $utils_asset = require_once YAY_BULK_ORDER_PLUGIN_PATH . 'assets/dist/utils/utils.entry.ts.asset.php';
+        wp_register_script( ScriptName::UTILS_SCRIPT, YAY_BULK_ORDER_PLUGIN_URL . 'assets/dist/utils/utils.entry.ts.js', $utils_asset['dependencies'], $utils_asset['version'], true );
+        wp_set_script_translations( ScriptName::UTILS_SCRIPT, 'yay-bulk-order', YAY_BULK_ORDER_PLUGIN_PATH . 'languages' );
+
+        $view_asset = require_once YAY_BULK_ORDER_PLUGIN_PATH . 'assets/dist/view/bulk-order-view.asset.php';
+        wp_register_script_module( ScriptName::VIEW_MODULE, YAY_BULK_ORDER_PLUGIN_URL . 'assets/dist/view/bulk-order-view.js', $view_asset['dependencies'], $view_asset['version'] );
+        wp_set_script_translations( ScriptName::VIEW_MODULE, 'yay-bulk-order', YAY_BULK_ORDER_PLUGIN_PATH . 'languages' );
     }
 }

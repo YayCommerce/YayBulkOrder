@@ -1,9 +1,13 @@
 .vscode
 .DS_Store
 .git/
+
 .gitignore
 .distignore
-node_modules/
+.editorconfig
+.prettierignore
+
+node_modules
 phpcs.xml
 log.xml
 composer.json
@@ -16,4 +20,3 @@ release.sh
 /release
 
 yay-bulk-order.zip
-yay-bulk-order-pro.zip

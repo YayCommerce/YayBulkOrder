@@ -1,0 +1,19 @@
+{
+  "name": "@yay-bulk-order/view",
+  "version": "0.1.0",
+  "description": "View module for Yay Bulk Order. Form store, state, context, etc.",
+  "author": "YayCommerce",
+  "type": "module",
+  "main": "src/view.index.ts",
+  "scripts": {
+    "start": "wp-scripts start --config webpack.config.cjs",
+    "build": "wp-scripts build --config webpack.config.cjs"
+  },
+  "dependencies": {
+    "@yay-bulk-order/utils": "workspace:*",
+    "@wordpress/interactivity": "latest"
+  },
+  "devDependencies": {
+    "@yay-bulk-order/common": "workspace:*"
+  }
+}

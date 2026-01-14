@@ -21,7 +21,6 @@ class I18n {
         } else {
             $locale = is_admin() ? get_user_locale() : get_locale();
         }
-        unload_textdomain( 'yay-bulk-order' );
         load_textdomain( 'yay-bulk-order', YAY_BULK_ORDER_PLUGIN_PATH . '/languages/yay-bulk-order-' . $locale . '.mo' );
         load_plugin_textdomain( 'yay-bulk-order', false, YAY_BULK_ORDER_PLUGIN_PATH . '/languages/' );
     }
