@@ -1,6 +1,9 @@
 const path = require("path");
 const defaultConfig = require("@wordpress/scripts/config/webpack.config");
-const bulkOrderExtractionPlugin = require("@yay-bulk-order/common/src/bulkOrderExtractionPlugin.cjs");
+const [
+  ,
+  moduleExtractionPlugin,
+] = require("@yay-bulk-order/common/src/bulkOrderExtractionPlugin.cjs");
 
 module.exports = {
   ...defaultConfig,
@@ -20,6 +23,6 @@ module.exports = {
       (plugin) =>
         plugin.constructor.name !== "DependencyExtractionWebpackPlugin",
     ),
-    bulkOrderExtractionPlugin,
+    moduleExtractionPlugin,
   ],
 };

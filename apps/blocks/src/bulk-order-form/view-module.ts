@@ -24,6 +24,7 @@ const storeDef = {
   },
   actions: {
     toggleOpen() {
+      console.log("toggleOpen");
       const context = getContext<Context>();
       context.isOpen = !context.isOpen;
     },

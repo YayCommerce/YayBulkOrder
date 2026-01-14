@@ -8,5 +8,5 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("wp-i18n is not loaded");
   }
 
-  checkUtilsIsReady;
+  checkUtilsIsReady();
 });

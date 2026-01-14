@@ -27,7 +27,7 @@ wp_interactivity_state(
 
 <div
 	<?php echo get_block_wrapper_attributes(); ?>
-	data-wp-interactive="create-block"
+	data-wp-interactive="bulk-order-form"
 	<?php echo wp_interactivity_data_wp_context( array( 'isOpen' => false ) ); ?>
 	data-wp-watch="callbacks.logIsOpen"
 	data-wp-class--dark-theme="state.isDark"

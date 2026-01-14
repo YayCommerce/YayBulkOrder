@@ -3,7 +3,10 @@ const [
   scriptConfig,
   moduleConfig,
 ] = require("@wordpress/scripts/config/webpack.config");
-const bulkOrderExtractionPlugin = require("@yay-bulk-order/common/src/bulkOrderExtractionPlugin.cjs");
+const [
+  scriptExtractionPlugin,
+  moduleExtractionPlugin,
+] = require("@yay-bulk-order/common/src/bulkOrderExtractionPlugin.cjs");
 
 const extendedScriptConfig = {
   ...scriptConfig,
@@ -18,24 +21,22 @@ const extendedScriptConfig = {
       (plugin) =>
         plugin.constructor.name !== "DependencyExtractionWebpackPlugin",
     ),
-    bulkOrderExtractionPlugin,
+    scriptExtractionPlugin,
   ],
 };
 
 const extendedModuleConfig = {
   ...moduleConfig,
-  experiments: { outputModule: true },
   output: {
     ...moduleConfig.output,
     path: path.resolve(__dirname, "../../assets/dist/blocks"),
-    library: { type: "module" },
   },
   plugins: [
     ...scriptConfig.plugins.filter(
       (plugin) =>
         plugin.constructor.name !== "DependencyExtractionWebpackPlugin",
     ),
-    bulkOrderExtractionPlugin,
+    moduleExtractionPlugin,
   ],
 };
 

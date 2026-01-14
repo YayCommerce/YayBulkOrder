@@ -45,7 +45,7 @@ class AdminPage {
 
     public function plugin_action_links( $links ) {
         $action_links = [
-            'admin-page' => '<a href="' . admin_url( 'admin.php?page=yay-bulk-order' ) . '" aria-label="' . esc_attr__( 'YayBulkOrder', 'yay-bulk-order' ) . '">' . esc_html__( 'Admin Page', 'yay-bulk-order' ) . '</a>',
+            'settings' => '<a href="' . admin_url( 'admin.php?page=yay-bulk-order' ) . '" aria-label="' . esc_attr__( 'YayBulkOrder', 'yay-bulk-order' ) . '">' . esc_html__( 'Settings', 'yay-bulk-order' ) . '</a>',
         ];
         return array_merge( $action_links, $links );
     }

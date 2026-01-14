@@ -20,6 +20,7 @@ class Initialize {
             return;
         }
 
+        \YayBulkOrder\Engines\Blocks\RegisterBlocks::get_instance();
         \YayBulkOrder\Engines\Register\RegisterFacade::get_instance();
         \YayBulkOrder\Engines\Admin\AdminPage::get_instance();
     }

@@ -15,6 +15,5 @@
   "editorStyle": "file:./block.css",
   "style": "file:./style-block.css",
   "render": "file:./render.php",
-  "viewScript": "file:./view.js",
   "viewScriptModule": "file:./view-module.ts"
 }
