@@ -10,9 +10,13 @@
   "author": "YayCommerce",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
+    "dev": "pnpm --parallel run dev",
     "dev:admin": "pnpm --filter 'yay-bulk-order-admin-page' run dev",
-    "dev:blocks": "pnpm --filter 'yay-bulk-order-blocks' run start",
+    "dev:blocks": "pnpm --filter 'yay-bulk-order-blocks' run dev",
+    "dev:packages": "pnpm --parallel --filter '@yay-bulk-order/*' run dev",
     "build": "pnpm -r --workspace-concurrency=Infinity run build",
+    "build:admin": "pnpm --filter 'yay-bulk-order-admin-page' run build",
+    "build:blocks": "pnpm --filter 'yay-bulk-order-blocks' run build",
     "build:packages": "pnpm --filter '@yay-bulk-order/*' run build",
     "test": "pnpm -r test",
     "lint": "pnpm -r lint"

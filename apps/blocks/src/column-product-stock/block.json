@@ -1,0 +1,15 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "yay-bulk-order/column-product-stock",
+  "version": "0.1.0",
+  "title": "Column Product Stock",
+  "category": "woocommerce",
+  "icon": "cart",
+  "description": "A block to show WooCommerce Products as Table optimized for bulk ordering.",
+  "parent": [
+    "yay-bulk-order/table-template"
+  ],
+  "textdomain": "yay-bulk-order",
+  "editorScript": "file:./editor.js"
+}
