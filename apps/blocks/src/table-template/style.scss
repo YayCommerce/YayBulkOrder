@@ -1,0 +1,30 @@
+/**
+ * The following styles get applied both on the front of your site
+ * and in the editor.
+ *
+ * Replace them with your own styles or remove the file completely.
+ */
+table.wp-block-yay-bulk-order-table-template {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #fff;
+
+  thead {
+    background: #aaa;
+    th {
+      padding: 10px;
+      text-align: center;
+      border: 1px solid #fff;
+    }
+  }
+
+  tbody {
+    tr {
+      td {
+        padding: 10px;
+        text-align: center;
+        border: 1px solid #fff;
+      }
+    }
+  }
+}

@@ -4,7 +4,7 @@
   "description": "Blocks for Yay Bulk Order",
   "author": "YayCommerce",
   "scripts": {
-    "start": "wp-scripts start --config webpack.config.cjs --blocks-manifest --experimental-modules",
+    "dev": "wp-scripts start --config webpack.config.cjs --blocks-manifest --experimental-modules",
     "build": "wp-scripts build --config webpack.config.cjs --blocks-manifest --experimental-modules",
     "format": "wp-scripts format",
     "lint:css": "wp-scripts lint-style",

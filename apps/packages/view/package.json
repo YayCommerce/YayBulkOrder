@@ -6,8 +6,8 @@
   "type": "module",
   "main": "src/view.index.ts",
   "scripts": {
-    "start": "wp-scripts start --config webpack.config.cjs",
-    "build": "wp-scripts build --config webpack.config.cjs"
+    "dev": "wp-scripts start --config webpack.config.cjs --experimental-modules",
+    "build": "wp-scripts build --config webpack.config.cjs --experimental-modules"
   },
   "dependencies": {
     "@yay-bulk-order/utils": "workspace:*",
