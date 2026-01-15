@@ -50,7 +50,10 @@ wp_interactivity_state(
 		data-wp-bind--hidden="!context.isOpen"
 	>
 		<?php
-			esc_html_e( 'Example Interactive TypeScript - hello from an interactive block!', 'yay-bulk-order' );
+			esc_html_e( 'Collapsible Content Box!', 'yay-bulk-order' );
 		?>
 	</p>
+
+	<?php echo do_blocks( $content ); ?>
+
 </div>

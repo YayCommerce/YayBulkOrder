@@ -13,7 +13,30 @@ export default function Edit({ attributes }: BlockEditProps<Attributes>) {
 
   return (
     <div {...blockProps}>
-      <InnerBlocks />
+      <InnerBlocks template={DEFAULT_TEMPLATE} />
     </div>
   );
 }
+
+const DEFAULT_TEMPLATE: InnerBlocks.Props["template"] = [
+  [
+    "core/group",
+    {
+      style: {
+        spacing: {
+          blockGap: "var:preset|spacing|20",
+        },
+        layout: {
+          type: "flex",
+          orientation: "vertical",
+          flexWrap: "nowrap",
+        },
+      },
+    },
+    [
+      ["yay-bulk-order/table-filter", {}],
+      ["yay-bulk-order/table-template", {}],
+      ["yay-bulk-order/table-pagination", {}],
+    ],
+  ],
+];
