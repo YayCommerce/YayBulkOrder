@@ -1,7 +1,7 @@
 import { BlockConfiguration, registerBlockType } from "@wordpress/blocks";
 
 import "./style.scss";
-import "./block.scss";
+import "./bulk-order-form.editor.scss";
 
 import Edit from "./edit";
 import metadata from "./block.json";
