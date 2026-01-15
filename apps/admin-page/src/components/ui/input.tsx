@@ -1,11 +1,13 @@
 import * as React from 'react';
+import { InputHTMLAttributes } from 'react';
 
 import { cn } from '@/lib/utils';
 
-import { inputVariants } from './variants/input.variants';
+import { InputVariantProps, inputVariants } from './variants/input.variants';
 
+type InputProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> & InputVariantProps;
 // using react forward ref and using function, not component
-const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<'input'>>(
+const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, ...props }, ref) => {
     return (
       <input
@@ -24,3 +26,4 @@ const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<'input'>>(
 );
 
 export { Input };
+export type { InputProps };

@@ -25,14 +25,14 @@ export const inputGroupVariants = cva(
 
     'has-[[data-slot=input-group-control]:focus-visible]:border-primary has-[[data-slot=input-group-control]:focus-visible]:ring-ring/9 has-[[data-slot=input-group-control]:focus-visible]:ring-3 has-[[data-slot=input-group-control]:focus-visible]:ring-offset-[0.5px] has-[[data-slot=input-group-control]:focus-visible]:ring-offset-primary',
 
-    'has-[[data-slot][aria-invalid=true]]:ring-error/9 has-[[data-slot][aria-invalid=true]]:ring-offset-error/80 has-[[data-slot][aria-invalid=true]]:border-error/80',
+    'has-[[data-slot][aria-invalid=true]]:ring-0 has-[[data-slot][aria-invalid=true]]:ring-offset-0 has-[[data-slot][aria-invalid=true]]:border-destructive',
   ],
   {
     variants: {
       size: {
         small: 'h-7 rounded-sm',
-        medium: 'h-8 rounded-md',
-        large: 'h-9 rounded-md',
+        medium: 'h-8 rounded-sm',
+        large: 'h-9 rounded-sm',
       },
     },
     defaultVariants: {
