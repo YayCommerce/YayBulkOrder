@@ -11,10 +11,9 @@
     "interactivity": true
   },
   "textdomain": "yay-bulk-order",
-  "editorScript": "file:./bulk-order-form.editor.js",
-  "editorStyle": "file:./bulk-order-form.editor.css",
-  "style": "file:./style-bulk-order-form.editor.css",
-  "render": "file:./bulk-order-form-render.php",
-  "viewScriptModule": "file:./bulk-order-form.view-module.js",
-  "viewScript": "file:./bulk-order-form.view.js"
+  "editorScript": "file:./editor.js",
+  "editorStyle": "file:./editor.css",
+  "style": "file:./style-editor.css",
+  "viewScriptModule": "file:./view-module.js",
+  "viewScript": "file:./view.js"
 }
