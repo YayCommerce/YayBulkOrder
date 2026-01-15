@@ -35,7 +35,16 @@ export const router = createHashRouter([
       },
       {
         path: 'settings',
-        element: <PageSettings />,
+        children: [
+          {
+            index: true,
+            loader: () => redirect('/settings/general'),
+          },
+          {
+            path: ':subMenu',
+            element: <PageSettings />,
+          },
+        ],
       },
     ],
   },

@@ -23,6 +23,7 @@ class Initialize {
         \YayBulkOrder\Engines\Blocks\RegisterBlocks::get_instance();
         \YayBulkOrder\Engines\Register\RegisterFacade::get_instance();
         \YayBulkOrder\Engines\Admin\AdminPage::get_instance();
+        \YayBulkOrder\Engines\RestAPI::get_instance();
     }
 
     public function required_woocommerce_notice() {
