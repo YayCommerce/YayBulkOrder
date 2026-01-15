@@ -32,6 +32,7 @@
     "@radix-ui/react-toggle-group": "^1.1.11",
     "@radix-ui/react-tooltip": "^1.2.7",
     "@tanstack/react-query": "^5.74.7",
+    "@tanstack/react-table": "^8.21.3",
     "@wordpress/components": "^30.3.0",
     "@wordpress/i18n": "^6.10.0",
     "@yay-bulk-order/utils": "workspace:*",
@@ -42,6 +43,7 @@
     "date-fns": "^4.1.0",
     "framer-motion": "^12.26.2",
     "ky": "^1.8.1",
+    "lodash": "^4.17.21",
     "lucide-react": "^0.562.0",
     "react-colorful": "^5.6.1",
     "react-day-picker": "^9.13.0",
@@ -53,6 +55,7 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@types/lodash": "^4.17.23",
     "@yay-bulk-order/common": "workspace:*"
   },
   "prettier": {

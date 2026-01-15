@@ -9,7 +9,7 @@ use WP_REST_Response;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Handles Wholesale Settings API endpoints.
+ * Handles Settings API endpoints.
  */
 class SettingsController extends BaseRestController {
     use SingletonTrait;

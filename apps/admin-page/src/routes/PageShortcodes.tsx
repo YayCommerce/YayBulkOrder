@@ -25,12 +25,12 @@ export default function PageShortcodes() {
   }
 
   return (
-    <>
+    <div className="mx-auto mt-8 flex max-w-7xl flex-col gap-6 px-6">
       <ShortcodeList />
       <Sheet open={isOpenSheet} onOpenChange={setIsOpenSheet}>
         {isNewRoute && <ShortcodeSheetNew />}
         {isEditRoute && <ShortcodeSheetEdit />}
       </Sheet>
-    </>
+    </div>
   );
 }
