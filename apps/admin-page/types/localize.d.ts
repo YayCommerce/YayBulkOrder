@@ -1,4 +1,4 @@
-import type { Settings } from '@yay-bulk-order/common/types/settings.type';
+import type { SettingsFormData } from '@/lib/schemas/settings.schema';
 
 declare global {
   interface Window {
@@ -11,7 +11,7 @@ declare global {
         restUrl: string;
         nonce: string;
       };
-      settings: Settings;
+      settings: SettingsFormData;
     };
   }
 }

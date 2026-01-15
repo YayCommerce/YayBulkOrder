@@ -28,13 +28,17 @@ class SettingsService {
             'general' => [
                 'defaultCartQuantity' => 10,
             ],
-            'colors'  => [
-                'primary'    => '#2271b1',
-                'text'       => '#171717',
-                'background' => '#ffffff',
-            ],
+           
             'styles'  => [
-                'borderRadius' => 'medium',
+                'colors'  => [
+                    'primary'    => '#2271b1',
+                    'textNormal'       => '#333333',
+                    'backgroundNormal' => '#FFFFFF',
+                    'textSecondary'    => '#777777',
+                    'backgroundSecondary' => '#F3F3F3',
+                    'borderColor'      => '#E4E4E7',
+                ],
+                'borderRadius' => 'normal',
             ],
         ];
     }
