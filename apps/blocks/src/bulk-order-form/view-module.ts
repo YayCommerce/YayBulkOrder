@@ -1,8 +1,5 @@
-/**
- * WordPress dependencies
- */
-import { store, getContext } from "@wordpress/interactivity";
-import { checkViewIsReady } from "@yay-bulk-order/view";
+import { getContext, store } from '@wordpress/interactivity';
+import { checkViewIsReady } from '@yay-bulk-order/view';
 
 type ServerState = {
   state: {
@@ -24,7 +21,7 @@ const storeDef = {
   },
   actions: {
     toggleOpen() {
-      console.log("toggleOpen");
+      console.log('toggleOpen');
       const context = getContext<Context>();
       context.isOpen = !context.isOpen;
     },
@@ -44,4 +41,4 @@ const storeDef = {
 
 type Store = ServerState & typeof storeDef;
 
-const { state } = store<Store>("bulk-order-form", storeDef);
+const { state } = store<Store>('bulk-order-form', storeDef);
