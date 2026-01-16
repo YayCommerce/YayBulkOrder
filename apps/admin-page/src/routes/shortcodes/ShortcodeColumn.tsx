@@ -68,9 +68,7 @@ export const ShortcodeColumn: (actions: ColumnActions) => ColumnDef<ShortcodeFor
     header: __('Shortcode', 'yay-bulk-order'),
     cell: ({ row }) => {
       return (
-        <div className="flex items-center gap-2">
-          [yay_bulk_order_shortcode id="{row.original.id}"]
-        </div>
+        <div className="flex items-center gap-2">[ybo-form-shortcode id="{row.original.id}"]</div>
       );
     },
   },
@@ -80,7 +78,7 @@ export const ShortcodeColumn: (actions: ColumnActions) => ColumnDef<ShortcodeFor
     cell: ({ row }) => {
       return (
         <div className="flex w-10 items-center justify-end gap-2">
-          <CopyButton content={`[yay_bulk_order_shortcode id="${row.original.id}"]`} />
+          <CopyButton content={`[ybo-form-shortcode id="${row.original.id}"]`} />
 
           <Button variant="outline" size="icon" onClick={() => actions.onEdit(row.original.id)}>
             <Bolt className="size-4" />
