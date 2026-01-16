@@ -3,6 +3,7 @@ namespace YayBulkOrder\Engines\Admin;
 
 use YayBulkOrder\Engines\Register\ScriptName;
 use YayBulkOrder\Services\SettingsService;
+use YayBulkOrder\Services\ShortcodesService;
 use YayBulkOrder\Utils\SingletonTrait;
 
 defined( 'ABSPATH' ) || exit;
@@ -21,6 +22,8 @@ class AdminPage {
 
     private function __construct() {
         $this->settings_service = SettingsService::get_instance();
+        // Register Custom Post Type
+        add_action( 'init', [ $this, 'register_bulk_order_shortcode_post_type' ] );
 
         add_action( 'admin_menu', [ $this, 'settings_menu' ], YAY_BULK_ORDER_MENU_PRIORITY );
         add_filter( 'admin_body_class', [ $this, 'admin_body_class' ] );
@@ -29,6 +32,45 @@ class AdminPage {
         if ( current_user_can( 'manage_options' ) ) {
             add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_bulk_order_settings_scripts' ] );
         }
+    }
+
+    public function register_bulk_order_shortcode_post_type() {
+       
+        $labels                  = [
+            'name'          => __( 'Bulk Order Shortcodes', 'yay-bulk-order' ),
+            'singular_name' => __( 'Bulk Order Shortcode', 'yay-bulk-order' ),
+        ];
+
+        $shortcode_post_type = ShortcodesService::SHORTCODE_POST_TYPE;
+
+        $args                    = [
+            'labels'            => $labels,
+            'description'       => __( 'Bulk Order Shortcodes', 'yay-bulk-order' ),
+            'public'            => false,
+            'show_ui'           => false,
+            'has_archive'       => true,
+            'show_in_admin_bar' => false,
+            'show_in_rest'      => true,
+            'show_in_menu'      => false,
+            'query_var'         => $shortcode_post_type,
+            'supports'          => [
+                'title',
+                'thumbnail',
+            ],
+            'capabilities'      => [
+                'edit_post'          => 'manage_options',
+                'read_post'          => 'manage_options',
+                'delete_post'        => 'manage_options',
+                'edit_posts'         => 'manage_options',
+                'edit_others_posts'  => 'manage_options',
+                'delete_posts'       => 'manage_options',
+                'publish_posts'      => 'manage_options',
+                'read_private_posts' => 'manage_options',
+            ],
+        ];
+
+        register_post_type( $shortcode_post_type, $args );
+
     }
 
     public function settings_menu() {

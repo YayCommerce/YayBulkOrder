@@ -4,14 +4,31 @@ import { flexRender, getCoreRowModel, PaginationState, useReactTable } from '@ta
 import { Spinner } from '@wordpress/components';
 import { __, sprintf } from '@wordpress/i18n';
 import { debounce } from 'lodash';
-import { ChevronLeft, ChevronRight, Search } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Plus, Search, TrashIcon } from 'lucide-react';
+import { useNavigate } from 'react-router';
 
-import { useShortcodesQuery } from '@/lib/queries/shortcodes.queries';
+import {
+  useBulkDeleteShortcodeMutation,
+  useDeleteShortcodeMutation,
+  useShortcodesQuery,
+} from '@/lib/queries/shortcodes.queries';
 import { cn } from '@/lib/utils';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import BulkActionBox from '@/components/ui/bulk-actions-box';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group';
 import { NumberInput } from '@/components/ui/number-input';
+import { Separator } from '@/components/ui/separator';
 import {
   Table,
   TableBody,
@@ -24,20 +41,22 @@ import {
 import { ShortcodeColumn } from './ShortcodeColumn';
 
 export default function ShortcodeList() {
+  const navigate = useNavigate();
+
   const [keyword, setKeyword] = useState('');
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
   });
   const [search, setSearch] = useState('');
-
-  const clientQuery = useQueryClient();
+  const [openBulkDeleteDialog, setOpenBulkDeleteDialog] = useState(false);
+  const queryClient = useQueryClient();
 
   const debouncedSearch = useMemo(() => {
     return debounce((value) => {
       setKeyword(value);
     }, 500);
-  }, [clientQuery]);
+  }, [queryClient]);
 
   const {
     data,
@@ -45,11 +64,24 @@ export default function ShortcodeList() {
     isFetching: isFetchingShortcodes,
   } = useShortcodesQuery(keyword, pagination);
 
-  const columns = ShortcodeColumn;
-  const defaultData = useMemo(() => [], []);
+  const { mutate: deleteShortcode } = useDeleteShortcodeMutation();
+
+  const columns = useMemo(
+    () =>
+      ShortcodeColumn({
+        onEdit: (id) => navigate(`/shortcodes/${id}`),
+        onDelete: (id) => {
+          if (!window.confirm('Are you sure you want to delete this shortcode?')) {
+            return;
+          }
+          deleteShortcode(id);
+        },
+      }),
+    [navigate],
+  );
 
   const table = useReactTable({
-    data: data?.data ?? defaultData,
+    data: data?.data ?? [],
     columns,
     state: {
       pagination,
@@ -67,10 +99,19 @@ export default function ShortcodeList() {
     [selectedCount],
   );
 
+  const { mutateAsync: bulkDeleteShortcodes, isPending: isBulkDeleteShortcodesPending } =
+    useBulkDeleteShortcodeMutation(selectedRowsIds);
+
   const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
     table.setPageIndex(0);
     debouncedSearch(e.target.value);
+  };
+
+  const handleBulkDeleteShortcodes = async () => {
+    await bulkDeleteShortcodes();
+    setOpenBulkDeleteDialog(false);
+    table.resetRowSelection();
   };
 
   return (
@@ -89,11 +130,31 @@ export default function ShortcodeList() {
               </InputGroupAddon>
             </InputGroup>
           )}
+
+          <Button
+            variant="primary-outline"
+            className="hover:bg-primary hover:text-primary-foreground gap-2 rounded-sm px-4 text-sm font-medium shadow-xs"
+            onClick={() => navigate('/shortcodes/new')}
+          >
+            <Plus className="h-4 w-4" />
+            {__('Add New Shortcode', 'yay-bulk-order')}
+          </Button>
         </div>
       </div>
 
       {/* Table */}
-      <div className={cn('relative overflow-x-auto rounded-lg border')}>
+      <div
+        className={cn(
+          'relative overflow-x-auto rounded-lg border',
+          isBulkDeleteShortcodesPending && 'relative opacity-50',
+        )}
+      >
+        {/* Overlay Spinner */}
+        {isBulkDeleteShortcodesPending && (
+          <div className="absolute inset-0 z-50 flex items-center justify-center">
+            <Spinner className="text-muted-foreground size-6 animate-spin" />
+          </div>
+        )}
         <Table className="min-w-full">
           <TableHeader className="text-foreground bg-muted-400 h-[46px]">
             {table.getHeaderGroups().map((headerGroup) => (
@@ -102,11 +163,8 @@ export default function ShortcodeList() {
                   <TableHead
                     key={header.id}
                     className={cn(
-                      'text-foreground-400 py-2 text-sm font-medium',
-
-                      'text-center',
-
-                      'px-3',
+                      'text-foreground-400 py-2 text-left text-sm font-medium',
+                      header.column.columnDef.meta?.isCheckbox ? 'w-[36px] p-0' : 'px-3',
                     )}
                   >
                     {flexRender(header.column.columnDef.header, header.getContext())}
@@ -139,6 +197,12 @@ export default function ShortcodeList() {
                         cell.column.id === 'select' ? 'p-0' : '',
                         cell.column.id === 'actions' ? 'flex w-25 justify-end lg:w-full' : '',
                       )}
+                      onClick={() => {
+                        if (['select', 'actions'].indexOf(cell.column.id) < 0) {
+                          queryClient.setQueryData(['shortcode', row.original.id], row.original);
+                          navigate(`/shortcodes/${row.original.id}`);
+                        }
+                      }}
                     >
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
@@ -160,9 +224,55 @@ export default function ShortcodeList() {
         <div
           className={cn(
             'relative flex flex-col items-center gap-3 sm:flex-row',
-            selectedCount > 1 ? 'justify-between' : 'justify-end',
+            selectedCount > 1 && !isBulkDeleteShortcodesPending ? 'justify-between' : 'justify-end',
           )}
         >
+          {!isBulkDeleteShortcodesPending && (
+            <BulkActionBox selected={selectedCount} onClose={() => table.resetRowSelection()}>
+              <span className="text-foreground text-sm font-normal">
+                {sprintf(__('%d selected', 'yay-bulk-order'), selectedCount)}
+              </span>
+              <Separator orientation="vertical" className="ml-2 h-5!" />
+
+              <AlertDialog open={openBulkDeleteDialog} onOpenChange={setOpenBulkDeleteDialog}>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="hover:text-destructive text-muted-foreground h-8 w-8 shrink-0 hover:bg-transparent hover:shadow-sm"
+                  onClick={() => setOpenBulkDeleteDialog(true)}
+                  aria-label="Delete selected"
+                >
+                  <TrashIcon className="size-4" />
+                </Button>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      {sprintf(
+                        __(`Are you sure you want to delete %d shortcodes ?`, 'yay-bulk-order'),
+                        selectedCount,
+                      )}
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      {__(
+                        'This action cannot be undone. This will permanently delete these request and remove data from servers',
+                        'yay-bulk-order',
+                      )}
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>{__('Cancel', 'yay-bulk-order')}</AlertDialogCancel>
+                    <AlertDialogAction
+                      className="bg-destructive text-destructive-foreground hover:bg-destructive/80"
+                      onClick={handleBulkDeleteShortcodes}
+                    >
+                      {__('Continue', 'yay-bulk-order')}
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </BulkActionBox>
+          )}
+          {/* Right side - Pagination controls */}
           {table.getPageCount() > 1 && (
             <div className="flex items-center gap-4">
               <span className="text-foreground-400 text-sm font-normal">
