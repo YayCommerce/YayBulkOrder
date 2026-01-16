@@ -1,3 +1,3 @@
 export function checkUtilsIsReady() {
-  console.log("checkUtilsIsReady");
+  console.log('checkUtilsIsReady');
 }

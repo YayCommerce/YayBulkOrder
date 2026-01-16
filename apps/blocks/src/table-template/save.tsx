@@ -14,7 +14,9 @@ export default function Save(props: BlockSaveProps<unknown>) {
         </tr>
       </thead>
       <tbody>
-        <InnerBlocks.Content />
+        <tr>
+          <InnerBlocks.Content />
+        </tr>
       </tbody>
     </table>
   );

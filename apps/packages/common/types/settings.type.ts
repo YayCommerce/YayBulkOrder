@@ -8,6 +8,6 @@ export type Settings = {
     background: string;
   };
   styles: {
-    borderRadius: "small" | "medium" | "large";
+    borderRadius: 'small' | 'medium' | 'large';
   };
 };

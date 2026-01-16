@@ -1,8 +1,9 @@
-import { InnerBlocks, useBlockProps } from "@wordpress/block-editor";
-import { Attributes } from "./type";
-import { BlockEditProps } from "@wordpress/blocks";
-import { checkUtilsIsReady } from "@yay-bulk-order/utils";
-import { useEffect } from "react";
+import { useEffect } from 'react';
+import { InnerBlocks, useBlockProps } from '@wordpress/block-editor';
+import { BlockEditProps } from '@wordpress/blocks';
+import { checkUtilsIsReady } from '@yay-bulk-order/utils';
+
+import { Attributes } from './type';
 
 export default function Edit({ attributes }: BlockEditProps<Attributes>) {
   const blockProps = useBlockProps();
@@ -18,25 +19,25 @@ export default function Edit({ attributes }: BlockEditProps<Attributes>) {
   );
 }
 
-const DEFAULT_TEMPLATE: InnerBlocks.Props["template"] = [
+const DEFAULT_TEMPLATE: InnerBlocks.Props['template'] = [
   [
-    "core/group",
+    'core/group',
     {
       style: {
         spacing: {
-          blockGap: "var:preset|spacing|20",
+          blockGap: 'var:preset|spacing|20',
         },
         layout: {
-          type: "flex",
-          orientation: "vertical",
-          flexWrap: "nowrap",
+          type: 'flex',
+          orientation: 'vertical',
+          flexWrap: 'nowrap',
         },
       },
     },
     [
-      ["yay-bulk-order/table-filter", {}],
-      ["yay-bulk-order/table-template", {}],
-      ["yay-bulk-order/table-pagination", {}],
+      ['yay-bulk-order/table-filter', {}],
+      ['yay-bulk-order/table-template', {}],
+      ['yay-bulk-order/table-pagination', {}],
     ],
   ],
 ];

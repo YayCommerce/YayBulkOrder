@@ -1,17 +1,14 @@
-import { BlockConfiguration, registerBlockType } from "@wordpress/blocks";
+import './style.scss';
+import './editor.scss';
 
-import "./style.scss";
-import "./editor.scss";
+import { BlockConfiguration, registerBlockType } from '@wordpress/blocks';
 
-import Edit from "./edit";
-import metadata from "./block.json";
-import { Attributes } from "./type";
-import Save from "./save";
+import metadata from './block.json';
+import Edit from './edit';
+import Save from './save';
+import { Attributes } from './type';
 
-registerBlockType<Attributes>(
-  metadata as unknown as BlockConfiguration<Attributes>,
-  {
-    edit: Edit,
-    save: Save,
-  },
-);
+registerBlockType<Attributes>(metadata as unknown as BlockConfiguration<Attributes>, {
+  edit: Edit,
+  save: Save,
+});

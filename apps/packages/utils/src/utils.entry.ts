@@ -1,4 +1,4 @@
-import * as utils from "./utils.index";
+import * as utils from './utils.index';
 
 if (undefined === window.YayBulkOrder) {
   window.YayBulkOrder = {};

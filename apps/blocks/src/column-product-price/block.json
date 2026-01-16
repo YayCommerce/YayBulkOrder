@@ -5,7 +5,6 @@
   "version": "0.1.0",
   "title": "Column Product Price",
   "category": "woocommerce",
-  "icon": "cart",
   "description": "A block to show WooCommerce Products as Table optimized for bulk ordering.",
   "parent": [
     "yay-bulk-order/table-template"
