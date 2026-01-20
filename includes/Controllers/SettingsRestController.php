@@ -9,9 +9,9 @@ use WP_REST_Response;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Handles Wholesale Settings API endpoints.
+ * Handles Settings API endpoints.
  */
-class SettingsController extends BaseRestController {
+class SettingsRestController extends BaseRestController {
     use SingletonTrait;
 
     protected function __construct() {
@@ -41,7 +41,7 @@ class SettingsController extends BaseRestController {
      */
     public function settings_permission_callback() {
         if ( ! current_user_can( 'manage_options' ) || ! current_user_can( 'manage_woocommerce' ) ) {
-            return new \WP_Error( 'rest_forbidden', esc_html__( 'Forbidden.', 'yay-wholesale' ), [ 'status' => 401 ] );
+            return new \WP_Error( 'rest_forbidden', esc_html__( 'Forbidden.', 'yay-bulk-order' ), [ 'status' => 401 ] );
         }
 
         return true;

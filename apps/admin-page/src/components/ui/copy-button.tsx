@@ -2,8 +2,8 @@
 
 import * as React from 'react';
 import { type VariantProps } from 'class-variance-authority';
-import { AnimatePresence, HTMLMotionProps, motion } from 'framer-motion';
 import { CheckIcon, CopyIcon } from 'lucide-react';
+import { AnimatePresence, HTMLMotionProps, motion } from 'motion/react';
 
 import { cn } from '@/lib/utils';
 
