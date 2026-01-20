@@ -1,9 +1,9 @@
-import { __ } from "@wordpress/i18n";
-
-import { InnerBlocks, useBlockProps } from "@wordpress/block-editor";
-import { BlockEditProps } from "@wordpress/blocks";
+import { InnerBlocks, useBlockProps } from '@wordpress/block-editor';
+import { BlockEditProps } from '@wordpress/blocks';
+import { __ } from '@wordpress/i18n';
 
 export default function Edit(props: BlockEditProps<unknown>) {
+  const { clientId, attributes, context } = props;
   const blockProps = useBlockProps();
 
   return (
@@ -15,6 +15,11 @@ export default function Edit(props: BlockEditProps<unknown>) {
       </thead>
       <tbody>
         <tr>
+          <td colSpan={999}>
+            <pre>Debug: {JSON.stringify({ attributes, context, clientId }, null, 2)}</pre>
+          </td>
+        </tr>
+        <tr>
           <InnerBlocks template={DEFAULT_TEMPLATE} />
         </tr>
       </tbody>
@@ -22,8 +27,8 @@ export default function Edit(props: BlockEditProps<unknown>) {
   );
 }
 
-const DEFAULT_TEMPLATE: InnerBlocks.Props["template"] = [
-  ["yay-bulk-order/column-product-title", {}],
-  ["yay-bulk-order/column-product-price", {}],
-  ["yay-bulk-order/column-product-stock", {}],
+const DEFAULT_TEMPLATE: InnerBlocks.Props['template'] = [
+  ['yay-bulk-order/column-product-title', {}],
+  ['yay-bulk-order/column-product-price', {}],
+  ['yay-bulk-order/column-product-stock', {}],
 ];

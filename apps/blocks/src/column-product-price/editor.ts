@@ -8,5 +8,5 @@ import Save from './save';
 registerBlockType(metadata as unknown as BlockConfiguration, {
   icon: column,
   edit: Edit,
-  save: Save,
+  // save: Save,
 });

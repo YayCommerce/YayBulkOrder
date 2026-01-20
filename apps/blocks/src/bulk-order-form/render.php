@@ -1,59 +1,61 @@
 <?php
 /**
- * PHP file to use when rendering the block type on the server to show on the front end.
- *
- * The following variables are exposed to the file:
- *     $attributes (array): The block attributes.
- *     $content (string): The block default content.
- *     $block (WP_Block): The block instance.
- *
- * @see https://github.com/WordPress/gutenberg/blob/trunk/docs/reference-guides/block-api/block-metadata.md#render
+ * @var array{queryId: number, forcePageReload: boolean} $attributes The block attributes.
+ * @var string $content The block default content.
+ * @var WP_Block $block The block instance.
  */
 
 // Generates a unique id for aria-controls.
-$unique_id = wp_unique_id( 'p-' );
+$unique_id = wp_unique_id( 'ybo-' );
 
-// Adds the global state.
 wp_interactivity_state(
-	'bulk-order-form',
-	array(
-		'isDark'    => false,
-		'darkText'  => esc_html__( 'Switch to Light', 'yay-bulk-order' ),
-		'lightText' => esc_html__( 'Switch to Dark', 'yay-bulk-order' ),
-		'themeText'	=> esc_html__( 'Switch to Dark', 'yay-bulk-order' ),
-	)
+    'yay-bulk-order/bulk-order-form',
+    [
+        'isBlockTheme' => wp_is_block_theme(),
+        'pageSize'     => 5,
+    ]
 );
+
+$queryId = $attributes['queryId'] ?? 0;
+$forcePageReload = $attributes['forcePageReload'] ?? false;
+$page_param = get_query_var( 'query' . $queryId . 'page' );
+$filter_param = get_query_var( 'query' . $queryId . 'filter' );
+$page = $page_param ? intval( $page_param ) : 1;
+$filter = $filter_param ? $filter_param : 'all';
+
+$data_context = [
+    'config' => [
+        'queryId'         => $queryId,
+        'forcePageReload' => $forcePageReload,
+    ],
+    'queryContext' => [
+        'page' => $page,
+        'filter' => $filter,
+    ],
+    'queryResult' => [
+        'totalLength' => 0, // TODO: set this when query is loaded
+    ],
+];
 ?>
 
+
+
 <div
-	<?php echo get_block_wrapper_attributes(); ?>
-	data-wp-interactive="bulk-order-form"
-	<?php echo wp_interactivity_data_wp_context( array( 'isOpen' => true ) ); ?>
-	data-wp-watch="callbacks.logIsOpen"
-	data-wp-class--dark-theme="state.isDark"
+    <?php echo get_block_wrapper_attributes(); ?>
+    data-wp-interactive="yay-bulk-order/bulk-order-form"
+    <?php echo wp_interactivity_data_wp_context( $data_context ); ?>
+    data-wp-init="callbacks.onRender"
 >
-	<button
-		data-wp-on--click="actions.toggleTheme"
-		data-wp-text="state.themeText"
-	></button>
+    <button
+        data-wp-text="state.currentPage"
+    ></button>
 
-	<button
-		data-wp-on--click="actions.toggleOpen"
-		data-wp-bind--aria-expanded="context.isOpen"
-		aria-controls="<?php echo esc_attr( $unique_id ); ?>"
-	>
-		<?php esc_html_e( 'Toggle', 'yay-bulk-order' ); ?>
-	</button>
+    <button
+        aria-controls="<?php echo esc_attr( $unique_id ); ?>"
+    >
+        <?php esc_html_e( 'Next Page', 'yay-bulk-order' ); ?>
+    </button>
 
-	<p
-		id="<?php echo esc_attr( $unique_id ); ?>"
-		data-wp-bind--hidden="!context.isOpen"
-	>
-		<?php
-			esc_html_e( 'Collapsible Content Box!', 'yay-bulk-order' );
-		?>
-	</p>
-
-	<?php echo do_blocks( $content ); ?>
+    <?php echo do_blocks( $content ); ?>
 
 </div>

@@ -6,9 +6,11 @@
   "title": "Column Product Title",
   "category": "woocommerce",
   "description": "A block to show WooCommerce Products as Table optimized for bulk ordering.",
+  "textdomain": "yay-bulk-order",
+  "usesContext": [ "productId" ],
   "parent": [
     "yay-bulk-order/table-template"
   ],
-  "textdomain": "yay-bulk-order",
-  "editorScript": "file:./editor.js"
+  "editorScript": "file:./editor.js",
+  "render": "file:./render.php"
 }

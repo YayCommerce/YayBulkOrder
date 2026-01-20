@@ -7,10 +7,26 @@
   "category": "woocommerce",
   "icon": "cart",
   "description": "A block to show WooCommerce Products as Table optimized for bulk ordering.",
-  "supports": {
-    "interactivity": true
-  },
   "textdomain": "yay-bulk-order",
+  "attributes": {
+		"queryId": {
+			"type": "number",
+      "default": 0
+		},
+		"forcePageReload": {
+			"type": "boolean",
+			"default": false
+		}
+	},
+  "providesContext": {
+		"queryId": "queryId"
+	},
+  "supports": {
+    "interactivity": true,
+    "multiple": false,
+    "align": [ "wide", "full" ],
+    "anchor": true
+  },
   "editorScript": "file:./editor.js",
   "editorStyle": "file:./editor.css",
   "style": "file:./style-editor.css",

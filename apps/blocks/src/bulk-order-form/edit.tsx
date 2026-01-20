@@ -1,19 +1,41 @@
 import { useEffect } from 'react';
-import { InnerBlocks, useBlockProps } from '@wordpress/block-editor';
-import { BlockEditProps } from '@wordpress/blocks';
+import { store as blockEditorStore, InnerBlocks, useBlockProps } from '@wordpress/block-editor';
+import { BlockEditProps, BlockInstance } from '@wordpress/blocks';
+import { useInstanceId } from '@wordpress/compose';
+import { useSelect } from '@wordpress/data';
+
 import { checkUtilsIsReady } from '@yay-bulk-order/utils';
+import { BulkOrderFormAttributes } from './type';
 
-import { Attributes } from './type';
-
-export default function Edit({ attributes }: BlockEditProps<Attributes>) {
+export default function Edit(props: BlockEditProps<BulkOrderFormAttributes>) {
+  const { clientId, attributes, setAttributes } = props;
   const blockProps = useBlockProps();
+
+  const innerBlocks = useSelect(
+    (select) => !!select(blockEditorStore).getClientIdsOfDescendants([clientId]),
+    [clientId],
+  ) as unknown as BlockInstance[] | undefined;
+  const hasInnerBlocks = innerBlocks?.length > 0;
+
+  const queryId = useInstanceId(Edit as React.FC);
 
   useEffect(() => {
     checkUtilsIsReady();
-  }, [attributes]);
+    if (attributes.queryId === 0) {
+      setAttributes({ queryId });
+    }
+  }, [queryId, attributes, setAttributes]);
 
   return (
     <div {...blockProps}>
+      <pre>
+        Debug:{' '}
+        {JSON.stringify(
+          { hasInnerBlocks, attributes, queryId, innerBlocks: typeof innerBlocks, clientId },
+          null,
+          2,
+        )}
+      </pre>
       <InnerBlocks template={DEFAULT_TEMPLATE} />
     </div>
   );

@@ -14,9 +14,12 @@
   "dependencies": {
     "@wordpress/block-editor": "latest",
     "@wordpress/blocks": "latest",
+    "@wordpress/data": "latest",
+    "@wordpress/compose": "latest",
     "@wordpress/i18n": "latest",
     "@wordpress/icons": "^11.4.0",
     "@wordpress/interactivity": "latest",
+    "@wordpress/interactivity-router": "latest",
     "@yay-bulk-order/utils": "workspace:*",
     "@yay-bulk-order/view": "workspace:*"
   },
