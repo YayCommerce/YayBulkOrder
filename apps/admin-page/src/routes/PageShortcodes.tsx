@@ -1,36 +1,23 @@
-import { useIsMutating } from '@tanstack/react-query';
-import { useMatch, useNavigate } from 'react-router';
+import { useMatch, useParams } from 'react-router';
 
-import { Sheet } from '@/components/ui/sheet';
-
+import ShortcodeEdit from './shortcodes/form/ShortcodeEdit';
+import ShortcodeNew from './shortcodes/form/ShortcodeNew';
 import ShortcodeList from './shortcodes/ShortcodeList';
-import ShortcodeSheetEdit from './shortcodes/ShortcodeSheetEdit';
-import ShortcodeSheetNew from './shortcodes/ShortcodeSheetNew';
 
 export default function PageShortcodes() {
-  const navigate = useNavigate();
-  const isIndexRoute = useMatch('/shortcodes');
-  const isNewRoute = useMatch('/shortcodes/new');
-  const isEditRoute = useMatch('/shortcodes/:formId');
+  const { formId } = useParams();
 
-  const isOpenSheet = isIndexRoute === null;
-  const isMutatingTable = useIsMutating({ mutationKey: ['shortcodes'] }) > 0;
+  const isShortcodeCreateRoute = !!useMatch('/shortcodes/new');
+  const isShortcodeEditRoute = !!useMatch('/shortcodes/:formId');
 
-  function setIsOpenSheet(open: boolean) {
-    if (isMutatingTable) return;
-
-    if (!open) {
-      navigate('/shortcodes');
-    }
-  }
+  const shortcodeId = isShortcodeEditRoute && formId && formId !== 'new' ? Number(formId) : null;
 
   return (
-    <>
+    <div className="mx-auto mt-8 flex max-w-7xl flex-col gap-6 px-6">
       <ShortcodeList />
-      <Sheet open={isOpenSheet} onOpenChange={setIsOpenSheet}>
-        {isNewRoute && <ShortcodeSheetNew />}
-        {isEditRoute && <ShortcodeSheetEdit />}
-      </Sheet>
-    </>
+
+      {isShortcodeCreateRoute && <ShortcodeNew />}
+      {isShortcodeEditRoute && shortcodeId && <ShortcodeEdit editId={shortcodeId} />}
+    </div>
   );
 }
