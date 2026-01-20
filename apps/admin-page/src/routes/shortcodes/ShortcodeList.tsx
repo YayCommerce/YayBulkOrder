@@ -1,11 +1,11 @@
 import { useMemo, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { flexRender, getCoreRowModel, PaginationState, useReactTable } from '@tanstack/react-table';
-import { Spinner } from '@wordpress/components';
-import { __, sprintf } from '@wordpress/i18n';
 import { debounce } from 'lodash';
 import { ChevronLeft, ChevronRight, Plus, Search, TrashIcon } from 'lucide-react';
 import { useNavigate } from 'react-router';
+import { Spinner } from '@wordpress/components';
+import { __, sprintf } from '@wordpress/i18n';
 
 import {
   useBulkDeleteShortcodeMutation,
@@ -37,7 +37,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-
 import { ShortcodeColumn } from './ShortcodeColumn';
 
 export default function ShortcodeList() {

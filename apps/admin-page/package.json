@@ -42,7 +42,6 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
     "date-fns": "^4.1.0",
-    "framer-motion": "^12.26.2",
     "ky": "^1.8.1",
     "lodash": "^4.17.21",
     "lucide-react": "^0.562.0",
@@ -59,41 +58,5 @@
   "devDependencies": {
     "@types/lodash": "^4.17.23",
     "@yay-bulk-order/common": "workspace:*"
-  },
-  "prettier": {
-    "printWidth": 100,
-    "semi": true,
-    "singleQuote": true,
-    "tabWidth": 2,
-    "trailingComma": "all",
-    "importOrder": [
-      "^(react/(.*)$)|^(react$)",
-      "<THIRD_PARTY_MODULES>",
-      "",
-      "^types$",
-      "^@/types/(.*)$",
-      "^@/config/(.*)$",
-      "^@/lib/(.*)$",
-      "^@/hooks/(.*)$",
-      "^@/components/ui/(.*)$",
-      "^@/components/(.*)$",
-      "^@/styles/(.*)$",
-      "",
-      "^[./]"
-    ],
-    "importOrderSeparation": false,
-    "importOrderSortSpecifiers": true,
-    "importOrderBuiltinModulesToTop": true,
-    "importOrderParserPlugins": [
-      "typescript",
-      "jsx",
-      "decorators-legacy"
-    ],
-    "importOrderMergeDuplicateImports": true,
-    "importOrderCombineTypeAndValueImports": true,
-    "plugins": [
-      "@ianvs/prettier-plugin-sort-imports",
-      "prettier-plugin-tailwindcss"
-    ]
   }
 }

@@ -8,6 +8,8 @@
  * Author URI: https://yaycommerce.com
  * Text Domain: yay-bulk-order
  * Domain Path: /languages
+ * Requires at least: 6.8
+ * Requires PHP: 7.4
  *
  * @package yaycommerce/yay-bulk-order
  */

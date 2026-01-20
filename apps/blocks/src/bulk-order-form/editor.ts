@@ -1,15 +1,15 @@
-import { BlockConfiguration, registerBlockType } from "@wordpress/blocks";
+import { BlockConfiguration, registerBlockType } from '@wordpress/blocks';
 
-import "./style.scss";
-import "./editor.scss";
+import metadata from './block.json';
+import Edit from './edit';
+import Save from './save';
+import { BulkOrderFormAttributes } from './type';
 
-import Edit from "./edit";
-import metadata from "./block.json";
-import { Attributes } from "./type";
-import Save from "./save";
+import './style.scss';
+import './editor.scss';
 
-registerBlockType<Attributes>(
-  metadata as unknown as BlockConfiguration<Attributes>,
+registerBlockType<BulkOrderFormAttributes>(
+  metadata as unknown as BlockConfiguration<BulkOrderFormAttributes>,
   {
     edit: Edit,
     save: Save,

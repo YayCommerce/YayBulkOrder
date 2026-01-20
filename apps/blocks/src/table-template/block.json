@@ -5,10 +5,37 @@
   "version": "0.1.0",
   "title": "Bulk Order Table Template",
   "category": "woocommerce",
-  "icon": "cart",
   "description": "A block to show WooCommerce Products as Table optimized for bulk ordering.",
+  "textdomain": "yay-bulk-order",
+  "usesContext": [ "queryId" ],
   "supports": {
-    "interactivity": true
+    "interactivity": true,
+    "inserter": false,
+		"reusable": false,
+    "html": false,
+    "align": [ "wide", "full" ],
+		"anchor": true,
+    "color": {
+			"gradients": true,
+			"link": true,
+			"__experimentalDefaultControls": {
+				"background": true,
+				"text": true
+			}
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true,
+			"__experimentalFontFamily": true,
+			"__experimentalFontWeight": true,
+			"__experimentalFontStyle": true,
+			"__experimentalTextTransform": true,
+			"__experimentalTextDecoration": true,
+			"__experimentalLetterSpacing": true,
+			"__experimentalDefaultControls": {
+				"fontSize": true
+			}
+		}
   },
   "ancestor": [
     "yay-bulk-order/bulk-order-form"
@@ -18,7 +45,7 @@
     "yay-bulk-order/product-price-column",
     "yay-bulk-order/product-stock-column"
   ],
-  "textdomain": "yay-bulk-order",
   "editorScript": "file:./editor.js",
-  "style": "file:./style-editor.css"
+  "style": "file:./style-editor.css",
+  "render": "file:./render.php"
 }

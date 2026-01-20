@@ -12,17 +12,21 @@
     "packages-update": "wp-scripts packages-update"
   },
   "dependencies": {
-    "@yay-bulk-order/utils": "workspace:*",
-    "@yay-bulk-order/view": "workspace:*",
     "@wordpress/block-editor": "latest",
     "@wordpress/blocks": "latest",
+    "@wordpress/data": "latest",
+    "@wordpress/compose": "latest",
     "@wordpress/i18n": "latest",
-    "@wordpress/interactivity": "latest"
+    "@wordpress/icons": "^11.4.0",
+    "@wordpress/interactivity": "latest",
+    "@wordpress/interactivity-router": "latest",
+    "@yay-bulk-order/utils": "workspace:*",
+    "@yay-bulk-order/view": "workspace:*"
   },
   "devDependencies": {
-    "@yay-bulk-order/common": "workspace:*",
-    "@wordpress/scripts": "^31.2.0",
     "@types/wordpress__block-editor": "latest",
-    "@types/wordpress__blocks": "latest"
+    "@types/wordpress__blocks": "latest",
+    "@wordpress/scripts": "^31.2.0",
+    "@yay-bulk-order/common": "workspace:*"
   }
 }

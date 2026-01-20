@@ -1,42 +1,72 @@
-/**
- * WordPress dependencies
- */
-import { store, getContext } from "@wordpress/interactivity";
-import { checkViewIsReady } from "@yay-bulk-order/view";
+import { getContext, getElement, store } from '@wordpress/interactivity';
+
+import { checkViewIsReady } from '@yay-bulk-order/view';
 
 type ServerState = {
   state: {
-    isDark: boolean;
-    darkText: string;
-    lightText: string;
+    isBlockTheme: boolean;
+    pageSize: number;
   };
 };
 
 type Context = {
-  isOpen: boolean;
+  config: {
+    queryId: number;
+    forcePageReload: boolean;
+  };
+  queryContext: {
+    page: number;
+    filter: 'all' | 'in-stock' | 'on-sale';
+  };
+  queryResult: {
+    totalLength: number;
+  };
 };
 
 const storeDef = {
   state: {
-    get themeText(): string {
-      return state.isDark ? state.darkText : state.lightText;
+    get currentPage(): number {
+      const context = getContext<Context>();
+      return context.queryContext.page;
     },
   },
   actions: {
-    toggleOpen() {
-      console.log("toggleOpen");
-      const context = getContext<Context>();
-      context.isOpen = !context.isOpen;
+    *navigate(event: MouseEvent) {
+      const { ref } = getElement();
+
+      if (isValidLink(ref) && isValidEvent(event)) {
+        event.preventDefault();
+
+        const { actions } = yield import('@wordpress/interactivity-router');
+
+        yield actions.navigate(ref.href);
+      }
     },
-    toggleTheme() {
-      state.isDark = !state.isDark;
+    *prefetchOnHover() {
+      const { ref } = getElement();
+
+      if (isValidLink(ref)) {
+        const { actions } = yield import('@wordpress/interactivity-router');
+
+        yield actions.prefetch(ref.href);
+      }
     },
   },
   callbacks: {
-    logIsOpen: () => {
-      const { isOpen } = getContext<Context>();
-      // Log the value of `isOpen` each time it changes.
-      console.log(`Is open: ${isOpen}`);
+    *prefetch() {
+      const { ref } = getElement();
+      if (isValidLink(ref)) {
+        const { actions } = yield import('@wordpress/interactivity-router');
+
+        yield actions.prefetch(ref.href);
+      }
+    },
+    onRender() {
+      const context = getContext<Context>();
+      console.log('onRender', {
+        isBlockTheme: state.isBlockTheme,
+        queryId: context.config.queryId,
+      });
       checkViewIsReady();
     },
   },
@@ -44,4 +74,25 @@ const storeDef = {
 
 type Store = ServerState & typeof storeDef;
 
-const { state } = store<Store>("bulk-order-form", storeDef);
+const { state } = store<Store>('yay-bulk-order/bulk-order-form', storeDef, { lock: true });
+
+function isValidLink(ref: HTMLElement | null): ref is HTMLAnchorElement {
+  return (
+    ref !== null &&
+    ref instanceof window.HTMLAnchorElement &&
+    !!ref.href &&
+    (!ref.target || ref.target === '_self') &&
+    ref.origin === window.location.origin
+  );
+}
+
+function isValidEvent(event: MouseEvent): boolean {
+  return (
+    event.button === 0 && // Left clicks only.
+    !event.metaKey && // Open in new tab (Mac).
+    !event.ctrlKey && // Open in new tab (Windows).
+    !event.altKey && // Download.
+    !event.shiftKey &&
+    !event.defaultPrevented
+  );
+}

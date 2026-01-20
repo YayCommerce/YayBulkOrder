@@ -5,11 +5,12 @@
   "version": "0.1.0",
   "title": "Column Product Price",
   "category": "woocommerce",
-  "icon": "cart",
   "description": "A block to show WooCommerce Products as Table optimized for bulk ordering.",
+  "textdomain": "yay-bulk-order",
+  "usesContext": [ "productId" ],
   "parent": [
     "yay-bulk-order/table-template"
   ],
-  "textdomain": "yay-bulk-order",
-  "editorScript": "file:./editor.js"
+  "editorScript": "file:./editor.js",
+  "render": "file:./render.php"
 }
