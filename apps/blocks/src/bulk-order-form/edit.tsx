@@ -28,14 +28,7 @@ export default function Edit(props: BlockEditProps<BulkOrderFormAttributes>) {
 
   return (
     <div {...blockProps}>
-      <pre>
-        Debug:{' '}
-        {JSON.stringify(
-          { hasInnerBlocks, attributes, queryId, innerBlocks: typeof innerBlocks, clientId },
-          null,
-          2,
-        )}
-      </pre>
+      <pre>Debug: {JSON.stringify({ attributes }, null, 2)}</pre>
       <InnerBlocks template={DEFAULT_TEMPLATE} />
     </div>
   );
