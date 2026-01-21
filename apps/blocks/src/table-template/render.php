@@ -6,7 +6,7 @@
  */
 
 $context = $block->context;
-$queryId = $context['queryId'] ?? 0;
+$queryId = $context['yay-bulk-order/queryId'] ?? 0;
 $page_param = get_query_var( 'query' . $queryId . 'page' );
 $filter_param = get_query_var( 'query' . $queryId . 'filter' );
 $page = $page_param ? intval( $page_param ) : 1;
@@ -30,10 +30,12 @@ $query = new WP_Query( [
         <tr>
             <th colSpan="999">Todo Table Head</th>
         </tr>
+        <tr>
+            <th colSpan="999"> <?php echo "Debug: " . json_encode( $context ); ?> </th>
+        </tr>
     </thead>
 
     <tbody>
-
     <?php
 
     if ( ! $query->have_posts() ) {
@@ -41,20 +43,23 @@ $query = new WP_Query( [
     }
 
     if ( $query->have_posts() ) {
-        $rows_content = '';
+        $table_body_content = '';
+
         while ( $query->have_posts() ) {
             $query->the_post();
             $block_instance = $block->parsed_block;
             $product_id     = get_the_ID();
+            /** Disable all block features of the row placeholder */
+            $block_instance['blockName'] = 'core/null';
 
             $available_context = array_merge(
                 (array) $block->context,
                 array(
-                    'productId'   => $product_id,
+                    'yay-bulk-order/productId'   => $product_id,
                 )
             );
 
-            $block_content = (
+            $single_row_content = (
                 new WP_Block(
                     $block_instance,
                     $available_context
@@ -62,22 +67,22 @@ $query = new WP_Query( [
             )->render( array( 'dynamic' => false ) );
 
             $row_classes = 'yay-bulk-order-table-template-row';
-            $rows_content     .= strtr(
+            $table_body_content     .= strtr(
                 '<tr class="{classes}">
                     {content}
                 </tr>',
                 array(
                     '{classes}'       => esc_attr( $row_classes ),
-                    '{content}'       => $block_content,
+                    '{content}'       => $single_row_content,
                 )
             );
         }
 
         // end row loop
         wp_reset_postdata();
-        echo $rows_content;
+        echo $table_body_content;
     }
-    ?>
 
+    ?>
     </tbody>
 </table>

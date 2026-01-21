@@ -10,5 +10,5 @@ import './style.scss';
 registerBlockType(metadata as unknown as BlockConfiguration, {
   icon: columns,
   edit: Edit,
-  // save: Save,
+  save: Save,
 });

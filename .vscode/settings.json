@@ -12,6 +12,9 @@
   },
 
   "intelephense.diagnostics.undefinedFunctions": false,
+  "intelephense.environment.includePaths": [
+    "../../.."
+],
   "intelephense.stubs": [
     "wordpress",
     "apache",

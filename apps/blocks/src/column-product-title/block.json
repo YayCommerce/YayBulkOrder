@@ -5,9 +5,9 @@
   "version": "0.1.0",
   "title": "Column Product Title",
   "category": "woocommerce",
-  "description": "A block to show WooCommerce Products as Table optimized for bulk ordering.",
+  "description": "Bulk Order Form Column to show Product Title",
   "textdomain": "yay-bulk-order",
-  "usesContext": [ "productId" ],
+  "usesContext": [ "yay-bulk-order/productId" ],
   "parent": [
     "yay-bulk-order/table-template"
   ],
