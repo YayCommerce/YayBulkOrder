@@ -7,7 +7,7 @@
   "category": "woocommerce",
   "description": "A block to show WooCommerce Products as Table optimized for bulk ordering.",
   "textdomain": "yay-bulk-order",
-  "usesContext": [ "queryId" ],
+  "usesContext": [ "yay-bulk-order/queryId" ],
   "supports": {
     "interactivity": true,
     "inserter": false,

@@ -65,7 +65,10 @@ const storeDef = {
       const context = getContext<Context>();
       console.log('onRender', {
         isBlockTheme: state.isBlockTheme,
-        queryId: context.config.queryId,
+        config: context.config.queryId,
+        page: context.queryContext.page,
+        filter: context.queryContext.filter,
+        totalLength: context.queryResult.totalLength,
       });
       checkViewIsReady();
     },

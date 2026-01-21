@@ -1,6 +1,5 @@
 import { InnerBlocks, useBlockProps } from '@wordpress/block-editor';
 import { BlockEditProps } from '@wordpress/blocks';
-import { __ } from '@wordpress/i18n';
 
 export default function Edit(props: BlockEditProps<unknown>) {
   const { clientId, attributes, context } = props;

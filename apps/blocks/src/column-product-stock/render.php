@@ -6,18 +6,20 @@
  */
 
 $context = $block->context;
-$product_id = $context['productId'] ?? 0;
+$product_id = $context['yay-bulk-order/productId'];
 
-$product = wc_get_product( $product_id );
+if ( !! $product_id ) {
+    $product = wc_get_product( $product_id );
+} else {
+    $product = null;
+}
 ?>
-
-
 
 <td
     <?php echo get_block_wrapper_attributes(); ?>
 >
     <?php
-    if ( $product ) {
+    if ( null !== $product && false !== $product ) {
         echo esc_html( $product->get_stock_quantity() > 0 ? 'In Stock' : 'Out of Stock' );
     } else {
         echo esc_html__( '...', 'yay-bulk-order' );
