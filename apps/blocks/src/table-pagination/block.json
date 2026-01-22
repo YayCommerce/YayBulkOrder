@@ -9,7 +9,8 @@
   "textdomain": "yay-bulk-order",
   "usesContext": [ "yay-bulk-order/queryId" ],
   "supports": {
-    "interactivity": true
+    "interactivity": true,
+    "html": false
   },
   "ancestor": [
     "yay-bulk-order/bulk-order-form"
