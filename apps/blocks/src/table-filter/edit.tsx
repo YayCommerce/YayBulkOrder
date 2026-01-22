@@ -1,16 +1,15 @@
-import { __ } from "@wordpress/i18n";
-
-import { useBlockProps } from "@wordpress/block-editor";
-import { BlockEditProps } from "@wordpress/blocks";
+import { useBlockProps } from '@wordpress/block-editor';
+import { BlockEditProps } from '@wordpress/blocks';
+import { __ } from '@wordpress/i18n';
 
 export default function Edit(props: BlockEditProps<unknown>) {
   const blockProps = useBlockProps();
 
   return (
     <nav {...blockProps}>
-      <button>{__("All", "yay-bulk-order")}</button>
-      <button>{__("In Stock", "yay-bulk-order")}</button>
-      <button>{__("Out of Stock", "yay-bulk-order")}</button>
+      <a href="#">{__('All', 'yay-bulk-order')}</a>
+      <a href="#">{__('In Stock', 'yay-bulk-order')}</a>
+      <a href="#">{__('On Sale', 'yay-bulk-order')}</a>
     </nav>
   );
 }
