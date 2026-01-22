@@ -28,6 +28,9 @@ class Initialize {
         
         // Register Block Patterns
         \YayBulkOrder\Engines\Blocks\Patterns\PatternRegistry::get_instance();
+
+        // Register Shortcodes
+        \YayBulkOrder\Engines\Shortcodes\PatternShortcode::get_instance();
     }
 
     public function required_woocommerce_notice() {
