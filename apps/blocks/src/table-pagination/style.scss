@@ -4,22 +4,28 @@
  *
  * Replace them with your own styles or remove the file completely.
  */
-ul.wp-block-yay-bulk-order-table-pagination {
+nav.wp-block-yay-bulk-order-table-pagination {
   display: flex;
   gap: 10px;
   flex-direction: row;
   list-style: none;
   padding: 0px;
 
-  > li > button {
+  > a {
+    text-decoration: none;
     padding: 10px;
     border: 1px solid #fff;
     background: #aaa;
     color: #fff;
     cursor: pointer;
     transition: all 0.3s ease-in-out;
-    &:hover {
+    &:hover:not(.is-disabled) {
       background: #999;
+      text-decoration: underline;
+    }
+    &.is-disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
     }
   }
 }

@@ -41,6 +41,7 @@ $data_context = [
 <div
     <?php echo get_block_wrapper_attributes(); ?>
     data-wp-interactive="yay-bulk-order/bulk-order-form"
+    data-wp-router-region="yay-bulk-order/bulk-order-form"
     <?php echo wp_interactivity_data_wp_context( $data_context ); ?>
     data-wp-init="callbacks.onRender"
 >

@@ -39,10 +39,12 @@ const storeDef = {
 
         const { actions } = yield import('@wordpress/interactivity-router');
 
+        console.log('navigate', ref.href);
         yield actions.navigate(ref.href);
       }
     },
     *prefetchOnHover() {
+      console.log('prefetchOnHover');
       const { ref } = getElement();
 
       if (isValidLink(ref)) {
@@ -54,6 +56,7 @@ const storeDef = {
   },
   callbacks: {
     *prefetch() {
+      console.log('prefetch');
       const { ref } = getElement();
       if (isValidLink(ref)) {
         const { actions } = yield import('@wordpress/interactivity-router');

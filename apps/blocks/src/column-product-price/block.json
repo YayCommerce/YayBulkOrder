@@ -8,6 +8,11 @@
   "description": "A block to show WooCommerce Products as Table optimized for bulk ordering.",
   "textdomain": "yay-bulk-order",
   "usesContext": [ "yay-bulk-order/productId" ],
+  "supports": {
+    "inserter": false,
+    "multiple": false,
+    "html": false
+  },
   "parent": [
     "yay-bulk-order/table-template"
   ],
