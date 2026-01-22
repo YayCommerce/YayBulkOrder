@@ -24,6 +24,9 @@ class Initialize {
         \YayBulkOrder\Engines\Register\RegisterFacade::get_instance();
         \YayBulkOrder\Engines\Admin\AdminPage::get_instance();
         \YayBulkOrder\Engines\RestAPI::get_instance();
+
+        // Register Shortcodes
+        \YayBulkOrder\Engines\Shortcodes\PatternShortcode::get_instance();
     }
 
     public function required_woocommerce_notice() {
