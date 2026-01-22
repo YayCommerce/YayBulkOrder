@@ -20,7 +20,7 @@ if ( !! $product_id ) {
 >
     <?php
     if ( null !== $product && false !== $product ) {
-        echo esc_html( $product->get_price() );
+        echo wc_price( $product->get_price() ) ;
     } else {
         echo esc_html__( '...', 'yay-bulk-order' );
     }

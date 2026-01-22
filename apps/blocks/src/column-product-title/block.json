@@ -8,6 +8,11 @@
   "description": "Bulk Order Form Column to show Product Title",
   "textdomain": "yay-bulk-order",
   "usesContext": [ "yay-bulk-order/productId" ],
+  "supports": {
+    "inserter": false,
+    "multiple": false,
+    "html": false
+  },
   "parent": [
     "yay-bulk-order/table-template"
   ],

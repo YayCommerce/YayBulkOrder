@@ -13,17 +13,29 @@
 			"type": "number",
       "default": 0
 		},
+    "query": {
+      "type": "object",
+      "default": {
+        "perPage": 5,
+				"offset": 0,
+				"postType": "product",
+				"order": "desc",
+				"orderBy": "date"
+      }
+    },
 		"forcePageReload": {
 			"type": "boolean",
 			"default": false
 		}
 	},
   "providesContext": {
-		"yay-bulk-order/queryId": "queryId"
+		"yay-bulk-order/queryId": "queryId",
+		"yay-bulk-order/query": "query"
 	},
   "supports": {
     "interactivity": true,
     "multiple": false,
+    "html": false,
     "align": [ "wide", "full" ],
     "anchor": true
   },

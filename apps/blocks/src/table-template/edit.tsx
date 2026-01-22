@@ -2,7 +2,7 @@ import { InnerBlocks, useBlockProps } from '@wordpress/block-editor';
 import { BlockEditProps } from '@wordpress/blocks';
 
 export default function Edit(props: BlockEditProps<unknown>) {
-  const { clientId, attributes, context } = props;
+  const { attributes, context } = props;
   const blockProps = useBlockProps();
 
   return (
@@ -15,7 +15,7 @@ export default function Edit(props: BlockEditProps<unknown>) {
       <tbody>
         <tr>
           <td colSpan={999}>
-            <pre>Debug: {JSON.stringify({ attributes, context, clientId }, null, 2)}</pre>
+            <pre>Debug: {JSON.stringify({ attributes, context }, null, 2)}</pre>
           </td>
         </tr>
         <tr>
