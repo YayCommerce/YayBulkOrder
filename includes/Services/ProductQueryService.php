@@ -76,7 +76,7 @@ class ProductQueryService {
      * @return int The page param.
      */
     public function get_page_param( $block ) {
-        $query_id = $block->context['yay-bulk-order/queryId'] ?? 0;
+        $query_id = $block->context['queryId'] ?? 0;
         $page_key = 'query-' . $query_id . '-page';
         /* phpcs:disable WordPress.Security.NonceVerification.Recommended */
         $page_param = empty( $_GET[ $page_key ] ) ? 1 : (int) $_GET[ $page_key ];
@@ -90,7 +90,7 @@ class ProductQueryService {
      * @return 'all' | 'in-stock' | 'on-sale' The filter param.
      */
     public function get_filter_param( $block ) {
-        $query_id   = $block->context['yay-bulk-order/queryId'] ?? 0;
+        $query_id   = $block->context['queryId'] ?? 0;
         $filter_key = 'query-' . $query_id . '-filter';
         /* phpcs:disable WordPress.Security.NonceVerification.Recommended */
         $filter_param = empty( $_GET[ $filter_key ] ) ? 'all' : sanitize_text_field( wp_unslash( $_GET[ $filter_key ] ) );

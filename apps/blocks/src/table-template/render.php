@@ -5,33 +5,28 @@
  * @var WP_Block $block The block instance.
  */
 
-$context = $block->context;
-$queryId = $context['yay-bulk-order/queryId'] ?? 0;
-$page_param = get_query_var( 'query' . $queryId . 'page' );
-$filter_param = get_query_var( 'query' . $queryId . 'filter' );
-$page = $page_param ? intval( $page_param ) : 1;
-$filter = $filter_param ? $filter_param : 'all';
+$product_query_service = \YayBulkOrder\Services\ProductQueryService::get_instance();
 
-$state = wp_interactivity_state('yay-bulk-order/bulk-order-form');
-$page_size = $state['pageSize'] ?? 5;
+$query_vars = $product_query_service->build_query_vars_from_query_block( $block );
+$page_param = $product_query_service->get_page_param( $block );
+$filter_param = $product_query_service->get_filter_param( $block );
+$query = new WP_Query( $query_vars );
 
-$query = new WP_Query( [
-    'post_type' => 'product',
-    'posts_per_page' => $page_size,
-] );
+$debug_context = [
+    'context' => $block->context,
+];
+
 ?>
-
-
 
 <table
     <?php echo get_block_wrapper_attributes(); ?>
 >
     <thead>
         <tr>
-            <th colSpan="999">Todo Table Head</th>
-        </tr>
-        <tr>
-            <th colSpan="999"> <?php echo "Debug: " . json_encode( $context ); ?> </th>
+            <th colSpan="999">
+                Todo Table Head
+                <!-- <pre> <?php echo "Debug: " . json_encode( $debug_context, JSON_PRETTY_PRINT ); ?> </pre> -->
+            </th>
         </tr>
     </thead>
 
@@ -47,9 +42,9 @@ $query = new WP_Query( [
 
         while ( $query->have_posts() ) {
             $query->the_post();
-            $block_instance = $block->parsed_block;
             $product_id     = get_the_ID();
             /** Disable all block features of the row placeholder */
+            $block_instance = $block->parsed_block;
             $block_instance['blockName'] = 'core/null';
 
             $available_context = array_merge(

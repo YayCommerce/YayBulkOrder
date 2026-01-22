@@ -13,8 +13,11 @@ table.wp-block-yay-bulk-order-table-template {
     background: #aaa;
     th {
       padding: 10px;
-      text-align: center;
+      text-align: left;
       border: 1px solid #fff;
+      * {
+        margin: 0;
+      }
     }
   }
 

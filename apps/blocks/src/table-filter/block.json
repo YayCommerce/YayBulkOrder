@@ -6,6 +6,8 @@
   "title": "Bulk Order Table Filter",
   "category": "woocommerce",
   "description": "A block to show WooCommerce Products as Table optimized for bulk ordering.",
+  "textdomain": "yay-bulk-order",
+  "usesContext": [ "queryId", "query" ],
   "supports": {
     "interactivity": true,
     "html": false
@@ -13,7 +15,7 @@
   "ancestor": [
     "yay-bulk-order/bulk-order-form"
   ],
-  "textdomain": "yay-bulk-order",
   "editorScript": "file:./editor.js",
-  "style": "file:./style-editor.css"
+  "style": "file:./style-editor.css",
+  "render": "file:./render.php"
 }
