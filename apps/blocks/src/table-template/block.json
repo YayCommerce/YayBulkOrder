@@ -42,9 +42,10 @@
     "yay-bulk-order/bulk-order-form"
   ],
   "allowedBlocks": [
-    "yay-bulk-order/product-title-column",
-    "yay-bulk-order/product-price-column",
-    "yay-bulk-order/product-stock-column"
+    "yay-bulk-order/column-product-title",
+    "yay-bulk-order/column-product-price",
+    "yay-bulk-order/column-product-stock",
+    "yay-bulk-order/column-add-to-cart"
   ],
   "editorScript": "file:./editor.js",
   "style": "file:./style-editor.css",

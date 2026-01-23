@@ -30,4 +30,5 @@ const DEFAULT_TEMPLATE: InnerBlocks.Props['template'] = [
   ['yay-bulk-order/column-product-title', {}],
   ['yay-bulk-order/column-product-price', {}],
   ['yay-bulk-order/column-product-stock', {}],
+  ['yay-bulk-order/column-add-to-cart', {}],
 ];
