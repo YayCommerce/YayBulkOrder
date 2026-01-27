@@ -5,6 +5,10 @@
  * @var WP_Block $block The block instance.
  */
 
+wp_interactivity_config('yay-bulk-order/bulk-order-form', [
+    'isBlockTheme' => wp_is_block_theme(),
+    
+]);
 
 wp_interactivity_state(
     'yay-bulk-order/bulk-order-form',
