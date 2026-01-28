@@ -1,4 +1,4 @@
-import { getContext, store } from '@wordpress/interactivity';
+import { getConfig, getContext, store } from '@wordpress/interactivity';
 
 declare global {
   interface Window {
@@ -37,6 +37,16 @@ const storeDef = {
     get subtotal() {
       const context = getContext<Context>();
       return context.subtotal ?? '';
+    },
+    get buttonStyles() {
+      const config = getConfig('yay-bulk-order/cart-summary');
+      const styles = config?.settings?.styles ?? null;
+
+      return `
+        background-color: ${styles?.colors?.backgroundNormal ?? '#0073aa'};
+        color: ${styles?.colors?.textNormal ?? '#ffffff'};
+        border-radius: ${styles?.borderRadius === 'small' ? '4px' : styles?.borderRadius === 'large' ? '20px' : '8px'};
+      `;
     },
   },
   actions: {

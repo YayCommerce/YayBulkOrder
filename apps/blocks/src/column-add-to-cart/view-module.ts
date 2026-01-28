@@ -1,4 +1,4 @@
-import { getContext, getElement, store } from '@wordpress/interactivity';
+import { getConfig, getContext, getElement, store } from '@wordpress/interactivity';
 
 type Context = {
   productId: number;
@@ -18,6 +18,24 @@ const storeDef = {
     get buttonText(): string {
       const context = getContext<Context>();
       return context.isLoading ? 'Adding...' : 'Add to Cart';
+    },
+    get buttonStyles() {
+      const config = getConfig('yay-bulk-order/bulk-order-form');
+      const styles = config?.settings?.styles ?? null;
+      return `
+        background-color: ${styles?.colors?.backgroundNormal ?? '#0073aa'};
+        color: ${styles?.colors?.textNormal ?? '#ffffff'};
+        border-radius: ${styles?.borderRadius === 'small' ? '4px' : styles?.borderRadius === 'large' ? '20px' : '8px'};
+      `;
+    },
+  },
+  callbacks: {
+    initQuantity() {
+      const context = getContext<Context>();
+      if (!context.quantity || context.quantity < 1) {
+        const config = getConfig('yay-bulk-order/bulk-order-form');
+        context.quantity = config?.settings?.defaultCartQuantity ?? 1;
+      }
     },
   },
   actions: {

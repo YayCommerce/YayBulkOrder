@@ -2,6 +2,21 @@
 if ( ! function_exists( 'WC' ) ) {
 	return;
 }
+use YayBulkOrder\Services\SettingsService;
+
+$settings = SettingsService::get_instance()->get_settings();
+
+wp_interactivity_config(
+  'yay-bulk-order/cart-summary',
+  [
+    'settings' => [
+      'styles' => [
+        'colors'       => $settings['styles']['colors'],
+        'borderRadius' => $settings['styles']['borderRadius'],
+      ],
+    ],
+  ]
+);
 ?>
 
 <!-- Hidden Woo Mini Cart (mount React + store) -->
@@ -21,6 +36,7 @@ if ( ! function_exists( 'WC' ) ) {
 		data-wp-on--click="actions.openMiniCart"
 		data-wp-bind--aria-label="state.buttonText"
 		data-wp-bind--title="state.buttonText"
+		data-wp-bind--style="state.buttonStyles"
 	>
 		<span class="yay-cart-trigger__icon">
 			<?php echo esc_html__( 'Your Cart', 'yay-bulk-order' ); ?>

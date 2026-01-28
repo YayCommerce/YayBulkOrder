@@ -4,10 +4,18 @@
  * @var string $content The block default content.
  * @var WP_Block $block The block instance.
  */
+use YayBulkOrder\Services\SettingsService;
+$settings_service = SettingsService::get_instance();
+$settings = $settings_service->get_settings();
 
 wp_interactivity_config('yay-bulk-order/bulk-order-form', [
-    'isBlockTheme' => wp_is_block_theme(),
-    
+    'settings'     => [
+        'defaultCartQuantity' => (int) $settings['general']['defaultCartQuantity'],
+        'styles'              => [
+            'colors'       => $settings['styles']['colors'],
+            'borderRadius' => $settings['styles']['borderRadius'],
+        ],
+    ],
 ]);
 
 wp_interactivity_state(

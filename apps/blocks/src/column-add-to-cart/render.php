@@ -26,7 +26,12 @@ $is_supported_product = $product && in_array( $product_type, [ 'simple' ], true 
     data-product-type="<?php echo esc_attr( $product_type ); ?>"
     <?php echo get_block_wrapper_attributes(); ?>
     data-wp-interactive="yay-bulk-order/add-to-cart"
-    data-wp-context='{"productId": <?php echo esc_attr( $product_id ?? 0 ); ?>, "quantity": <?php echo esc_attr( $min_quantity ); ?>, "isLoading": false}'
+    data-wp-init="callbacks.initQuantity"
+    data-wp-context='{
+        "productId": <?php echo esc_attr( $product_id ?? 0 ); ?>,
+        "quantity": null,
+        "isLoading": false
+    }'
 >
     <?php if ( null !== $product && false !== $product ) : ?>
         <?php if ( $is_purchasable && $is_in_stock ) : ?>
@@ -44,6 +49,7 @@ $is_supported_product = $product && in_array( $product_type, [ 'simple' ], true 
                     <button 
                         data-wp-on--click="actions.addToCart"
                         data-wp-bind--disabled="context.isLoading"
+                        data-wp-bind--style="state.buttonStyles"
                         style="padding: 6px 12px;"
                         aria-label="<?php echo esc_attr__( 'Add to cart', 'yay-bulk-order' ); ?>"
                     >
