@@ -1,14 +1,15 @@
 import { useEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { __ } from '@wordpress/i18n';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
+import { __ } from '@wordpress/i18n';
 
 import { useShortcodeQuery, useUpdateShortcodeMutation } from '@/lib/queries/shortcodes.queries';
 import { ShortcodeFormValues, shortcodeSchema } from '@/lib/schemas/shortcodes.schema';
 import { Button } from '@/components/ui/button';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import {
   Sheet,
   SheetClose,
@@ -18,6 +19,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet';
+import { ColumnOrder } from './ColumnOrder';
 
 export default function ShortcodeEdit({ editId }: { editId: number }) {
   const navigate = useNavigate();
@@ -84,6 +86,50 @@ export default function ShortcodeEdit({ editId }: { editId: number }) {
                     </FormItem>
                   )}
                 />
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <FormField
+                  control={form.control}
+                  name="pattern"
+                  render={({ field }) => (
+                    <FormItem className="w-full gap-2.5">
+                      <FormLabel className="text-foreground-400 text-xs font-medium">
+                        {__('Pattern', 'yay-bulk-order')}
+                      </FormLabel>
+                      <FormControl>
+                        <RadioGroup
+                          value={field.value}
+                          onValueChange={field.onChange}
+                          className="flex flex-col gap-3"
+                        >
+                          <div className="flex items-center gap-2">
+                            <RadioGroupItem value="simple" id="pattern-simple-edit" />
+                            <label
+                              htmlFor="pattern-simple-edit"
+                              className="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                            >
+                              {__('Simple', 'yay-bulk-order')}
+                            </label>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <RadioGroupItem value="filterable" id="pattern-filterable-edit" />
+                            <label
+                              htmlFor="pattern-filterable-edit"
+                              className="text-sm leading-none font-medium peer-disabled:opacity-70"
+                            >
+                              {__('Filterable', 'yay-bulk-order')}
+                            </label>
+                          </div>
+                        </RadioGroup>
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <ColumnOrder />
               </div>
             </div>
             <SheetFooter>

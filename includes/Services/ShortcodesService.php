@@ -16,7 +16,6 @@ class ShortcodesService {
     public const SHORTCODE_PER_PAGE = 10;
     public const SHORTCODE_POST_TYPE = 'ybo-form-shortcode';
 
-
     public function get_paginated_shortcode( $keyword, $page, $per_page ) {
         $args = [
             'post_type'              => self::SHORTCODE_POST_TYPE,
@@ -56,11 +55,34 @@ class ShortcodesService {
         ];
         return $response;
     }
+
+    private function get_default_columns() {
+        return [
+            'yay-bulk-order/column-product-title',
+            'yay-bulk-order/column-product-price',
+            'yay-bulk-order/column-product-stock',
+            'yay-bulk-order/column-add-to-cart',
+        ];
+    }
    
     private function clean_shortcode_data( $data ) {
+        $pattern = get_post_meta( $data->ID, '_ybo_pattern', true );
+        $columns = get_post_meta( $data->ID, '_ybo_column_order', true );
+        
+        // Default values
+        if ( empty( $pattern ) ) {
+            $pattern = 'simple';
+        }
+        
+        if ( empty( $columns ) || ! is_array( $columns ) ) {
+            $columns = self::get_default_columns();
+        }
+        
         return [
-            'id'    => $data->ID,
-            'title' => $data->post_title,
+            'id'          => $data->ID,
+            'title'       => $data->post_title,
+            'pattern'     => $pattern,
+            'columns'     => $columns,
         ];
     }
     
@@ -75,6 +97,16 @@ class ShortcodesService {
             throw new \Exception( $post_id->get_error_message() );
         }
 
+        // Save pattern
+        $pattern = isset( $params['pattern'] ) ? sanitize_text_field( $params['pattern'] ) : 'simple';
+        update_post_meta( $post_id, '_ybo_pattern', $pattern );
+
+        // Save column order
+        $columns = isset( $params['columns'] ) && is_array( $params['columns'] ) 
+            ? array_map( 'sanitize_text_field', $params['columns'] )
+            : self::get_default_columns();
+        update_post_meta( $post_id, '_ybo_column_order', $columns );
+
         return $post_id;
     }
 
@@ -86,13 +118,13 @@ class ShortcodesService {
         return self::clean_shortcode_data( $post );
     }
 
-    public function update_shortcode( $id, $title ) {
+    public function update_shortcode( $id, $params ) {
         $post = get_post( $id );
         if ( ! $post ) {
             throw new \Exception( __( 'Shortcode not found!', 'yay-bulk-order' ) );
         }
 
-        $post->post_title = $title;
+        $post->post_title = $params['title'];
 
         $post_id = wp_update_post( $post );
 
@@ -100,7 +132,19 @@ class ShortcodesService {
             throw new \Exception( $post_id->get_error_message() );
         }
 
-        return self::clean_shortcode_data( $post );
+        // Update pattern
+        if ( isset( $params['pattern'] ) ) {
+            $pattern = sanitize_text_field( $params['pattern'] );
+            update_post_meta( $post_id, '_ybo_pattern', $pattern );
+        }
+
+        // Update column order
+        if ( isset( $params['columns'] ) && is_array( $params['columns'] ) ) {
+            $columns = array_map( 'sanitize_text_field', $params['columns'] );
+            update_post_meta( $post_id, '_ybo_column_order', $columns );
+        }
+
+        return self::clean_shortcode_data( get_post( $post_id ) );
     }
 
     public function delete_shortcode( $id ) {
