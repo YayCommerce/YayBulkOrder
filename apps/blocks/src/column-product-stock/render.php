@@ -20,7 +20,7 @@ if ( !! $product_id ) {
 >
     <?php
     if ( null !== $product && false !== $product ) {
-        echo esc_html( $product->get_stock_quantity() > 0 ? 'In Stock' : 'Out of Stock' );
+        echo $product->is_in_stock() ? esc_html__( 'In Stock', 'yay-bulk-order' ) : esc_html__( 'Out of Stock', 'yay-bulk-order' );
     } else {
         echo esc_html__( '...', 'yay-bulk-order' );
     }

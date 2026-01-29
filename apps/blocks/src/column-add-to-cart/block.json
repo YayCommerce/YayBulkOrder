@@ -1,0 +1,25 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "yay-bulk-order/column-add-to-cart",
+  "version": "0.1.0",
+  "title": "Column Add to Cart",
+  "category": "woocommerce",
+  "description": "Bulk Order Form Column to add products to cart",
+  "textdomain": "yay-bulk-order",
+  "usesContext": [
+    "yay-bulk-order/productId"
+  ],
+  "supports": {
+    "inserter": false,
+    "multiple": false,
+    "html": false,
+    "interactivity": true
+  },
+  "parent": [
+    "yay-bulk-order/table-template"
+  ],
+  "editorScript": "file:./editor.js",
+  "render": "file:./render.php",
+  "viewScriptModule": "file:./view-module.js"
+}

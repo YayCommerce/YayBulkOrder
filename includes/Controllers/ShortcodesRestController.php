@@ -145,14 +145,15 @@ class ShortcodesRestController extends BaseRestController {
      * @return WP_REST_Response The response object.
      */
     public function update_shortcode( WP_REST_Request $request ): WP_REST_Response {
-       
         if(!$request->has_param('title') || !$request->has_param('id')) {
             return $this->error( __( 'Title and ID are required', 'yay-bulk-order' ), 400 );
         }
+        
         $id = $request->get_param('id');
-        $title = $request->get_param('title');
+        $params = $this->get_json_params( $request );
+        
         try {
-            $response = $this->shortcodes_service->update_shortcode( $id, $title );
+            $response = $this->shortcodes_service->update_shortcode( $id, $params );
             return $this->success( $response, __( 'Shortcode updated!', 'yay-bulk-order' ), 200 );
         } catch ( \Exception $e ) {
             return $this->error( $e->getMessage(), 400 );

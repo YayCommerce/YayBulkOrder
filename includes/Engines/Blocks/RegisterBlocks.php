@@ -11,6 +11,7 @@ class RegisterBlocks {
 
     protected function __construct() {
         add_action( 'init', [ $this, 'register_blocks' ] );
+        add_action( 'enqueue_block_assets',[ $this, 'enqueue_block_assets' ]);
     }
 
     public function register_blocks() {
@@ -28,6 +29,12 @@ class RegisterBlocks {
         $manifest_data = require $blocks_path . '/blocks-manifest.php';
         foreach ( array_keys( $manifest_data ) as $block_type ) {
             register_block_type( $blocks_path . "/{$block_type}" );
+        }
+    }
+
+    public function enqueue_block_assets() {
+        if ( ! is_admin() ) {
+            wp_enqueue_script( 'wc-blocks-data-store' );
         }
     }
 }
