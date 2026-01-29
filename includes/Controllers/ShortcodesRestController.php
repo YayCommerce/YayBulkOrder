@@ -38,7 +38,7 @@ class ShortcodesRestController extends BaseRestController {
                 ],
             ]
         );
-        
+
         register_rest_route(
             $this->namespace,
             '/shortcodes/bulk-delete',
@@ -72,7 +72,6 @@ class ShortcodesRestController extends BaseRestController {
                 ],
             ]
         );
-
     }
 
     /**
@@ -95,16 +94,16 @@ class ShortcodesRestController extends BaseRestController {
      * @return WP_REST_Response The response object.
      */
     public function get_shortcodes( WP_REST_Request $request ): WP_REST_Response {
-        
+
         $page     = max( 1, (int) ( $request->get_param( 'page' ) ?? 1 ) );
         $per_page = (int) ( $request->get_param( 'per_page' ) ?? ShortcodesService::SHORTCODE_PER_PAGE );
         $keyword  = $request->get_param( 'keyword' );
-        
+
         $response = $this->shortcodes_service->get_paginated_shortcode( $keyword, $page, $per_page );
 
         return $this->success( $response, __( 'Shortcodes fetched!', 'yay-bulk-order' ) );
     }
-    
+
     /**
      * Save the shortcode.
      *
@@ -120,7 +119,13 @@ class ShortcodesRestController extends BaseRestController {
 
         try {
             $post_id = $this->shortcodes_service->create_shortcode( $params );
-            return $this->success( [ ...$params, 'id' => $post_id ], __( 'Shortcode saved!', 'yay-bulk-order' ) );
+            return $this->success(
+                [
+                    ...$params,
+                    'id' => $post_id,
+                ],
+                __( 'Shortcode saved!', 'yay-bulk-order' )
+            );
         } catch ( \Exception $e ) {
             return $this->error( $e->getMessage(), 400 );
         }
@@ -133,7 +138,7 @@ class ShortcodesRestController extends BaseRestController {
      * @return WP_REST_Response The response object.
      */
     public function get_shortcode( WP_REST_Request $request ): WP_REST_Response {
-        $id = $request['id'];
+        $id       = $request['id'];
         $response = $this->shortcodes_service->get_shortcode( $id );
         return $this->success( $response, __( 'Shortcode fetched!', 'yay-bulk-order' ), 200 );
     }
@@ -145,13 +150,13 @@ class ShortcodesRestController extends BaseRestController {
      * @return WP_REST_Response The response object.
      */
     public function update_shortcode( WP_REST_Request $request ): WP_REST_Response {
-        if(!$request->has_param('title') || !$request->has_param('id')) {
+        if ( ! $request->has_param( 'title' ) || ! $request->has_param( 'id' ) ) {
             return $this->error( __( 'Title and ID are required', 'yay-bulk-order' ), 400 );
         }
-        
-        $id = $request->get_param('id');
+
+        $id     = $request->get_param( 'id' );
         $params = $this->get_json_params( $request );
-        
+
         try {
             $response = $this->shortcodes_service->update_shortcode( $id, $params );
             return $this->success( $response, __( 'Shortcode updated!', 'yay-bulk-order' ), 200 );
@@ -167,7 +172,7 @@ class ShortcodesRestController extends BaseRestController {
      * @return WP_REST_Response The response object.
      */
     public function delete_shortcode( WP_REST_Request $request ): WP_REST_Response {
-        $id = $request->get_param('id');
+        $id     = $request->get_param( 'id' );
         $result = $this->shortcodes_service->delete_shortcode( $id );
         if ( ! $result ) {
             return $this->error( __( 'Failed to delete shortcode!', 'yay-bulk-order' ) );
@@ -181,7 +186,6 @@ class ShortcodesRestController extends BaseRestController {
      * @param WP_REST_Request $request The request object.
      * @return WP_REST_Response The response object.
      */
-
     public function bulk_delete_shortcodes( WP_REST_Request $request ): WP_REST_Response {
         $params  = $this->get_json_params( $request );
         $ids     = $params['ids'] ?? [];

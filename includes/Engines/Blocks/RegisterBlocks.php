@@ -11,7 +11,7 @@ class RegisterBlocks {
 
     protected function __construct() {
         add_action( 'init', [ $this, 'register_blocks' ] );
-        add_action( 'enqueue_block_assets',[ $this, 'enqueue_block_assets' ]);
+        add_action( 'enqueue_block_assets', [ $this, 'enqueue_block_assets' ] );
     }
 
     public function register_blocks() {

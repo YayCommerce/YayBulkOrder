@@ -23,7 +23,6 @@ class SettingsRestController extends BaseRestController {
             $this->namespace,
             '/settings',
             [
-               
                 [
                     'methods'             => 'POST',
                     'callback'            => [ $this, 'save_settings' ],
@@ -31,7 +30,6 @@ class SettingsRestController extends BaseRestController {
                 ],
             ]
         );
-
     }
 
     /**
@@ -46,7 +44,7 @@ class SettingsRestController extends BaseRestController {
 
         return true;
     }
-    
+
     /**
      * Save the settings.
      *
@@ -64,6 +62,4 @@ class SettingsRestController extends BaseRestController {
 
         return $this->success( [], __( 'Settings saved!', 'yay-bulk-order' ) );
     }
-
-    
 }
