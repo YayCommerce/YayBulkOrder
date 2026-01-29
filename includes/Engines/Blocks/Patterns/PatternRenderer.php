@@ -51,19 +51,19 @@ class PatternRenderer {
         foreach ( $matches[0] as $index => $full_match ) {
             $block_name = 'yay-bulk-order/' . $matches[1][ $index ][0];
             $markup     = $full_match[0];
-
+            
             $column_blocks[ $block_name ] = $markup;
         }
 
         // Reorder columns based on the provided order
         $reordered_blocks = [];
-        $used_columns     = [];
-
+        $used_columns = [];
+        
         // First, add columns in the specified order
         foreach ( $columns as $column_name ) {
             if ( isset( $column_blocks[ $column_name ] ) ) {
                 $reordered_blocks[] = $column_blocks[ $column_name ];
-                $used_columns[]     = $column_name;
+                $used_columns[] = $column_name;
             }
         }
 
@@ -77,17 +77,17 @@ class PatternRenderer {
         // Replace the original column blocks with reordered ones
         // Find the table-template opening and closing tags
         $table_template_pattern = '/(<!--\s*wp:yay-bulk-order\/table-template[^>]*-->)(.*?)(<!--\s*\/wp:yay-bulk-order\/table-template\s*-->)/s';
-
+        
         return preg_replace_callback(
             $table_template_pattern,
             function ( $matches ) use ( $reordered_blocks ) {
-                $opening_tag   = $matches[1];
+                $opening_tag = $matches[1];
                 $inner_content = $matches[2];
-                $closing_tag   = $matches[3];
+                $closing_tag = $matches[3];
 
                 // Remove existing column blocks from inner content (preserve other content like whitespace)
                 $cleaned_content = preg_replace( '/<!--\s*wp:yay-bulk-order\/column-[^\s]+\s*\/?-->(?:\s*<!--\s*\/wp:yay-bulk-order\/column-[^\s]+\s*-->)?/', '', $inner_content );
-
+                
                 // Clean up extra newlines
                 $cleaned_content = preg_replace( '/\n{3,}/', "\n\n", $cleaned_content );
 

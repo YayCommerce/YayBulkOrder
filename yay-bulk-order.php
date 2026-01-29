@@ -28,6 +28,14 @@ if ( ! function_exists( 'YayBulkOrder\\initialize_plugin' ) ) {
 
     require_once __DIR__ . '/autoloader.php';
     function initialize_plugin() {
+        \YayBulkOrder\YayCommerceMenu\RegisterMenu::get_instance();
+
+        // \YayBulkOrder\License\LicenseHandler::get_instance();
+        // $license = new \YayBulkOrder\License\License( 'yay-bulk-order' );
+        // if ( ! $license->is_active() ) {
+        // return;
+        // }
+
         \YayBulkOrder\Initialize::get_instance();
     }
 }//end if
