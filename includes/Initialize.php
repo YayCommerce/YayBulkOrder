@@ -25,7 +25,6 @@ class Initialize {
         \YayBulkOrder\Engines\Admin\AdminPage::get_instance();
         \YayBulkOrder\Engines\RestAPI::get_instance();
 
-        
         // Register Block Patterns
         \YayBulkOrder\Engines\Blocks\Patterns\PatternRegistry::get_instance();
 
