@@ -1,5 +1,4 @@
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { __ } from '@wordpress/i18n';
 
 import {
   bulkDeleteShortcode,
@@ -10,6 +9,7 @@ import {
   updateShortcode,
 } from '@/lib/api/shortcodes.api';
 import { toast } from '@/components/ui/sonner';
+import { ShortcodeConfigFormValues } from '../schemas/shortcodes.schema';
 
 export function useShortcodesQuery(
   keyword: string,
@@ -20,9 +20,7 @@ export function useShortcodesQuery(
 ) {
   return useQuery({
     queryKey: ['shortcodes', { keyword, pagination }],
-    queryFn: async () => {
-      return getShortcodes(keyword, pagination.pageIndex + 1, pagination.pageSize);
-    },
+    queryFn: () => getShortcodes(keyword, pagination.pageIndex + 1, pagination.pageSize),
     placeholderData: keepPreviousData,
   });
 }
@@ -30,9 +28,7 @@ export function useShortcodesQuery(
 export function useShortcodeQuery(shortcodeId: number) {
   return useQuery({
     queryKey: ['shortcode', shortcodeId],
-    queryFn: async () => {
-      return getShortcode(shortcodeId);
-    },
+    queryFn: () => getShortcode(shortcodeId),
     enabled: !!shortcodeId,
   });
 }
@@ -40,14 +36,10 @@ export function useShortcodeQuery(shortcodeId: number) {
 export function useCreateShortcodeMutation() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationKey: ['createShortcode'],
+    mutationKey: ['shortcodes', 'create'],
     mutationFn: createShortcode,
     onSuccess: () => {
-      toast.success(__('Shortcode created!', 'yay-bulk-order'));
       queryClient.invalidateQueries({ queryKey: ['shortcodes'] });
-    },
-    onError: () => {
-      toast.error(__('Oops! Something went wrong!', 'yay-bulk-order'));
     },
   });
 }
@@ -55,14 +47,17 @@ export function useCreateShortcodeMutation() {
 export function useUpdateShortcodeMutation() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationKey: ['updateShortcode'],
-    mutationFn: updateShortcode,
-    onSuccess: () => {
-      toast.success(__('Shortcode updated!', 'yay-bulk-order'));
+    mutationKey: ['shortcodes', 'update'],
+    mutationFn: ({
+      shortcodeId,
+      payload,
+    }: {
+      shortcodeId: number;
+      payload: ShortcodeConfigFormValues;
+    }) => updateShortcode(shortcodeId, payload),
+    onSuccess: (_, { shortcodeId }) => {
       queryClient.invalidateQueries({ queryKey: ['shortcodes'] });
-    },
-    onError: () => {
-      toast.error(__('Oops! Something went wrong!', 'yay-bulk-order'));
+      queryClient.invalidateQueries({ queryKey: ['shortcode', shortcodeId] });
     },
   });
 }
@@ -71,33 +66,23 @@ export function useDeleteShortcodeMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationKey: ['shortcode', 'delete'],
+    mutationKey: ['shortcodes', 'delete'],
     mutationFn: (shortcodeId: number) => deleteShortcodeById(shortcodeId),
-
-    onSuccess: (response, shortcodeId) => {
-      toast.success(response.message);
-
-      queryClient.invalidateQueries({ queryKey: ['shortcode', shortcodeId] });
+    onSuccess: (_, shortcodeId) => {
       queryClient.invalidateQueries({ queryKey: ['shortcodes'] });
-    },
-
-    onError: (error: Error) => {
-      toast.error(error.message);
+      queryClient.invalidateQueries({ queryKey: ['shortcode', shortcodeId] });
     },
   });
 }
 
-export function useBulkDeleteShortcodeMutation(ids: number[]) {
+export function useBulkDeleteShortcodeMutation() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationKey: ['shortcodes', 'bulk-delete'],
-    mutationFn: () => bulkDeleteShortcode(ids),
-    onSuccess: (response) => {
-      toast.success(response.message);
+    mutationFn: (ids: number[]) => bulkDeleteShortcode(ids),
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['shortcodes'] });
-    },
-    onError: (error: Error) => {
-      toast.error(error.message);
+      queryClient.invalidateQueries({ queryKey: ['shortcode'] });
     },
   });
 }

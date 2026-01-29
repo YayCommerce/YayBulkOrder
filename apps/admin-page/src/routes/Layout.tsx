@@ -1,7 +1,7 @@
 import { CircleNotchIcon, GearIcon, HouseIcon, TableIcon } from '@phosphor-icons/react';
 import { useIsMutating } from '@tanstack/react-query';
-import { __ } from '@wordpress/i18n';
 import { NavLink, Outlet, Route, Routes } from 'react-router';
+import { __ } from '@wordpress/i18n';
 
 import { Button } from '@/components/ui/button';
 import { HeaderNavMenuItem, HeaderNavMenuList } from '@/components/ui/navmenu-header';

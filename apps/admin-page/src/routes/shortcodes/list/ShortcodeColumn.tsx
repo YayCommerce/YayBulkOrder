@@ -1,21 +1,12 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { __ } from '@wordpress/i18n';
-import { Bolt, TrashIcon } from 'lucide-react';
 
-import { ShortcodeFormValues } from '@/lib/schemas/shortcodes.schema';
-import { Button } from '@/components/ui/button';
+import { ShortcodeConfig } from '@/lib/schemas/shortcodes.schema';
 import { Checkbox } from '@/components/ui/checkbox';
-import { CopyButton } from '@/components/ui/copy-button';
 import { Label } from '@/components/ui/label';
+import { ShortcodeActionColumn } from './ShortcodeActionColumn';
 
-interface ColumnActions {
-  onEdit: (id: number) => void;
-  onDelete: (id: number) => void;
-}
-
-export const ShortcodeColumn: (actions: ColumnActions) => ColumnDef<ShortcodeFormValues>[] = (
-  actions,
-) => [
+export const shortcodeColumns: ColumnDef<ShortcodeConfig>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -76,19 +67,7 @@ export const ShortcodeColumn: (actions: ColumnActions) => ColumnDef<ShortcodeFor
     id: 'actions',
     header: '',
     cell: ({ row }) => {
-      return (
-        <div className="flex w-10 items-center justify-end gap-2">
-          <CopyButton content={`[ybo-form-shortcode id="${row.original.id}"]`} />
-
-          <Button variant="outline" size="icon" onClick={() => actions.onEdit(row.original.id)}>
-            <Bolt className="size-4" />
-          </Button>
-
-          <Button variant="outline" size="icon" onClick={() => actions.onDelete(row.original.id)}>
-            <TrashIcon className="size-4" />
-          </Button>
-        </div>
-      );
+      return <ShortcodeActionColumn shortcodeConfig={row.original} />;
     },
   },
 ];

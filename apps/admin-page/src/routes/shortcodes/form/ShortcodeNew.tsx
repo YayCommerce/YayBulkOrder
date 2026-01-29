@@ -1,10 +1,13 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { FieldErrors, FormProvider, SubmitErrorHandler, useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 import { __ } from '@wordpress/i18n';
 
 import { useCreateShortcodeMutation } from '@/lib/queries/shortcodes.queries';
-import { createShortcodeSchema, CreateShortcodeValues } from '@/lib/schemas/shortcodes.schema';
+import {
+  shortcodeConfigFormSchema,
+  ShortcodeConfigFormValues,
+} from '@/lib/schemas/shortcodes.schema';
 import { Button } from '@/components/ui/button';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -20,28 +23,17 @@ import {
 } from '@/components/ui/sheet';
 import { ColumnOrder } from './ColumnOrder';
 
-const DEFAULT_SHORTCODE: CreateShortcodeValues = {
-  title: '',
-  pattern: 'simple',
-  columns: [
-    'yay-bulk-order/column-product-title',
-    'yay-bulk-order/column-product-price',
-    'yay-bulk-order/column-product-stock',
-    'yay-bulk-order/column-add-to-cart',
-  ],
-};
-
 export default function ShortcodeNew() {
   const navigate = useNavigate();
   const { mutateAsync: createShortcode, isPending } = useCreateShortcodeMutation();
 
-  const form = useForm<CreateShortcodeValues>({
-    resolver: zodResolver(createShortcodeSchema),
+  const form = useForm<ShortcodeConfigFormValues>({
+    resolver: zodResolver(shortcodeConfigFormSchema),
     defaultValues: DEFAULT_SHORTCODE,
-    mode: 'onChange',
+    mode: 'onSubmit',
   });
 
-  async function onSubmit(values: CreateShortcodeValues) {
+  async function onSubmit(values: ShortcodeConfigFormValues) {
     await createShortcode(values);
     navigate('/shortcodes');
   }
@@ -135,6 +127,7 @@ export default function ShortcodeNew() {
                 <ColumnOrder />
               </div>
             </div>
+
             <SheetFooter>
               <SheetClose asChild>
                 <Button variant="outline">{__('Cancel', 'yay-bulk-order')}</Button>
@@ -149,3 +142,14 @@ export default function ShortcodeNew() {
     </FormProvider>
   );
 }
+
+const DEFAULT_SHORTCODE: ShortcodeConfigFormValues = {
+  title: '',
+  pattern: 'simple',
+  columns: [
+    'yay-bulk-order/column-product-title',
+    'yay-bulk-order/column-product-price',
+    'yay-bulk-order/column-product-stock',
+    'yay-bulk-order/column-add-to-cart',
+  ],
+};

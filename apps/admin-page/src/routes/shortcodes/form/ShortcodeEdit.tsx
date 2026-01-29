@@ -5,7 +5,10 @@ import { useNavigate } from 'react-router';
 import { __ } from '@wordpress/i18n';
 
 import { useShortcodeQuery, useUpdateShortcodeMutation } from '@/lib/queries/shortcodes.queries';
-import { ShortcodeFormValues, shortcodeSchema } from '@/lib/schemas/shortcodes.schema';
+import {
+  shortcodeConfigFormSchema,
+  ShortcodeConfigFormValues,
+} from '@/lib/schemas/shortcodes.schema';
 import { Button } from '@/components/ui/button';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -25,15 +28,16 @@ export default function ShortcodeEdit({ editId }: { editId: number }) {
   const navigate = useNavigate();
   const { data } = useShortcodeQuery(editId);
   const { mutateAsync: updateShortcode, isPending } = useUpdateShortcodeMutation();
-  const form = useForm<ShortcodeFormValues>({
-    resolver: zodResolver(shortcodeSchema),
+
+  const form = useForm<ShortcodeConfigFormValues>({
+    resolver: zodResolver(shortcodeConfigFormSchema),
     defaultValues: data,
-    mode: 'onChange',
+    mode: 'onSubmit',
   });
 
-  async function onSubmit(values: ShortcodeFormValues) {
+  async function onSubmit(values: ShortcodeConfigFormValues) {
     console.log(values);
-    await updateShortcode(values);
+    await updateShortcode({ shortcodeId: editId, payload: values });
     navigate('/shortcodes');
   }
 
@@ -41,7 +45,7 @@ export default function ShortcodeEdit({ editId }: { editId: number }) {
     if (data) {
       form.reset(data);
     }
-  }, [data]);
+  }, [data, form]);
 
   return (
     <FormProvider {...form}>

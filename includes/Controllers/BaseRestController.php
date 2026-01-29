@@ -13,35 +13,18 @@ defined( 'ABSPATH' ) || exit;
  */
 abstract class BaseRestController {
 
-    protected string $namespace = 'yay-bulk-order/v1';
-
-    protected function success( array $data = [], string $message = '' ): WP_REST_Response {
-        return rest_ensure_response(
-            array_filter(
-                [
-                    'success' => true,
-                    'message' => $message,
-                    'data'    => $data,
-                ]
-            )
-        );
-    }
+    public const REST_NAMESPACE = 'yay-bulk-order/v1';
 
     /**
      * Return an error response.
      *
      * @param string $message The error message.
+     * @param string $code The error code.
      * @param int    $status The HTTP status code.
      * @return WP_REST_Response The response object.
      */
-    protected function error( string $message, int $status = 400 ): WP_REST_Response {
-        return new WP_REST_Response(
-            [
-                'success' => false,
-                'message' => $message,
-            ],
-            $status
-        );
+    protected function error( string $message, string $code = 'invalid_request', int $status = 400 ): WP_REST_Response {
+        return rest_ensure_response( new \WP_Error( $code, $message, [ 'status' => $status ] ) );
     }
 
     /**
@@ -60,7 +43,7 @@ abstract class BaseRestController {
      * @param WP_REST_Request $request The request object.
      * @return array The form data.
      */
-    protected function get_form_data( WP_REST_Request $request ): array {
+    protected function get_body_params( WP_REST_Request $request ): array {
         return (array) $request->get_body_params();
     }
 }

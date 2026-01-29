@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+
 import { checkUtilsIsReady } from '@yay-bulk-order/utils';
 
 export default function PageDashboard() {

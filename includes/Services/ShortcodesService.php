@@ -151,7 +151,7 @@ class ShortcodesService {
     public function delete_shortcode( $id ) {
         $shortcode = get_post( $id );
 
-        if ( ! $shortcode || $shortcode->post_type !== self::SHORTCODE_POST_TYPE ) {
+        if ( ! $shortcode || self::SHORTCODE_POST_TYPE !== $shortcode->post_type ) {
             return false;
         }
 

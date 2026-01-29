@@ -9,7 +9,6 @@ import { __, sprintf } from '@wordpress/i18n';
 
 import {
   useBulkDeleteShortcodeMutation,
-  useDeleteShortcodeMutation,
   useShortcodesQuery,
 } from '@/lib/queries/shortcodes.queries';
 import { cn } from '@/lib/utils';
@@ -37,7 +36,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { ShortcodeColumn } from './ShortcodeColumn';
+import { shortcodeColumns } from './list/ShortcodeColumn';
 
 export default function ShortcodeList() {
   const navigate = useNavigate();
@@ -55,7 +54,7 @@ export default function ShortcodeList() {
     return debounce((value) => {
       setKeyword(value);
     }, 500);
-  }, [queryClient]);
+  }, []);
 
   const {
     data,
@@ -63,24 +62,11 @@ export default function ShortcodeList() {
     isFetching: isFetchingShortcodes,
   } = useShortcodesQuery(keyword, pagination);
 
-  const { mutate: deleteShortcode } = useDeleteShortcodeMutation();
-
-  const columns = useMemo(
-    () =>
-      ShortcodeColumn({
-        onEdit: (id) => navigate(`/shortcodes/${id}`),
-        onDelete: (id) => {
-          if (!window.confirm('Are you sure you want to delete this shortcode?')) {
-            return;
-          }
-          deleteShortcode(id);
-        },
-      }),
-    [navigate],
-  );
+  const columns = shortcodeColumns;
+  const defaultData = useMemo(() => [], []);
 
   const table = useReactTable({
-    data: data?.data ?? [],
+    data: data?.data ?? defaultData,
     columns,
     state: {
       pagination,
@@ -93,13 +79,8 @@ export default function ShortcodeList() {
   });
 
   const selectedCount = table.getFilteredSelectedRowModel().rows.length;
-  const selectedRowsIds = useMemo(
-    () => Array.from(table.getSelectedRowModel().rows, (row) => row.original.id),
-    [selectedCount],
-  );
 
-  const { mutateAsync: bulkDeleteShortcodes, isPending: isBulkDeleteShortcodesPending } =
-    useBulkDeleteShortcodeMutation(selectedRowsIds);
+  const bulkDeleteShortcodeMutation = useBulkDeleteShortcodeMutation();
 
   const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
@@ -108,7 +89,12 @@ export default function ShortcodeList() {
   };
 
   const handleBulkDeleteShortcodes = async () => {
-    await bulkDeleteShortcodes();
+    if (bulkDeleteShortcodeMutation.isPending) return;
+
+    const selectedRowsIds = Array.from(table.getSelectedRowModel().rows, (row) => row.original.id);
+    if (selectedRowsIds.length === 0) return;
+
+    await bulkDeleteShortcodeMutation.mutateAsync(selectedRowsIds);
     setOpenBulkDeleteDialog(false);
     table.resetRowSelection();
   };
@@ -141,19 +127,7 @@ export default function ShortcodeList() {
         </div>
       </div>
 
-      {/* Table */}
-      <div
-        className={cn(
-          'relative overflow-x-auto rounded-lg border',
-          isBulkDeleteShortcodesPending && 'relative opacity-50',
-        )}
-      >
-        {/* Overlay Spinner */}
-        {isBulkDeleteShortcodesPending && (
-          <div className="absolute inset-0 z-50 flex items-center justify-center">
-            <Spinner className="text-muted-foreground size-6 animate-spin" />
-          </div>
-        )}
+      <div className="relative overflow-x-auto rounded-lg border">
         <Table className="min-w-full">
           <TableHeader className="text-foreground bg-muted-400 h-[46px]">
             {table.getHeaderGroups().map((headerGroup) => (
@@ -218,15 +192,18 @@ export default function ShortcodeList() {
           </TableBody>
         </Table>
       </div>
+
       {/* Footer */}
       {(table.getPageCount() > 1 || selectedCount > 1) && (
         <div
           className={cn(
             'relative flex flex-col items-center gap-3 sm:flex-row',
-            selectedCount > 1 && !isBulkDeleteShortcodesPending ? 'justify-between' : 'justify-end',
+            selectedCount > 1 && !bulkDeleteShortcodeMutation.isPending
+              ? 'justify-between'
+              : 'justify-end',
           )}
         >
-          {!isBulkDeleteShortcodesPending && (
+          {!bulkDeleteShortcodeMutation.isPending && (
             <BulkActionBox selected={selectedCount} onClose={() => table.resetRowSelection()}>
               <span className="text-foreground text-sm font-normal">
                 {sprintf(__('%d selected', 'yay-bulk-order'), selectedCount)}
@@ -271,6 +248,7 @@ export default function ShortcodeList() {
               </AlertDialog>
             </BulkActionBox>
           )}
+
           {/* Right side - Pagination controls */}
           {table.getPageCount() > 1 && (
             <div className="flex items-center gap-4">

@@ -14,6 +14,7 @@ defined( 'ABSPATH' ) || exit;
 class ShortcodesRestController extends BaseRestController {
     use SingletonTrait;
 
+    /** @var ShortcodesService */
     private $shortcodes_service;
 
     protected function __construct() {
@@ -23,7 +24,7 @@ class ShortcodesRestController extends BaseRestController {
 
     protected function init_hooks(): void {
         register_rest_route(
-            $this->namespace,
+            self::REST_NAMESPACE,
             '/shortcodes',
             [
                 [
@@ -33,14 +34,14 @@ class ShortcodesRestController extends BaseRestController {
                 ],
                 [
                     'methods'             => 'POST',
-                    'callback'            => [ $this, 'save_shortcode' ],
+                    'callback'            => [ $this, 'create_shortcode' ],
                     'permission_callback' => [ $this, 'shortcodes_permission_callback' ],
                 ],
             ]
         );
 
         register_rest_route(
-            $this->namespace,
+            self::REST_NAMESPACE,
             '/shortcodes/bulk-delete',
             [
                 [
@@ -52,7 +53,7 @@ class ShortcodesRestController extends BaseRestController {
         );
 
         register_rest_route(
-            $this->namespace,
+            self::REST_NAMESPACE,
             '/shortcodes/(?P<id>\d+)',
             [
                 [
@@ -74,18 +75,7 @@ class ShortcodesRestController extends BaseRestController {
         );
     }
 
-    /**
-     * Check if the user has the necessary permissions to access the settings endpoints.
-     *
-     * @return bool|WP_Error True if the user has the necessary permissions, otherwise a WP_Error object.
-     */
-    public function shortcodes_permission_callback() {
-        if ( ! current_user_can( 'manage_options' ) || ! current_user_can( 'manage_woocommerce' ) ) {
-            return new \WP_Error( 'rest_forbidden', esc_html__( 'Forbidden.', 'yay-bulk-order' ), [ 'status' => 401 ] );
-        }
 
-        return true;
-    }
 
     /**
      * Get the shortcodes.
@@ -101,7 +91,7 @@ class ShortcodesRestController extends BaseRestController {
 
         $response = $this->shortcodes_service->get_paginated_shortcode( $keyword, $page, $per_page );
 
-        return $this->success( $response, __( 'Shortcodes fetched!', 'yay-bulk-order' ) );
+        return rest_ensure_response( $response );
     }
 
     /**
@@ -110,24 +100,22 @@ class ShortcodesRestController extends BaseRestController {
      * @param WP_REST_Request $request The request object.
      * @return WP_REST_Response The response object.
      */
-    public function save_shortcode( WP_REST_Request $request ): WP_REST_Response {
+    public function create_shortcode( WP_REST_Request $request ): WP_REST_Response {
         $params = $this->get_json_params( $request );
-
         if ( empty( $params ) ) {
-            return $this->error( __( 'Invalid shortcode data', 'yay-bulk-order' ) );
+            return $this->error( __( 'Invalid Arguments', 'yay-bulk-order' ) );
         }
 
         try {
             $post_id = $this->shortcodes_service->create_shortcode( $params );
-            return $this->success(
+            return rest_ensure_response(
                 [
                     ...$params,
                     'id' => $post_id,
-                ],
-                __( 'Shortcode saved!', 'yay-bulk-order' )
+                ]
             );
         } catch ( \Exception $e ) {
-            return $this->error( $e->getMessage(), 400 );
+            return $this->error( $e->getMessage(), 'internal_error', 500 );
         }
     }
 
@@ -140,7 +128,8 @@ class ShortcodesRestController extends BaseRestController {
     public function get_shortcode( WP_REST_Request $request ): WP_REST_Response {
         $id       = $request['id'];
         $response = $this->shortcodes_service->get_shortcode( $id );
-        return $this->success( $response, __( 'Shortcode fetched!', 'yay-bulk-order' ), 200 );
+
+        return rest_ensure_response( $response );
     }
 
     /**
@@ -151,7 +140,7 @@ class ShortcodesRestController extends BaseRestController {
      */
     public function update_shortcode( WP_REST_Request $request ): WP_REST_Response {
         if ( ! $request->has_param( 'title' ) || ! $request->has_param( 'id' ) ) {
-            return $this->error( __( 'Title and ID are required', 'yay-bulk-order' ), 400 );
+            return $this->error( __( 'Title and ID are required', 'yay-bulk-order' ) );
         }
 
         $id     = $request->get_param( 'id' );
@@ -159,9 +148,9 @@ class ShortcodesRestController extends BaseRestController {
 
         try {
             $response = $this->shortcodes_service->update_shortcode( $id, $params );
-            return $this->success( $response, __( 'Shortcode updated!', 'yay-bulk-order' ), 200 );
+            return rest_ensure_response( $response );
         } catch ( \Exception $e ) {
-            return $this->error( $e->getMessage(), 400 );
+            return $this->error( $e->getMessage(), 'internal_error', 500 );
         }
     }
 
@@ -175,9 +164,9 @@ class ShortcodesRestController extends BaseRestController {
         $id     = $request->get_param( 'id' );
         $result = $this->shortcodes_service->delete_shortcode( $id );
         if ( ! $result ) {
-            return $this->error( __( 'Failed to delete shortcode!', 'yay-bulk-order' ) );
+            return $this->error( __( 'Failed to delete shortcode!', 'yay-bulk-order' ), 'internal_error', 500 );
         }
-        return $this->success( [], __( 'Shortcode deleted!', 'yay-bulk-order' ) );
+        return rest_ensure_response( true );
     }
 
     /**
@@ -206,13 +195,26 @@ class ShortcodesRestController extends BaseRestController {
         }
 
         if ( count( $ids ) === $deleted ) {
-            return $this->success( [], __( 'Shortcodes have been deleted successfully', 'yay-bulk-order' ) );
+            return rest_ensure_response( __( 'Shortcodes have been deleted successfully', 'yay-bulk-order' ) );
         }
 
         // Translators: 1: number of shortcodes successfully deleted; 2: number of shortcodes that failed.
         $message = __( '%1$d shortcode(s) deleted, %2$d shortcode(s) failed', 'yay-bulk-order' );
         $message = sprintf( $message, $deleted, $failed );
 
-        return $this->success( [], $message );
+        return rest_ensure_response( $message );
+    }
+
+    /**
+     * Check if the user has the necessary permissions to access the settings endpoints.
+     *
+     * @return bool|WP_Error True if the user has the necessary permissions, otherwise a WP_Error object.
+     */
+    public function shortcodes_permission_callback() {
+        if ( ! current_user_can( 'manage_options' ) || ! current_user_can( 'manage_woocommerce' ) ) {
+            return new \WP_Error( 'rest_forbidden', esc_html__( 'Forbidden.', 'yay-bulk-order' ), [ 'status' => 401 ] );
+        }
+
+        return true;
     }
 }

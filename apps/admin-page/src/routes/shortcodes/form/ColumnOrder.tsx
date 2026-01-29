@@ -3,7 +3,7 @@ import { GripVertical } from 'lucide-react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { __ } from '@wordpress/i18n';
 
-import { ShortcodeFormValues } from '@/lib/schemas/shortcodes.schema';
+import { ShortcodeConfigFormValues } from '@/lib/schemas/shortcodes.schema';
 import { FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
 
 const COLUMN_LABELS: Record<string, string> = {
@@ -14,7 +14,7 @@ const COLUMN_LABELS: Record<string, string> = {
 };
 
 export function ColumnOrder() {
-  const { control, watch } = useFormContext<ShortcodeFormValues>();
+  const { control, watch } = useFormContext<ShortcodeConfigFormValues>();
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
 

@@ -3,10 +3,8 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useParams } from 'react-router';
 
 import { useSaveSettingsMutation } from '@/lib/queries/settings.queries';
-import { SettingsFormData, settingsFormSchema } from '@/lib/schemas/settings.schema';
-import { getSettings, setSettings } from '@/lib/utils';
+import { Settings, settingsSchema } from '@/lib/schemas/settings.schema';
 import { Card, CardContent } from '@/components/ui/card';
-
 import SettingsPreview from './settings/SettingsPreview';
 import SettingsSidebar from './settings/SettingsSidebar';
 import GeneralTab from './settings/tabs/GeneralTab';
@@ -20,16 +18,16 @@ const tabs = [
 export default function PageSettings() {
   const { subMenu } = useParams();
 
-  const form = useForm<SettingsFormData>({
-    resolver: zodResolver(settingsFormSchema),
-    defaultValues: getSettings(),
+  const form = useForm<Settings>({
+    resolver: zodResolver(settingsSchema),
+    defaultValues: window.yayBulkOrderAdminData.settings,
   });
 
   const saveMutation = useSaveSettingsMutation();
 
-  async function onSubmit(data: SettingsFormData) {
+  async function onSubmit(data: Settings) {
+    if (saveMutation.isPending) return;
     await saveMutation.mutateAsync(data);
-    setSettings(data);
     form.reset(data);
   }
 

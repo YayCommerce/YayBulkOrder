@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const settingsFormSchema = z.object({
+export const settingsSchema = z.object({
   general: z.object({
     defaultCartQuantity: z.number(),
   }),
@@ -16,4 +16,4 @@ export const settingsFormSchema = z.object({
     borderRadius: z.enum(['small', 'normal', 'large']),
   }),
 });
-export type SettingsFormData = z.infer<typeof settingsFormSchema>;
+export type Settings = z.infer<typeof settingsSchema>;
