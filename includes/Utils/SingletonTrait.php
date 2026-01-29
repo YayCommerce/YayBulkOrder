@@ -1,6 +1,9 @@
 <?php
 namespace YayBulkOrder\Utils;
 
+/**
+ * Provides singleton pattern implementation for classes.
+ */
 trait SingletonTrait {
     protected static $instance = null;
 

@@ -5,6 +5,9 @@ use YayBulkOrder\Utils\SingletonTrait;
 use YayBulkOrder\Engines\Blocks\Patterns\PatternRenderer;
 use YayBulkOrder\Services\ShortcodesService;
 
+/**
+ * Registers and renders the [ybo-form-shortcode] shortcode.
+ */
 class PatternShortcode {
     use SingletonTrait;
 
@@ -14,6 +17,9 @@ class PatternShortcode {
 
     /**
      * Shortcode: [ybo-form-shortcode id="1"] or [ybo-form-shortcode pattern="simple"]
+     *
+     * @param array|string $atts Shortcode attributes.
+     * @return string Rendered pattern HTML.
      */
     public function render_pattern( $atts ): string {
 
@@ -25,18 +31,18 @@ class PatternShortcode {
             $atts
         );
 
-        $pattern     = $atts['pattern'];
+        $pattern = $atts['pattern'];
         $columns = [];
 
         // If ID is provided, get shortcode data
         if ( ! empty( $atts['id'] ) ) {
-            $shortcode_id = intval( $atts['id'] );
+            $shortcode_id      = intval( $atts['id'] );
             $shortcode_service = ShortcodesService::get_instance();
-            
+
             try {
                 $shortcode_data = $shortcode_service->get_shortcode( $shortcode_id );
                 $pattern        = $shortcode_data['pattern'] ?? $pattern;
-                $columns   = $shortcode_data['columns'] ?? [];
+                $columns        = $shortcode_data['columns'] ?? [];
             } catch ( \Exception $e ) {
                 return $e->getMessage();
             }

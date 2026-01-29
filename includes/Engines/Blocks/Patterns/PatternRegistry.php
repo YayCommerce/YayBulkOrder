@@ -3,6 +3,9 @@ namespace YayBulkOrder\Engines\Blocks\Patterns;
 
 use YayBulkOrder\Utils\SingletonTrait;
 
+/**
+ * Registers block patterns and pattern categories with WordPress.
+ */
 class PatternRegistry {
     use SingletonTrait;
 

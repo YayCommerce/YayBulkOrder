@@ -1,10 +1,13 @@
 <?php
 namespace YayBulkOrder\Engines\Blocks\Patterns;
 
+/**
+ * Renders block pattern templates from PHP files.
+ */
 class PatternRenderer {
 
     public static function render( string $view, ?array $columns = null ): string {
-        $path = YAY_BULK_ORDER_PLUGIN_PATH . 'includes/patterns/' . $view . '.php';
+        $path = YAY_BULK_ORDER_PLUGIN_PATH . 'patterns/' . $view . '.php';
 
         if ( ! file_exists( $path ) ) {
             return '';
