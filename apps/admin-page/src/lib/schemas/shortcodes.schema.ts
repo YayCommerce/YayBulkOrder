@@ -17,5 +17,6 @@ const shortcodeConfigSchema = z.object({
 
 export const shortcodeConfigFormSchema = shortcodeConfigSchema.omit({ id: true });
 
+export type ColumnId = z.infer<typeof columnSchema>;
 export type ShortcodeConfig = z.infer<typeof shortcodeConfigSchema>;
 export type ShortcodeConfigFormValues = z.infer<typeof shortcodeConfigFormSchema>;

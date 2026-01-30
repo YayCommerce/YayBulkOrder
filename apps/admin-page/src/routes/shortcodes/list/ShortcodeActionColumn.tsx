@@ -1,7 +1,7 @@
 import { Bolt, Trash } from 'lucide-react';
 import { useNavigate } from 'react-router';
 
-import { useDeleteShortcodeMutation } from '@/lib/queries/shortcodes.queries';
+import { useDeleteShortcodeMutation, useSetShortcodeQuery } from '@/lib/queries/shortcodes.queries';
 import { ShortcodeConfig } from '@/lib/schemas/shortcodes.schema';
 import { Button } from '@/components/ui/button';
 import { CopyButton } from '@/components/ui/copy-button';
@@ -9,8 +9,10 @@ import { CopyButton } from '@/components/ui/copy-button';
 export function ShortcodeActionColumn({ shortcodeConfig }: { shortcodeConfig: ShortcodeConfig }) {
   const navigate = useNavigate();
   const deleteShortcodeMutation = useDeleteShortcodeMutation();
+  const setShortcodeQuery = useSetShortcodeQuery();
 
   function onEdit() {
+    setShortcodeQuery(shortcodeConfig.id, shortcodeConfig);
     navigate(`/shortcodes/${shortcodeConfig.id}`);
   }
 

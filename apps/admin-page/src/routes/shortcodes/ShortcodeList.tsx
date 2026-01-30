@@ -1,191 +1,110 @@
 import { useMemo, useState } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
-import { flexRender, getCoreRowModel, PaginationState, useReactTable } from '@tanstack/react-table';
-import { debounce } from 'lodash';
-import { ChevronLeft, ChevronRight, Plus, Search, TrashIcon } from 'lucide-react';
+import { CaretUpDownIcon } from '@phosphor-icons/react';
+import { flexRender, getCoreRowModel, PaginationState, RowSelectionState, useReactTable } from '@tanstack/react-table';
+import { useDebounce } from 'ahooks';
+import { Plus, Search } from 'lucide-react';
 import { useNavigate } from 'react-router';
-import { Spinner } from '@wordpress/components';
-import { __, sprintf } from '@wordpress/i18n';
+import { __ } from '@wordpress/i18n';
 
-import {
-  useBulkDeleteShortcodeMutation,
-  useShortcodesQuery,
-} from '@/lib/queries/shortcodes.queries';
-import { cn } from '@/lib/utils';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
-import BulkActionBox from '@/components/ui/bulk-actions-box';
+import { useShortcodesQuery } from '@/lib/queries/shortcodes.queries';
+import { BulkActionBox } from '@/components/ui/bulk-actions';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group';
-import { NumberInput } from '@/components/ui/number-input';
-import { Separator } from '@/components/ui/separator';
+import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group';
+import { Pagination } from '@/components/ui/pagination';
+import { Separator } from '@/components/ui/separator';
+import { toast } from '@/components/ui/sonner';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { shortcodeColumns } from './list/ShortcodeColumn';
 
 export default function ShortcodeList() {
   const navigate = useNavigate();
-
   const [keyword, setKeyword] = useState('');
+  const debouncedKeyword = useDebounce(keyword, { wait: 300 });
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
   });
-  const [search, setSearch] = useState('');
-  const [openBulkDeleteDialog, setOpenBulkDeleteDialog] = useState(false);
-  const queryClient = useQueryClient();
 
-  const debouncedSearch = useMemo(() => {
-    return debounce((value) => {
-      setKeyword(value);
-    }, 500);
-  }, []);
+  const { data: shortcodes, isLoading: isLoadingShortcodes } = useShortcodesQuery(debouncedKeyword, pagination);
 
-  const {
-    data,
-    isLoading: isLoadingShortcodes,
-    isFetching: isFetchingShortcodes,
-  } = useShortcodesQuery(keyword, pagination);
-
-  const columns = shortcodeColumns;
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const defaultData = useMemo(() => [], []);
 
   const table = useReactTable({
-    data: data?.data ?? defaultData,
-    columns,
+    data: shortcodes?.data ?? defaultData,
+    getRowId: (row) => String(row.id),
+    columns: shortcodeColumns,
     state: {
       pagination,
+      rowSelection,
     },
     getCoreRowModel: getCoreRowModel(),
+    onRowSelectionChange: setRowSelection,
     onPaginationChange: setPagination,
     manualPagination: true,
-    pageCount: data?.totalPage ?? 0,
-    rowCount: data?.data.length ?? 0,
+    enableRowSelection: true,
+    pageCount: shortcodes?.totalPage ?? 0,
+    rowCount: shortcodes?.data.length ?? 0,
   });
 
-  const selectedCount = table.getFilteredSelectedRowModel().rows.length;
-
-  const bulkDeleteShortcodeMutation = useBulkDeleteShortcodeMutation();
-
-  const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
-    table.setPageIndex(0);
-    debouncedSearch(e.target.value);
-  };
-
-  const handleBulkDeleteShortcodes = async () => {
-    if (bulkDeleteShortcodeMutation.isPending) return;
-
-    const selectedRowsIds = Array.from(table.getSelectedRowModel().rows, (row) => row.original.id);
-    if (selectedRowsIds.length === 0) return;
-
-    await bulkDeleteShortcodeMutation.mutateAsync(selectedRowsIds);
-    setOpenBulkDeleteDialog(false);
-    table.resetRowSelection();
-  };
-
   return (
-    <Card className="gap-4 rounded-lg p-6 shadow-sm">
-      {/* Header */}
-      <div className="flex flex-nowrap items-center justify-between gap-3">
-        <div className="flex items-center gap-2">
-          <h1 className="text-2xl font-bold">{__('Shortcodes', 'yay-bulk-order')}</h1>
-        </div>
-        <div className="flex flex-col items-end gap-4 md:flex-row">
-          {(table.getPageCount() > 1 || keyword !== '') && (
-            <InputGroup className="w-full md:w-76">
-              <InputGroupInput placeholder="Search" value={search} onChange={handleChangeSearch} />
-              <InputGroupAddon align="inline-end">
-                <Search className="size-4.5 text-[#A0A0A7]" />
-              </InputGroupAddon>
-            </InputGroup>
-          )}
+    <Card>
+      <CardHeader>
+        <CardTitle>{__('Shortcodes Configuration', 'yay-bulk-order')}</CardTitle>
+      </CardHeader>
 
-          <Button
-            variant="primary-outline"
-            className="hover:bg-primary hover:text-primary-foreground gap-2 rounded-sm px-4 text-sm font-medium shadow-xs"
-            onClick={() => navigate('/shortcodes/new')}
-          >
-            <Plus className="h-4 w-4" />
-            {__('Add New Shortcode', 'yay-bulk-order')}
-          </Button>
-        </div>
+      <div className="flex flex-col items-end gap-4 md:flex-row">
+        <InputGroup className="w-full md:w-76">
+          <InputGroupInput placeholder="Search" value={keyword} onChange={(e) => setKeyword(e.target.value)} />
+          <InputGroupAddon align="inline-end">
+            <Search className="size-4.5 text-[#A0A0A7]" />
+          </InputGroupAddon>
+        </InputGroup>
+
+        <Button
+          variant="primary-outline"
+          className="ms-auto gap-2 rounded-sm px-4 text-sm font-medium shadow-xs hover:bg-primary hover:text-primary-foreground"
+          onClick={() => navigate('/shortcodes/new')}
+        >
+          <Plus className="h-4 w-4" />
+          {__('Add New Shortcode', 'yay-bulk-order')}
+        </Button>
       </div>
 
-      <div className="relative overflow-x-auto rounded-lg border">
-        <Table className="min-w-full">
-          <TableHeader className="text-foreground bg-muted-400 h-[46px]">
+      <div className="overflow-x-auto rounded-lg border">
+        <Table>
+          <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className="border-border border-b">
+              <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <TableHead
-                    key={header.id}
-                    className={cn(
-                      'text-foreground-400 py-2 text-left text-sm font-medium',
-                      header.column.columnDef.meta?.isCheckbox ? 'w-[36px] p-0' : 'px-3',
-                    )}
-                  >
-                    {flexRender(header.column.columnDef.header, header.getContext())}
+                  <TableHead key={header.id} className={header.id === 'select' || header.id === 'actions' ? 'w-9' : ''}>
+                    {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                   </TableHead>
                 ))}
               </TableRow>
             ))}
           </TableHeader>
+
           <TableBody>
-            {isLoadingShortcodes ? (
-              <TableRow>
-                <TableCell colSpan={columns.length} className="h-32 text-center align-middle">
-                  <div className="flex items-center justify-center gap-2">
-                    <Spinner className="text-muted-foreground size-6 animate-spin" />
-                  </div>
-                </TableCell>
-              </TableRow>
-            ) : table.getRowModel().rows.length > 0 ? (
+            {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && 'selected'}
-                  className="group not-last:border-border not-last:border-b"
-                >
+                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell
-                      key={cell.id}
-                      className={cn(
-                        'h-14',
-                        cell.column.id === 'select' ? 'p-0' : '',
-                        cell.column.id === 'actions' ? 'flex w-25 justify-end lg:w-full' : '',
-                      )}
-                      onClick={() => {
-                        if (['select', 'actions'].indexOf(cell.column.id) < 0) {
-                          queryClient.setQueryData(['shortcode', row.original.id], row.original);
-                          navigate(`/shortcodes/${row.original.id}`);
-                        }
-                      }}
-                    >
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </TableCell>
+                    <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
                   ))}
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
-                  {__('No shortcodes found.', 'yay-bulk-order')}
+                <TableCell colSpan={999} className="h-24 text-center">
+                  {isLoadingShortcodes ? 'Loading...' : 'No results.'}
                 </TableCell>
               </TableRow>
             )}
@@ -193,117 +112,47 @@ export default function ShortcodeList() {
         </Table>
       </div>
 
-      {/* Footer */}
-      {(table.getPageCount() > 1 || selectedCount > 1) && (
-        <div
-          className={cn(
-            'relative flex flex-col items-center gap-3 sm:flex-row',
-            selectedCount > 1 && !bulkDeleteShortcodeMutation.isPending
-              ? 'justify-between'
-              : 'justify-end',
-          )}
-        >
-          {!bulkDeleteShortcodeMutation.isPending && (
-            <BulkActionBox selected={selectedCount} onClose={() => table.resetRowSelection()}>
-              <span className="text-foreground text-sm font-normal">
-                {sprintf(__('%d selected', 'yay-bulk-order'), selectedCount)}
-              </span>
-              <Separator orientation="vertical" className="ml-2 h-5!" />
-
-              <AlertDialog open={openBulkDeleteDialog} onOpenChange={setOpenBulkDeleteDialog}>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="hover:text-destructive text-muted-foreground h-8 w-8 shrink-0 hover:bg-transparent hover:shadow-sm"
-                  onClick={() => setOpenBulkDeleteDialog(true)}
-                  aria-label="Delete selected"
-                >
-                  <TrashIcon className="size-4" />
-                </Button>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>
-                      {sprintf(
-                        __(`Are you sure you want to delete %d shortcodes ?`, 'yay-bulk-order'),
-                        selectedCount,
-                      )}
-                    </AlertDialogTitle>
-                    <AlertDialogDescription>
-                      {__(
-                        'This action cannot be undone. This will permanently delete these request and remove data from servers',
-                        'yay-bulk-order',
-                      )}
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>{__('Cancel', 'yay-bulk-order')}</AlertDialogCancel>
-                    <AlertDialogAction
-                      className="bg-destructive text-destructive-foreground hover:bg-destructive/80"
-                      onClick={handleBulkDeleteShortcodes}
-                    >
-                      {__('Continue', 'yay-bulk-order')}
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            </BulkActionBox>
-          )}
-
-          {/* Right side - Pagination controls */}
-          {table.getPageCount() > 1 && (
-            <div className="flex items-center gap-4">
-              <span className="text-foreground-400 text-sm font-normal">
-                {sprintf(
-                  __('Page %d of %d', 'yay-bulk-order'),
-                  table.getState().pagination.pageIndex + 1,
-                  table.getPageCount(),
-                )}
-              </span>
-
-              <div className="flex items-center gap-1">
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="h-9 w-9 rounded-sm"
-                  onClick={() => table.previousPage()}
-                  disabled={!table.getCanPreviousPage()}
-                >
-                  <ChevronLeft className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="h-9 w-9 rounded-sm"
-                  onClick={() => table.nextPage()}
-                  disabled={!table.getCanNextPage()}
-                >
-                  <ChevronRight className="h-4 w-4" />
-                </Button>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <span className="text-foreground-400 text-sm font-normal">
-                  {__('Go to', 'yay-bulk-order')}
+      <div className="relative flex flex-col items-center gap-3 sm:flex-row">
+        <BulkActionBox selected={Object.keys(rowSelection).length} onClose={() => table.resetRowSelection()}>
+          <span>{Object.keys(rowSelection).length} selected</span>
+          <Separator orientation="vertical" className="ml-2 h-5!" />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                className="group flex cursor-pointer items-center gap-1.5 px-2.5 font-normal hover:bg-primary/6 hover:text-primary"
+              >
+                <span>Bulk Actions</span>
+                <span className="flex items-center group-hover:text-primary">
+                  <CaretUpDownIcon weight="bold" className="size-3.5 not-group-hover:text-muted-foreground" />
                 </span>
-                <NumberInput
-                  min={1}
-                  max={table.getPageCount()}
-                  value={table.getState().pagination.pageIndex + 1}
-                  onValueChange={(value) => {
-                    if (isFetchingShortcodes) return;
-                    const page = value ? Number(value) - 1 : 0;
-                    if (page >= 0 && page < table.getPageCount()) {
-                      table.setPageIndex(page);
-                    }
-                  }}
-                  className="text-foreground-400 h-9 w-15 rounded-sm text-sm font-normal focus-visible:ring-0"
-                  disabled={isFetchingShortcodes || table.getPageCount() <= 1}
-                ></NumberInput>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" sideOffset={9} className="w-fit min-w-[120px]">
+              <DropdownMenuItem
+                variant="destructive"
+                onClick={() => {
+                  const selectedCount = Object.keys(rowSelection).length;
+                  toast.error(`${selectedCount} selected item(s) deleted`);
+                }}
+              >
+                Delete
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </BulkActionBox>
+
+        <Pagination
+          pageIndex={table.getState().pagination.pageIndex}
+          pageCount={table.getPageCount()}
+          onPreviousPage={() => table.previousPage()}
+          onNextPage={() => table.nextPage()}
+          onPageChange={(page) => table.setPageIndex(page)}
+          canPreviousPage={table.getCanPreviousPage()}
+          canNextPage={table.getCanNextPage()}
+          className="sm:ms-auto"
+        />
+      </div>
     </Card>
   );
 }

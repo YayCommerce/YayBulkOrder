@@ -5,15 +5,13 @@ import { ShortcodeConfig } from '@/lib/schemas/shortcodes.schema';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { ShortcodeActionColumn } from './ShortcodeActionColumn';
+import { ShortcodeTitleColumn } from './ShortcodeTitleColumn';
 
 export const shortcodeColumns: ColumnDef<ShortcodeConfig>[] = [
   {
     id: 'select',
     header: ({ table }) => (
-      <Label
-        htmlFor="select-all"
-        className="flex h-full w-full cursor-pointer items-center justify-center px-4"
-      >
+      <Label htmlFor="select-all" className="flex h-full w-full cursor-pointer items-center justify-center px-4">
         <Checkbox
           id="select-all"
           className="size-4 bg-white"
@@ -27,10 +25,7 @@ export const shortcodeColumns: ColumnDef<ShortcodeConfig>[] = [
       const id = `select-${row.original.id}`;
 
       return (
-        <Label
-          htmlFor={id}
-          className="flex h-full w-full cursor-pointer items-center justify-center px-4"
-        >
+        <Label htmlFor={id} className="flex h-full w-full cursor-pointer items-center justify-center px-4">
           <Checkbox
             id={id}
             className="pointer-events-none size-4 bg-white"
@@ -50,7 +45,7 @@ export const shortcodeColumns: ColumnDef<ShortcodeConfig>[] = [
     accessorKey: 'title',
     header: __('Title', 'yay-bulk-order'),
     cell: ({ row }) => {
-      return <div>{row.original.title}</div>;
+      return <ShortcodeTitleColumn shortcodeConfig={row.original} />;
     },
   },
   {
@@ -58,9 +53,7 @@ export const shortcodeColumns: ColumnDef<ShortcodeConfig>[] = [
     accessorKey: 'shortcode',
     header: __('Shortcode', 'yay-bulk-order'),
     cell: ({ row }) => {
-      return (
-        <div className="flex items-center gap-2">[ybo-form-shortcode id="{row.original.id}"]</div>
-      );
+      return <div className="flex items-center gap-2">[ybo-form-shortcode id="{row.original.id}"]</div>;
     },
   },
   {

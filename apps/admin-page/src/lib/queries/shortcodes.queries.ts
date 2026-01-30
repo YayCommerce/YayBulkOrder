@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import {
@@ -9,7 +10,7 @@ import {
   updateShortcode,
 } from '@/lib/api/shortcodes.api';
 import { toast } from '@/components/ui/sonner';
-import { ShortcodeConfigFormValues } from '../schemas/shortcodes.schema';
+import { ShortcodeConfig, ShortcodeConfigFormValues } from '../schemas/shortcodes.schema';
 
 export function useShortcodesQuery(
   keyword: string,
@@ -23,6 +24,17 @@ export function useShortcodesQuery(
     queryFn: () => getShortcodes(keyword, pagination.pageIndex + 1, pagination.pageSize),
     placeholderData: keepPreviousData,
   });
+}
+
+export function useSetShortcodeQuery() {
+  const queryClient = useQueryClient();
+
+  return useCallback(
+    (shortcodeId: number, shortcodeConfig: ShortcodeConfig) => {
+      queryClient.setQueryData(['shortcode', shortcodeId], shortcodeConfig);
+    },
+    [queryClient],
+  );
 }
 
 export function useShortcodeQuery(shortcodeId: number) {
@@ -48,13 +60,8 @@ export function useUpdateShortcodeMutation() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationKey: ['shortcodes', 'update'],
-    mutationFn: ({
-      shortcodeId,
-      payload,
-    }: {
-      shortcodeId: number;
-      payload: ShortcodeConfigFormValues;
-    }) => updateShortcode(shortcodeId, payload),
+    mutationFn: ({ shortcodeId, payload }: { shortcodeId: number; payload: ShortcodeConfigFormValues }) =>
+      updateShortcode(shortcodeId, payload),
     onSuccess: (_, { shortcodeId }) => {
       queryClient.invalidateQueries({ queryKey: ['shortcodes'] });
       queryClient.invalidateQueries({ queryKey: ['shortcode', shortcodeId] });
