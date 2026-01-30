@@ -1,26 +1,27 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { FormProvider, useForm } from 'react-hook-form';
-import { useParams } from 'react-router';
+import * as TabsPrimitive from '@radix-ui/react-tabs';
+import { FieldErrors, FormProvider, useForm, useFormContext } from 'react-hook-form';
+import { useNavigate, useParams } from 'react-router';
 
 import { useSaveSettingsMutation } from '@/lib/queries/settings.queries';
 import { Settings, settingsSchema } from '@/lib/schemas/settings.schema';
-import { Card, CardContent } from '@/components/ui/card';
-import SettingsPreview from './settings/SettingsPreview';
-import SettingsSidebar from './settings/SettingsSidebar';
-import GeneralTab from './settings/tabs/GeneralTab';
-import StylesTab from './settings/tabs/StylesTab';
-
-const tabs = [
-  { path: 'general', label: 'General', component: <GeneralTab /> },
-  { path: 'styles', label: 'Styles', component: <StylesTab /> },
-];
+import { styled } from '@/lib/styled';
+import { Button } from '@/components/ui/button';
+import { SideNavMenuItem, SideNavMenuList } from '@/components/ui/navmenu-side';
+import { Toaster } from '@/components/ui/sonner';
+import HeaderLogo from './layout/HeaderLogo';
+import HeaderMenu from './layout/HeaderMenu';
+import GeneralTab from './settings/GeneralTab';
+import StylesTab from './settings/StylesTab';
 
 export default function PageSettings() {
-  const { subMenu } = useParams();
+  const { subMenu = 'general' } = useParams();
+  const navigate = useNavigate();
 
   const form = useForm<Settings>({
     resolver: zodResolver(settingsSchema),
     defaultValues: window.yayBulkOrderAdminData.settings,
+    mode: 'onSubmit',
   });
 
   const saveMutation = useSaveSettingsMutation();
@@ -31,28 +32,101 @@ export default function PageSettings() {
     form.reset(data);
   }
 
-  return (
-    <FormProvider {...form}>
-      <form id="settings-form" onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="mx-auto mt-8 flex max-w-7xl flex-col gap-6 px-6">
-          <div className="flex w-full flex-col gap-8 sm:flex-row">
-            <SettingsSidebar tabs={tabs} />
-            <div className="flex w-full flex-col gap-8 sm:flex-row">
-              <Card className="w-full rounded-lg p-6 shadow-none sm:flex-7">
-                <CardContent className="w-full px-0">
-                  {tabs.map((tab) => (
-                    <div key={tab.path}>{subMenu === tab.path && tab.component}</div>
-                  ))}
-                </CardContent>
-              </Card>
+  const onError = (errors: FieldErrors<Settings>) => {
+    const hasGeneralErrors = !!errors.general;
+    const hasStylesErrors = !!errors.styles;
 
-              <div className="w-full sm:flex-3">
-                <SettingsPreview />
-              </div>
+    const hasActiveTabErrors = (subMenu === 'general' && hasGeneralErrors) || (subMenu === 'styles' && hasStylesErrors);
+    if (hasActiveTabErrors) return;
+
+    // If has errors in another tab, navigate to that tab
+    if (hasGeneralErrors) {
+      navigate('/settings/general');
+    } else if (hasStylesErrors) {
+      navigate('/settings/styles');
+    }
+  };
+
+  return (
+    <>
+      <div className="relative flex h-[54px] items-center justify-between gap-4 bg-background py-0 pr-3 sm:gap-5 lg:pr-6">
+        <HeaderLogo />
+        <HeaderMenu />
+        <Button
+          type="submit"
+          form="settings-form"
+          disabled={!form.formState.isDirty}
+          variant={form.formState.isDirty ? 'primary' : 'muted'}
+          className="disabled:opacity-100"
+        >
+          Save Settings
+        </Button>
+      </div>
+      <div className="@container/main">
+        <FormProvider {...form}>
+          <form id="settings-form" onSubmit={form.handleSubmit(onSubmit, onError)}>
+            <div className="xs:p-6 px-6 pt-8 pb-4">
+              <TabsPrimitive.Root value={subMenu} onValueChange={(subMenu) => navigate(`/settings/${subMenu}`)}>
+                <div className="flex flex-col gap-4 sm:flex-row">
+                  <div className="w-full sm:w-[150px]">
+                    <TabsPrimitive.List asChild>
+                      <SideNavMenuList
+                        mode="tabs"
+                        activeTab={subMenu}
+                        className="flex w-full items-start justify-start sm:flex-col"
+                      >
+                        <TabsPrimitive.Trigger value="general" asChild>
+                          <SideNavMenuItem>
+                            <span>General</span>
+                            <GeneralErrorIndicator />
+                          </SideNavMenuItem>
+                        </TabsPrimitive.Trigger>
+                        <TabsPrimitive.Trigger value="styles" asChild>
+                          <SideNavMenuItem>
+                            <span>Styles</span>
+                            <StylesErrorIndicator />
+                          </SideNavMenuItem>
+                        </TabsPrimitive.Trigger>
+                      </SideNavMenuList>
+                    </TabsPrimitive.List>
+                  </div>
+                  <Main>
+                    <TabsPrimitive.Content value="general" style={{ height: '100%' }}>
+                      <GeneralTab />
+                    </TabsPrimitive.Content>
+
+                    <TabsPrimitive.Content value="styles" style={{ height: '100%' }}>
+                      <StylesTab />
+                    </TabsPrimitive.Content>
+                  </Main>
+                </div>
+              </TabsPrimitive.Root>
             </div>
-          </div>
-        </div>
-      </form>
-    </FormProvider>
+          </form>
+        </FormProvider>
+      </div>
+      <Toaster />
+    </>
   );
+}
+
+const Main = styled.div('flex flex-col bg-muted flex-1');
+const ErrorIndicator = styled.span('bg-destructive size-1 rounded-full');
+
+function GeneralErrorIndicator() {
+  const { formState } = useFormContext<Settings>();
+  const hasErrors = !!formState.errors.general;
+
+  if (!hasErrors) return null;
+
+  return <ErrorIndicator />;
+}
+
+function StylesErrorIndicator() {
+  const { formState } = useFormContext<Settings>();
+  const hasErrors = !!formState.errors.styles;
+
+  if (!hasErrors) return null;
+
+  return <ErrorIndicator />;
 }

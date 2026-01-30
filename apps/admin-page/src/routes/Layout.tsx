@@ -11,7 +11,7 @@ export default function Layout() {
   const isSavingSettings = useIsMutating({ mutationKey: ['settings'] }) > 0;
   return (
     <>
-      <div className="bg-background relative flex h-13.5 items-end justify-between gap-4 py-0 pr-3 sm:gap-5 lg:pr-6">
+      <div className="relative flex h-13.5 items-end justify-between gap-4 bg-background py-0 pr-3 sm:gap-5 lg:pr-6">
         <div className="flex aspect-square h-full items-center justify-center border-r">
           <img
             src={window.yayBulkOrderAdminData.path.assetsUrl + '/img/YayBulkOrder.svg'}

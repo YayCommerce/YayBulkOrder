@@ -7,6 +7,19 @@ import PageShortcodes from './PageShortcodes';
 
 export const router = createHashRouter([
   {
+    path: '/settings',
+    children: [
+      {
+        index: true,
+        loader: () => redirect('/settings/general'),
+      },
+      {
+        path: ':subMenu',
+        element: <PageSettings />,
+      },
+    ],
+  },
+  {
     path: '/',
     element: <Layout />,
     children: [
@@ -33,19 +46,6 @@ export const router = createHashRouter([
       //   path: 'shortcodes/:formId',
       //   element: <PageShortcodes />,
       // },
-      {
-        path: 'settings',
-        children: [
-          {
-            index: true,
-            loader: () => redirect('/settings/general'),
-          },
-          {
-            path: ':subMenu',
-            element: <PageSettings />,
-          },
-        ],
-      },
     ],
   },
 ]);

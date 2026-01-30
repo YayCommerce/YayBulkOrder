@@ -85,7 +85,7 @@ export const ColorPickerTrigger = forwardRef<
         children
       ) : (
         <>
-          <span className="border-accent size-6.5 rounded-xs border" style={{ backgroundColor: value }} />
+          <span className="size-6.5 rounded-xs border border-accent" style={{ backgroundColor: value }} />
           <span className="overflow-hidden">{value}</span>
         </>
       )}
