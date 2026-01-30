@@ -1,5 +1,9 @@
+body.yay-ui {
+  @apply bg-muted;
+}
+
 .yay-ui {
-  @apply text-foreground text-sm;
+  @apply bg-muted text-sm text-foreground;
 
   /* Chrome, Safari, Edge, Opera */
   input::-webkit-outer-spin-button,
@@ -12,10 +16,29 @@
   input[type='number'] {
     -moz-appearance: textfield;
   }
+
+  button,
+  select,
+  optgroup,
+  input,
+  textarea {
+    font: inherit;
+    font-feature-settings: inherit;
+    font-variation-settings: inherit;
+    letter-spacing: inherit;
+    color: inherit;
+    opacity: 1;
+    background-color: #0000;
+    border-radius: 0;
+  }
+
+  :where(button, code, form, h1, h2, h3, h4, h5, h6, input, ul, ol, li, nav, p, textarea) {
+    @apply m-0 p-0 text-inherit;
+  }
 }
 
 * {
-  @apply border-border outline-ring/50 hover:ring-primary-accent ring-primary;
+  @apply border-border font-sans ring-primary outline-ring/50 hover:ring-primary-accent;
 
   &:focus-visible,
   &:focus {
@@ -24,13 +47,6 @@
 }
 
 /* Override wp styles */
-
-.yay-ui {
-  :where(button, code, form, h1, h2, h3, h4, h5, h6, input, ul, ol, li, nav, p, textarea) {
-    @apply m-0 p-0;
-  }
-}
-
 #wpcontent {
   padding-left: 0px !important;
 }

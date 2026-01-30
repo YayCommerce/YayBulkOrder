@@ -1,3 +1,5 @@
+import './color-picker.css';
+
 import {
   ComponentProps,
   createContext,
@@ -11,11 +13,10 @@ import { useDebounceFn } from 'ahooks';
 import { Check } from 'lucide-react';
 import { HexAlphaColorPicker, HexColorInput, HexColorPicker } from 'react-colorful';
 
-import { useUncontrolled } from '@/lib/hooks/useUncontrolled';
 import { cn } from '@/lib/utils';
+import { useUncontrolled } from '@/hooks/useUncontrolled';
 import { InputGroup, InputGroupAddon } from '@/components/ui/input-group';
 import { Popover, PopoverContent } from '@/components/ui/popover';
-
 import { ComboboxTrigger } from './combobox';
 import { CopyButton } from './copy-button';
 import { InputVariantProps, inputVariants } from './variants/input.variants';
@@ -77,17 +78,14 @@ export const ColorPickerTrigger = forwardRef<
   return (
     <ComboboxTrigger
       ref={ref}
-      className={cn('min-h-0 min-w-0 justify-start gap-2 rounded-sm py-1 pr-2.5 pl-1', className)}
+      className={cn('min-h-0 min-w-0 justify-start gap-2 rounded-sm py-1 pr-4 pl-1', className)}
       {...props}
     >
       {children ? (
         children
       ) : (
         <>
-          <span
-            className="border-accent size-6.5 rounded-[3px] border-[1.5px]"
-            style={{ backgroundColor: value }}
-          />
+          <span className="border-accent size-6.5 rounded-xs border" style={{ backgroundColor: value }} />
           <span className="overflow-hidden">{value}</span>
         </>
       )}
@@ -95,24 +93,20 @@ export const ColorPickerTrigger = forwardRef<
   );
 });
 
-export const ColorPickerContent = forwardRef<
-  ElementRef<typeof PopoverContent>,
-  ComponentProps<typeof PopoverContent>
->(({ className, ...props }, ref) => {
-  return (
-    <PopoverContent
-      ref={ref}
-      className={cn(
-        'btr-color-picker flex max-h-160 min-w-0 flex-col gap-3 rounded-sm p-3',
-        className,
-      )}
-      side="bottom"
-      align="start"
-      sideOffset={5}
-      {...props}
-    />
-  );
-});
+export const ColorPickerContent = forwardRef<ElementRef<typeof PopoverContent>, ComponentProps<typeof PopoverContent>>(
+  ({ className, ...props }, ref) => {
+    return (
+      <PopoverContent
+        ref={ref}
+        className={cn('yayui-color-picker flex max-h-160 min-w-0 flex-col gap-3 rounded-sm p-3', className)}
+        side="bottom"
+        align="start"
+        sideOffset={5}
+        {...props}
+      />
+    );
+  },
+);
 
 export function ColorPickerPanel({ alpha = false }: { alpha?: boolean }) {
   const { value, debouncedSetValue } = useColorPicker();
@@ -124,18 +118,10 @@ export function ColorPickerPanel({ alpha = false }: { alpha?: boolean }) {
   }
 }
 
-type ColorPickerInputProps = Omit<
-  InputHTMLAttributes<HTMLInputElement>,
-  'size' | 'value' | 'onChange'
-> &
+type ColorPickerInputProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'size' | 'value' | 'onChange'> &
   InputVariantProps & { alpha?: boolean };
 
-export function ColorPickerInput({
-  className,
-  variant = 'input',
-  alpha = false,
-  ...props
-}: ColorPickerInputProps) {
+export function ColorPickerInput({ className, variant = 'input', alpha = false, ...props }: ColorPickerInputProps) {
   const { value, debouncedSetValue } = useColorPicker();
 
   return (
@@ -184,9 +170,7 @@ export function ColorPickerSwatch({
       }}
       {...props}
     >
-      {value === swatchValue && (
-        <Check className="shadow-base size-2.5 text-white" strokeWidth="4" />
-      )}
+      {value === swatchValue && <Check className="shadow-base size-2.5 text-white" strokeWidth="4" />}
     </span>
   );
 }

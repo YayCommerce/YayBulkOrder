@@ -21,18 +21,18 @@ export const router = createHashRouter([
         path: 'dashboard',
         element: <PageDashboard />,
       },
-      {
-        path: 'shortcodes',
-        element: <PageShortcodes />,
-      },
-      {
-        path: 'shortcodes/new',
-        element: <PageShortcodes />,
-      },
-      {
-        path: 'shortcodes/:formId',
-        element: <PageShortcodes />,
-      },
+      // {
+      //   path: 'shortcodes',
+      //   element: <PageShortcodes />,
+      // },
+      // {
+      //   path: 'shortcodes/new',
+      //   element: <PageShortcodes />,
+      // },
+      // {
+      //   path: 'shortcodes/:formId',
+      //   element: <PageShortcodes />,
+      // },
       {
         path: 'settings',
         children: [

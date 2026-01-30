@@ -6,7 +6,6 @@ import { CheckIcon, CopyIcon } from 'lucide-react';
 import { AnimatePresence, HTMLMotionProps, motion } from 'motion/react';
 
 import { cn } from '@/lib/utils';
-
 import { buttonVariants } from './button';
 
 type CopyButtonProps = Omit<HTMLMotionProps<'button'>, 'children' | 'onCopy'> &
@@ -61,6 +60,7 @@ function CopyButton({
     },
     [isCopied, content, delay, onClick, onCopy, handleIsCopied],
   );
+
   return (
     <motion.button
       data-slot="copy-button"
