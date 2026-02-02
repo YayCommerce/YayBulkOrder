@@ -7,18 +7,14 @@
   "category": "woocommerce",
   "description": "Bulk Order Form Column to add products to cart",
   "textdomain": "yay-bulk-order",
-  "usesContext": [
-    "yay-bulk-order/productId"
-  ],
+  "usesContext": ["yay-bulk-order/productId"],
   "supports": {
     "inserter": false,
     "multiple": false,
     "html": false,
     "interactivity": true
   },
-  "parent": [
-    "yay-bulk-order/table-template"
-  ],
+  "parent": ["yay-bulk-order/table-template"],
   "editorScript": "file:./editor.js",
   "render": "file:./render.php",
   "viewScriptModule": "file:./view-module.js"

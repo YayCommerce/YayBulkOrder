@@ -9,33 +9,33 @@
   "description": "A block to show WooCommerce Products as Table optimized for bulk ordering.",
   "textdomain": "yay-bulk-order",
   "attributes": {
-		"queryId": {
-			"type": "number",
+    "queryId": {
+      "type": "number",
       "default": 0
-		},
+    },
     "query": {
       "type": "object",
       "default": {
         "perPage": 5,
-				"postType": "product",
-				"order": "desc",
-				"orderBy": "date"
+        "postType": "product",
+        "order": "desc",
+        "orderBy": "date"
       }
     },
-		"forcePageReload": {
-			"type": "boolean",
-			"default": false
-		}
-	},
+    "forcePageReload": {
+      "type": "boolean",
+      "default": false
+    }
+  },
   "providesContext": {
-		"queryId": "queryId",
-		"query": "query"
-	},
+    "queryId": "queryId",
+    "query": "query"
+  },
   "supports": {
     "interactivity": true,
     "multiple": false,
     "html": false,
-    "align": [ "wide", "full" ],
+    "align": ["wide", "full"],
     "anchor": true
   },
   "editorScript": "file:./editor.js",

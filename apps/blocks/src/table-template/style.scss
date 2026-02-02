@@ -7,14 +7,14 @@
 table.wp-block-yay-bulk-order-table-template {
   width: 100%;
   border-collapse: collapse;
-  border: 1px solid #fff;
+  border: 1px solid #333;
 
   thead {
     background: #aaa;
     th {
       padding: 10px;
       text-align: left;
-      border: 1px solid #fff;
+      border: 1px solid #333;
       * {
         margin: 0;
       }
@@ -26,7 +26,7 @@ table.wp-block-yay-bulk-order-table-template {
       td {
         padding: 10px;
         text-align: left;
-        border: 1px solid #fff;
+        border: 1px solid #333;
       }
     }
   }
