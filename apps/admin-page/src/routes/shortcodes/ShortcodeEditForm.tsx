@@ -92,19 +92,7 @@ export default function ShortcodeEditForm({ editId }: { editId: number }) {
               )}
             />
 
-            <Controller
-              name="columns"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel className="text-foreground-400 text-xs font-medium">
-                    {__('Column Order', 'yay-bulk-order')}
-                  </FieldLabel>
-                  <ColumnOrder value={field.value} onValueChange={field.onChange} />
-                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-                </Field>
-              )}
-            />
+            <ColumnOrder />
           </FieldGroup>
         </div>
 
