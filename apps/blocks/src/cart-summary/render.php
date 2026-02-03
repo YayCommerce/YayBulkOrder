@@ -25,8 +25,7 @@ wp_interactivity_config(
 </div>
 
 <div
-	class="wp-block-yay-bulk-order-cart-trigger"
-	style="margin:30px 0;"
+	<?php echo get_block_wrapper_attributes(); ?>
 	data-wp-interactive="yay-bulk-order/cart-summary"
 	data-wp-context='{"isOpen": false, "itemCount": 0, "subtotal": ""}'
 	data-wp-init="callbacks.init"
@@ -36,7 +35,7 @@ wp_interactivity_config(
 		data-wp-on--click="actions.openMiniCart"
 		data-wp-bind--aria-label="state.buttonText"
 		data-wp-bind--title="state.buttonText"
-		data-wp-bind--style="state.buttonStyles"
+		data-wp-class--is-empty="state.isEmpty"
 	>
 		<span class="yay-cart-trigger__icon">
 			<?php echo esc_html__( 'Your Cart', 'yay-bulk-order' ); ?>

@@ -34,6 +34,10 @@ const storeDef = {
       const context = getContext<Context>();
       return `(${context.itemCount ?? 0})`;
     },
+    get isEmpty() {
+      const context = getContext<Context>();
+      return context.itemCount === 0;
+    },
     get subtotal() {
       const context = getContext<Context>();
       return context.subtotal ?? '';

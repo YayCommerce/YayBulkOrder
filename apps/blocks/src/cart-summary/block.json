@@ -18,5 +18,6 @@
   "ancestor": ["yay-bulk-order/bulk-order-form"],
   "editorScript": "file:./editor.js",
   "render": "file:./render.php",
+  "style": "file:./style-editor.css",
   "viewScriptModule": "file:./view-module.js"
 }

@@ -5,6 +5,7 @@
  * Replace them with your own styles or remove the file completely.
  */
 nav.wp-block-yay-bulk-order-table-filter {
+  font-size: 1rem;
   display: flex;
   gap: 10px;
   flex-direction: row;
@@ -12,19 +13,23 @@ nav.wp-block-yay-bulk-order-table-filter {
   padding: 0px;
 
   > a {
-    padding: 10px;
-    border: 1px solid #fff;
-    background: #aaa;
-    color: #fff;
+    padding: 6px 12px;
+    font-weight: 400;
+    border-radius: var(--ybo-border-radius);
+    background-color: var(--ybo-background-secondary-color);
+    text-decoration: none;
     cursor: pointer;
-    transition: all 0.3s ease-in-out;
+
     &:hover:not(.is-disabled) {
-      background: #999;
       text-decoration: underline;
     }
     &.is-disabled {
       opacity: 0.5;
       cursor: not-allowed;
+    }
+    &.is-selected {
+      background: var(--ybo-primary-color);
+      color: #fff;
     }
   }
 }

@@ -38,6 +38,37 @@ class SettingsService {
         ];
     }
 
+    public function get_styles( $styles_setting ) {
+        switch ( $styles_setting['borderRadius'] ) {
+            case 'normal':
+                $var_border_radius = '6px';
+                break;
+            case 'large':
+                $var_border_radius = '8px';
+                break;
+            case 'small':
+                $var_border_radius = '4px';
+                break;
+            default:
+                $var_border_radius = '6px';
+                break;
+        }
+
+        return [
+            '--ybo-primary-color'              => $styles_setting['colors']['primary'],
+            '--ybo-text-normal-color'          => $styles_setting['colors']['textNormal'],
+            '--ybo-background-normal-color'    => $styles_setting['colors']['backgroundNormal'],
+            '--ybo-text-secondary-color'       => $styles_setting['colors']['textSecondary'],
+            '--ybo-background-secondary-color' => $styles_setting['colors']['backgroundSecondary'],
+            '--ybo-border-color'               => $styles_setting['colors']['borderColor'],
+            '--ybo-border-radius'              => $var_border_radius,
+
+            'color'                            => 'var(--ybo-text-normal-color)',
+            'background-color'                 => 'var(--ybo-background-normal-color)',
+            'border-color'                     => 'var(--ybo-border-color)',
+        ];
+    }
+
     private function get_default_settings() {
         return [
             'general' => [
@@ -49,9 +80,9 @@ class SettingsService {
                     'primary'             => '#2271b1',
                     'textNormal'          => '#333333',
                     'backgroundNormal'    => '#ffffff',
-                    'textSecondary'       => '#777777',
-                    'backgroundSecondary' => '#f3f3f3',
-                    'borderColor'         => '#e4e4e7',
+                    'textSecondary'       => '#7b7c80',
+                    'backgroundSecondary' => '#f5f5f5',
+                    'borderColor'         => '#7b7c80',
                 ],
                 'borderRadius' => 'normal',
             ],

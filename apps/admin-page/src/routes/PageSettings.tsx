@@ -9,6 +9,7 @@ import { useSaveSettingsMutation } from '@/lib/queries/settings.queries';
 import { styled } from '@/lib/styled';
 import { Button } from '@/components/ui/button';
 import { SideNavMenuItem, SideNavMenuList } from '@/components/ui/navmenu-side';
+import { toast } from '@/components/ui/sonner';
 import GeneralTab from './settings/GeneralTab';
 import StylesTab from './settings/StylesTab';
 
@@ -25,12 +26,9 @@ export default function PageSettings() {
   const saveMutation = useSaveSettingsMutation();
 
   async function onSubmit(data: Settings) {
-    console.log('onSubmit', {
-      data,
-      isPending: saveMutation.isPending,
-    });
     if (saveMutation.isPending) return;
     await saveMutation.mutateAsync(data);
+    toast.success('Settings saved');
     form.reset(data);
   }
 

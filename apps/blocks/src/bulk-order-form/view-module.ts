@@ -3,13 +3,6 @@ import { getContext, getElement, store } from '@wordpress/interactivity';
 import type { BulkOrderContext, BulkOrderState } from '@yay-bulk-order/common/types/bulkOrder.type';
 import { checkViewIsReady } from '@yay-bulk-order/view';
 
-type ServerState = {
-  state: {
-    isBlockTheme: boolean;
-    pageSize: number;
-  };
-};
-
 const storeDef = {
   state: {
     get currentPage(): number {
@@ -52,13 +45,9 @@ const storeDef = {
       }
     },
     onRender() {
-      const context = getContext<Context>();
+      const context = getContext<BulkOrderContext>();
       console.log('onRender', {
-        isBlockTheme: state.isBlockTheme,
-        config: context.config.queryId,
-        page: context.queryContext.page,
-        filter: context.queryContext.filter,
-        totalLength: context.queryResult.totalLength,
+        queryContext: context.queryContext,
       });
       checkViewIsReady();
     },

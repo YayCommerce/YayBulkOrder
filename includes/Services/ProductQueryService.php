@@ -1,6 +1,8 @@
 <?php
 namespace YayBulkOrder\Services;
 
+use YayBulkOrder\Services\SettingsService;
+use YayBulkOrder\Utils\BlockHelper;
 use YayBulkOrder\Utils\SingletonTrait;
 
 defined( 'ABSPATH' ) || exit;
@@ -12,6 +14,12 @@ defined( 'ABSPATH' ) || exit;
  */
 class ProductQueryService {
     use SingletonTrait;
+
+    private $settings_service;
+
+    public function __construct() {
+        $this->settings_service = SettingsService::get_instance();
+    }
 
     /**
      * @param WP_Block $block The block instance.
@@ -45,6 +53,9 @@ class ProductQueryService {
      */
     public function extend_product_table_query_vars( $query_vars, $block ) {
         $filter_param = $this->get_filter_param( $block );
+        $settings     = $this->settings_service->get_settings();
+
+        $query_vars['posts_per_page'] = $settings['general']['pageSize'];
 
         if ( 'all' === $filter_param ) {
             return $query_vars;
@@ -77,10 +88,7 @@ class ProductQueryService {
      */
     public function get_page_param( $block ) {
         $query_id = $block->context['queryId'] ?? 0;
-        $page_key = 'query-' . $query_id . '-page';
-        /* phpcs:disable WordPress.Security.NonceVerification.Recommended */
-        $page_param = empty( $_GET[ $page_key ] ) ? 1 : (int) $_GET[ $page_key ];
-        return $page_param;
+        return BlockHelper::get_page_param( $query_id );
     }
 
     /**
@@ -90,14 +98,7 @@ class ProductQueryService {
      * @return 'all' | 'in-stock' | 'on-sale' The filter param.
      */
     public function get_filter_param( $block ) {
-        $query_id   = $block->context['queryId'] ?? 0;
-        $filter_key = 'query-' . $query_id . '-filter';
-        /* phpcs:disable WordPress.Security.NonceVerification.Recommended */
-        $filter_param = empty( $_GET[ $filter_key ] ) ? 'all' : sanitize_text_field( wp_unslash( $_GET[ $filter_key ] ) );
-        $filter_enums = [ 'all', 'in-stock', 'on-sale' ];
-        if ( ! in_array( $filter_param, $filter_enums, true ) ) {
-            $filter_param = 'all';
-        }
-        return $filter_param;
+        $query_id = $block->context['queryId'] ?? 0;
+        return BlockHelper::get_filter_param( $query_id );
     }
 }
