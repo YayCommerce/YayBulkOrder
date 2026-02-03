@@ -2,11 +2,14 @@ import type { Settings } from './settings.schema';
 
 /** Configuration is readonly. Store path, meta, admin settings */
 export type BulkOrderConfig = {
-  meta: {
+  metadata: {
     isBlockTheme: boolean;
   };
   path: {
+    assetsUrl: string;
+    restUrl: string;
     ajaxUrl: string;
+    nonce: string;
   };
   settings: Settings;
 };

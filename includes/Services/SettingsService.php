@@ -15,21 +15,24 @@ class SettingsService {
 
     public function get_settings() {
         $settings = get_option( 'yay_bulk_order_settings', [] );
-        return wp_parse_args( $settings, $this->get_default_settings() );
+        return array_replace_recursive( $this->get_default_settings(), $settings );
     }
 
     public function save_settings( $settings ) {
-        $settings = wp_parse_args( $settings, $this->get_default_settings() );
+        $settings = array_replace_recursive( $this->get_default_settings(), $settings );
         return update_option( 'yay_bulk_order_settings', $settings );
     }
 
     public function get_config() {
         return [
-            'meta'     => [
+            'metadata' => [
                 'isBlockTheme' => wp_is_block_theme(),
             ],
             'path'     => [
-                'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+                'assetsUrl' => YAY_BULK_ORDER_PLUGIN_URL . 'assets/',
+                'restUrl'   => rest_url( 'yay-bulk-order/v1' ),
+                'ajaxUrl'   => admin_url( 'admin-ajax.php' ),
+                'nonce'     => wp_create_nonce( 'wp_rest' ),
             ],
             'settings' => $this->get_settings(),
         ];

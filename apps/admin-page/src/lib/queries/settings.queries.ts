@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
+import type { Settings } from '@yay-bulk-order/common/types/settings.schema';
 import { postSettings } from '@/lib/api/settings.api';
-import type { Settings } from '@/lib/schemas/settings.schema';
 
 export function useSettings() {
   return useQuery({
@@ -15,7 +15,7 @@ export function useSaveSettingsMutation() {
   return useMutation({
     mutationKey: ['settings'],
     mutationFn: async (data: Settings) => postSettings(data),
-    onSuccess: (data) => {
+    onSuccess: (res, data) => {
       window.yayBulkOrderAdminData.settings = data;
       queryClient.invalidateQueries({ queryKey: ['settings'] });
     },

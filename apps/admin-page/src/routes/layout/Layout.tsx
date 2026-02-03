@@ -10,6 +10,7 @@ export default function Layout() {
       <div className="relative flex h-[54px] items-center justify-between gap-4 bg-background py-0 pr-3 sm:gap-5 lg:pr-6">
         <HeaderLogo />
         <HeaderMenu />
+        <div id="yay-header-actions" />
       </div>
       <div className="@container/main">
         <Outlet />

@@ -1,31 +1,17 @@
 import { createHashRouter, redirect } from 'react-router';
 
-import Layout from './Layout';
+import Layout from './layout/Layout';
 import PageDashboard from './PageDashboard';
 import PageSettings from './PageSettings';
 import PageShortcodes from './PageShortcodes';
 
 export const router = createHashRouter([
   {
-    path: '/settings',
-    children: [
-      {
-        index: true,
-        loader: () => redirect('/settings/general'),
-      },
-      {
-        path: ':subMenu',
-        element: <PageSettings />,
-      },
-    ],
-  },
-  {
     path: '/',
     element: <Layout />,
     children: [
       {
         index: true,
-        element: <div>This should never be shown</div>,
         loader: () => {
           return redirect('/dashboard');
         },
@@ -45,6 +31,19 @@ export const router = createHashRouter([
       {
         path: 'shortcodes/:shortcodeId',
         element: <PageShortcodes />,
+      },
+      {
+        path: 'settings',
+        children: [
+          {
+            index: true,
+            loader: () => redirect('/settings/general'),
+          },
+          {
+            path: ':subMenu',
+            element: <PageSettings />,
+          },
+        ],
       },
     ],
   },

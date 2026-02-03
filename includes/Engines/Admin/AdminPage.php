@@ -105,17 +105,7 @@ class AdminPage {
         wp_localize_script(
             ScriptName::ADMIN_PAGE,
             'yayBulkOrderAdminData',
-            [
-                'path'     => [
-                    'assetsUrl' => YAY_BULK_ORDER_PLUGIN_URL . 'assets/',
-                    'restUrl'   => rest_url( 'yay-bulk-order/v1/' ),
-                    'nonce'     => wp_create_nonce( 'wp_rest' ),
-                ],
-                'metadata' => [
-                    'isBlockTheme' => wp_is_block_theme(),
-                ],
-                'settings' => $this->settings_service->get_settings(),
-            ]
+            $this->settings_service->get_config(),
         );
     }
 
