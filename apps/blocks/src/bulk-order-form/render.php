@@ -6,17 +6,9 @@
  */
 use YayBulkOrder\Services\SettingsService;
 $settings_service = SettingsService::get_instance();
-$settings = $settings_service->get_settings();
+$config = $settings_service->get_config();
 
-wp_interactivity_config('yay-bulk-order/bulk-order-form', [
-    'settings'     => [
-        'defaultCartQuantity' => (int) $settings['general']['defaultCartQuantity'],
-        'styles'              => [
-            'colors'       => $settings['styles']['colors'],
-            'borderRadius' => $settings['styles']['borderRadius'],
-        ],
-    ],
-]);
+wp_interactivity_config('yay-bulk-order/bulk-order-form', $config);
 
 wp_interactivity_state(
     'yay-bulk-order/bulk-order-form',

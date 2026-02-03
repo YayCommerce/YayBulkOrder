@@ -54,9 +54,7 @@ const storeDef = {
       const context = getContext<Context>();
       context.isOpen = true;
 
-      document
-        .querySelector('.wc-block-mini-cart__button')
-        ?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      document.querySelector('.wc-block-mini-cart__button')?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
     },
   },
 

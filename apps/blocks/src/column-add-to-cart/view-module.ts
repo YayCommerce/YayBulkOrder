@@ -87,11 +87,7 @@ const storeDef = {
             const $body = win?.jQuery(document.body);
             // Trigger WooCommerce cart fragments update
             if ($body.trigger) {
-              $body.trigger('added_to_cart', [
-                data.fragments || {},
-                data.cart_hash || '',
-                win?.jQuery(ref),
-              ]);
+              $body.trigger('added_to_cart', [data.fragments || {}, data.cart_hash || '', win?.jQuery(ref)]);
               // Also trigger wc_fragment_refresh for mini cart updates
               $body.trigger('wc_fragment_refresh');
             }
