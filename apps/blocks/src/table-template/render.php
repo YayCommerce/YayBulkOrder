@@ -5,7 +5,9 @@
  * @var WP_Block $block The block instance.
  */
 
-$product_query_service = \YayBulkOrder\Services\ProductQueryService::get_instance();
+use YayBulkOrder\Services\ProductQueryService;
+
+$product_query_service = ProductQueryService::get_instance();
 
 $query_vars = $product_query_service->build_query_vars_from_query_block( $block );
 $page_param = $product_query_service->get_page_param( $block );

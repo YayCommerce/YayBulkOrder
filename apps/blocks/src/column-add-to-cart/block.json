@@ -17,5 +17,6 @@
   "parent": ["yay-bulk-order/table-template"],
   "editorScript": "file:./editor.js",
   "render": "file:./render.php",
+  "style": "file:./style-editor.css",
   "viewScriptModule": "file:./view-module.js"
 }

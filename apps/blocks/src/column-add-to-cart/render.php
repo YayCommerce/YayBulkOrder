@@ -5,6 +5,12 @@
  * @var WP_Block $block The block instance.
  */
 
+use YayBulkOrder\Services\SettingsService;
+
+$settings_service = SettingsService::get_instance();
+$settings = $settings_service->get_settings();
+$default_cart_quantity = $settings['general']['defaultCartQuantity'];
+
 $context = $block->context;
 $product_id = $context['yay-bulk-order/productId'];
 
@@ -40,17 +46,15 @@ $is_supported_product = $product && in_array( $product_type, [ 'simple' ], true 
                 <?php if ( $is_supported_product ) : ?>
                     <input 
                         type="number"
+                        step="<?php echo esc_attr( $default_cart_quantity ); ?>"
                         min="<?php echo esc_attr( $min_quantity ); ?>"
                         data-wp-bind--value="context.quantity"
                         data-wp-on--input="actions.updateQuantity"
-                        style="width: 60px; padding: 4px; border: 1px solid #ddd; border-radius: 4px;"
                         aria-label="<?php echo esc_attr__( 'Quantity', 'yay-bulk-order' ); ?>"
                     />
                     <button 
                         data-wp-on--click="actions.addToCart"
                         data-wp-bind--disabled="context.isLoading"
-                        data-wp-bind--style="state.buttonStyles"
-                        style="padding: 6px 12px;"
                         aria-label="<?php echo esc_attr__( 'Add to cart', 'yay-bulk-order' ); ?>"
                     >
                         <span data-wp-text="state.buttonText"><?php echo esc_html__( 'Add to Cart', 'yay-bulk-order' ); ?></span>
