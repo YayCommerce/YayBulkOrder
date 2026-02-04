@@ -11,7 +11,7 @@
   "attributes": {
     "variant": {
       "type": "string",
-      "default": "editing"
+      "default": "adding"
     }
   },
   "supports": {

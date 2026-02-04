@@ -7,6 +7,8 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * Shortcodes Service
+ *
+ * @method static ShortcodesService get_instance()
  */
 class ShortcodesService {
 

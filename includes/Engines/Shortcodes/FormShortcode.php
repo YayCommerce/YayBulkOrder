@@ -1,17 +1,23 @@
 <?php
 namespace YayBulkOrder\Engines\Shortcodes;
 
-use YayBulkOrder\Utils\SingletonTrait;
-use YayBulkOrder\Engines\Blocks\Patterns\PatternRenderer;
 use YayBulkOrder\Services\ShortcodesService;
+use YayBulkOrder\Services\PatternService;
+use YayBulkOrder\Utils\SingletonTrait;
 
 /**
  * Registers and renders the [ybo-form-shortcode] shortcode.
  */
-class PatternShortcode {
+class FormShortcode {
     use SingletonTrait;
 
+    private $pattern_service;
+    private $shortcode_service;
+
     protected function __construct() {
+        $this->pattern_service   = PatternService::get_instance();
+        $this->shortcode_service = ShortcodesService::get_instance();
+
         add_shortcode( 'ybo-form-shortcode', [ $this, 'render_pattern' ] );
     }
 
@@ -36,11 +42,10 @@ class PatternShortcode {
 
         // If ID is provided, get shortcode data
         if ( ! empty( $atts['id'] ) ) {
-            $shortcode_id      = intval( $atts['id'] );
-            $shortcode_service = ShortcodesService::get_instance();
+            $shortcode_id = intval( $atts['id'] );
 
             try {
-                $shortcode_data = $shortcode_service->get_shortcode( $shortcode_id );
+                $shortcode_data = $this->shortcode_service->get_shortcode( $shortcode_id );
                 $pattern        = $shortcode_data['pattern'] ?? $pattern;
                 $columns        = $shortcode_data['columns'] ?? [];
             } catch ( \Exception $e ) {
@@ -49,7 +54,7 @@ class PatternShortcode {
         }
 
         // Get the pattern content (block markup)
-        $pattern_content = PatternRenderer::render( $pattern, $columns );
+        $pattern_content = $this->pattern_service->render_shortcode( $pattern, $columns );
 
         // Process the block markup through do_blocks() to render it as HTML
         if ( ! empty( $pattern_content ) && function_exists( 'do_blocks' ) ) {
