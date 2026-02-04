@@ -20,10 +20,9 @@ class SettingsRestController extends BaseRestController {
 
     protected function init_hooks(): void {
         register_rest_route(
-            $this->namespace,
+            self::REST_NAMESPACE,
             '/settings',
             [
-               
                 [
                     'methods'             => 'POST',
                     'callback'            => [ $this, 'save_settings' ],
@@ -31,22 +30,10 @@ class SettingsRestController extends BaseRestController {
                 ],
             ]
         );
-
     }
 
-    /**
-     * Check if the user has the necessary permissions to access the settings endpoints.
-     *
-     * @return bool|WP_Error True if the user has the necessary permissions, otherwise a WP_Error object.
-     */
-    public function settings_permission_callback() {
-        if ( ! current_user_can( 'manage_options' ) || ! current_user_can( 'manage_woocommerce' ) ) {
-            return new \WP_Error( 'rest_forbidden', esc_html__( 'Forbidden.', 'yay-bulk-order' ), [ 'status' => 401 ] );
-        }
 
-        return true;
-    }
-    
+
     /**
      * Save the settings.
      *
@@ -57,13 +44,24 @@ class SettingsRestController extends BaseRestController {
         $params = $this->get_json_params( $request );
 
         if ( empty( $params ) ) {
-            return $this->error( __( 'Invalid settings data', 'yay-bulk-order' ) );
+            return $this->error( __( 'Invalid settings data', 'yay-bulk-order' ), 'invalid_settings_data', 400 );
         }
 
         SettingsService::get_instance()->save_settings( $params );
 
-        return $this->success( [], __( 'Settings saved!', 'yay-bulk-order' ) );
+        return rest_ensure_response( true );
     }
 
-    
+    /**
+     * Check if the user has the necessary permissions to access the settings endpoints.
+     *
+     * @return bool|WP_Error True if the user has the necessary permissions, otherwise a WP_Error object.
+     */
+    public function settings_permission_callback() {
+        // if ( ! current_user_can( 'manage_options' ) || ! current_user_can( 'manage_woocommerce' ) ) {
+        // return new \WP_Error( 'rest_forbidden', esc_html__( 'Forbidden.', 'yay-bulk-order' ), [ 'status' => 401 ] );
+        // }
+
+        return current_user_can( 'manage_options' ) && current_user_can( 'manage_woocommerce' );
+    }
 }

@@ -22,10 +22,9 @@ class AdminPage {
 
     private function __construct() {
         $this->settings_service = SettingsService::get_instance();
-        // Register Custom Post Type
-        add_action( 'init', [ $this, 'register_bulk_order_shortcode_post_type' ] );
 
-        add_action( 'admin_menu', [ $this, 'settings_menu' ], YAY_BULK_ORDER_MENU_PRIORITY );
+        add_action( 'init', [ $this, 'register_bulk_order_shortcode_post_type' ] );
+        add_action( 'admin_menu', [ $this, 'settings_menu' ], 10 );
         add_filter( 'admin_body_class', [ $this, 'admin_body_class' ] );
         add_filter( 'plugin_action_links_' . YAY_BULK_ORDER_PLUGIN_BASENAME, [ $this, 'plugin_action_links' ] );
 
@@ -35,15 +34,15 @@ class AdminPage {
     }
 
     public function register_bulk_order_shortcode_post_type() {
-       
-        $labels                  = [
+
+        $labels = [
             'name'          => __( 'Bulk Order Shortcodes', 'yay-bulk-order' ),
             'singular_name' => __( 'Bulk Order Shortcode', 'yay-bulk-order' ),
         ];
 
         $shortcode_post_type = ShortcodesService::SHORTCODE_POST_TYPE;
 
-        $args                    = [
+        $args = [
             'labels'            => $labels,
             'description'       => __( 'Bulk Order Shortcodes', 'yay-bulk-order' ),
             'public'            => false,
@@ -70,7 +69,6 @@ class AdminPage {
         ];
 
         register_post_type( $shortcode_post_type, $args );
-
     }
 
     public function settings_menu() {
@@ -107,17 +105,7 @@ class AdminPage {
         wp_localize_script(
             ScriptName::ADMIN_PAGE,
             'yayBulkOrderAdminData',
-            [
-                'path'     => [
-                    'assetsUrl' => YAY_BULK_ORDER_PLUGIN_URL . 'assets/',
-                    'restUrl'   => rest_url( 'yay-bulk-order/v1/' ),
-                    'nonce'     => wp_create_nonce( 'wp_rest' ),
-                ],
-                'metadata' => [
-                    'isBlockTheme' => wp_is_block_theme(),
-                ],
-                'settings' => $this->settings_service->get_settings(),
-            ]
+            $this->settings_service->get_config(),
         );
     }
 

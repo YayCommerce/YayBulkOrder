@@ -1,9 +1,6 @@
-/* eslint-disable react-refresh/only-export-components */
 import type { ComponentPropsWithoutRef, ElementType } from 'react';
 
-type StyledComponent<T extends ElementType> = (
-  props: Omit<ComponentPropsWithoutRef<T>, 'className'>,
-) => JSX.Element;
+type StyledComponent<T extends ElementType> = (props: Omit<ComponentPropsWithoutRef<T>, 'className'>) => JSX.Element;
 
 function CreateStyledDiv(className: string): StyledComponent<'div'> {
   return (props) => <div className={className} {...props} />;

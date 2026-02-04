@@ -1,32 +1,12 @@
 import { getContext, getElement, store } from '@wordpress/interactivity';
 
-import { checkViewIsReady } from '@yay-bulk-order/view';
-
-type ServerState = {
-  state: {
-    isBlockTheme: boolean;
-    pageSize: number;
-  };
-};
-
-type Context = {
-  config: {
-    queryId: number;
-    forcePageReload: boolean;
-  };
-  queryContext: {
-    page: number;
-    filter: 'all' | 'in-stock' | 'on-sale';
-  };
-  queryResult: {
-    totalLength: number;
-  };
-};
+import type { BulkOrderContext, BulkOrderState } from '@yay-bulk-order/common/types/bulkOrder.type';
+import { checkViewIsReady, getBulkOrderConfig } from '@yay-bulk-order/view';
 
 const storeDef = {
   state: {
     get currentPage(): number {
-      const context = getContext<Context>();
+      const context = getContext<BulkOrderContext>();
       return context.queryContext.page;
     },
   },
@@ -65,20 +45,18 @@ const storeDef = {
       }
     },
     onRender() {
-      const context = getContext<Context>();
+      const context = getContext<BulkOrderContext>();
+      const config = getBulkOrderConfig();
       console.log('onRender', {
-        isBlockTheme: state.isBlockTheme,
-        config: context.config.queryId,
-        page: context.queryContext.page,
-        filter: context.queryContext.filter,
-        totalLength: context.queryResult.totalLength,
+        queryContext: context.queryContext,
+        config,
       });
       checkViewIsReady();
     },
   },
 };
 
-type Store = ServerState & typeof storeDef;
+type Store = BulkOrderState & typeof storeDef;
 
 const { state } = store<Store>('yay-bulk-order/bulk-order-form', storeDef, { lock: true });
 

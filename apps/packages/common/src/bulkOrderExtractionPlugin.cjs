@@ -1,21 +1,21 @@
-const DependencyExtractionWebpackPlugin = require("@wordpress/dependency-extraction-webpack-plugin");
+const DependencyExtractionWebpackPlugin = require('@wordpress/dependency-extraction-webpack-plugin');
 
 const scriptExtractionPlugin = new DependencyExtractionWebpackPlugin({
   requestToExternal(request) {
-    if (request === "@yay-bulk-order/utils") {
-      return ["YayBulkOrder", "utils"];
+    if (request === '@yay-bulk-order/utils') {
+      return ['YayBulkOrder', 'utils'];
     }
   },
 });
 
 const moduleExtractionPlugin = new DependencyExtractionWebpackPlugin({
   requestToExternal(request) {
-    if (request === "@yay-bulk-order/utils") {
-      return ["YayBulkOrder", "utils"];
+    if (request === '@yay-bulk-order/utils') {
+      return ['YayBulkOrder', 'utils'];
     }
   },
   requestToExternalModule(request) {
-    if (request === "@yay-bulk-order/view") {
+    if (request === '@yay-bulk-order/view') {
       return request;
     }
   },

@@ -7,15 +7,13 @@
   "category": "woocommerce",
   "description": "Bulk Order Form Column to show Product Title",
   "textdomain": "yay-bulk-order",
-  "usesContext": [ "yay-bulk-order/productId" ],
+  "usesContext": ["yay-bulk-order/productId"],
   "supports": {
     "inserter": false,
     "multiple": false,
     "html": false
   },
-  "parent": [
-    "yay-bulk-order/table-template"
-  ],
+  "parent": ["yay-bulk-order/table-template"],
   "editorScript": "file:./editor.js",
   "render": "file:./render.php"
 }

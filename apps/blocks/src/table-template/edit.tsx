@@ -13,11 +13,11 @@ export default function Edit(props: BlockEditProps<unknown>) {
         </tr>
       </thead>
       <tbody>
-        <tr>
+        {/* <tr>
           <td colSpan={999}>
             <pre>Debug: {JSON.stringify({ attributes, context }, null, 2)}</pre>
           </td>
-        </tr>
+        </tr> */}
         <tr>
           <InnerBlocks template={DEFAULT_TEMPLATE} />
         </tr>

@@ -7,40 +7,38 @@
   "category": "woocommerce",
   "description": "A block to show WooCommerce Products as Table optimized for bulk ordering.",
   "textdomain": "yay-bulk-order",
-  "usesContext": [ "queryId", "query" ],
+  "usesContext": ["queryId", "query"],
   "supports": {
     "interactivity": true,
     "inserter": false,
     "multiple": false,
-		"reusable": false,
+    "reusable": false,
     "html": false,
-    "align": [ "wide", "full" ],
-		"anchor": true,
+    "align": ["wide", "full"],
+    "anchor": true,
     "color": {
-			"gradients": true,
-			"link": true,
-			"__experimentalDefaultControls": {
-				"background": true,
-				"text": true
-			}
-		},
-		"typography": {
-			"fontSize": true,
-			"lineHeight": true,
-			"__experimentalFontFamily": true,
-			"__experimentalFontWeight": true,
-			"__experimentalFontStyle": true,
-			"__experimentalTextTransform": true,
-			"__experimentalTextDecoration": true,
-			"__experimentalLetterSpacing": true,
-			"__experimentalDefaultControls": {
-				"fontSize": true
-			}
-		}
+      "gradients": true,
+      "link": true,
+      "__experimentalDefaultControls": {
+        "background": true,
+        "text": true
+      }
+    },
+    "typography": {
+      "fontSize": true,
+      "lineHeight": true,
+      "__experimentalFontFamily": true,
+      "__experimentalFontWeight": true,
+      "__experimentalFontStyle": true,
+      "__experimentalTextTransform": true,
+      "__experimentalTextDecoration": true,
+      "__experimentalLetterSpacing": true,
+      "__experimentalDefaultControls": {
+        "fontSize": true
+      }
+    }
   },
-  "ancestor": [
-    "yay-bulk-order/bulk-order-form"
-  ],
+  "ancestor": ["yay-bulk-order/bulk-order-form"],
   "allowedBlocks": [
     "yay-bulk-order/column-product-title",
     "yay-bulk-order/column-product-price",

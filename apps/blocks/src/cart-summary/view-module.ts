@@ -32,7 +32,11 @@ const storeDef = {
     },
     get itemCount() {
       const context = getContext<Context>();
-      return `(${context.itemCount ?? 0})`;
+      return `(${context.itemCount ?? 0} items)`;
+    },
+    get isEmpty() {
+      const context = getContext<Context>();
+      return context.itemCount === 0;
     },
     get subtotal() {
       const context = getContext<Context>();
@@ -54,9 +58,7 @@ const storeDef = {
       const context = getContext<Context>();
       context.isOpen = true;
 
-      document
-        .querySelector('.wc-block-mini-cart__button')
-        ?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      document.querySelector('.wc-block-mini-cart__button')?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
     },
   },
 

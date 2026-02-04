@@ -5,7 +5,6 @@ import { ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { PopoverTrigger } from '@/components/ui/popover';
-
 import { Badge } from './badge';
 import { inputVariants } from './variants/input.variants';
 
@@ -23,7 +22,7 @@ function ComboboxTrigger({
         variant="outline"
         role="combobox"
         className={cn(
-          '[&_svg:not([class*="text-"])]:text-muted-foreground h-auto min-h-9 w-fit min-w-[300px] justify-between px-2 py-1 font-normal [&_svg:not([class*="text-"])]:transition-colors',
+          'h-auto min-h-9 w-fit min-w-[300px] justify-between px-2 py-1 font-normal [&_svg:not([class*="text-"])]:text-muted-foreground [&_svg:not([class*="text-"])]:transition-colors',
           inputVariants({ variant: 'picker' }),
           className,
         )}
@@ -35,18 +34,9 @@ function ComboboxTrigger({
   );
 }
 
-function ComboboxBadge({
-  label,
-  onRemove,
-}: {
-  label: string;
-  onRemove: (e: React.MouseEvent) => void;
-}) {
+function ComboboxBadge({ label, onRemove }: { label: string; onRemove: (e: React.MouseEvent) => void }) {
   return (
-    <Badge
-      variant="muted"
-      className="text-foreground bg-muted-400 h-6.5 rounded-sm [&>svg]:pointer-events-auto"
-    >
+    <Badge variant="muted" className="h-6.5 rounded-sm bg-muted-400 text-foreground [&>svg]:pointer-events-auto">
       {label}
       <XIcon
         onMouseDown={(e) => {
@@ -58,7 +48,7 @@ function ComboboxBadge({
           e.preventDefault();
           onRemove(e);
         }}
-        className="text-muted-foreground hover:text-destructive size-3.5"
+        className="size-3.5 text-muted-foreground hover:text-destructive"
         weight="bold"
       />
     </Badge>
@@ -72,7 +62,7 @@ function ComboboxIcon({ className }: { className?: string }) {
 function ComboboxCheckbox({ selected }: { selected: boolean }) {
   return (
     <div
-      className="border-input data-[selected=true]:border-primary data-[selected=true]:bg-primary data-[selected=true]:text-primary-foreground pointer-events-none size-4 shrink-0 rounded-[4px] border transition-all select-none *:[svg]:opacity-0 data-[selected=true]:*:[svg]:opacity-100"
+      className="pointer-events-none size-4 shrink-0 rounded-[4px] border border-input transition-all select-none data-[selected=true]:border-primary data-[selected=true]:bg-primary data-[selected=true]:text-primary-foreground *:[svg]:opacity-0 data-[selected=true]:*:[svg]:opacity-100"
       data-selected={selected}
     >
       <CheckIcon className="size-3.5 text-current" />

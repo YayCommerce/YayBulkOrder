@@ -1,18 +1,8 @@
-import type { SettingsFormData } from '@/lib/schemas/settings.schema';
+import type { BulkOrderConfig } from '@yay-bulk-order/common/types/bulkOrder.type';
 
 declare global {
   interface Window {
-    yayBulkOrderAdminData: {
-      metadata: {
-        isBlockTheme: boolean;
-      };
-      path: {
-        assetsUrl: string;
-        restUrl: string;
-        nonce: string;
-      };
-      settings: SettingsFormData;
-    };
+    yayBulkOrderAdminData: BulkOrderConfig;
   }
 }
 

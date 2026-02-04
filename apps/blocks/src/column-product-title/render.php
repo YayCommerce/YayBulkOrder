@@ -18,11 +18,11 @@ if ( !! $product_id ) {
 <td
     <?php echo get_block_wrapper_attributes(); ?>
 >
-    <?php
-    if ( null !== $product && false !== $product ) {
-        echo esc_html( $product->get_title() );
-    } else {
-        echo esc_html__( '...', 'yay-bulk-order' );
-    }
-    ?>
+    <?php if ( null !== $product && false !== $product ) : ?>
+        <a href="<?php echo esc_url( get_permalink( $product_id ) ); ?>" target="_blank">
+            <?php echo esc_html( $product->get_title() ); ?>
+        </a>
+    <?php else : ?>
+        No Product
+    <?php endif; ?>
 </td>

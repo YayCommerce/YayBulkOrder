@@ -1,10 +1,117 @@
 import { useState } from 'react';
+import {
+  closestCenter,
+  DndContext,
+  DragOverlay,
+  DragStartEvent,
+  MouseSensor,
+  TouchSensor,
+  UniqueIdentifier,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from '@dnd-kit/core';
+import { arrayMove, SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import { GripVertical } from 'lucide-react';
-import { useFieldArray, useFormContext } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import { __ } from '@wordpress/i18n';
 
-import { ShortcodeFormValues } from '@/lib/schemas/shortcodes.schema';
-import { FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
+import { ColumnId, ShortcodeConfigFormValues } from '@/lib/schemas/shortcodes.schema';
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { Field, FieldLabel } from '@/components/ui/field';
+
+export function ColumnOrder() {
+  const form = useFormContext<ShortcodeConfigFormValues>();
+  const columns = form.watch('columns');
+
+  const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
+  const getIndex = (id: UniqueIdentifier) => form.getValues('columns').indexOf(id as ColumnId);
+  const activeIndex = activeId != null ? getIndex(activeId) : -1;
+  const sensors = useSensors(useSensor(MouseSensor, {}), useSensor(TouchSensor, {}));
+
+  function onDragStart({ active }: DragStartEvent) {
+    if (!active) return;
+    setActiveId(active.id);
+  }
+  function onDragCancel() {
+    setActiveId(null);
+  }
+
+  function handleDragEnd({ over }: DragEndEvent) {
+    setActiveId(null);
+    if (!over) return;
+    const overIndex = getIndex(over.id);
+    if (overIndex === activeIndex) return;
+
+    const currentColumns = form.getValues('columns');
+    const newCols = arrayMove(currentColumns, activeIndex, overIndex);
+    form.setValue('columns', newCols, { shouldDirty: true, shouldTouch: true });
+  }
+
+  return (
+    <Field>
+      <FieldLabel>{__('Column Order', 'yay-bulk-order')}</FieldLabel>
+      <input type="hidden" {...form.register('columns')} />
+      <div>
+        <DndContext
+          collisionDetection={closestCenter}
+          onDragStart={onDragStart}
+          onDragCancel={onDragCancel}
+          onDragEnd={handleDragEnd}
+          sensors={sensors}
+        >
+          <SortableContext items={columns} strategy={verticalListSortingStrategy}>
+            <div className="flex w-40 flex-col items-stretch justify-stretch gap-2">
+              {columns.map((columnId) => (
+                <DraggableButton key={columnId} columnId={columnId} />
+              ))}
+            </div>
+          </SortableContext>
+
+          <DragOverlay>
+            {activeId != null ? (
+              <div className="z-50 flex w-40">
+                <Button variant="outline" className="w-full cursor-grab justify-start hover:bg-background">
+                  <GripVertical className="h-4 w-4 shrink-0 text-muted-foreground" />
+                  <span className="text-sm whitespace-nowrap">{COLUMN_LABELS[activeId]}</span>
+                </Button>
+              </div>
+            ) : null}
+          </DragOverlay>
+        </DndContext>
+      </div>
+    </Field>
+  );
+}
+
+function DraggableButton({ columnId }: { columnId: ColumnId }) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id: columnId,
+  });
+
+  const style = {
+    transform: CSS.Transform.toString(transform), //let dnd-kit do its thing
+    transition: transition,
+    position: 'relative',
+  } satisfies React.CSSProperties;
+
+  return (
+    <div
+      ref={setNodeRef}
+      className={cn(isDragging && 'rounded-sm bg-muted')}
+      style={style}
+      {...attributes}
+      {...listeners}
+    >
+      <Button variant="outline" className={cn('w-full cursor-grab justify-start', isDragging && 'invisible')}>
+        <GripVertical className="h-4 w-4 shrink-0 text-muted-foreground" />
+        <span className="text-sm whitespace-nowrap">{COLUMN_LABELS[columnId]}</span>
+      </Button>
+    </div>
+  );
+}
 
 const COLUMN_LABELS: Record<string, string> = {
   'yay-bulk-order/column-product-title': __('Title', 'yay-bulk-order'),
@@ -12,90 +119,3 @@ const COLUMN_LABELS: Record<string, string> = {
   'yay-bulk-order/column-product-stock': __('Stock', 'yay-bulk-order'),
   'yay-bulk-order/column-add-to-cart': __('Cart', 'yay-bulk-order'),
 };
-
-export function ColumnOrder() {
-  const { control, watch } = useFormContext<ShortcodeFormValues>();
-  const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
-  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
-
-  // TypeScript has issues inferring the field array type with zod schemas
-  // This is a known limitation - the runtime behavior is correct
-  const { fields, move } = useFieldArray({
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    control: control as any,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    name: 'columns' as any,
-  });
-
-  // Watch the current column order values
-  const columnOrderValues = watch('columns');
-
-  const handleDragStart = (index: number) => {
-    setDraggedIndex(index);
-  };
-
-  const handleDragOver = (e: React.DragEvent, index: number) => {
-    e.preventDefault();
-    setDragOverIndex(index);
-  };
-
-  const handleDragLeave = () => {
-    setDragOverIndex(null);
-  };
-
-  const handleDrop = (e: React.DragEvent, dropIndex: number) => {
-    e.preventDefault();
-    if (draggedIndex !== null && draggedIndex !== dropIndex) {
-      move(draggedIndex, dropIndex);
-    }
-    setDraggedIndex(null);
-    setDragOverIndex(null);
-  };
-
-  const handleDragEnd = () => {
-    setDraggedIndex(null);
-    setDragOverIndex(null);
-  };
-
-  return (
-    <FormField
-      control={control}
-      name="columns"
-      render={() => (
-        <FormItem className="w-full gap-2.5">
-          <FormLabel className="text-foreground-400 text-xs font-medium">
-            {__('Column Order', 'yay-bulk-order')}
-          </FormLabel>
-          <FormControl>
-            <div className="flex flex-nowrap gap-2">
-              {fields.map((field, index) => {
-                // Get the actual value from the watched array
-                const value = columnOrderValues?.[index] || String(field);
-                const isDragging = draggedIndex === index;
-                const isDragOver = dragOverIndex === index;
-
-                return (
-                  <div
-                    key={field.id}
-                    draggable
-                    onDragStart={() => handleDragStart(index)}
-                    onDragOver={(e) => handleDragOver(e, index)}
-                    onDragLeave={handleDragLeave}
-                    onDrop={(e) => handleDrop(e, index)}
-                    onDragEnd={handleDragEnd}
-                    className={`flex shrink-0 cursor-move items-center gap-2 rounded-md border px-3 py-2 transition-all ${isDragging ? 'bg-muted opacity-50' : ''} ${isDragOver ? 'border-primary bg-primary/5' : 'border-border bg-background'} hover:border-primary/50 hover:bg-muted/50`}
-                  >
-                    <GripVertical className="text-muted-foreground h-4 w-4 shrink-0" />
-                    <span className="text-sm font-medium whitespace-nowrap">
-                      {COLUMN_LABELS[value] || value}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-          </FormControl>
-        </FormItem>
-      )}
-    />
-  );
-}

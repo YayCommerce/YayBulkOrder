@@ -8,7 +8,6 @@
   "icon": "cart",
   "description": "Display cart items, totals, and checkout buttons.",
   "textdomain": "yay-bulk-order",
-  "attributes": {},
   "supports": {
     "interactivity": true,
     "multiple": true,
@@ -16,7 +15,9 @@
     "align": ["wide", "full"],
     "anchor": true
   },
+  "ancestor": ["yay-bulk-order/bulk-order-form"],
   "editorScript": "file:./editor.js",
   "render": "file:./render.php",
+  "style": "file:./style-editor.css",
   "viewScriptModule": "file:./view-module.js"
 }

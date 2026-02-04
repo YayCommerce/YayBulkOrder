@@ -7,24 +7,21 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-
+import { focusVariants } from './variants/focus.variants';
 import {
   inputGroupAddonVariants,
   inputGroupButtonVariants,
   InputGroupVariantProps,
   inputGroupVariants,
+  inputVariants,
 } from './variants/input.variants';
 
-function InputGroup({
-  className,
-  size = 'large',
-  ...props
-}: React.ComponentProps<'div'> & InputGroupVariantProps) {
+function InputGroup({ className, size = 'large', ...props }: React.ComponentProps<'div'> & InputGroupVariantProps) {
   return (
     <div
       data-slot="input-group"
       role="group"
-      className={cn(inputGroupVariants({ size }), className)}
+      className={cn(inputGroupVariants({ size }), focusVariants(), inputVariants({ variant: 'input' }), className)}
       {...props}
     />
   );
@@ -58,8 +55,7 @@ function InputGroupButton({
   variant = 'ghost',
   size = 'large',
   ...props
-}: Omit<React.ComponentProps<typeof Button>, 'size'> &
-  VariantProps<typeof inputGroupButtonVariants>) {
+}: Omit<React.ComponentProps<typeof Button>, 'size'> & VariantProps<typeof inputGroupButtonVariants>) {
   return (
     <Button
       type={type}
@@ -75,7 +71,7 @@ function InputGroupText({ className, ...props }: React.ComponentProps<'span'>) {
   return (
     <span
       className={cn(
-        "text-muted-foreground flex items-center gap-2 text-sm [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4",
+        "flex items-center gap-2 text-sm text-muted-foreground [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4",
         className,
       )}
       {...props}
@@ -109,11 +105,4 @@ function InputGroupTextarea({ className, ...props }: React.ComponentProps<'texta
   );
 }
 
-export {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupButton,
-  InputGroupText,
-  InputGroupInput,
-  InputGroupTextarea,
-};
+export { InputGroup, InputGroupAddon, InputGroupButton, InputGroupText, InputGroupInput, InputGroupTextarea };

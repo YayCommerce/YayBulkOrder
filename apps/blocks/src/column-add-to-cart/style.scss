@@ -1,0 +1,37 @@
+/**
+ * The following styles get applied both on the front of your site
+ * and in the editor.
+ *
+ * Replace them with your own styles or remove the file completely.
+ */
+td.wp-block-yay-bulk-order-column-add-to-cart {
+  padding: 0px 10px !important;
+
+  > div {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+
+    input {
+      width: 60px;
+      border: 1px solid #ddd;
+      padding: 6px 12px;
+      border-radius: var(--ybo-border-radius);
+    }
+
+    button {
+      background-color: var(--ybo-primary-color);
+      color: #ffffff;
+      border-color: transparent;
+      padding: 6px 12px;
+      border-radius: var(--ybo-border-radius);
+      cursor: pointer;
+    }
+  }
+
+  &.adding-variant {
+  }
+
+  &.editing-variant {
+  }
+}

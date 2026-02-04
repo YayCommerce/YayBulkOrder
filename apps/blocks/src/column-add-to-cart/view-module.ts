@@ -1,10 +1,6 @@
-import { getConfig, getContext, getElement, store } from '@wordpress/interactivity';
+import { getContext, getElement, store } from '@wordpress/interactivity';
 
-type Context = {
-  productId: number;
-  quantity: number;
-  isLoading: boolean;
-};
+import { CartColumnContext, CartColumnState } from './type';
 
 interface Window {
   wc_add_to_cart_params?: {
@@ -15,50 +11,40 @@ interface Window {
 
 const storeDef = {
   state: {
-    get buttonText(): string {
-      const context = getContext<Context>();
-      return context.isLoading ? 'Adding...' : 'Add to Cart';
-    },
-    get buttonStyles() {
-      const config = getConfig('yay-bulk-order/bulk-order-form');
-      const styles = config?.settings?.styles ?? null;
-      return `
-        background-color: ${styles?.colors?.backgroundNormal ?? '#0073aa'};
-        color: ${styles?.colors?.textNormal ?? '#ffffff'};
-        border-radius: ${styles?.borderRadius === 'small' ? '4px' : styles?.borderRadius === 'large' ? '20px' : '8px'};
-      `;
-    },
-  },
-  callbacks: {
-    initQuantity() {
-      const context = getContext<Context>();
-      if (!context.quantity || context.quantity < 1) {
-        const config = getConfig('yay-bulk-order/bulk-order-form');
-        context.quantity = config?.settings?.defaultCartQuantity ?? 1;
-      }
+    get addingButtonText(): string {
+      const isAdding = false; // TODO
+      return isAdding ? 'Adding...' : 'Add to Cart';
     },
   },
   actions: {
-    updateQuantity(event: Event) {
-      const context = getContext<Context>();
+    updateAddingQuantity(event: Event) {
+      const context = getContext<CartColumnContext>();
       const input = event.target as HTMLInputElement;
       const quantity = parseInt(input.value, 10);
-      context.quantity = isNaN(quantity) ? 0 : quantity;
+      context.addingQuantity = isNaN(quantity) ? 0 : quantity;
+    },
+    updateEditingQuantity(event: Event) {
+      const context = getContext<CartColumnContext>();
+      const input = event.target as HTMLInputElement;
+      const quantity = parseInt(input.value, 10);
+      context.editingQuantity = isNaN(quantity) ? 0 : quantity;
+    },
+    increaseEditingQuantity() {
+      const context = getContext<CartColumnContext>();
+      context.editingQuantity += context.stepQuantity;
+    },
+    decreaseEditingQuantity() {
+      const context = getContext<CartColumnContext>();
+      const newQuantity = context.editingQuantity - context.stepQuantity;
+      context.editingQuantity = Math.max(context.minQuantity, newQuantity);
     },
     *addToCart() {
-      const context = getContext<Context>();
+      const context = getContext<CartColumnContext>();
       const { ref } = getElement();
-      const { productId, quantity, isLoading } = context;
-      if (isLoading || !productId) {
-        return;
-      }
+      const { productId, addingQuantity } = context;
 
-      if (!Number.isInteger(quantity) || quantity < 1) {
-        alert('Please enter a valid quantity (greater than 0).');
-        return;
-      }
-
-      context.isLoading = true;
+      if (!productId) return;
+      if (!Number.isInteger(addingQuantity) || addingQuantity < 1) return;
 
       try {
         const win = typeof window !== 'undefined' ? (window as Window) : undefined;
@@ -69,7 +55,7 @@ const storeDef = {
           const formData = new FormData();
           formData.append('action', 'woocommerce_add_to_cart');
           formData.append('product_id', productId.toString());
-          formData.append('quantity', quantity.toString());
+          formData.append('quantity', addingQuantity.toString());
 
           const response = yield fetch(ajaxUrl, {
             method: 'POST',
@@ -87,26 +73,22 @@ const storeDef = {
             const $body = win?.jQuery(document.body);
             // Trigger WooCommerce cart fragments update
             if ($body.trigger) {
-              $body.trigger('added_to_cart', [
-                data.fragments || {},
-                data.cart_hash || '',
-                win?.jQuery(ref),
-              ]);
+              $body.trigger('added_to_cart', [data.fragments || {}, data.cart_hash || '', win?.jQuery(ref)]);
               // Also trigger wc_fragment_refresh for mini cart updates
               $body.trigger('wc_fragment_refresh');
             }
           }
         } else {
           // Fallback: redirect to add to cart URL
-          window.location.href = `?add-to-cart=${productId}&quantity=${quantity}`;
+          window.location.href = `?add-to-cart=${productId}&quantity=${addingQuantity}`;
         }
       } catch (error) {
         console.error('Error adding to cart:', error);
-      } finally {
-        context.isLoading = false;
       }
     },
   },
 };
 
-store('yay-bulk-order/add-to-cart', storeDef, { lock: true });
+type Store = CartColumnState & typeof storeDef;
+
+const { state } = store<Store>('yay-bulk-order/add-to-cart', storeDef, { lock: true });

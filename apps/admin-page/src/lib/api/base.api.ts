@@ -1,9 +1,8 @@
-import { __ } from '@wordpress/i18n';
 import ky, { Options, ResponsePromise } from 'ky';
 
 const { restUrl, nonce } = window.yayBulkOrderAdminData.path;
 
-let _ky = ky.create({
+const _ky = ky.create({
   prefixUrl: restUrl,
   headers: {
     'X-WP-Nonce': nonce,
@@ -12,7 +11,8 @@ let _ky = ky.create({
     afterResponse: [
       async (request, options, response) => {
         if (response.status === 403) {
-          const body: any = await response.json();
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const body = (await response.json()) as any;
 
           if (body?.code === 'rest_cookie_invalid_nonce') {
             // if session expired
@@ -141,33 +141,3 @@ export const yayBulkOrderApi = createApi(restUrl);
 export const wordpressApi = createApi('wp/v2');
 
 export const api = yayBulkOrderApi;
-export { HTTPError } from 'ky';
-
-/**
- * Handles API response parsing and error handling
- * @param response - Response object from fetch request
- * @param defaultMessage - Default message to show if no message in response
- * @returns Parsed response data with success, message and data fields
- * @throws Error if response is not ok
- */
-export interface ApiResponse<T> {
-  success: boolean;
-  message: string;
-  data: T;
-}
-
-export async function handleResponse<T>(
-  response: Response,
-  errorMessage: string,
-): Promise<ApiResponse<T>> {
-  if (!response.ok) {
-    throw new Error(__(errorMessage, 'yay-bulk-order'));
-  }
-
-  const result = await response.json();
-  if (!result.success) {
-    throw new Error(__(result.message || errorMessage, 'yay-bulk-order'));
-  }
-
-  return result;
-}

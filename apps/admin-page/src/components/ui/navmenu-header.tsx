@@ -2,8 +2,8 @@ import * as React from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import { useLocation } from 'react-router';
 
-import { useCombinedRefs } from '@/lib/hooks/useCombinedRefs';
 import { cn } from '@/lib/utils';
+import { useCombinedRefs } from '@/hooks/useCombinedRefs';
 
 const HeaderNavMenuList = React.forwardRef<HTMLUListElement, HeaderNavMenuListProps>(
   ({ mode = 'router', activeTab, className, asChild = false, children, ...props }, ref) => {
@@ -48,10 +48,7 @@ const HeaderNavMenuList = React.forwardRef<HTMLUListElement, HeaderNavMenuListPr
     return (
       <Comp
         data-slot="header-navigation-menu-list"
-        className={cn(
-          'relative flex h-13.5 flex-1 list-none items-stretch justify-start gap-0',
-          className,
-        )}
+        className={cn('relative flex h-13.5 flex-1 list-none items-stretch justify-start gap-0', className)}
         {...props}
         ref={combinedRef}
       >
@@ -59,7 +56,7 @@ const HeaderNavMenuList = React.forwardRef<HTMLUListElement, HeaderNavMenuListPr
 
         <div
           data-slot="header-navigation-menu-indicator"
-          className="bg-foreground absolute bottom-0 h-[3px]"
+          className="absolute bottom-0 h-[3px] bg-foreground"
           ref={indicatorRef}
           style={{
             transition: 'width 0.3s, left 0.3s',
@@ -81,7 +78,7 @@ const HeaderNavMenuItem = React.forwardRef<HTMLLIElement, HeaderNavMenuItemProps
       <Comp
         data-slot="header-navigation-menu-item"
         className={cn(
-          'text-foreground hover:border-border flex cursor-default items-center justify-center gap-1.5 border-b-3 border-solid border-transparent px-5 text-sm shadow-none transition-colors outline-none hover:cursor-pointer',
+          'flex cursor-default items-center justify-center gap-1.5 border-b-3 border-solid border-transparent px-5 text-sm text-foreground shadow-none transition-colors outline-none hover:cursor-pointer hover:border-border',
           'aria-[current=page]:text-shadow-[0_0_0.25px_currentcolor] data-[state=active]:text-shadow-[0_0_0.25px_currentcolor]',
           className,
         )}
