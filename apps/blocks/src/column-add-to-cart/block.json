@@ -8,6 +8,12 @@
   "description": "Bulk Order Form Column to add products to cart",
   "textdomain": "yay-bulk-order",
   "usesContext": ["yay-bulk-order/productId"],
+  "attributes": {
+    "variant": {
+      "type": "string",
+      "default": "editing"
+    }
+  },
   "supports": {
     "inserter": false,
     "multiple": false,

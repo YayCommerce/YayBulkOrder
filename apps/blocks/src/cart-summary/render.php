@@ -38,7 +38,7 @@ wp_interactivity_config(
 		data-wp-class--is-empty="state.isEmpty"
 	>
 		<span class="yay-cart-trigger__icon">
-			<?php echo esc_html__( 'Your Cart', 'yay-bulk-order' ); ?>
+			<?php echo esc_html__( 'Cart', 'yay-bulk-order' ); ?>
 		</span>
 
 		<span

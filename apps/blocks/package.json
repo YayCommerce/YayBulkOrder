@@ -14,8 +14,9 @@
   "dependencies": {
     "@wordpress/block-editor": "latest",
     "@wordpress/blocks": "latest",
-    "@wordpress/data": "latest",
+    "@wordpress/components": "latest",
     "@wordpress/compose": "latest",
+    "@wordpress/data": "latest",
     "@wordpress/i18n": "latest",
     "@wordpress/icons": "^11.4.0",
     "@wordpress/interactivity": "latest",

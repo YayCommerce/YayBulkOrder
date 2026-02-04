@@ -32,7 +32,7 @@ const storeDef = {
     },
     get itemCount() {
       const context = getContext<Context>();
-      return `(${context.itemCount ?? 0})`;
+      return `(${context.itemCount ?? 0} items)`;
     },
     get isEmpty() {
       const context = getContext<Context>();

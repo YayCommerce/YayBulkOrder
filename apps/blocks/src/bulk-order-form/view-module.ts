@@ -1,7 +1,7 @@
 import { getContext, getElement, store } from '@wordpress/interactivity';
 
 import type { BulkOrderContext, BulkOrderState } from '@yay-bulk-order/common/types/bulkOrder.type';
-import { checkViewIsReady } from '@yay-bulk-order/view';
+import { checkViewIsReady, getBulkOrderConfig } from '@yay-bulk-order/view';
 
 const storeDef = {
   state: {
@@ -46,8 +46,10 @@ const storeDef = {
     },
     onRender() {
       const context = getContext<BulkOrderContext>();
+      const config = getBulkOrderConfig();
       console.log('onRender', {
         queryContext: context.queryContext,
+        config,
       });
       checkViewIsReady();
     },
