@@ -1,7 +1,7 @@
 import { Controller, useFormContext } from 'react-hook-form';
 import { __ } from '@wordpress/i18n';
 
-import { Settings } from '@/lib/schemas/settings.schema';
+import { Settings } from '@yay-bulk-order/common/types/settings.schema';
 import { Card, CardContent } from '@/components/ui/card';
 import { ColorPicker } from '@/components/ui/color-picker';
 import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field';
