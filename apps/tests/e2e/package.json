@@ -1,0 +1,8 @@
+{
+  "name": "@yay-bulk-order/tests-e2e",
+  "version": "0.1.0",
+  "description": "E2E tests for Yay Bulk Order",
+  "author": "YayCommerce",
+  "type": "module",
+  "main": "src/tests-e2e.index.ts"
+}

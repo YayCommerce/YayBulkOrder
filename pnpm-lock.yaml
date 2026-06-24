@@ -1,0 +1,17 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .: {}
+
+  apps/app-admin: {}
+
+  apps/blocks: {}
+
+  apps/packages/common: {}
+
+  apps/tests/e2e: {}

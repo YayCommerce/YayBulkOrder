@@ -1,0 +1,8 @@
+{
+  "name": "@yay-bulk-order/app-admin",
+  "version": "0.1.0",
+  "description": "Admin page app for Yay Bulk Order - Configuration, Builder, Guidelines, ...",
+  "author": "YayCommerce",
+  "type": "module",
+  "main": "src/main.ts"
+}

@@ -3,37 +3,35 @@
     "editor.defaultFormatter": "wongjn.php-sniffer",
     "editor.formatOnSave": true
   },
-  "phpSniffer.autoDetect": true,
-
-  "eslint.workingDirectories": [{ "mode": "auto" }],
-  "[typescriptreact][typescript][javascript][css][scss][postcss]": {
+  "[typescript][typescriptreact][postcss][css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true
   },
-  "[typescriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  "[json][jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": false
   },
-  "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[css]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[scss]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[postcss]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
   },
 
-  "tailwindCSS.experimental.configFile": "./apps/admin-page/src/main.css",
+  "phpSniffer.autoDetect": true,
+  "eslint.format.enable": true,
+  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+  "eslint.workingDirectories": [{ "mode": "auto" }],
 
-  "intelephense.diagnostics.undefinedFunctions": false,
+  "tailwindCSS.experimental.configFile": "./apps/admin/src/main.css",
+  "tailwindCSS.lint.suggestCanonicalClasses": "ignore",
+  "tailwindCSS.experimental.classRegex": [
+    ["cva\\(([^;]*)\\);", "(?:'|\"|`)([^,]*)(?:'|\"|`),"],
+    ["cn\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"],
+    ["styled\\.\\w+\\(([^;]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+  ],
+
+  "prettier.ignorePath": "./apps/admin/.prettierignore",
+
   "intelephense.environment.includePaths": ["../../.."],
   "intelephense.stubs": [
-    "wordpress",
     "apache",
     "bcmath",
     "bz2",
@@ -100,6 +98,7 @@
     "xsl",
     "Zend OPcache",
     "zip",
-    "zlib"
+    "zlib",
+    "wordpress"
   ]
 }
