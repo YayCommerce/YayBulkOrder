@@ -3,3 +3,5 @@ packages:
   - "apps/blocks"
   - "apps/app-admin"
   - "apps/tests/e2e"
+allowBuilds:
+  esbuild: set this to true or false

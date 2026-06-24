@@ -11,6 +11,7 @@ phpcs.xml
 .nvmrc
 .gitignore
 .distignore
+.editorconfig
 eslint.config.js
 .prettierrc
 .prettierignore
