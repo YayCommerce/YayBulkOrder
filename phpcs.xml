@@ -18,6 +18,7 @@
 		<exclude name="WordPress.DB.PreparedSQL.InterpolatedNotPrepared" />
 		<exclude name="Squiz.Functions.MultiLineFunctionDeclaration.SpaceAfterFunction" />
 		<exclude name="WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase" />
+		<exclude name="WordPress.PHP.YodaConditions.NotYoda" />
 	</rule>
 	<rule ref="WordPress-Extra" />
 
@@ -48,6 +49,10 @@
 		<exclude name="Universal.Arrays.DisallowShortArraySyntax"/>
 	</rule>
 
+	​<rule ref="Generic.Functions.CallTimePassByReference">
+		<exclude name="Generic.Functions.CallTimePassByReference"/>
+	</rule>
+
 	<rule ref="Squiz.Classes.ClassFileName" />
 	<rule ref="Squiz.Commenting.ClassComment.Missing"/>
 	<rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
@@ -70,17 +75,11 @@
 	</rule>
 
 	<!-- Files and directories to check && auto fix -->
-	<file>yay-bulk-order.php</file>
-	<file>includes/</file>
-	<exclude-pattern>/includes/YayCommerceMenu/</exclude-pattern>
-	<exclude-pattern>/includes/License/</exclude-pattern>
-	<exclude-pattern>/vendor/</exclude-pattern>
 	<exclude-pattern>/node_modules/</exclude-pattern>
 	<exclude-pattern>/apps/</exclude-pattern>
 	<exclude-pattern>/assets/</exclude-pattern>
 	<exclude-pattern>/dist/</exclude-pattern>
 	<exclude-pattern>index.php</exclude-pattern>
-
 	<!-- Do not fail on warnings -->
 	<config name="ignore_warnings_on_exit" value="1" />
 

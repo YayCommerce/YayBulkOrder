@@ -1,15 +1,19 @@
 <?php
 /**
- * Plugin Name: Yay Bulk Order
- * Plugin URI: https://yaycommerce.com/yay-bulk-order
- * Description: This plugin helps you create bulk orders from your WordPress website.
- * Version: 0.1.0
- * Author: YayCommerce
- * Author URI: https://yaycommerce.com
- * Text Domain: yay-bulk-order
- * Domain Path: /languages
+ * Plugin Name:       Yay Bulk Order for WooCommerce
+ * Plugin URI:        https://yaycommerce.com/
+ * Description:       WooCommerce plugin for quick bulk ordering.
+ * Version:           0.2.0
+ * Author:            YayCommerce
+ * Author URI:        https://yaycommerce.com
+ * License:     GPLv2 or later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain:       yay-bulk-order
+ * Domain Path:       /languages
  * Requires at least: 6.8
  * Requires PHP: 7.4
+ * WC requires at least: 10.0.0
+ * WC tested up to: 10.7.0
  *
  * @package yaycommerce/yay-bulk-order
  */
@@ -19,7 +23,7 @@ namespace YayBulkOrder;
 defined( 'ABSPATH' ) || exit;
 
 if ( ! function_exists( 'YayBulkOrder\\initialize_plugin' ) ) {
-    define( 'YAY_BULK_ORDER_VERSION', '0.1.0' );
+    define( 'YAY_BULK_ORDER_VERSION', '0.2.0' );
     define( 'YAY_BULK_ORDER_FILE', __FILE__ );
     define( 'YAY_BULK_ORDER_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
     define( 'YAY_BULK_ORDER_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );

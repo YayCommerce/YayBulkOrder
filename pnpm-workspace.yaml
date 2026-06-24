@@ -1,0 +1,5 @@
+packages:
+  - "apps/packages/*"
+  - "apps/blocks"
+  - "apps/app-admin"
+  - "apps/tests"
