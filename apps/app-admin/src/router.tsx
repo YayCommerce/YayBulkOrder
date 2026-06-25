@@ -1,9 +1,11 @@
 import { createHashRouter, redirect } from 'react-router';
 
-import DashboardPage from '@/pages/dashboard/DashboardPage';
-import AppLayout from './AppLayout';
-import NotFoundPage from './pages/404';
-import ErrorPage from './pages/500';
+import { NotFoundPage } from '@/pages/404';
+import { ErrorPage } from '@/pages/500';
+import { HomePage } from '@/pages/home/HomePage';
+import { ProductTablesPage } from '@/pages/product-tables/ProductTablesPage';
+import { SettingsPage } from '@/pages/settings/SettingsPage';
+import { AppLayout } from './AppLayout';
 
 export function getAppAdminRouter() {
   return createHashRouter([
@@ -14,11 +16,19 @@ export function getAppAdminRouter() {
       children: [
         {
           index: true,
-          loader: () => redirect('/dashboard'),
+          loader: () => redirect('/honme'),
         },
         {
-          path: 'dashboard',
-          element: <DashboardPage />,
+          path: 'honme',
+          element: <HomePage />,
+        },
+        {
+          path: 'product-tables',
+          element: <ProductTablesPage />,
+        },
+        {
+          path: 'settings',
+          element: <SettingsPage />,
         },
         {
           path: '*',

@@ -140,6 +140,9 @@ importers:
       '@wordpress/i18n':
         specifier: ^6.6.0
         version: 6.21.1
+      '@yay-bulk-order/common':
+        specifier: workspace:*
+        version: link:../packages/common
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -191,9 +194,6 @@ importers:
       tailwind-merge:
         specifier: ^3.2.0
         version: 3.6.0
-      zod:
-        specifier: ^3.22.4
-        version: 3.25.76
     devDependencies:
       '@tailwindcss/vite':
         specifier: ^4.1.3
@@ -231,7 +231,11 @@ importers:
 
   apps/blocks: {}
 
-  apps/packages/common: {}
+  apps/packages/common:
+    dependencies:
+      zod:
+        specifier: ^3.22.4
+        version: 3.25.76
 
   apps/tests/e2e: {}
 

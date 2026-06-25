@@ -1,10 +1,9 @@
-import { Meta } from './localize.type';
+import { AdminData, Meta } from '@yay-bulk-order/common/src/schemas';
 
 declare global {
   interface Window {
     yayBulkOrderMeta: Meta;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    wp: any;
+    yayBulkOrderAdminData: AdminData;
   }
 }
 

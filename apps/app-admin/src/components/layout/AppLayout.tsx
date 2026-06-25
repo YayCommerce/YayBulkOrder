@@ -17,10 +17,7 @@ export default function AppLayout() {
         <Outlet />
       </main>
 
-      <Footer
-        currentMenu={pathSegments.length ? pathSegments : ['dashboard']}
-        onBackToDefault={() => navigate('/dashboard')}
-      />
+      <Footer currentMenu={pathSegments.length ? pathSegments : ['home']} onBackToDefault={() => navigate('/home')} />
     </div>
   );
 }
