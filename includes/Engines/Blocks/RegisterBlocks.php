@@ -10,8 +10,7 @@ use YayBulkOrder\Utils\SingletonTrait;
 class RegisterBlocks {
     use SingletonTrait;
 
-    /** @var SettingsService */
-    private $settings_service;
+    private SettingsService $settings_service;
 
     protected function __construct() {
         $this->settings_service = SettingsService::get_instance();

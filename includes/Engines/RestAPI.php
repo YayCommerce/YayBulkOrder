@@ -22,6 +22,5 @@ class RestAPI {
 
     public function bulk_order_endpoints() {
         SettingsRestController::get_instance();
-        ShortcodesRestController::get_instance();
     }
 }

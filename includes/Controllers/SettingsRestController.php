@@ -4,7 +4,6 @@ namespace YayBulkOrder\Controllers;
 use YayBulkOrder\Utils\SingletonTrait;
 use YayBulkOrder\Services\SettingsService;
 use WP_REST_Request;
-use WP_REST_Response;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -14,7 +13,10 @@ defined( 'ABSPATH' ) || exit;
 class SettingsRestController extends BaseRestController {
     use SingletonTrait;
 
+    private SettingsService $settings_service;
+
     protected function __construct() {
+        $this->settings_service = SettingsService::get_instance();
         $this->init_hooks();
     }
 
@@ -26,42 +28,30 @@ class SettingsRestController extends BaseRestController {
                 [
                     'methods'             => 'POST',
                     'callback'            => [ $this, 'save_settings' ],
-                    'permission_callback' => [ $this, 'settings_permission_callback' ],
+                    'permission_callback' => [ $this, 'can_manage_settings' ],
                 ],
             ]
         );
     }
 
+    public function save_settings( WP_REST_Request $request ) {
+        $payload = $request->get_json_params();
 
-
-    /**
-     * Save the settings.
-     *
-     * @param WP_REST_Request $request The request object.
-     * @return WP_REST_Response The response object.
-     */
-    public function save_settings( WP_REST_Request $request ): WP_REST_Response {
-        $params = $this->get_json_params( $request );
-
-        if ( empty( $params ) ) {
-            return $this->error( __( 'Invalid settings data', 'yay-bulk-order' ), 'invalid_settings_data', 400 );
+        if ( empty( $payload ) ) {
+            return $this->error_invalid_arguments();
         }
 
-        SettingsService::get_instance()->save_settings( $params );
+        $this->settings_service->save_settings( $payload );
+        $updated_settings = $this->settings_service->get_settings();
 
-        return rest_ensure_response( true );
+        return $updated_settings;
     }
 
-    /**
-     * Check if the user has the necessary permissions to access the settings endpoints.
-     *
-     * @return bool|WP_Error True if the user has the necessary permissions, otherwise a WP_Error object.
-     */
-    public function settings_permission_callback() {
-        // if ( ! current_user_can( 'manage_options' ) || ! current_user_can( 'manage_woocommerce' ) ) {
-        // return new \WP_Error( 'rest_forbidden', esc_html__( 'Forbidden.', 'yay-bulk-order' ), [ 'status' => 401 ] );
-        // }
+    public function can_manage_settings() {
+        if ( ! current_user_can( 'manage_options' ) || ! current_user_can( 'manage_woocommerce' ) ) {
+            return $this->error_forbidden();
+        }
 
-        return current_user_can( 'manage_options' ) && current_user_can( 'manage_woocommerce' );
+        return true;
     }
 }

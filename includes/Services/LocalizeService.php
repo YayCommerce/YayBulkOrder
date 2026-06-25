@@ -14,7 +14,14 @@ defined( 'ABSPATH' ) || exit;
 class LocalizeService {
     use SingletonTrait;
 
-    public const VAR_META = 'yayBulkOrderMeta';
+    public const VAR_ADMIN_DATA = 'yayBulkOrderAdminData';
+    public const VAR_META       = 'yayBulkOrderMeta';
+
+    public function get_admin_data() {
+        return [
+            'init_settings' => 'TODO',
+        ];
+    }
 
     public function get_meta() {
         $meta = [

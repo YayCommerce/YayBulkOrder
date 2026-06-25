@@ -17,10 +17,8 @@ defined( 'ABSPATH' ) || exit;
 class AdminPage {
     use SingletonTrait;
 
-    /** @var SettingsService */
-    private $settings_service;
-    /** @var LocalizeService */
-    private $localize_service;
+    private SettingsService $settings_service;
+    private LocalizeService $localize_service;
 
     private function __construct() {
         $this->settings_service = SettingsService::get_instance();
@@ -78,13 +76,19 @@ class AdminPage {
         return array_merge( $action_links, $links );
     }
 
-    public function enqueue_bulk_order_settings_scripts( $screen_id ) {
-        // if ( 'yaycommerce_page_yay_bulk_order' !== $screen_id ) {
-        // return;
-        // }
+    public function enqueue_bulk_order_settings_scripts( string $hook_suffix ) {
+        if ( 'yaycommerce_page_yay_bulk_order' !== $hook_suffix ) {
+            return;
+        }
 
         wp_enqueue_script( ScriptName::ADMIN_PAGE );
         wp_enqueue_style( ScriptName::STYLE_ADMIN_PAGE );
+
+        wp_localize_script(
+            ScriptName::ADMIN_PAGE,
+            LocalizeService::VAR_ADMIN_DATA,
+            $this->localize_service->get_admin_data(),
+        );
 
         wp_localize_script(
             ScriptName::ADMIN_PAGE,

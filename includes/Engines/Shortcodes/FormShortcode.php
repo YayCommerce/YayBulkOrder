@@ -11,10 +11,8 @@ use YayBulkOrder\Utils\SingletonTrait;
 class FormShortcode {
     use SingletonTrait;
 
-    /** @var PatternService */
-    private $pattern_service;
-    /** @var ShortcodesService */
-    private $shortcode_service;
+    private PatternService $pattern_service;
+    private ShortcodesService $shortcode_service;
 
     protected function __construct() {
         $this->pattern_service   = PatternService::get_instance();

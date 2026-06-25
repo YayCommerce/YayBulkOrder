@@ -1,49 +1,74 @@
 <?php
 namespace YayBulkOrder\Controllers;
 
-use WP_REST_Request;
-use WP_REST_Response;
-
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Class BaseRestController
- *
  * Provides common methods for REST controllers.
  */
 abstract class BaseRestController {
 
     public const REST_NAMESPACE = 'yay-bulk-order/v1';
 
-    /**
-     * Return an error response.
-     *
-     * @param string $message The error message.
-     * @param string $code The error code.
-     * @param int    $status The HTTP status code.
-     * @return WP_REST_Response The response object.
-     */
-    protected function error( string $message, string $code = 'invalid_request', int $status = 400 ): WP_REST_Response {
-        return rest_ensure_response( new \WP_Error( $code, $message, [ 'status' => $status ] ) );
+    protected function error_unauthorized( $message = 'You are not allowed to perform this action.' ) {
+        return new \WP_Error( 'unauthorized', $message, [ 'status' => 401 ] );
+    }
+
+    protected function error_forbidden( $message = 'You are not allowed to perform this action.' ) {
+        return new \WP_Error( 'forbidden', $message, [ 'status' => 403 ] );
+    }
+
+    protected function error_not_found( $message = 'Not Found.' ) {
+        return new \WP_Error( 'not_found', $message, [ 'status' => 404 ] );
+    }
+
+    protected function error_invalid_arguments( $message = 'Invalid Arguments.' ) {
+        return new \WP_Error( 'invalid_arguments', $message, [ 'status' => 400 ] );
     }
 
     /**
-     * Get the JSON parameters from the request.
+     * Execute Routes which DO NOT Write to DB.
+     * Treat deep thrown error as internal_error
      *
-     * @param WP_REST_Request $request The request object.
-     * @return array The JSON parameters.
+     * @param  callable         $callback
+     * @param  \WP_REST_Request $request
+     * @return \WP_REST_Response|\WP_Error|void
      */
-    protected function get_json_params( WP_REST_Request $request ): array {
-        return (array) $request->get_json_params();
+    public function exec_read( $callback, \WP_REST_Request $request ) {
+        try {
+            if ( is_callable( $callback ) ) {
+                $response = $callback( $request );
+                return rest_ensure_response( $response );
+            }
+        } catch ( \Throwable $ex ) {
+            return new \WP_Error( 'internal_error', $ex->getMessage(), [ 'status' => 500 ] );
+        }
     }
 
     /**
-     * Get the form data from the request.
+     * Execute Routes which DO Write to DB, auto-rollback on error.
+     * Treat deep thrown error as internal_error
      *
-     * @param WP_REST_Request $request The request object.
-     * @return array The form data.
+     * @param  callable         $callback
+     * @param  \WP_REST_Request $request
+     * @return \WP_REST_Response|\WP_Error|void
      */
-    protected function get_body_params( WP_REST_Request $request ): array {
-        return (array) $request->get_body_params();
+    public function exec_write( $callback, $request ) {
+        global $wpdb;
+
+        try {
+            $wpdb->query( 'START TRANSACTION' ); // phpcs:ignore WordPress.DB
+            if ( is_callable( $callback ) ) {
+                $response = $callback( $request );
+            }
+            $wpdb->query( 'COMMIT' ); // phpcs:ignore WordPress.DB
+
+            return rest_ensure_response( $response );
+
+        } catch ( \Throwable $ex ) {
+            $wpdb->query( 'ROLLBACK' ); // phpcs:ignore WordPress.DB
+
+            return new \WP_Error( 'internal_error', $ex->getMessage(), [ 'status' => 500 ] );
+        }
     }
 }
