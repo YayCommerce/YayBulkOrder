@@ -20,7 +20,7 @@ class PatternService {
      * @return string The rendered pattern.
      */
     public function render_pattern( string $pattern_slug ): string {
-        $path = YAY_BULK_ORDER_PLUGIN_PATH . 'patterns/' . $pattern_slug . '.php';
+        $path = YAYBULKORDER_PLUGIN_PATH . 'patterns/' . $pattern_slug . '.php';
 
         if ( ! file_exists( $path ) ) {
             return '';

@@ -43,7 +43,7 @@ export default defineConfig(({ mode }) => {
       cssCodeSplit: false,
       rollupOptions: {
         input: {
-          main: path.resolve(__dirname, 'src/main.tsx'),
+          'app-admin.main': path.resolve(__dirname, 'src/app-admin.main.tsx'),
         },
         output: {
           entryFileNames: 'js/[name].js',

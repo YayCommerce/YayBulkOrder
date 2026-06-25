@@ -36,7 +36,6 @@ fi
 #
 # 4) Remove development-only code
 #
-sed -i "" "/YAY_BULK_ORDER_IS_DEVELOPMENT/d" "$DEST_PATH/yay-bulk-order.php"
 rm -rf "$DEST_PATH/includes/Engines/Register/RegisterDev.php"
 
 #

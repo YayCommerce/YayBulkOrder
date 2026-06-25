@@ -10,6 +10,7 @@ use YayBulkOrder\Utils\SingletonTrait;
 class PatternRegistry {
     use SingletonTrait;
 
+    /** @var PatternService */
     private $pattern_service;
 
     protected function __construct() {

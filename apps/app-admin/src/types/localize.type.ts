@@ -7,12 +7,6 @@ export type Meta = {
     restRoot: string;
     restBase: string;
     restNonce: string;
-
-    usersUrl: {
-      list: string;
-      new: string;
-      edit: string;
-    };
   };
   bulkOrderMeta: {
     pluginUrl: string;

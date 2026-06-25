@@ -10,18 +10,19 @@ use YayBulkOrder\Utils\SingletonTrait;
 class RegisterBlocks {
     use SingletonTrait;
 
+    /** @var SettingsService */
     private $settings_service;
 
     protected function __construct() {
         $this->settings_service = SettingsService::get_instance();
 
-        add_action( 'init', [ $this, 'register_blocks' ] );
-        add_action( 'enqueue_block_assets', [ $this, 'enqueue_block_assets' ] );
-        add_action( 'enqueue_block_editor_assets', [ $this, 'enqueue_block_editor_assets' ] );
+        // add_action( 'init', [ $this, 'register_blocks' ] );
+        // add_action( 'enqueue_block_assets', [ $this, 'enqueue_block_assets' ] );
+        // add_action( 'enqueue_block_editor_assets', [ $this, 'enqueue_block_editor_assets' ] );
     }
 
     public function register_blocks() {
-        $blocks_path = YAY_BULK_ORDER_PLUGIN_PATH . 'assets/dist/blocks';
+        $blocks_path = YAYBULKORDER_PLUGIN_PATH . 'assets/dist/blocks';
 
         if ( function_exists( 'wp_register_block_types_from_metadata_collection' ) ) {
             wp_register_block_types_from_metadata_collection( $blocks_path, $blocks_path . '/blocks-manifest.php' );

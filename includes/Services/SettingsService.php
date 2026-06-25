@@ -29,7 +29,7 @@ class SettingsService {
                 'isBlockTheme' => wp_is_block_theme(),
             ],
             'path'     => [
-                'assetsUrl' => YAY_BULK_ORDER_PLUGIN_URL . 'assets/',
+                'assetsUrl' => YAYBULKORDER_PLUGIN_URL . 'assets/',
                 'restUrl'   => rest_url( 'yay-bulk-order/v1' ),
                 'ajaxUrl'   => admin_url( 'admin-ajax.php' ),
                 'nonce'     => wp_create_nonce( 'wp_rest' ),
