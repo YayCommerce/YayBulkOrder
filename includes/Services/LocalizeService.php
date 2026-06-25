@@ -7,7 +7,7 @@ use YayBulkOrder\Controllers\BaseRestController;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Load and save settings
+ * Load data to localize to window
  *
  * @method static LocalizeService get_instance()
  */

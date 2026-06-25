@@ -1,0 +1,19 @@
+{
+  "name": "@yay-bulk-order/store",
+  "version": "0.1.0",
+  "description": "Interactivity Stores for Yay Bulk Order.",
+  "author": "YayCommerce",
+  "type": "module",
+  "main": "src/store.index.ts",
+  "scripts": {
+    "dev": "wp-scripts start --config webpack.config.cjs --experimental-modules",
+    "build": "wp-scripts build --config webpack.config.cjs --experimental-modules"
+  },
+  "dependencies": {
+    "@wordpress/interactivity": "latest",
+    "@wordpress/interactivity-router": "latest"
+  },
+  "devDependencies": {
+    "@yay-bulk-order/common": "workspace:*"
+  }
+}

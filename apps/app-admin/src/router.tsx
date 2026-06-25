@@ -1,11 +1,11 @@
 import { createHashRouter, redirect } from 'react-router';
 
+import { AppLayout } from '@/components/layout/AppLayout';
 import { NotFoundPage } from '@/pages/404';
 import { ErrorPage } from '@/pages/500';
 import { HomePage } from '@/pages/home/HomePage';
 import { ProductTablesPage } from '@/pages/product-tables/ProductTablesPage';
 import { SettingsPage } from '@/pages/settings/SettingsPage';
-import { AppLayout } from './AppLayout';
 
 export function getAppAdminRouter() {
   return createHashRouter([
@@ -16,10 +16,10 @@ export function getAppAdminRouter() {
       children: [
         {
           index: true,
-          loader: () => redirect('/honme'),
+          loader: () => redirect('/home'),
         },
         {
-          path: 'honme',
+          path: 'home',
           element: <HomePage />,
         },
         {

@@ -26,12 +26,34 @@ class SettingsRestController extends BaseRestController {
             '/settings',
             [
                 [
+                    'methods'             => 'GET',
+                    'callback'            => [ $this, 'get_settings' ],
+                    'permission_callback' => [ $this, 'can_manage_settings' ],
+                ],
+                [
                     'methods'             => 'POST',
                     'callback'            => [ $this, 'save_settings' ],
                     'permission_callback' => [ $this, 'can_manage_settings' ],
                 ],
             ]
         );
+
+        register_rest_route(
+            self::REST_NAMESPACE,
+            '/mark-reviewed',
+            [
+                [
+                    'methods'             => 'POST',
+                    'callback'            => [ $this, 'mark_reviewed' ],
+                    'permission_callback' => [ $this, 'can_manage_settings' ],
+                ],
+            ]
+        );
+    }
+
+    public function get_settings() {
+        $settings = $this->settings_service->get_settings();
+        return $settings;
     }
 
     public function save_settings( WP_REST_Request $request ) {
@@ -45,6 +67,11 @@ class SettingsRestController extends BaseRestController {
         $updated_settings = $this->settings_service->get_settings();
 
         return $updated_settings;
+    }
+
+    public function mark_reviewed() {
+        update_option( 'yaybulkorder_reviewed', true );
+        return true;
     }
 
     public function can_manage_settings() {

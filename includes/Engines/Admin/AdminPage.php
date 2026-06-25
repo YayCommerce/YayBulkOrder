@@ -3,8 +3,6 @@ namespace YayBulkOrder\Engines\Admin;
 
 use YayBulkOrder\Engines\Register\ScriptName;
 use YayBulkOrder\Services\LocalizeService;
-use YayBulkOrder\Services\SettingsService;
-use YayBulkOrder\Services\ShortcodesService;
 use YayBulkOrder\Utils\SingletonTrait;
 
 defined( 'ABSPATH' ) || exit;
@@ -17,56 +15,15 @@ defined( 'ABSPATH' ) || exit;
 class AdminPage {
     use SingletonTrait;
 
-    private SettingsService $settings_service;
     private LocalizeService $localize_service;
 
     private function __construct() {
-        $this->settings_service = SettingsService::get_instance();
         $this->localize_service = LocalizeService::get_instance();
 
-        add_action( 'init', [ $this, 'register_bulk_order_shortcode_post_type' ] );
         add_filter( 'admin_body_class', [ $this, 'admin_body_class' ] );
         add_filter( 'plugin_action_links_' . YAYBULKORDER_PLUGIN_BASENAME, [ $this, 'plugin_action_links' ] );
 
-        add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_bulk_order_settings_scripts' ] );
-    }
-
-    public function register_bulk_order_shortcode_post_type() {
-
-        $labels = [
-            'name'          => __( 'Bulk Order Shortcodes', 'yay-bulk-order' ),
-            'singular_name' => __( 'Bulk Order Shortcode', 'yay-bulk-order' ),
-        ];
-
-        $shortcode_post_type = ShortcodesService::SHORTCODE_POST_TYPE;
-
-        $args = [
-            'labels'            => $labels,
-            'description'       => __( 'Bulk Order Shortcodes', 'yay-bulk-order' ),
-            'public'            => false,
-            'show_ui'           => false,
-            'has_archive'       => true,
-            'show_in_admin_bar' => false,
-            'show_in_rest'      => true,
-            'show_in_menu'      => false,
-            'query_var'         => $shortcode_post_type,
-            'supports'          => [
-                'title',
-                'thumbnail',
-            ],
-            'capabilities'      => [
-                'edit_post'          => 'manage_options',
-                'read_post'          => 'manage_options',
-                'delete_post'        => 'manage_options',
-                'edit_posts'         => 'manage_options',
-                'edit_others_posts'  => 'manage_options',
-                'delete_posts'       => 'manage_options',
-                'publish_posts'      => 'manage_options',
-                'read_private_posts' => 'manage_options',
-            ],
-        ];
-
-        register_post_type( $shortcode_post_type, $args );
+        add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_admin_page_scripts' ] );
     }
 
     public function plugin_action_links( array $links ) {
@@ -76,7 +33,7 @@ class AdminPage {
         return array_merge( $action_links, $links );
     }
 
-    public function enqueue_bulk_order_settings_scripts( string $hook_suffix ) {
+    public function enqueue_admin_page_scripts( string $hook_suffix ) {
         if ( 'yaycommerce_page_yay_bulk_order' !== $hook_suffix ) {
             return;
         }

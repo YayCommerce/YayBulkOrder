@@ -15,7 +15,7 @@ class PatternRegistry {
     protected function __construct() {
         $this->pattern_service = PatternService::get_instance();
 
-        add_action( 'init', [ $this, 'register' ] );
+        // add_action( 'init', [ $this, 'register' ] );
     }
 
     public function register() {

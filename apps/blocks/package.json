@@ -3,6 +3,31 @@
   "version": "0.1.0",
   "description": "Gutenberg blocks for Yay Bulk Order",
   "author": "YayCommerce",
-  "type": "module",
-  "main": "src/main.ts"
+  "scripts": {
+    "dev": "wp-scripts start --config webpack.config.cjs --blocks-manifest --experimental-modules",
+    "build": "wp-scripts build --config webpack.config.cjs --blocks-manifest --experimental-modules",
+    "format": "wp-scripts format",
+    "lint:css": "wp-scripts lint-style",
+    "lint:js": "wp-scripts lint-js",
+    "packages-update": "wp-scripts packages-update"
+  },
+  "dependencies": {
+    "@wordpress/block-editor": "latest",
+    "@wordpress/blocks": "latest",
+    "@wordpress/components": "latest",
+    "@wordpress/compose": "latest",
+    "@wordpress/data": "latest",
+    "@wordpress/i18n": "latest",
+    "@wordpress/icons": "^11.4.0",
+    "@wordpress/interactivity": "latest",
+    "@wordpress/interactivity-router": "latest",
+    "@yay-bulk-order/utils": "workspace:*",
+    "@yay-bulk-order/store": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/wordpress__block-editor": "latest",
+    "@types/wordpress__blocks": "latest",
+    "@wordpress/scripts": "^31.2.0",
+    "@yay-bulk-order/common": "workspace:*"
+  }
 }
