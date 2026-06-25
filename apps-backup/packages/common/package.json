@@ -1,0 +1,13 @@
+{
+  "name": "@yay-bulk-order/common",
+  "version": "0.1.0",
+  "description": "Common config and types for Yay Bulk Order. Reusable across all Yay Bulk Order apps, blocks, packages, etc.",
+  "author": "YayCommerce",
+  "files": [
+    "src",
+    "types"
+  ],
+  "dependencies": {
+    "zod": "^3.24.2"
+  }
+}

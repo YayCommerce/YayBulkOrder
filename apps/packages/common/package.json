@@ -6,8 +6,5 @@
   "files": [
     "src",
     "types"
-  ],
-  "dependencies": {
-    "zod": "^3.24.2"
-  }
+  ]
 }

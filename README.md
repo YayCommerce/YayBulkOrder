@@ -1,0 +1,67 @@
+# Yay Bulk Order for WooCommerce
+
+WooCommerce plugin for quick bulk ordering.
+
+## Getting Started
+
+```php
+// In wp-config.php
+// development mode
+define( 'YAYBULKORDER_IS_DEVELOPMENT', true );
+// production mode
+define( 'YAYBULKORDER_IS_DEVELOPMENT', false );
+```
+
+```bash
+# Install JS dependencies
+pnpm install
+# Build Gutenberg block
+pnpm build
+```
+
+## Development
+
+```bash
+# Build assets (watch mode)
+pnpm dev
+```
+
+## Testing
+
+### E2E Tests (Playwright)
+
+```bash
+# Install Playwright browsers
+pnpm test:e2e:install
+
+# Start test environment (single site)
+pnpm env:start:single
+
+# Run all e2e tests
+pnpm test:e2e
+
+# Run with UI
+pnpm test:e2e:ui
+
+# Stop test environment
+pnpm env:stop:single
+```
+
+## Release
+
+```bash
+# Build & package both Pro and Lite
+pnpm release
+
+# Pro only
+pnpm release:pro
+
+# Lite only
+pnpm release:lite
+```
+
+## Internationalization
+
+```bash
+pnpm makepot
+```

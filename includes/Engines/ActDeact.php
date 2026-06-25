@@ -1,5 +1,5 @@
 <?php
-namespace YayBulkOrder\Engine;
+namespace YayBulkOrder\Engines;
 
 /**
  * Activate and deactive method of the plugin and relates.

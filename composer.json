@@ -1,0 +1,29 @@
+{
+  "name": "yaycommerce/yay-bulk-order",
+  "type": "wordpress-plugin",
+  "prefer-dist": true,
+  "optimize-autoloader": true,
+  "require": {
+    "php": ">=7.4",
+    "yaycommerce/admin-shell": "^2.5"
+  },
+  "repositories": {
+    "admin-shell": {
+      "type": "vcs",
+      "url": "https://github.com/YayCommerce/yaycommerce-plugin-admin-shell.git"
+    }
+  },
+  "require-dev": {
+    "humbug/php-scoper": "^0.18.18",
+    "thecodingmachine/safe": "^3.4"
+  },
+  "config": {},
+  "autoload": {
+    "psr-4": {
+      "YayBulkOrder\\": "includes/"
+    },
+    "classmap": [
+      "vendor-prefixed/src"
+    ]
+  }
+}

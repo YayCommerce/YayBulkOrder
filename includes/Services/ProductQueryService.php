@@ -15,7 +15,7 @@ defined( 'ABSPATH' ) || exit;
 class ProductQueryService {
     use SingletonTrait;
 
-    private $settings_service;
+    private SettingsService $settings_service;
 
     public function __construct() {
         $this->settings_service = SettingsService::get_instance();
