@@ -38,8 +38,9 @@ class SettingsService {
         ];
     }
 
-    public function get_styles( array $setting ) {
-        $colors = $setting['colors'];
+    public function get_styles() {
+        $settings = $this->get_settings();
+        $colors   = $settings['colors'];
 
         return [
             '--ybo-primary-color'     => $colors['primary'],

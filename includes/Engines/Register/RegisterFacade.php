@@ -29,13 +29,9 @@ class RegisterFacade {
     public function register_all_assets() {
         wp_register_style( ScriptName::STYLE_ADMIN_PAGE, YAYBULKORDER_PLUGIN_URL . 'assets/dist/app-admin/style.css', [], YAYBULKORDER_VERSION );
 
-        // $utils_asset = require_once YAYBULKORDER_PLUGIN_PATH . 'assets/dist/utils/utils.entry.ts.asset.php';
-        // wp_register_script( ScriptName::UTILS_SCRIPT, YAYBULKORDER_PLUGIN_URL . 'assets/dist/utils/utils.entry.ts.js', $utils_asset['dependencies'], $utils_asset['version'], true );
-        // wp_set_script_translations( ScriptName::UTILS_SCRIPT, 'yay-bulk-order', YAYBULKORDER_PLUGIN_PATH . 'languages' );
-
-        // $view_asset = require_once YAYBULKORDER_PLUGIN_PATH . 'assets/dist/view/bulk-order-view.asset.php';
-        // wp_register_script_module( ScriptName::VIEW_MODULE, YAYBULKORDER_PLUGIN_URL . 'assets/dist/view/bulk-order-view.js', $view_asset['dependencies'], $view_asset['version'] );
-        // wp_set_script_translations( ScriptName::VIEW_MODULE, 'yay-bulk-order', YAYBULKORDER_PLUGIN_PATH . 'languages' );
+        // $view_asset = require_once YAYBULKORDER_PLUGIN_PATH . 'assets/dist/store/bulk-order-store.asset.php';
+        // wp_register_script_module( ScriptName::STORE_MODULE, YAYBULKORDER_PLUGIN_URL . 'assets/dist/store/bulk-order-store.js', $view_asset['dependencies'], $view_asset['version'] );
+        // wp_set_script_translations( ScriptName::STORE_MODULE, 'yay-bulk-order', YAYBULKORDER_PLUGIN_PATH . 'languages' );
     }
 
     public function add_entry_as_module( $tag, $handle ) {

@@ -1,6 +1,7 @@
 <?php
 namespace YayBulkOrder\Engines\Blocks;
 
+use YayBulkOrder\Services\LocalizeService;
 use YayBulkOrder\Services\SettingsService;
 use YayBulkOrder\Utils\SingletonTrait;
 
@@ -11,9 +12,11 @@ class RegisterBlocks {
     use SingletonTrait;
 
     private SettingsService $settings_service;
+    private LocalizeService $localize_service;
 
     protected function __construct() {
         $this->settings_service = SettingsService::get_instance();
+        $this->localize_service = LocalizeService::get_instance();
 
         // add_action( 'init', [ $this, 'register_blocks' ] );
         // add_action( 'enqueue_block_assets', [ $this, 'enqueue_block_assets' ] );
@@ -47,8 +50,8 @@ class RegisterBlocks {
     public function enqueue_block_editor_assets() {
         wp_localize_script(
             'wp-blocks',
-            'yayBulkOrderAdminData',
-            $this->settings_service->get_config(),
+            LocalizeService::VAR_ADMIN_DATA,
+            $this->localize_service->get_admin_data(),
         );
     }
 }

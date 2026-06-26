@@ -1,13 +1,15 @@
 import { getContext, getElement, store } from '@wordpress/interactivity';
 
-import type { BulkOrderContext, BulkOrderState } from '@yay-bulk-order/common/types/bulkOrder.type';
-import { checkViewIsReady, getBulkOrderConfig } from '@yay-bulk-order/view';
+import { getGlobalConfig } from '../utils';
+import type { ProductTableContext } from './productTable.type';
+
+const STORE_NAMESPACE = 'yay-bulk-order/product-table';
 
 const storeDef = {
   state: {
     get currentPage(): number {
-      const context = getContext<BulkOrderContext>();
-      return context.queryContext.page;
+      const context = getContext<ProductTableContext>();
+      return context.queryState.filter.currentPage;
     },
   },
   actions: {
@@ -19,12 +21,10 @@ const storeDef = {
 
         const { actions } = yield import('@wordpress/interactivity-router');
 
-        console.log('navigate', ref.href);
         yield actions.navigate(ref.href);
       }
     },
     *prefetchOnHover() {
-      console.log('prefetchOnHover');
       const { ref } = getElement();
 
       if (isValidLink(ref)) {
@@ -36,7 +36,6 @@ const storeDef = {
   },
   callbacks: {
     *prefetch() {
-      console.log('prefetch');
       const { ref } = getElement();
       if (isValidLink(ref)) {
         const { actions } = yield import('@wordpress/interactivity-router');
@@ -45,20 +44,20 @@ const storeDef = {
       }
     },
     onRender() {
-      const context = getContext<BulkOrderContext>();
-      const config = getBulkOrderConfig();
+      const context = getContext<ProductTableContext>();
+      const globalConfig = getGlobalConfig();
       console.log('onRender', {
-        queryContext: context.queryContext,
-        config,
+        globalConfig,
+        queryState: context.queryState,
+        productQuery: context.formAttributes.productQuery,
       });
-      checkViewIsReady();
     },
   },
 };
 
-type Store = BulkOrderState & typeof storeDef;
+type ProductTableStore = ProductTableContext & typeof storeDef;
 
-const { state } = store<Store>('yay-bulk-order/bulk-order-form', storeDef, { lock: true });
+store<ProductTableStore>(STORE_NAMESPACE, storeDef, { lock: true });
 
 function isValidLink(ref: HTMLElement | null): ref is HTMLAnchorElement {
   return (

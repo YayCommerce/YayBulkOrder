@@ -53,4 +53,18 @@ class LocalizeService {
 
         return $meta;
     }
+
+    public function get_global_config() {
+        $admin_data = $this->get_admin_data();
+        $meta       = $this->get_meta();
+
+        return [
+            'settings'      => [
+                'colors'  => $admin_data['settings']['colors'],
+                'general' => $admin_data['settings']['general'],
+            ],
+            'wpMeta'        => $meta['wpMeta'],
+            'bulkOrderMeta' => $meta['bulkOrderMeta'],
+        ];
+    }
 }

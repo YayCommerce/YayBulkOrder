@@ -21,12 +21,10 @@
     "@wordpress/icons": "^11.4.0",
     "@wordpress/interactivity": "latest",
     "@wordpress/interactivity-router": "latest",
-    "@yay-bulk-order/utils": "workspace:*",
     "@yay-bulk-order/store": "workspace:*"
   },
   "devDependencies": {
     "@types/wordpress__block-editor": "latest",
-    "@types/wordpress__blocks": "latest",
     "@wordpress/scripts": "^31.2.0",
     "@yay-bulk-order/common": "workspace:*"
   }

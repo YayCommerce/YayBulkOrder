@@ -1,13 +1,12 @@
 import { useEffect } from 'react';
+import { ProductTableAttributes } from '@yay-bulk-order/store';
 import { InnerBlocks, useBlockProps } from '@wordpress/block-editor';
 import { BlockEditProps } from '@wordpress/blocks';
 import { useInstanceId } from '@wordpress/compose';
 
-import { checkUtilsIsReady } from '@yay-bulk-order/utils';
-import { BulkOrderFormAttributes } from './type';
 import { useFormStyle } from './useFormStyle';
 
-export default function Edit(props: BlockEditProps<BulkOrderFormAttributes>) {
+export default function Edit(props: BlockEditProps<ProductTableAttributes>) {
   const { attributes, setAttributes } = props;
   const { style, ...blockProps } = useBlockProps();
   const formStyle = useFormStyle();
@@ -15,7 +14,6 @@ export default function Edit(props: BlockEditProps<BulkOrderFormAttributes>) {
   const queryId = useInstanceId(Edit as React.FC);
 
   useEffect(() => {
-    checkUtilsIsReady();
     if (attributes.queryId === 0) {
       setAttributes({ queryId });
     }
@@ -45,22 +43,22 @@ const DEFAULT_TEMPLATE: InnerBlocks.Props['template'] = [
       },
     },
     [
-      [
-        'core/group',
-        {
-          layout: {
-            type: 'flex',
-            justifyContent: 'space-between',
-            flexWrap: 'nowrap',
-          },
-        },
-        [
-          ['yay-bulk-order/table-filter', {}],
-          ['yay-bulk-order/cart-summary', {}],
-        ],
-      ],
+      // [
+      //   'core/group',
+      //   {
+      //     layout: {
+      //       type: 'flex',
+      //       justifyContent: 'space-between',
+      //       flexWrap: 'nowrap',
+      //     },
+      //   },
+      //   [
+      //     ['yay-bulk-order/table-filter', {}],
+      //     ['yay-bulk-order/cart-summary', {}],
+      //   ],
+      // ],
       ['yay-bulk-order/table-template', {}],
-      ['yay-bulk-order/table-pagination', {}],
+      // ['yay-bulk-order/table-pagination', {}],
     ],
   ],
 ];

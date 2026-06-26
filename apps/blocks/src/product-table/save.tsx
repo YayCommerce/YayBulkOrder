@@ -1,8 +1,7 @@
+import { ProductTableAttributes } from '@yay-bulk-order/store';
 import { InnerBlocks } from '@wordpress/block-editor';
 import { BlockSaveProps } from '@wordpress/blocks';
 
-import { BulkOrderFormAttributes } from './type';
-
-export default function Save(props: BlockSaveProps<BulkOrderFormAttributes>) {
+export default function Save(props: BlockSaveProps<ProductTableAttributes>) {
   return <InnerBlocks.Content />;
 }

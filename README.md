@@ -65,3 +65,25 @@ pnpm release:lite
 ```bash
 pnpm makepot
 ```
+
+## Chia chuc nang
+
+Product Table : table of multiple Products, add to cart directly in one page
+Variant Table : table of one Product with variations, add to cart directly in one page.
+Quick Order : enter quantity in Shop, then click "Add to Cart" , "Add More". Show total in Floating Button (Brandy Block)
+
+Config Bulk Order : plugin settings, style, meta
+
+Store Product Table :
+readonly: product query
+state: total count, pagination, filter
+
+Store Variant Table :
+readonly: product id
+state: quantity input
+
+Store Quick Order :
+readonly: product id
+state: quantity input
+
+Store Cart : import from Woocommerce

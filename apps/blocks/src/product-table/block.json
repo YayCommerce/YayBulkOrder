@@ -1,9 +1,9 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 3,
-  "name": "yay-bulk-order/bulk-order-form",
+  "name": "yay-bulk-order/product-table",
   "version": "0.1.0",
-  "title": "Bulk Order Form",
+  "title": "Product Table",
   "category": "woocommerce",
   "icon": "cart",
   "description": "A block to show WooCommerce Products as Table optimized for bulk ordering.",
@@ -22,9 +22,11 @@
         "orderBy": "date"
       }
     },
-    "forcePageReload": {
-      "type": "boolean",
-      "default": false
+    "productQuery": {
+      "type": "object",
+      "default": {
+        "queryType": "all-products"
+      }
     }
   },
   "providesContext": {
@@ -33,13 +35,11 @@
   },
   "supports": {
     "interactivity": true,
-    "multiple": false,
     "html": false,
     "align": ["wide", "full"],
     "anchor": true
   },
   "editorScript": "file:./editor.js",
   "render": "file:./render.php",
-  "viewScriptModule": "file:./view-module.js",
-  "viewScript": "file:./view.js"
+  "viewScriptModule": "file:./frontend-module.js"
 }

@@ -1,19 +1,11 @@
 const path = require('path');
-const defaultConfigs = require('@wordpress/scripts/config/webpack.config');
-const {
-  scriptExtractionPlugin,
-  moduleExtractionPlugin,
-} = require('@yay-bulk-order/common/src/bulkOrderExtractionPlugin.cjs');
 
-let defaultScriptConfig;
-let defaultModuleConfig;
-if (Array.isArray(defaultConfigs)) {
-  defaultScriptConfig = defaultConfigs[0];
-  defaultModuleConfig = defaultConfigs[1];
-} else {
-  defaultScriptConfig = defaultConfigs;
-  defaultModuleConfig = defaultConfigs;
-}
+const {
+  moduleExtractionPlugin,
+  scriptExtractionPlugin,
+  defaultScriptConfig,
+  defaultModuleConfig,
+} = require('@yay-bulk-order/common//config/webpackConfig.helper.cjs');
 
 const extendedScriptConfig = {
   ...defaultScriptConfig,

@@ -1,7 +1,11 @@
 packages:
-  - "apps/packages/*"
-  - "apps/blocks"
-  - "apps/app-admin"
-  - "apps/tests/e2e"
+  - 'apps/packages/*'
+  - 'apps/blocks'
+  - 'apps/app-admin'
+  - 'apps/tests/e2e'
 allowBuilds:
+  '@parcel/watcher': true
+  core-js: true
+  core-js-pure: true
   esbuild: false
+  unrs-resolver: true
