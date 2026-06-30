@@ -30,13 +30,13 @@ $data_context = [
         'queryId'         => $query_id,
         'productQuery' => $attributes['productQuery']
     ],
-    'queryState' => [
-        'filter' => [
-            'currentPage' => $page_param,
-        ]
-    ],
-    'queryResult' => [
-        'totalLength' => 0, // TODO: set this when query is loaded
+    'tableState' => [
+        'select' => [ 'noop' => false ],
+        'filter' => [ 'noop' => false ],
+        'pagination' => [
+            'pageIndex' => 0,
+            'pageSize' => 10,
+        ],
     ],
 ];
 ?>

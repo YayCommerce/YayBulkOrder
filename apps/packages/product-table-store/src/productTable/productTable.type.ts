@@ -23,6 +23,8 @@ export type ProductQuery =
   | OnSaleProductQuery
   | HandPickedProductsQuery;
 
+type ProductRowId = string;
+
 export type ProductTableAttributes = {
   queryId: number;
   productQuery: ProductQuery;
@@ -30,14 +32,16 @@ export type ProductTableAttributes = {
 
 export type ProductTableContext = {
   formAttributes: ProductTableAttributes;
-  queryState: {
+  tableState: {
+    select: Record<ProductRowId, boolean>;
     filter: {
-      currentPage: number;
-      categoryId?: number;
-      keyword?: string;
+      categoryIds?: number[];
+      searchKeyword?: string;
+      purchaseListId?: number;
     };
-  };
-  queryResult: {
-    totalLength: number;
+    pagination: {
+      pageIndex: number;
+      pageSize: number;
+    };
   };
 };

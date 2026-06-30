@@ -58,14 +58,14 @@ class SettingsService {
     private function get_default_settings() {
         return [
             'general' => [
-                'defaultCartQuantity' => 10,
-                'pageSize'            => 10,
+                'defaultCartQuantity' => 5,
+                'defaultPageSize'     => 10,
             ],
             'colors'  => [
-                'primary'     => '#2271b1',
-                'text'        => '#333333',
+                'primary'     => '#3858e9',
+                'text'        => '#171719',
                 'description' => '#7b7c80',
-                'border'      => '#7b7c80',
+                'border'      => '#e4e4e7',
                 'background'  => '#ffffff',
             ],
         ];

@@ -1,10 +1,10 @@
 {
-  "name": "@yay-bulk-order/store",
+  "name": "@yay-bulk-order/product-table-store",
   "version": "0.1.0",
-  "description": "Interactivity Stores for Yay Bulk Order.",
+  "description": "Product Table Frontend scripts - Interactivity Store, Router.",
   "author": "YayCommerce",
   "type": "module",
-  "main": "src/store.index.ts",
+  "main": "src/product-table-store.index.ts",
   "scripts": {
     "dev": "wp-scripts start --config webpack.config.cjs --experimental-modules",
     "build": "wp-scripts build --config webpack.config.cjs --experimental-modules"

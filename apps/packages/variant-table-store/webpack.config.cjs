@@ -7,12 +7,12 @@ const {
 
 module.exports = {
   ...defaultModuleConfig,
-  entry: { 'bulk-order-store': path.resolve(__dirname, 'src/store.index.ts') },
+  entry: { 'variant-table-store': path.resolve(__dirname, 'src/variant-table-store.index.ts') },
 
   output: {
     ...defaultModuleConfig.output,
     filename: '[name].js',
-    path: path.resolve(__dirname, '../../../assets/dist/store'),
+    path: path.resolve(__dirname, '../../../assets/dist/variant-table-store'),
   },
 
   plugins: [

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { ProductTableAttributes } from '@yay-bulk-order/store';
+import { ProductTableAttributes } from '@yay-bulk-order/product-table-store';
 import { InnerBlocks, useBlockProps } from '@wordpress/block-editor';
 import { BlockEditProps } from '@wordpress/blocks';
 import { useInstanceId } from '@wordpress/compose';
@@ -21,7 +21,6 @@ export default function Edit(props: BlockEditProps<ProductTableAttributes>) {
 
   return (
     <div style={{ ...style, ...formStyle }} {...blockProps}>
-      {/* <pre>Debug: {JSON.stringify({ attributes }, null, 2)}</pre> */}
       <InnerBlocks template={DEFAULT_TEMPLATE} />
     </div>
   );
@@ -53,12 +52,37 @@ const DEFAULT_TEMPLATE: InnerBlocks.Props['template'] = [
       //     },
       //   },
       //   [
-      //     ['yay-bulk-order/table-filter', {}],
+      //     ['yay-bulk-order/product-table-filter', {}],
+      //     ['yay-bulk-order/product-table-search', {}],
       //     ['yay-bulk-order/cart-summary', {}],
       //   ],
       // ],
-      ['yay-bulk-order/table-template', {}],
-      // ['yay-bulk-order/table-pagination', {}],
+      [
+        'yay-bulk-order/product-table',
+        {},
+        [
+          // ['yay-bulk-order/product-table-header', {}],
+          [
+            'yay-bulk-order/product-table-columns',
+            {},
+            [
+              ['yay-bulk-order/product-table-column-product', {}],
+              // ['yay-bulk-order/product-table-column-quantity', {}],
+              // ['yay-bulk-order/product-table-column-subtotal', {}],
+              // ['yay-bulk-order/product-table-column-add-to-cart', {}],
+              // ['yay-bulk-order/product-table-column-select', {}],
+            ],
+          ],
+          // [
+          //   'yay-bulk-order/product-table-footer',
+          //   {},
+          //   [
+          //     ['yay-bulk-order/product-table-pagination', {}],
+          //     ['yay-bulk-order/product-table-bulk-action', {}],
+          //   ],
+          // ],
+        ],
+      ],
     ],
   ],
 ];

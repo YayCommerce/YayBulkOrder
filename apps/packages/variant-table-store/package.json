@@ -1,0 +1,19 @@
+{
+  "name": "@yay-bulk-order/variant-table-store",
+  "version": "0.1.0",
+  "description": "Variant Table Frontend scripts - Interactivity Store.",
+  "author": "YayCommerce",
+  "type": "module",
+  "main": "src/variant-table-store.index.ts",
+  "scripts": {
+    "dev": "wp-scripts start --config webpack.config.cjs --experimental-modules",
+    "build": "wp-scripts build --config webpack.config.cjs --experimental-modules"
+  },
+  "dependencies": {
+    "@wordpress/interactivity": "latest",
+    "@wordpress/interactivity-router": "latest"
+  },
+  "devDependencies": {
+    "@yay-bulk-order/common": "workspace:*"
+  }
+}

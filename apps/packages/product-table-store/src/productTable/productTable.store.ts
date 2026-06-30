@@ -9,7 +9,7 @@ const storeDef = {
   state: {
     get currentPage(): number {
       const context = getContext<ProductTableContext>();
-      return context.queryState.filter.currentPage;
+      return context.tableState.pagination.pageIndex + 1;
     },
   },
   actions: {
@@ -48,7 +48,7 @@ const storeDef = {
       const globalConfig = getGlobalConfig();
       console.log('onRender', {
         globalConfig,
-        queryState: context.queryState,
+        tableState: context.tableState,
         productQuery: context.formAttributes.productQuery,
       });
     },

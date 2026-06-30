@@ -265,9 +265,12 @@ importers:
       '@wordpress/interactivity-router':
         specifier: latest
         version: 2.49.0
-      '@yay-bulk-order/store':
+      '@yay-bulk-order/product-table-store':
         specifier: workspace:*
-        version: link:../packages/store
+        version: link:../packages/product-table-store
+      '@yay-bulk-order/variant-table-store':
+        specifier: workspace:*
+        version: link:../packages/variant-table-store
     devDependencies:
       '@types/wordpress__block-editor':
         specifier: latest
@@ -292,7 +295,20 @@ importers:
         specifier: ^31.2.0
         version: 31.8.0(@playwright/test@1.61.1)(@types/node@22.20.0)(@types/react@18.3.31)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(stylelint-scss@6.14.0(stylelint@16.26.1(typescript@5.9.3)))(type-fest@4.41.0)(typescript@5.9.3)
 
-  apps/packages/store:
+  apps/packages/product-table-store:
+    dependencies:
+      '@wordpress/interactivity':
+        specifier: latest
+        version: 6.49.0
+      '@wordpress/interactivity-router':
+        specifier: latest
+        version: 2.49.0
+    devDependencies:
+      '@yay-bulk-order/common':
+        specifier: workspace:*
+        version: link:../common
+
+  apps/packages/variant-table-store:
     dependencies:
       '@wordpress/interactivity':
         specifier: latest

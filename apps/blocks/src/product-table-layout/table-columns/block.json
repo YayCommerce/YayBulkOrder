@@ -1,9 +1,9 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 3,
-  "name": "yay-bulk-order/table-template",
+  "name": "yay-bulk-order/product-table-columns",
   "version": "0.1.0",
-  "title": "Bulk Order Table Template",
+  "title": "Product Table Columns - List of column in order.",
   "category": "woocommerce",
   "description": "A block to show WooCommerce Products as Table optimized for bulk ordering.",
   "textdomain": "yay-bulk-order",
@@ -39,11 +39,9 @@
     }
   },
   "ancestor": ["yay-bulk-order/bulk-order-form"],
+  "parent": ["yay-bulk-order/product-table"],
   "allowedBlocks": [
-    "yay-bulk-order/column-product-title",
-    "yay-bulk-order/column-product-price",
-    "yay-bulk-order/column-product-stock",
-    "yay-bulk-order/column-add-to-cart"
+    "yay-bulk-order/product-table-column-product"
   ],
   "editorScript": "file:./editor.js",
   "style": "file:./style-editor.css",

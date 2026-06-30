@@ -3,7 +3,7 @@ import { z } from 'zod';
 export const settingsSchema = z.object({
   general: z.object({
     defaultCartQuantity: z.number(),
-    pageSize: z.number(),
+    defaultPageSize: z.number(),
   }),
   colors: z.object({
     primary: z.string(),
