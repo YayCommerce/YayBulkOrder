@@ -22,6 +22,7 @@ class RegisterBlocks {
 
     public function register_blocks() {
         $this->register_collection( YAYBULKORDER_PLUGIN_PATH . 'assets/dist/blocks/product-table' );
+        // $this->register_collection( YAYBULKORDER_PLUGIN_PATH . 'assets/dist/blocks/common' );
     }
 
     public function enqueue_block_assets() {

@@ -1,0 +1,23 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "yay-bulk-order/cart-summary",
+  "version": "0.1.0",
+  "title": "Cart Summary",
+  "category": "woocommerce",
+  "icon": "cart",
+  "description": "Display cart items, totals, and checkout buttons.",
+  "textdomain": "yay-bulk-order",
+  "supports": {
+    "interactivity": true,
+    "multiple": true,
+    "html": false,
+    "align": ["wide", "full"],
+    "anchor": true
+  },
+  "ancestor": ["yay-bulk-order/bulk-order-form"],
+  "editorScript": "file:./editor.js",
+  "render": "file:./render.php",
+  "style": "file:./style-editor.css",
+  "viewScriptModule": "file:./view-module.js"
+}

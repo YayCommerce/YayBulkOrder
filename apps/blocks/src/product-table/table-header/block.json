@@ -37,9 +37,7 @@
       }
     }
   },
-  "ancestor": ["yay-bulk-order/product-table"],
-  "allowedBlocks": [
-    "yay-bulk-order/product-table-columns"
-  ],
+  "ancestor": ["yay-bulk-order/product-table-root"],
+  "parent": ["yay-bulk-order/product-table"],
   "editorScript": "file:./editor.js"
 }

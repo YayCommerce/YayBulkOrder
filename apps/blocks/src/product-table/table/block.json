@@ -38,6 +38,11 @@
     }
   },
   "ancestor": ["yay-bulk-order/product-table-root"],
+  "allowedBlocks": [
+    "yay-bulk-order/product-table-header",
+    "yay-bulk-order/product-table-columns",
+    "yay-bulk-order/product-table-footer"
+  ],
   "editorScript": "file:./editor.js",
   "style": "file:./style-editor.css"
 }
