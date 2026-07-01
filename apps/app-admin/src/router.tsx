@@ -1,9 +1,11 @@
 import { createHashRouter, redirect } from 'react-router';
 
-import DashboardPage from '@/pages/dashboard/DashboardPage';
-import AppLayout from './AppLayout';
-import NotFoundPage from './pages/404';
-import ErrorPage from './pages/500';
+import { AppLayout } from '@/components/layout/AppLayout';
+import { NotFoundPage } from '@/pages/404';
+import { ErrorPage } from '@/pages/500';
+import { HomePage } from '@/pages/home/HomePage';
+import { ProductTablesPage } from '@/pages/product-tables/ProductTablesPage';
+import { SettingsPage } from '@/pages/settings/SettingsPage';
 
 export function getAppAdminRouter() {
   return createHashRouter([
@@ -14,11 +16,33 @@ export function getAppAdminRouter() {
       children: [
         {
           index: true,
-          loader: () => redirect('/dashboard'),
+          loader: () => redirect('/home'),
         },
         {
-          path: 'dashboard',
-          element: <DashboardPage />,
+          path: 'home',
+          element: <HomePage />,
+        },
+        {
+          path: 'product-tables',
+          element: <ProductTablesPage />,
+        },
+        {
+          path: 'settings',
+          children: [
+            {
+              index: true,
+              loader: () => redirect('/settings/general'),
+            },
+            {
+              path: ':subMenu',
+              loader: ({ params }) => {
+                if (!params.subMenu || !settingSubMenus.includes(params.subMenu)) {
+                  return redirect('/settings/general');
+                }
+              },
+              element: <SettingsPage />,
+            },
+          ],
         },
         {
           path: '*',
@@ -28,3 +52,5 @@ export function getAppAdminRouter() {
     },
   ]);
 }
+
+const settingSubMenus = ['general', 'styles'];

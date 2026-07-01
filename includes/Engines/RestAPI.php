@@ -2,7 +2,6 @@
 namespace YayBulkOrder\Engines;
 
 use YayBulkOrder\Controllers\SettingsRestController;
-use YayBulkOrder\Controllers\ShortcodesRestController;
 use YayBulkOrder\Utils\SingletonTrait;
 
 

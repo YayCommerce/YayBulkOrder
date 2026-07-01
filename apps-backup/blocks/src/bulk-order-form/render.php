@@ -8,10 +8,10 @@ use YayBulkOrder\Services\SettingsService;
 use YayBulkOrder\Utils\BlockHelper;
 
 $settings_service = SettingsService::get_instance();
-$set_config = $settings_service->get_config();
+$set_config       = $settings_service->get_config();
 
-$config = wp_interactivity_config('yay-bulk-order/bulk-order-form', $set_config);
-$styles = $settings_service->get_styles( $config['settings']['styles'] );
+$config     = wp_interactivity_config( 'yay-bulk-order/bulk-order-form', $set_config );
+$styles     = $settings_service->get_styles( $config['settings']['styles'] );
 $style_attr = '';
 foreach ( $styles as $property => $value ) {
     $style_attr .= esc_attr( $property ) . ':' . esc_attr( $value ) . ';';
@@ -19,13 +19,13 @@ foreach ( $styles as $property => $value ) {
 
 wp_interactivity_state(
     'yay-bulk-order/bulk-order-form',
-    ['noop' => true]
+    [ 'noop' => true ]
 );
 
-$query_id = $attributes['queryId'];
+$query_id          = $attributes['queryId'];
 $force_page_reload = $attributes['forcePageReload'];
 
-$page_param = BlockHelper::get_page_param( $query_id );
+$page_param   = BlockHelper::get_page_param( $query_id );
 $filter_param = BlockHelper::get_filter_param( $query_id );
 
 $data_context = [
@@ -33,12 +33,13 @@ $data_context = [
         'queryId'         => $query_id,
         'forcePageReload' => $force_page_reload,
     ],
-    'queryContext' => [
-        'page' => $page_param,
+    'queryContext'   => [
+        'page'   => $page_param,
         'filter' => $filter_param,
     ],
-    'queryResult' => [
-        'totalLength' => 0, // TODO: set this when query is loaded
+    'queryResult'    => [
+        'totalLength' => 0,
+    // TODO: set this when query is loaded
     ],
 ];
 ?>

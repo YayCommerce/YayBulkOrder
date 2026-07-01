@@ -103,7 +103,7 @@ function LoadingButton({
         data-slot="loading-indicator"
         data-size={size}
         data-loading={loading ? 'true' : 'false'}
-        className="absolute animate-spin transition-opacity data-[loading=false]:opacity-0 data-[size=default]:size-4 data-[size=icon]:size-4 data-[size=icon-lg]:size-5 data-[size=icon-sm]:size-3.5 data-[size=lg]:size-5 data-[size=sm]:size-3.5"
+        className="absolute animate-spin transition-opacity data-[size=default]:size-4 data-[size=icon-lg]:size-5 data-[size=icon-sm]:size-3.5 data-[size=icon]:size-4 data-[size=lg]:size-5 data-[size=sm]:size-3.5 data-[loading=false]:opacity-0"
       />
       <span
         data-slot="loading-text"

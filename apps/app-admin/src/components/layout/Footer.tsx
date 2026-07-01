@@ -58,7 +58,7 @@ export default function Footer({
   }, []);
 
   const handleReviewClick = async () => {
-    window.open('https://wordpress.org/support/plugin/yay-wholesale/reviews/#new-post', '_blank');
+    window.open('https://wordpress.org/support/plugin/yay-bulk-order/reviews/#new-post', '_blank');
     setHasReviewed(true);
     try {
       await markReviewed();
@@ -109,7 +109,7 @@ export default function Footer({
                 ></path>
               </svg>
               <span className="text-muted-foreground cursor-pointer" onClick={onBackToDefault}>
-                YayWholesale
+                YayBulkOrder
               </span>
             </BreadcrumbItem>
             {currentMenu.map((menu, index) => (
@@ -146,7 +146,7 @@ export default function Footer({
           </p>
         ) : (
           <p className="text-right text-xs">
-            {createInterpolateElement(__('Thank you for using YayWholesale from <link/>.', 'yay-bulk-order'), {
+            {createInterpolateElement(__('Thank you for using YayBulkOrder from <link/>.', 'yay-bulk-order'), {
               link: (
                 <a
                   href="https://yaycommerce.com/"

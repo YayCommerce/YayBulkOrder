@@ -1,0 +1,45 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "yay-bulk-order/product-table-root",
+  "version": "0.1.0",
+  "title": "Product Table",
+  "category": "woocommerce",
+  "description": "WooCommerce Products as Table optimized for bulk ordering.",
+  "textdomain": "yay-bulk-order",
+  "attributes": {
+    "queryId": {
+      "type": "number",
+      "default": 0
+    },
+    "query": {
+      "type": "object",
+      "default": {
+        "perPage": 10,
+        "postType": "product",
+        "order": "desc",
+        "orderBy": "date"
+      }
+    },
+    "productQuery": {
+      "type": "object",
+      "default": {
+        "queryType": "all-products"
+      }
+    }
+  },
+  "providesContext": {
+    "queryId": "queryId",
+    "query": "query",
+    "productQuery": "productQuery"
+  },
+  "supports": {
+    "interactivity": true,
+    "html": false,
+    "align": ["wide", "full"],
+    "anchor": true
+  },
+  "editorScript": "file:./editor.js",
+  "render": "file:./render.php",
+  "viewScriptModule": "file:./frontend-module.js"
+}

@@ -7,7 +7,7 @@ use YayBulkOrder\Controllers\BaseRestController;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Load and save settings
+ * Load data to localize to window
  *
  * @method static LocalizeService get_instance()
  */
@@ -17,22 +17,30 @@ class LocalizeService {
     public const VAR_ADMIN_DATA = 'yayBulkOrderAdminData';
     public const VAR_META       = 'yayBulkOrderMeta';
 
+    private SettingsService $settings_service;
+
+    protected function __construct() {
+        $this->settings_service = SettingsService::get_instance();
+    }
+
     public function get_admin_data() {
         return [
-            'init_settings' => 'TODO',
+            'settings' => $this->settings_service->get_settings(),
         ];
     }
 
     public function get_meta() {
         $meta = [
             'wpMeta'        => [
-                'siteUrl'   => esc_url_raw( site_url() ),
-                'adminUrl'  => esc_url_raw( admin_url() ),
-                'ajaxUrl'   => esc_url_raw( admin_url( 'admin-ajax.php' ) ),
+                'siteUrl'      => esc_url_raw( site_url() ),
+                'adminUrl'     => esc_url_raw( admin_url() ),
+                'ajaxUrl'      => esc_url_raw( admin_url( 'admin-ajax.php' ) ),
 
-                'restRoot'  => esc_url_raw( rest_url() ),
-                'restBase'  => BaseRestController::REST_NAMESPACE,
-                'restNonce' => wp_create_nonce( 'wp_rest' ),
+                'restRoot'     => esc_url_raw( rest_url() ),
+                'restBase'     => BaseRestController::REST_NAMESPACE,
+                'restNonce'    => wp_create_nonce( 'wp_rest' ),
+
+                'isBlockTheme' => wp_is_block_theme(),
             ],
             'bulkOrderMeta' => [
                 'pluginUrl' => YAYBULKORDER_PLUGIN_URL,
@@ -44,5 +52,19 @@ class LocalizeService {
         ];
 
         return $meta;
+    }
+
+    public function get_global_config() {
+        $admin_data = $this->get_admin_data();
+        $meta       = $this->get_meta();
+
+        return [
+            'settings'      => [
+                'colors'  => $admin_data['settings']['colors'],
+                'general' => $admin_data['settings']['general'],
+            ],
+            'wpMeta'        => $meta['wpMeta'],
+            'bulkOrderMeta' => $meta['bulkOrderMeta'],
+        ];
     }
 }

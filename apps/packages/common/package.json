@@ -4,7 +4,12 @@
   "description": "Common config and types for Yay Bulk Order. Reusable across all Yay Bulk Order apps, blocks, packages, etc.",
   "author": "YayCommerce",
   "files": [
-    "src",
-    "types"
-  ]
+    "src"
+  ],
+  "dependencies": {
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@wordpress/dependency-extraction-webpack-plugin": "next"
+  }
 }
