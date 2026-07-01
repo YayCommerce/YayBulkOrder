@@ -5,6 +5,7 @@ import { HeaderMenu } from './HeaderMenu';
 
 export default function Header() {
   const scrolled = useScrolled();
+
   return (
     <header
       className={cn(

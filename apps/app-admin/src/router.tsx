@@ -28,7 +28,21 @@ export function getAppAdminRouter() {
         },
         {
           path: 'settings',
-          element: <SettingsPage />,
+          children: [
+            {
+              index: true,
+              loader: () => redirect('/settings/general'),
+            },
+            {
+              path: ':subMenu',
+              loader: ({ params }) => {
+                if (!params.subMenu || !settingSubMenus.includes(params.subMenu)) {
+                  return redirect('/settings/general');
+                }
+              },
+              element: <SettingsPage />,
+            },
+          ],
         },
         {
           path: '*',
@@ -38,3 +52,5 @@ export function getAppAdminRouter() {
     },
   ]);
 }
+
+const settingSubMenus = ['general', 'styles'];
