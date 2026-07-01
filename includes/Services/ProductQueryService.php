@@ -55,7 +55,7 @@ class ProductQueryService {
         $filter_param = $this->get_filter_param( $block );
         $settings     = $this->settings_service->get_settings();
 
-        $query_vars['posts_per_page'] = $settings['general']['pageSize'];
+        $query_vars['posts_per_page'] = $settings['general']['defaultPageSize'];
 
         if ( 'all' === $filter_param ) {
             return $query_vars;

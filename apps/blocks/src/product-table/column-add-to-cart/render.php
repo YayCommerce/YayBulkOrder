@@ -10,7 +10,7 @@
 <td
     <?php echo get_block_wrapper_attributes(); ?>
 >
-    <button data-wp-on--click="actions.addToCart">
+    <button data-wp-on--click="actions.addToCart" style="background-color: var(--ybo-primary-color); padding: 12px 8px;">
         Add To Cart
     </button>
 </td>
