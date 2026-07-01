@@ -45,3 +45,8 @@ export type ProductTableContext = {
     };
   };
 };
+
+export type ProductRowContext = {
+  productId: number;
+  variantId?: string;
+};

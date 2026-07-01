@@ -5,15 +5,10 @@ const {
   scriptExtractionPlugin,
   defaultScriptConfig,
   defaultModuleConfig,
-} = require('@yay-bulk-order/common//config/webpackConfig.helper.cjs');
+} = require('@yay-bulk-order/common/src/config/webpackConfig.helper.cjs');
 
 const extendedScriptConfig = {
   ...defaultScriptConfig,
-
-  output: {
-    ...defaultScriptConfig.output,
-    path: path.resolve(__dirname, '../../assets/dist/blocks'),
-  },
 
   plugins: [
     ...defaultScriptConfig.plugins.filter((plugin) => plugin.constructor.name !== 'DependencyExtractionWebpackPlugin'),
@@ -23,11 +18,6 @@ const extendedScriptConfig = {
 
 const extendedModuleConfig = {
   ...defaultModuleConfig,
-
-  output: {
-    ...defaultModuleConfig.output,
-    path: path.resolve(__dirname, '../../assets/dist/blocks'),
-  },
 
   plugins: [
     ...defaultModuleConfig.plugins.filter((plugin) => plugin.constructor.name !== 'DependencyExtractionWebpackPlugin'),

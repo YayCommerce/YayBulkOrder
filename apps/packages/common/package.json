@@ -10,7 +10,6 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@wordpress/dependency-extraction-webpack-plugin": "next",
-    "@wordpress/scripts": "^31.2.0"
+    "@wordpress/dependency-extraction-webpack-plugin": "next"
   }
 }

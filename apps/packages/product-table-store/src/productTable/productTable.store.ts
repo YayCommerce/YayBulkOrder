@@ -1,7 +1,7 @@
 import { getContext, getElement, store } from '@wordpress/interactivity';
 
 import { getGlobalConfig } from '../utils';
-import type { ProductTableContext } from './productTable.type';
+import type { ProductRowContext, ProductTableContext } from './productTable.type';
 
 const STORE_NAMESPACE = 'yay-bulk-order/product-table';
 
@@ -32,6 +32,10 @@ const storeDef = {
 
         yield actions.prefetch(ref.href);
       }
+    },
+    addToCart() {
+      const { productId, variantId } = getContext<ProductRowContext>();
+      console.log('addToCart', { productId, variantId });
     },
   },
   callbacks: {

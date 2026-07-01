@@ -1,0 +1,43 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "yay-bulk-order/product-table",
+  "version": "0.1.0",
+  "title": "Table",
+  "category": "woocommerce",
+  "description": "Product Table Wrapper.",
+  "textdomain": "yay-bulk-order",
+  "supports": {
+    "interactivity": true,
+    "inserter": false,
+    "multiple": false,
+    "reusable": false,
+    "html": false,
+    "align": ["wide", "full"],
+    "anchor": true,
+    "color": {
+      "gradients": true,
+      "link": true,
+      "__experimentalDefaultControls": {
+        "background": true,
+        "text": true
+      }
+    },
+    "typography": {
+      "fontSize": true,
+      "lineHeight": true,
+      "__experimentalFontFamily": true,
+      "__experimentalFontWeight": true,
+      "__experimentalFontStyle": true,
+      "__experimentalTextTransform": true,
+      "__experimentalTextDecoration": true,
+      "__experimentalLetterSpacing": true,
+      "__experimentalDefaultControls": {
+        "fontSize": true
+      }
+    }
+  },
+  "ancestor": ["yay-bulk-order/product-table-root"],
+  "editorScript": "file:./editor.js",
+  "style": "file:./style-editor.css"
+}

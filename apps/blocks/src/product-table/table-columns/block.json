@@ -1,0 +1,52 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "yay-bulk-order/product-table-columns",
+  "version": "0.1.0",
+  "title": "Product Table Columns",
+  "category": "woocommerce",
+  "description": "List of column in order.",
+  "textdomain": "yay-bulk-order",
+  "usesContext": ["queryId", "query"],
+  "supports": {
+    "interactivity": true,
+    "inserter": false,
+    "multiple": false,
+    "reusable": false,
+    "html": false,
+    "align": ["wide", "full"],
+    "anchor": true,
+    "color": {
+      "gradients": true,
+      "link": true,
+      "__experimentalDefaultControls": {
+        "background": true,
+        "text": true
+      }
+    },
+    "typography": {
+      "fontSize": true,
+      "lineHeight": true,
+      "__experimentalFontFamily": true,
+      "__experimentalFontWeight": true,
+      "__experimentalFontStyle": true,
+      "__experimentalTextTransform": true,
+      "__experimentalTextDecoration": true,
+      "__experimentalLetterSpacing": true,
+      "__experimentalDefaultControls": {
+        "fontSize": true
+      }
+    }
+  },
+  "ancestor": ["yay-bulk-order/product-table-root"],
+  "parent": ["yay-bulk-order/product-table"],
+  "allowedBlocks": [
+    "yay-bulk-order/product-table-column-product",
+    "yay-bulk-order/product-table-column-quantity",
+    "yay-bulk-order/product-table-column-subtotal",
+    "yay-bulk-order/product-table-column-add-to-cart",
+    "yay-bulk-order/product-table-column-select"
+  ],
+  "editorScript": "file:./editor.js",
+  "render": "file:./render.php"
+}
