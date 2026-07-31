@@ -1,6 +1,6 @@
 import { getContext, getElement, store } from '@wordpress/interactivity';
 
-import { getGlobalConfig } from '../utils';
+import { getGlobalConfig, GlobalConfig } from '../utils';
 import type { ProductRowContext, ProductTableContext } from './productTable.type';
 
 const STORE_NAMESPACE = 'yay-bulk-order/product-table';
@@ -10,6 +10,16 @@ const storeDef = {
     get currentPage(): number {
       const context = getContext<ProductTableContext>();
       return context.tableState.pagination.pageIndex + 1;
+    },
+    get subtotal() {
+      const context = getContext<ProductRowContext>();
+      return context.unitPrice * context.quantity;
+    },
+
+    get subtotalFormatted() {
+      const context = getContext<ProductRowContext>();
+      const globalConfig = getGlobalConfig();
+      return formatPrice(context.unitPrice * context.quantity, globalConfig.settings.general.currency);
     },
   },
   actions: {
@@ -33,9 +43,14 @@ const storeDef = {
         yield actions.prefetch(ref.href);
       }
     },
+    updateQuantity(event: Event) {
+      const context = getContext<ProductRowContext>();
+      const quantity = Number((event.target as HTMLInputElement).value);
+      context.quantity = Number.isFinite(quantity) && quantity > 0 ? quantity : 1;
+    },
     addToCart() {
-      const { productId, variantId } = getContext<ProductRowContext>();
-      console.log('addToCart', { productId, variantId });
+      const { productId, variantId, quantity } = getContext<ProductRowContext>();
+      console.log('addToCart', { productId, variantId, quantity });
     },
   },
   callbacks: {
@@ -82,4 +97,31 @@ function isValidEvent(event: MouseEvent): boolean {
     !event.shiftKey &&
     !event.defaultPrevented
   );
+}
+
+export function formatPrice(amount: number, currency: GlobalConfig['settings']['general']['currency']): string {
+  const number = amount.toFixed(currency.decimals);
+
+  const parts = number.split('.');
+
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, currency.thousandSep);
+
+  const formatted = parts.length > 1 ? parts.join(currency.decimalSep) : parts[0];
+
+  switch (currency.position) {
+    case 'left':
+      return `${currency.symbol}${formatted}`;
+
+    case 'left_space':
+      return `${currency.symbol} ${formatted}`;
+
+    case 'right':
+      return `${formatted}${currency.symbol}`;
+
+    case 'right_space':
+      return `${formatted} ${currency.symbol}`;
+
+    default:
+      return `${currency.symbol}${formatted}`;
+  }
 }
