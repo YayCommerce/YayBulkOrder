@@ -48,8 +48,11 @@ export type ProductTableContext = {
 
 export type ProductRowContext = {
   productId: number;
-  variantId?: string;
-
+  variantId?: number;
   unitPrice: number;
   quantity: number;
+  isAddingToCart: boolean;
+  addToCartText: string;
+  cartQuantity: number;
+  productType: string;
 };
