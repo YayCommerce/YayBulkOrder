@@ -1,19 +1,34 @@
 <?php
 /**
- * @var array $attributes The block attributes.
- * @var string $content The block default content.
- * @var WP_Block $block The block instance.
+ * Product column: thumbnail, title, and a badge showing the quantity
+ * already in the cart.
+ *
+ * @var array    $attributes The block attributes.
+ * @var string   $content    The block default content.
+ * @var WP_Block $block      The block instance.
  */
 
-$product_id = get_the_ID();
-$product = wc_get_product( $product_id );
+$product_id = absint( $block->context['yay-bulk-order/productId'] ?? get_the_ID() );
+$product    = wc_get_product( $product_id );
 
+if ( ! $product instanceof WC_Product ) {
+	printf( '<td %1$s>%2$s</td>', get_block_wrapper_attributes(), esc_html__( 'No Product', 'yay-bulk-order' ) );
+	return;
+}
+
+$thumbnail = $product->get_image( 'woocommerce_thumbnail', array( 'class' => 'ybo-product-thumbnail__image' ) );
 ?>
 
-<td
-    <?php echo get_block_wrapper_attributes(); ?>
->
-    <a href="<?php echo esc_url( get_permalink( $product_id ) ); ?>" target="_blank">
-        <?php  echo empty($product) ? 'No Product' : esc_html( $product->get_title() ); ?>
-    </a>
+<td <?php echo get_block_wrapper_attributes(); ?>>
+	<a href="<?php echo esc_url( get_permalink( $product_id ) ); ?>" target="_blank" class="ybo-product-cell">
+		<span class="ybo-product-thumbnail">
+			<?php echo $thumbnail; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- WC_Product::get_image() output is already escaped. ?>
+			<span
+				class="ybo-product-thumbnail__badge"
+				data-wp-bind--hidden="!context.cartQuantity"
+				data-wp-text="context.cartQuantity"
+			></span>
+		</span>
+		<span class="ybo-product-title"><?php echo esc_html( $product->get_title() ); ?></span>
+	</a>
 </td>

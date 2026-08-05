@@ -31,6 +31,53 @@ table.wp-block-yay-bulk-order-product-table {
     }
   }
 
+  .ybo-product-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .ybo-product-thumbnail {
+    position: relative;
+    flex-shrink: 0;
+    display: inline-flex;
+    line-height: 0;
+  }
+
+  .ybo-product-thumbnail__image {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+
+  .ybo-product-thumbnail__badge {
+    position: absolute;
+    top: -8px;
+    left: -8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 4px;
+    border-radius: 999px;
+    background-color: var(--ybo-primary-color, #3c434a);
+    color: #fff;
+    font-size: 0.75rem;
+    line-height: 1;
+
+    &[hidden] {
+      display: none;
+    }
+  }
+
+  .ybo-product-title {
+    text-decoration: underline;
+  }
+
   .ybo-add-to-cart-button {
     cursor: pointer;
     border-radius: 4px !important;
