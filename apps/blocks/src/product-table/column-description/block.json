@@ -1,0 +1,18 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "yay-bulk-order/product-table-column-description",
+  "version": "0.1.0",
+  "title": "Column Description",
+  "category": "woocommerce",
+  "description": "Product Short Description",
+  "textdomain": "yay-bulk-order",
+  "usesContext": ["yay-bulk-order/productId"],
+  "supports": {
+    "multiple": false,
+    "html": false
+  },
+  "parent": ["yay-bulk-order/product-table-columns"],
+  "editorScript": "file:./editor.js",
+  "render": "file:./render.php"
+}

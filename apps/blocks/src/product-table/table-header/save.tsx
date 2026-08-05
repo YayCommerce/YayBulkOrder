@@ -7,9 +7,12 @@ export default function Save() {
     <thead {...blockProps}>
       <tr>
         <th>Product</th>
+        <th>SKU</th>
+        <th>Description</th>
         <th>Quantity</th>
         <th>Subtotal</th>
         <th>Add to Cart</th>
+        <th></th>
       </tr>
     </thead>
   );

@@ -33,9 +33,10 @@ table.wp-block-yay-bulk-order-product-table {
 
   .ybo-product-cell {
     display: flex;
+    flex-direction: column;
     align-items: center;
     gap: 12px;
-    text-decoration: none;
+    text-decoration: none !important;
     color: inherit;
   }
 
@@ -75,7 +76,8 @@ table.wp-block-yay-bulk-order-product-table {
   }
 
   .ybo-product-title {
-    text-decoration: underline;
+    text-decoration: none;
+    text-align: center;
   }
 
   .ybo-add-to-cart-button {

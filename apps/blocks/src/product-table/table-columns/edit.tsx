@@ -11,7 +11,7 @@ export default function Edit() {
         style={{
           ...style,
           display: 'grid',
-          gridTemplateColumns: 'repeat(5, 1fr)',
+          gridTemplateColumns: `repeat(${DEFAULT_TEMPLATE.length}, 1fr)`,
         }}
       />
     </div>
@@ -20,6 +20,8 @@ export default function Edit() {
 
 const DEFAULT_TEMPLATE: InnerBlocks.Props['template'] = [
   ['yay-bulk-order/product-table-column-product', {}],
+  ['yay-bulk-order/product-table-column-sku', {}],
+  ['yay-bulk-order/product-table-column-description', {}],
   ['yay-bulk-order/product-table-column-quantity', {}],
   ['yay-bulk-order/product-table-column-subtotal', {}],
   ['yay-bulk-order/product-table-column-add-to-cart', {}],
