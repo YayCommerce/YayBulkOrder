@@ -38,7 +38,14 @@ $data_context = [
         'productQuery' => $attributes['productQuery']
     ],
     'tableState' => [
-        'select' => [ 'noop' => false ],
+        // Cast to object so an empty selection serializes as `{}`, not `[]`,
+        // keeping it a keyed dictionary (productId => SelectedRow) on the JS side.
+        'select' => (object) [],
+        'bulkAdding' => false,
+        'cartNotice' => [
+            'visible' => false,
+            'totalFormatted' => '',
+        ],
         'filter' => [ 'noop' => false ],
         'pagination' => [
             'pageIndex' => 0,

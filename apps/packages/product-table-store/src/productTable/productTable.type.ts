@@ -30,10 +30,20 @@ export type ProductTableAttributes = {
   productQuery: ProductQuery;
 };
 
+export type SelectedRow = {
+  productId: number;
+  quantity: number;
+};
+
 export type ProductTableContext = {
   formAttributes: ProductTableAttributes;
   tableState: {
-    select: Record<ProductRowId, boolean>;
+    select: Record<ProductRowId, SelectedRow>;
+    bulkAdding: boolean;
+    cartNotice: {
+      visible: boolean;
+      totalFormatted: string;
+    };
     filter: {
       categoryIds?: number[];
       searchKeyword?: string;

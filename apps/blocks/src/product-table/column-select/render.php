@@ -10,5 +10,10 @@
 <td
     <?php echo get_block_wrapper_attributes(); ?>
 >
-   <input type="checkbox" />
+   <input
+       type="checkbox"
+       data-wp-bind--checked="state.isRowSelected"
+       data-wp-on--change="actions.toggleSelectRow"
+       aria-label="<?php echo esc_attr__( 'Select product', 'yay-bulk-order' ); ?>"
+   />
 </td>

@@ -66,14 +66,14 @@ const DEFAULT_TEMPLATE: InnerBlocks.Props['template'] = [
           ['yay-bulk-order/product-table-column-select', {}],
         ],
       ],
-      // [
-      //   'yay-bulk-order/product-table-footer',
-      //   {},
-      //   [
-      //     ['yay-bulk-order/product-table-pagination', {}],
-      //     ['yay-bulk-order/product-table-bulk-action', {}],
-      //   ],
-      // ],
+    ],
+  ],
+  [
+    'yay-bulk-order/product-table-footer',
+    {},
+    [
+      //['yay-bulk-order/product-table-pagination', {}],
+      ['yay-bulk-order/product-table-bulk-action', {}],
     ],
   ],
 ];
