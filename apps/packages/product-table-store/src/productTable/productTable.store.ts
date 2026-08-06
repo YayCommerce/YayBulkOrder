@@ -1,17 +1,39 @@
 import { getContext, getElement, store } from '@wordpress/interactivity';
 
-import type { GlobalConfig } from '../utils';
 import { getGlobalConfig } from '../utils';
-import type { ProductRowContext, ProductTableContext } from './productTable.type';
+import type { ProductRowContext, ProductTableContext, SelectedRow } from './productTable.type';
 import {
   addProductsToCartBatch,
   addProductToCart,
-  formatCartTotal,
   STORE_NAMESPACE,
   syncWooCommerceCart,
+  type StoreApiCart,
 } from './storeApi';
+import { formatCartTotal, formatPrice } from './storeApi/currency';
 
 type ProductRowState = ProductRowContext & ProductTableContext;
+
+type TableState = ProductTableContext['tableState'];
+
+/** All currently selected rows, derived from the keyed `select` map. */
+function getSelectedRows(tableState: TableState): SelectedRow[] {
+  return Object.values(tableState.select);
+}
+
+/** Sum of the quantities across all currently selected rows. */
+function getSelectedQuantityTotal(tableState: TableState): number {
+  return getSelectedRows(tableState).reduce((total, row) => total + row.quantity, 0);
+}
+
+/**
+ * Builds the "View cart" notice shown after an add-to-cart request.
+ * `visible` is passed in rather than hardcoded so callers can either show the
+ * notice (bulk add) or just refresh its total while leaving its current
+ * visibility untouched (single-row add).
+ */
+function buildCartNotice(cart: StoreApiCart, visible: boolean): TableState['cartNotice'] {
+  return { visible, totalFormatted: formatCartTotal(cart.totals) };
+}
 
 const storeDef = {
   state: {
@@ -55,30 +77,31 @@ const storeDef = {
     },
     get selectedCount(): number {
       const { tableState } = getContext<ProductTableContext>();
-      return Object.keys(tableState.select).length;
+      return getSelectedRows(tableState).length;
     },
     get selectedQuantityTotal(): number {
       const { tableState } = getContext<ProductTableContext>();
-      return Object.values(tableState.select).reduce((total, row) => total + row.quantity, 0);
+      return getSelectedQuantityTotal(tableState);
     },
     get hasSelectedRows(): boolean {
       const { tableState } = getContext<ProductTableContext>();
-      return Object.keys(tableState.select).length > 0;
+      return getSelectedRows(tableState).length > 0;
     },
     get bulkAddToCartText(): string {
       const { tableState } = getContext<ProductTableContext>();
       if (tableState.bulkAdding) {
         return 'Adding...';
       }
-      const total = Object.values(tableState.select).reduce((sum, row) => sum + row.quantity, 0);
+      const total = getSelectedQuantityTotal(tableState);
       return total > 0 ? `Add selected items to cart (${total})` : 'Add selected items to cart';
     },
     get isBulkAddDisabled(): boolean {
       const { tableState } = getContext<ProductTableContext>();
-      return tableState.bulkAdding || Object.keys(tableState.select).length === 0;
+      return tableState.bulkAdding || getSelectedRows(tableState).length === 0;
     },
     get showCartNotice(): boolean {
       const { tableState } = getContext<ProductTableContext>();
+      // Hide the leftover notice again as soon as a new selection starts.
       return tableState.cartNotice.visible && !this.hasSelectedRows;
     },
     get cartNoticeText(): string {
@@ -149,9 +172,8 @@ const storeDef = {
       tableState.cartNotice.visible = false;
     },
     *addSelectedToCart() {
-      const context = getContext<ProductTableContext>();
-      const { tableState } = context;
-      const selectedRows = Object.values(tableState.select);
+      const { tableState } = getContext<ProductTableContext>();
+      const selectedRows = getSelectedRows(tableState);
 
       if (!selectedRows.length || tableState.bulkAdding) {
         return;
@@ -159,13 +181,10 @@ const storeDef = {
 
       tableState.bulkAdding = true;
       try {
-        const cart = yield addProductsToCartBatch(selectedRows);
+        const cart: StoreApiCart = yield addProductsToCartBatch(selectedRows);
         syncWooCommerceCart(cart);
         tableState.select = {};
-        tableState.cartNotice = {
-          visible: true,
-          totalFormatted: formatCartTotal(cart.totals),
-        };
+        tableState.cartNotice = buildCartNotice(cart, true);
       } catch (error) {
         console.error(error);
       } finally {
@@ -181,18 +200,14 @@ const storeDef = {
       }
       context.isAddingToCart = true;
       try {
-        const cart = yield addProductToCart(productId, quantity);
+        const cart: StoreApiCart = yield addProductToCart(productId, quantity);
         // find the item in the cart by productId
         const item = cart.items?.find((item) => item.id === productId);
         context.cartQuantity = item?.quantity ?? 0;
         syncWooCommerceCart(cart);
-        const tableContext = getContext<ProductTableContext>();
-        const { tableState } = tableContext;
-        console.log({ cart });
-        tableState.cartNotice = {
-          visible: tableState.cartNotice.visible,
-          totalFormatted: formatCartTotal(cart.totals),
-        };
+        const { tableState } = getContext<ProductTableContext>();
+        // Only refresh the total; leave the notice's current visibility as-is.
+        tableState.cartNotice = buildCartNotice(cart, tableState.cartNotice.visible);
       } catch (error) {
         console.error(error);
       } finally {
@@ -244,26 +259,4 @@ function isValidEvent(event: MouseEvent): boolean {
     !event.shiftKey &&
     !event.defaultPrevented
   );
-}
-
-export function formatPrice(amount: number, currency: GlobalConfig['settings']['general']['currency']): string {
-  const number = amount.toFixed(currency.decimals);
-
-  const parts = number.split('.');
-
-  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, currency.thousandSep);
-
-  const formatted = parts.length > 1 ? parts.join(currency.decimalSep) : parts[0];
-
-  switch (currency.position) {
-    case 'left_space':
-      return `${currency.symbol} ${formatted}`;
-    case 'right':
-      return `${formatted}${currency.symbol}`;
-    case 'right_space':
-      return `${formatted} ${currency.symbol}`;
-    case 'left':
-    default:
-      return `${currency.symbol}${formatted}`;
-  }
 }

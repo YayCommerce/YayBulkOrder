@@ -1,6 +1,11 @@
+import './globals';
+
 import { getConfig } from '@wordpress/interactivity';
 
-import type { SelectedRow } from './productTable.type';
+import type { SelectedRow } from '../productTable.type';
+import type { BatchRequestItem, BatchResponse, StoreApiCart, StoreApiRequestOptions, StoreConfig } from './type';
+
+export type { StoreApiCart, StoreApiCartItem, StoreApiCartTotals } from './type';
 
 export const STORE_NAMESPACE = 'yay-bulk-order/product-table';
 
@@ -15,65 +20,6 @@ const STORE_API = {
 
 // The Store API batch route caps the number of sub-requests per call.
 const BATCH_REQUEST_LIMIT = 25;
-
-export type StoreApiCartItem = Readonly<{
-  key: string;
-  id: number;
-  quantity: number;
-  // Present on Store API responses; e.g. "sold individually" products report
-  // `editable: false` once in the cart, so their quantity can't be bumped.
-  quantity_limits?: Readonly<{
-    minimum: number;
-    maximum: number;
-    multiple_of: number;
-    editable: boolean;
-  }>;
-}>;
-
-export type StoreApiCartTotals = Readonly<{
-  total_price?: string;
-  currency_minor_unit?: number;
-  currency_symbol?: string;
-  currency_prefix?: string;
-  currency_suffix?: string;
-  currency_thousand_separator?: string;
-  currency_decimal_separator?: string;
-  [key: string]: unknown;
-}>;
-
-export type StoreApiCart = Readonly<{
-  items: StoreApiCartItem[];
-  items_count?: number;
-  totals?: StoreApiCartTotals;
-}>;
-
-type StoreConfig = {
-  restUrl: string;
-  nonce: string;
-};
-
-type StoreApiRequestOptions = {
-  method?: RequestInit['method'];
-  body?: Record<string, unknown>;
-};
-
-declare global {
-  interface Window {
-    wp?: {
-      data?: {
-        dispatch?(store: string): {
-          receiveCart?(cart: StoreApiCart): void;
-        };
-      };
-    };
-    jQuery?: (element: HTMLElement | Document) => {
-      trigger(event: string): void;
-    };
-    // Localized by WooCommerce core's classic add-to-cart script, already
-    // enqueued on this page; reused here instead of adding new plumbing.
-    wc_add_to_cart_params?: Readonly<{ cart_url?: string }>;
-  }
-}
 
 // Cache only the nonce. The config is read on every request.
 let nonceCache = '';
@@ -141,20 +87,6 @@ export async function addProductToCart(productId: number, quantityToAdd: number)
     },
   });
 }
-
-type BatchRequestItem = {
-  path: string;
-  method: 'POST';
-  body: Record<string, unknown>;
-  headers: Record<string, string>;
-};
-
-type BatchResponse<T> = Readonly<{
-  responses: ReadonlyArray<{
-    status: number;
-    body: T;
-  }>;
-}>;
 
 function chunk<T>(items: readonly T[], size: number): T[][] {
   const chunks: T[][] = [];
@@ -232,24 +164,4 @@ export async function addProductsToCartBatch(items: readonly SelectedRow[]): Pro
 export function syncWooCommerceCart(cart: StoreApiCart): void {
   window.wp?.data?.dispatch?.('wc/store/cart')?.receiveCart?.(cart);
   window.jQuery?.(document.body).trigger('wc_fragment_refresh');
-}
-
-/** Formats a cart's grand total using the currency shape the Store API returns it in. */
-export function formatCartTotal(totals: StoreApiCartTotals | undefined): string {
-  if (!totals?.total_price) {
-    return '';
-  }
-
-  const minorUnit = totals.currency_minor_unit ?? 2;
-  const amount = Number(totals.total_price) / 10 ** minorUnit;
-  const thousandSep = totals.currency_thousand_separator ?? ',';
-  const decimalSep = totals.currency_decimal_separator ?? '.';
-  const prefix = totals.currency_prefix ?? totals.currency_symbol ?? '';
-  const suffix = totals.currency_suffix ?? '';
-
-  const [intPart, decPart] = amount.toFixed(minorUnit).split('.');
-  const withThousands = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, thousandSep);
-  const formatted = decPart ? `${withThousands}${decimalSep}${decPart}` : withThousands;
-
-  return `${prefix}${formatted}${suffix}`;
 }
