@@ -45,9 +45,9 @@ export type ProductTableContext = {
       totalFormatted: string;
     };
     filter: {
-      categoryIds?: number[];
-      searchKeyword?: string;
-      purchaseListId?: number;
+      categories: string[];
+      search: string;
+      isOpen: boolean;
     };
     pagination: {
       pageIndex: number;
@@ -65,6 +65,11 @@ export type ProductRowContext = {
   addToCartText: string;
   cartQuantity: number;
   productType: string;
+};
+
+/** Context of a single checkbox rendered by table-filter/render.php. */
+export type FilterCategoryOptionContext = ProductTableContext & {
+  categorySlug: string;
 };
 
 export type ProductRowState = ProductRowContext & ProductTableContext;

@@ -52,14 +52,28 @@ class ProductQueryService {
      * @return array The extended query vars.
      */
     public function extend_product_table_query_vars( $query_vars, $block ) {
-        $filter_param = $this->get_filter_param( $block );
-        $settings     = $this->settings_service->get_settings();
+        $filter_param   = $this->get_filter_param( $block );
+        $search_param   = $this->get_search_param( $block );
+        $category_param = $this->get_category_param( $block );
+        $settings       = $this->settings_service->get_settings();
 
         $query_vars['posts_per_page'] = $settings['general']['defaultPageSize'];
 
-        if ( 'all' === $filter_param ) {
-            return $query_vars;
+        if ( '' !== $search_param ) {
+            $query_vars['s'] = $search_param;
         }
+
+        if ( ! empty( $category_param ) ) {
+            /* phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_tax_query */
+            $query_vars['tax_query'] = [
+                [
+                    'taxonomy' => 'product_cat',
+                    'field'    => 'slug',
+                    'terms'    => $category_param,
+                ],
+            ];
+        }
+
         if ( 'in-stock' === $filter_param ) {
             /* phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_meta_query */
             $query_vars['meta_query'] = [
@@ -69,12 +83,8 @@ class ProductQueryService {
                     'compare' => 'IN',
                 ],
             ];
-
-            return $query_vars;
-        }
-        if ( 'on-sale' === $filter_param ) {
+        } elseif ( 'on-sale' === $filter_param ) {
             $query_vars['post__in'] = wc_get_product_ids_on_sale();
-            return $query_vars;
         }
 
         return $query_vars;
@@ -100,5 +110,66 @@ class ProductQueryService {
     public function get_filter_param( $block ) {
         $query_id = $block->context['queryId'] ?? 0;
         return BlockHelper::get_filter_param( $query_id );
+    }
+
+    /**
+     * Get the search keyword param from URL. With the queryId from Bulk Order Form.
+     *
+     * @param WP_Block $block The block instance.
+     * @return string The search keyword param.
+     */
+    public function get_search_param( $block ) {
+        $query_id = $block->context['queryId'] ?? 0;
+        return BlockHelper::get_search_param( $query_id );
+    }
+
+    /**
+     * Get the selected product category slugs from URL. With the queryId from Bulk Order Form.
+     *
+     * @param WP_Block $block The block instance.
+     * @return string[] The selected category slugs.
+     */
+    public function get_category_param( $block ) {
+        $query_id = $block->context['queryId'] ?? 0;
+        return BlockHelper::get_category_param( $query_id );
+    }
+
+    /**
+     * Product categories with products, for the table-filter block to list.
+     *
+     * @return WP_Term[] The product categories.
+     */
+    public function get_filterable_categories() {
+        $terms = get_terms(
+            [
+                'taxonomy'   => 'product_cat',
+                'hide_empty' => true,
+            ]
+        );
+
+        return is_wp_error( $terms ) ? [] : $terms;
+    }
+
+    /**
+     * Re-runs the product table's query (ids only) to work out where the
+     * current page sits, independently from the row-rendering query in
+     * product-table-columns — mirrors how Core's Query Pagination block
+     * derives its total from the Query Loop block's query args.
+     *
+     * @param WP_Block $block The block instance.
+     * @return array{currentPage: int, totalPages: int, totalItems: int}
+     */
+    public function get_pagination_info( $block ) {
+        $query_vars                  = $this->build_query_vars_from_query_block( $block );
+        $query_vars['fields']        = 'ids';
+        $query_vars['no_found_rows'] = false;
+
+        $query = new \WP_Query( $query_vars );
+
+        return [
+            'currentPage' => $this->get_page_param( $block ),
+            'totalPages'  => max( 1, (int) $query->max_num_pages ),
+            'totalItems'  => (int) $query->found_posts,
+        ];
     }
 }

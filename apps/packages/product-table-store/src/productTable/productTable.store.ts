@@ -3,6 +3,7 @@ import { getContext, getElement, store } from '@wordpress/interactivity';
 import { getGlobalConfig } from '../utils';
 import { initCartSync } from './cartSync';
 import type {
+  FilterCategoryOptionContext,
   ProductRowContext,
   ProductRowState,
   ProductTableContext,
@@ -36,6 +37,75 @@ function getSelectedQuantityTotal(tableState: TableState): number {
  */
 function buildCartNotice(cart: StoreApiCart, visible: boolean): TableState['cartNotice'] {
   return { visible, totalFormatted: formatCartTotal(cart.totals) };
+}
+
+/**
+ * Builds a URL from the current location, adding/removing the query-scoped
+ * `query-{queryId}-{suffix}` params — the JS-side mirror of
+ * `BlockHelper::build_query_url()`. A `null` (or empty-string) value removes
+ * that param instead of setting it.
+ */
+function buildTableUrl(queryId: number, updates: Record<string, string | number | null>): string {
+  const url = new URL(window.location.href);
+  for (const [suffix, value] of Object.entries(updates)) {
+    const key = `query-${queryId}-${suffix}`;
+    if (value === null || value === '') {
+      url.searchParams.delete(key);
+    } else {
+      url.searchParams.set(key, String(value));
+    }
+  }
+  return url.toString();
+}
+
+/**
+ * Fetches the filtered page directly and updates the router region
+ * without exposing query parameters in the browser URL.
+ */
+async function navigateWithHiddenParams(fetchUrl: string): Promise<void> {
+  const { actions } = await import('@wordpress/interactivity-router');
+
+  try {
+    const response = await window.fetch(fetchUrl, { credentials: 'same-origin' });
+    if (!response.ok) {
+      throw new Error(`Request failed with status ${response.status}`);
+    }
+    const html = await response.text();
+    await actions.navigate(window.location.href, { html, replace: true, force: true });
+  } catch (error) {
+    console.error('Failed to refresh the product table without changing the URL', error);
+    await actions.navigate(fetchUrl);
+  }
+}
+
+/** Applies the current filter/search state and resets to page 1. */
+async function navigateToFilterState(context: ProductTableContext): Promise<void> {
+  const { queryId } = context.formAttributes;
+  const { categories, search } = context.tableState.filter;
+
+  const url = buildTableUrl(queryId, {
+    page: null,
+    category: categories.length ? categories.join(',') : null,
+    search: search || null,
+  });
+
+  await navigateWithHiddenParams(url);
+}
+
+// Debounces search-as-you-type navigation, one timer per table instance (queryId).
+const SEARCH_DEBOUNCE_MS = 400;
+const searchDebounceTimers = new Map<number, ReturnType<typeof setTimeout>>();
+
+function scheduleSearchNavigation(context: ProductTableContext): void {
+  const { queryId } = context.formAttributes;
+  clearTimeout(searchDebounceTimers.get(queryId));
+  searchDebounceTimers.set(
+    queryId,
+    setTimeout(() => {
+      searchDebounceTimers.delete(queryId);
+      navigateToFilterState(context).catch(console.error);
+    }, SEARCH_DEBOUNCE_MS),
+  );
 }
 
 const storeDef = {
@@ -121,6 +191,18 @@ const storeDef = {
     get cartUrl(): string {
       return window.wc_add_to_cart_params?.cart_url ?? '#';
     },
+    get isFilterOpen(): boolean {
+      const { tableState } = getContext<ProductTableContext>();
+      return tableState.filter.isOpen;
+    },
+    get isFilterActive(): boolean {
+      const { tableState } = getContext<ProductTableContext>();
+      return tableState.filter.categories.length > 0;
+    },
+    get hasSearchKeyword(): boolean {
+      const { tableState } = getContext<ProductTableContext>();
+      return tableState.filter.search.length > 0;
+    },
   },
   actions: {
     *navigate(event: MouseEvent) {
@@ -141,6 +223,15 @@ const storeDef = {
         const { actions } = yield import('@wordpress/interactivity-router');
 
         yield actions.prefetch(ref.href);
+      }
+    },
+    // Navigates pagination while keeping query params out of the URL.
+    *navigatePagination(event: MouseEvent) {
+      const { ref } = getElement();
+
+      if (isValidLink(ref) && isValidEvent(event)) {
+        event.preventDefault();
+        yield navigateWithHiddenParams(ref.href);
       }
     },
     updateQuantity(event: Event) {
@@ -226,6 +317,56 @@ const storeDef = {
       } finally {
         context.isAddingToCart = false;
       }
+    },
+    toggleFilterPanel() {
+      const context = getContext<ProductTableContext>();
+      context.tableState.filter.isOpen = !context.tableState.filter.isOpen;
+    },
+    closeFilterPanel() {
+      const context = getContext<ProductTableContext>();
+      context.tableState.filter.isOpen = false;
+    },
+    // Applies the selected category immediately.
+    *selectFilterCategory() {
+      const context = getContext<FilterCategoryOptionContext>();
+      const { categorySlug } = context;
+      const [currentSlug] = context.tableState.filter.categories;
+
+      if ((currentSlug ?? '') === categorySlug) {
+        return;
+      }
+
+      context.tableState.filter.categories = categorySlug ? [categorySlug] : [];
+      yield navigateToFilterState(context);
+    },
+    updateSearchKeyword(event: Event) {
+      const context = getContext<ProductTableContext>();
+      context.tableState.filter.search = (event.target as HTMLInputElement).value;
+      scheduleSearchNavigation(context);
+    },
+    *submitSearch(event: Event) {
+      event.preventDefault();
+      const context = getContext<ProductTableContext>();
+      clearTimeout(searchDebounceTimers.get(context.formAttributes.queryId));
+      yield navigateToFilterState(context);
+    },
+    *handleSearchKeydown(event: KeyboardEvent) {
+      if (event.key !== 'Enter') {
+        return;
+      }
+      event.preventDefault();
+      const context = getContext<ProductTableContext>();
+      clearTimeout(searchDebounceTimers.get(context.formAttributes.queryId));
+      yield navigateToFilterState(context);
+    },
+    *clearSearch() {
+      const context = getContext<ProductTableContext>();
+      if (!context.tableState.filter.search) {
+        return;
+      }
+      clearTimeout(searchDebounceTimers.get(context.formAttributes.queryId));
+      context.tableState.filter.search = '';
+      yield navigateToFilterState(context);
     },
   },
   callbacks: {

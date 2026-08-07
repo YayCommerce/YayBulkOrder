@@ -27,53 +27,66 @@ export default function Edit(props: BlockEditProps<ProductTableAttributes>) {
 }
 
 const DEFAULT_TEMPLATE: InnerBlocks.Props['template'] = [
-  // [
-  //   'core/group',
-  //   {},
-  //   [],
-  // [
-  //   'core/group',
-  //   {
-  //     layout: {
-  //       type: 'flex',
-  //       justifyContent: 'space-between',
-  //       flexWrap: 'nowrap',
-  //     },
-  //   },
-  //   [
-  //     ['yay-bulk-order/product-table-filter', {}],
-  //     ['yay-bulk-order/product-table-search', {}],
-  //     ['yay-bulk-order/cart-summary', {}],
-  //   ],
-  // ],
-  // ],
-
   [
-    'yay-bulk-order/product-table',
-    {},
+    'core/group',
+    {
+      layout: {
+        type: 'flex',
+        justifyContent: 'space-between',
+        flexWrap: 'nowrap',
+      },
+    },
     [
-      ['yay-bulk-order/product-table-header', {}],
-      [
-        'yay-bulk-order/product-table-columns',
-        {},
-        [
-          ['yay-bulk-order/product-table-column-product', {}],
-          ['yay-bulk-order/product-table-column-sku', {}],
-          ['yay-bulk-order/product-table-column-description', {}],
-          ['yay-bulk-order/product-table-column-quantity', {}],
-          ['yay-bulk-order/product-table-column-subtotal', {}],
-          ['yay-bulk-order/product-table-column-add-to-cart', {}],
-          ['yay-bulk-order/product-table-column-select', {}],
-        ],
-      ],
+      ['yay-bulk-order/product-table-filter', {}],
+      ['yay-bulk-order/product-table-search', {}],
+      // ['yay-bulk-order/cart-summary', {}],
     ],
   ],
   [
-    'yay-bulk-order/product-table-footer',
-    {},
+    'core/group',
+    {
+      className: 'ybo-filter-layout',
+      layout: {
+        type: 'flex',
+        flexWrap: 'nowrap',
+      },
+    },
     [
-      //['yay-bulk-order/product-table-pagination', {}],
-      ['yay-bulk-order/product-table-bulk-action', {}],
+      ['yay-bulk-order/product-table-filter-sidebar', {}],
+      [
+        'core/group',
+        { className: 'ybo-table-column' },
+        [
+          [
+            'yay-bulk-order/product-table',
+            {},
+            [
+              ['yay-bulk-order/product-table-header', {}],
+              [
+                'yay-bulk-order/product-table-columns',
+                {},
+                [
+                  ['yay-bulk-order/product-table-column-product', {}],
+                  ['yay-bulk-order/product-table-column-sku', {}],
+                  ['yay-bulk-order/product-table-column-description', {}],
+                  ['yay-bulk-order/product-table-column-quantity', {}],
+                  ['yay-bulk-order/product-table-column-subtotal', {}],
+                  ['yay-bulk-order/product-table-column-add-to-cart', {}],
+                  ['yay-bulk-order/product-table-column-select', {}],
+                ],
+              ],
+            ],
+          ],
+          [
+            'yay-bulk-order/product-table-footer',
+            {},
+            [
+              ['yay-bulk-order/product-table-pagination', {}],
+              ['yay-bulk-order/product-table-bulk-action', {}],
+            ],
+          ],
+        ],
+      ],
     ],
   ],
 ];

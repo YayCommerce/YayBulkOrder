@@ -29,8 +29,9 @@ foreach ( $styles as $property => $value ) {
 
 $query_id = $attributes['queryId'];
 
-$page_param = BlockHelper::get_page_param( $query_id );
-$filter_param = BlockHelper::get_filter_param( $query_id );
+$page_param     = BlockHelper::get_page_param( $query_id );
+$search_param   = BlockHelper::get_search_param( $query_id );
+$category_param = BlockHelper::get_category_param( $query_id );
 
 $data_context = [
     'formAttributes' => [
@@ -46,10 +47,17 @@ $data_context = [
             'visible' => false,
             'totalFormatted' => '',
         ],
-        'filter' => [ 'noop' => false ],
+        // Seeded from the current URL so the search box, filter toggle and
+        // pagination state stay in sync across a full page load and a
+        // client-side (interactivity router) navigation alike.
+        'filter' => [
+            'categories' => $category_param,
+            'search' => $search_param,
+            'isOpen' => false,
+        ],
         'pagination' => [
-            'pageIndex' => 0,
-            'pageSize' => 10,
+            'pageIndex' => max( 0, $page_param - 1 ),
+            'pageSize' => $settings_service->get_settings()['general']['defaultPageSize'],
         ],
     ],
 ];

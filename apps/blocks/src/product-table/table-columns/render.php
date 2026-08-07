@@ -66,7 +66,7 @@ if ( $query->have_posts() ) {
         } else {
             $unit_price = (float) wc_get_price_to_display( $product );
         }
-        $row_html = '<tr class="{classes}" {rowContext} data-wp-watch="callbacks.syncCartQuantityFromExternalChange">
+        $row_html = '<tr class="{classes}" {rowContext} data-wp-key="{key}" data-wp-watch="callbacks.syncCartQuantityFromExternalChange">
                         {content}
                     </tr>';
         $row_classes = 'yay-bulk-order-table-template-row';
@@ -86,6 +86,7 @@ if ( $query->have_posts() ) {
             array(
                 '{classes}'       => esc_attr( $row_classes ),
                 '{rowContext}'    => $row_context,
+                '{key}'           => esc_attr( $product_id ),
                 '{content}'       => $single_row_content,
             )
         );

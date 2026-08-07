@@ -39,4 +39,50 @@ class BlockHelper {
         }
         return $filter_param;
     }
+
+    public static function get_search_param( int $query_id = 0 ) {
+        $search_key = 'query-' . $query_id . '-search';
+        /* phpcs:disable WordPress.Security.NonceVerification.Recommended */
+        return empty( $_GET[ $search_key ] ) ? '' : sanitize_text_field( wp_unslash( $_GET[ $search_key ] ) );
+    }
+
+    public static function get_category_param( int $query_id = 0 ) {
+        $category_key = 'query-' . $query_id . '-category';
+        /* phpcs:disable WordPress.Security.NonceVerification.Recommended */
+        if ( empty( $_GET[ $category_key ] ) ) {
+            return [];
+        }
+        $raw_value = sanitize_text_field( wp_unslash( $_GET[ $category_key ] ) );
+        $slugs     = array_map( 'sanitize_title', explode( ',', $raw_value ) );
+
+        return array_values( array_filter( $slugs ) );
+    }
+
+    public static function build_query_url( int $query_id, array $updates ): string {
+        $url = null;
+        foreach ( $updates as $suffix => $value ) {
+            $key = 'query-' . $query_id . '-' . $suffix;
+            if ( null === $value || '' === $value ) {
+                $url = null === $url ? remove_query_arg( $key ) : remove_query_arg( $key, $url );
+            } else {
+                $url = null === $url ? add_query_arg( $key, $value ) : add_query_arg( $key, $value, $url );
+            }
+        }
+        return esc_url( (string) $url );
+    }
+
+    public static function get_pagination_range( int $current_page, int $total_pages ): array {
+        $window = 1;
+        $range  = [];
+
+        for ( $page = 1; $page <= $total_pages; $page++ ) {
+            if ( 1 === $page || $total_pages === $page || abs( $page - $current_page ) <= $window ) {
+                $range[] = $page;
+            } elseif ( end( $range ) !== null ) {
+                $range[] = null;
+            }
+        }
+
+        return $range;
+    }
 }
