@@ -64,6 +64,11 @@ async function storeApiRequest<T>(endpoint: string, { method = 'GET', body }: St
   return data as T;
 }
 
+// Fetch the current cart.
+export async function getCurrentCart(): Promise<StoreApiCart> {
+  return storeApiRequest<StoreApiCart>(STORE_API.cart.fetch);
+}
+
 export async function addProductToCart(productId: number, quantityToAdd: number): Promise<StoreApiCart> {
   const cart = await storeApiRequest<StoreApiCart>(STORE_API.cart.fetch);
 
@@ -161,7 +166,80 @@ export async function addProductsToCartBatch(items: readonly SelectedRow[]): Pro
   return cart;
 }
 
+// Prevent reacting to cart updates triggered by this module.
+let isApplyingOwnCartSync = false;
+
+// Sync the Store API cart with WooCommerce Blocks,
 export function syncWooCommerceCart(cart: StoreApiCart): void {
-  window.wp?.data?.dispatch?.('wc/store/cart')?.receiveCart?.(cart);
+  isApplyingOwnCartSync = true;
+  try {
+    window.wp?.data?.dispatch?.('wc/store/cart')?.receiveCart?.(cart);
+  } finally {
+    isApplyingOwnCartSync = false;
+  }
+  // Refresh classic cart fragments.
   window.jQuery?.(document.body).trigger('wc_fragment_refresh');
+}
+
+type WpDataCartItem = { id: number; quantity: number };
+
+type WpDataRegistry = {
+  subscribe?(listener: () => void, storeNameOrDescriptor?: string): () => void;
+  select?(storeNameOrDescriptor: string): { getCartData?(): { items?: WpDataCartItem[] } } | undefined;
+};
+
+function getWpDataRegistry(): WpDataRegistry | undefined {
+  return (window as unknown as { wp?: { data?: WpDataRegistry } }).wp?.data;
+}
+
+/** A cheap fingerprint of the cart's contents, used to tell an actual change apart from a no-op notification. */
+function getCartItemsSignature(): string | undefined {
+  const items = getWpDataRegistry()?.select?.('wc/store/cart')?.getCartData?.()?.items;
+
+  if (!items) {
+    return undefined;
+  }
+
+  return items
+    .map((item) => `${item.id}:${item.quantity}`)
+    .sort()
+    .join(',');
+}
+
+// Ignore initial store activity.
+const EXTERNAL_CHANGE_SETTLE_MS = 1500;
+// Debounce external cart updates.
+const EXTERNAL_CHANGE_DEBOUNCE_MS = 300;
+
+/**
+ * Notifies when the WooCommerce cart changes externally.
+ */
+export function watchExternalCartChanges(onExternalCartChange: () => void): void {
+  const watchStartedAt = Date.now();
+  // Ignore the initial store state.
+  let lastCartSignature = getCartItemsSignature();
+  let debounceTimer: ReturnType<typeof setTimeout> | undefined;
+
+  const notify = () => {
+    if (isApplyingOwnCartSync) {
+      return;
+    }
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(onExternalCartChange, EXTERNAL_CHANGE_DEBOUNCE_MS);
+  };
+
+  window.jQuery?.(document.body).on('removed_from_cart', notify);
+
+  const wpData = getWpDataRegistry();
+  // Watch Store API cart changes.
+  wpData?.subscribe?.(() => {
+    const signature = getCartItemsSignature();
+    const isStillSettling = Date.now() - watchStartedAt < EXTERNAL_CHANGE_SETTLE_MS;
+    const hasChanged = lastCartSignature !== undefined && signature !== lastCartSignature;
+    lastCartSignature = signature;
+
+    if (hasChanged && !isStillSettling) {
+      notify();
+    }
+  }, 'wc/store/cart');
 }

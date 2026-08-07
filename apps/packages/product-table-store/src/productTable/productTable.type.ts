@@ -66,3 +66,6 @@ export type ProductRowContext = {
   cartQuantity: number;
   productType: string;
 };
+
+export type ProductRowState = ProductRowContext & ProductTableContext;
+export type TableState = ProductTableContext['tableState'];

@@ -11,6 +11,7 @@ declare global {
     };
     jQuery?: (element: HTMLElement | Document) => {
       trigger(event: string): void;
+      on(event: string, handler: () => void): void;
     };
     // Localized by WooCommerce core's classic add-to-cart script, already
     // enqueued on this page; reused here instead of adding new plumbing.

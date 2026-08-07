@@ -61,6 +61,7 @@ $data_context = [
     data-wp-router-region="yay-bulk-order/product-table"
     <?php echo wp_interactivity_data_wp_context( $data_context ); ?>
     data-wp-init="callbacks.onRender"
+    data-wp-watch="callbacks.syncCartNoticeFromExternalChange"
     style="<?php echo $style_attr; ?>"
 >
 
