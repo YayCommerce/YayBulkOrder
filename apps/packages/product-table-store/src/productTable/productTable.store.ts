@@ -203,6 +203,10 @@ const storeDef = {
       const { tableState } = getContext<ProductTableContext>();
       return tableState.filter.search.length > 0;
     },
+    get showBackToTop(): boolean {
+      const { tableState } = getContext<ProductTableContext>();
+      return tableState.showBackToTop;
+    },
   },
   actions: {
     *navigate(event: MouseEvent) {
@@ -386,6 +390,24 @@ const storeDef = {
         tableState: context.tableState,
         productQuery: context.formAttributes.productQuery,
       });
+    },
+    // Bound to the table header (the top of the table): shows "Back to top"
+    // only once it has actually scrolled out of view, instead of always
+    // showing it even when the whole table already fits on screen.
+    watchBackToTopVisibility() {
+      const context = getContext<ProductTableContext>();
+      const { ref } = getElement();
+
+      if (!ref) {
+        return;
+      }
+
+      const observer = new IntersectionObserver(([entry]) => {
+        context.tableState.showBackToTop = !entry.isIntersecting;
+      });
+      observer.observe(ref);
+
+      return () => observer.disconnect();
     },
     // Sync row quantity from external cart changes.
     syncCartQuantityFromExternalChange() {

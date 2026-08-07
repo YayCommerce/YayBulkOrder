@@ -7,6 +7,7 @@
   "category": "woocommerce",
   "description": "Product Table Bulk Actions.",
   "textdomain": "yay-bulk-order",
+  "usesContext": ["queryId", "query"],
   "supports": {
     "interactivity": true,
     "inserter": false,
@@ -37,5 +38,6 @@
     }
   },
   "ancestor": ["yay-bulk-order/product-table-root"],
-  "editorScript": "file:./editor.js"
+  "editorScript": "file:./editor.js",
+  "render": "file:./render.php"
 }

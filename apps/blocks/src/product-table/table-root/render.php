@@ -59,6 +59,7 @@ $data_context = [
             'pageIndex' => max( 0, $page_param - 1 ),
             'pageSize' => $settings_service->get_settings()['general']['defaultPageSize'],
         ],
+        'showBackToTop' => false,
     ],
 ];
 ?>

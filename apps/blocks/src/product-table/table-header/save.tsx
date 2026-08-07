@@ -4,7 +4,7 @@ export default function Save() {
   const blockProps = useBlockProps.save();
 
   return (
-    <thead {...blockProps}>
+    <thead {...blockProps} data-wp-init="callbacks.watchBackToTopVisibility">
       <tr>
         <th>Product</th>
         <th>SKU</th>

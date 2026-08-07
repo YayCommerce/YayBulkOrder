@@ -53,6 +53,7 @@ export type ProductTableContext = {
       pageIndex: number;
       pageSize: number;
     };
+    showBackToTop: boolean;
   };
 };
 

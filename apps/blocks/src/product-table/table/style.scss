@@ -153,6 +153,10 @@ table.wp-block-yay-bulk-order-product-table {
     &:hover {
       text-decoration: underline;
     }
+
+    &[hidden] {
+      display: none;
+    }
   }
 
   &__submit {
@@ -183,6 +187,10 @@ table.wp-block-yay-bulk-order-product-table {
     &.is-loading {
       opacity: 0.7;
       cursor: wait;
+    }
+
+    &[hidden] {
+      display: none;
     }
   }
 
