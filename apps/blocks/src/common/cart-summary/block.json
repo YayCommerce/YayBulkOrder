@@ -15,7 +15,7 @@
     "align": ["wide", "full"],
     "anchor": true
   },
-  "ancestor": ["yay-bulk-order/bulk-order-form"],
+  "ancestor": ["yay-bulk-order/product-table-root"],
   "editorScript": "file:./editor.js",
   "render": "file:./render.php",
   "style": "file:./style-editor.css",

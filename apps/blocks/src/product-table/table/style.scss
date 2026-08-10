@@ -7,14 +7,19 @@
 table.wp-block-yay-bulk-order-product-table {
   font-size: 1rem;
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   border-collapse: collapse;
   border: 1px solid var(--ybo-border-color);
-  margin: 10px 0px;
+  margin: 10px 0 !important;
+  table-layout: auto;
   thead {
     th {
       padding: 10px;
       text-align: left;
       border: 1px solid var(--ybo-border-color);
+      min-width: 0;
       * {
         margin: 0;
       }
@@ -27,6 +32,8 @@ table.wp-block-yay-bulk-order-product-table {
         padding: 10px;
         text-align: left;
         border: 1px solid var(--ybo-border-color);
+        min-width: 0;
+        overflow-wrap: anywhere;
       }
     }
   }
@@ -36,6 +43,8 @@ table.wp-block-yay-bulk-order-product-table {
     flex-direction: column;
     align-items: center;
     gap: 12px;
+    min-width: 0;
+    max-width: 100%;
     text-decoration: none !important;
     color: inherit;
   }
@@ -76,6 +85,8 @@ table.wp-block-yay-bulk-order-product-table {
   }
 
   .ybo-product-title {
+    max-width: 100%;
+    overflow-wrap: anywhere;
     text-decoration: none;
     text-align: center;
   }
@@ -86,6 +97,8 @@ table.wp-block-yay-bulk-order-product-table {
     background-color: #3858e9 !important;
     padding: 8px 10px !important;
     min-width: 115px !important;
+    max-width: 100%;
+    box-sizing: border-box;
     color: #fff !important;
     text-decoration: none;
     display: inline-block;
@@ -114,11 +127,13 @@ table.wp-block-yay-bulk-order-product-table {
 .wp-block-yay-bulk-order-product-table-root {
   width: 100%;
   max-width: 100%;
+  min-width: 0;
   box-sizing: border-box;
   border: none !important;
   > * {
     width: 100%;
     max-width: 100%;
+    min-width: 0;
     box-sizing: border-box;
   }
 }
@@ -144,7 +159,7 @@ table.wp-block-yay-bulk-order-product-table {
   justify-content: flex-end;
   gap: 20px;
   width: 100%;
-  padding: 0 10px;
+ 
   &__back-to-top {
     color: inherit;
     text-decoration: none !important;
@@ -325,7 +340,7 @@ table.wp-block-yay-bulk-order-product-table {
     transform: translateY(-50%);
 
     &[hidden] {
-      display: none;
+      display: none !important;
     }
   }
 
@@ -388,15 +403,22 @@ table.wp-block-yay-bulk-order-product-table {
 
 .ybo-filter-layout {
   align-items: flex-start !important;
-  max-width: 100%;
-}
-
-.ybo-table-column{
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
 }
 
-.ybo-table-column > .wp-block-yay-bulk-order-product-table {
-  overflow-x: auto;
+.ybo-table-column {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
+  > .wp-block-yay-bulk-order-product-table {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+  }
 }
 
 .wp-block-yay-bulk-order-product-table-filter-sidebar[hidden] {

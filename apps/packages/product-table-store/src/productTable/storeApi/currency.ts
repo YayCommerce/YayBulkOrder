@@ -46,17 +46,20 @@ function currencyConfigFromGlobalCurrency(
       return { minorUnit, thousandSep, decimalSep, prefix: symbol, suffix: '' };
   }
 }
-
-/** Formats a cart's grand total using the currency shape the Store API returns it in. */
-export function formatCartTotal(totals: StoreApiCartTotals | undefined): string {
-  if (!totals?.total_price) {
+export function formatCartAmount(rawAmount: string | undefined, totals: StoreApiCartTotals): string {
+  if (!rawAmount) {
     return '';
   }
 
   const config = currencyConfigFromCartTotals(totals);
-  const amount = Number(totals.total_price) / 10 ** config.minorUnit;
+  const amount = Number(rawAmount) / 10 ** config.minorUnit;
 
   return formatCurrencyAmount(amount, config);
+}
+
+/** Formats a cart's grand total using the currency shape the Store API returns it in. */
+export function formatCartTotal(totals: StoreApiCartTotals | undefined): string {
+  return totals ? formatCartAmount(totals.total_price, totals) : '';
 }
 
 /** Formats a single amount using the plugin's configured currency settings. */

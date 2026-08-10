@@ -14,6 +14,7 @@ export type StoreApiCartItem = Readonly<{
 
 export type StoreApiCartTotals = Readonly<{
   total_price?: string;
+  total_items?: string;
   currency_minor_unit?: number;
   currency_symbol?: string;
   currency_prefix?: string;

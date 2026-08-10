@@ -1,102 +1,68 @@
-import { getConfig, getContext, store } from '@wordpress/interactivity';
+import { formatCartAmount } from '@yay-bulk-order/product-table-store/src/productTable/storeApi/currency';
 
-declare global {
-  interface Window {
-    wp?: any;
-  }
-}
+// Side effect only: declares `window.wp`/`window.jQuery` — no runtime code.
+import '@yay-bulk-order/product-table-store/src/productTable/storeApi/globals';
 
-type Context = {
+import type { StoreApiCart } from '@yay-bulk-order/product-table-store/src/productTable/storeApi/type';
+import { getContext, store } from '@wordpress/interactivity';
+
+export type CartSummaryContext = {
   isOpen: boolean;
   itemCount: number;
   subtotal: string;
 };
 
-function formatMoney(value: string | number, totals: any): string {
-  const amount = Number(value) / Math.pow(10, totals.currency_minor_unit);
+function readCurrentCart(): StoreApiCart | undefined {
+  return window.wp?.data?.select?.('wc/store/cart')?.getCartData?.();
+}
 
-  const formatted = amount
-    .toFixed(totals.currency_minor_unit)
-    .replace('.', 'DECIMAL')
-    .replace(/\B(?=(\d{3})+(?!\d))/g, totals.currency_thousand_separator)
-    .replace('DECIMAL', totals.currency_decimal_separator);
-
-  return `${totals.currency_prefix}${formatted}${totals.currency_suffix}`;
+/** Applies a cart snapshot onto this instance's context. */
+function applyCart(context: CartSummaryContext, cart: StoreApiCart | undefined): void {
+  if (!cart?.totals) {
+    return;
+  }
+  context.itemCount = cart.items.reduce((total, item) => total + item.quantity, 0);
+  context.subtotal = formatCartAmount(cart.totals.total_items, cart.totals);
 }
 
 const storeDef = {
   state: {
-    get buttonText() {
-      const context = getContext<Context>();
+    get buttonText(): string {
+      const context = getContext<CartSummaryContext>();
       return context.isOpen ? 'Close Cart' : 'Open Cart';
     },
-    get itemCount() {
-      const context = getContext<Context>();
-      return `(${context.itemCount ?? 0} items)`;
+    get itemCountLabel(): string {
+      const { itemCount } = getContext<CartSummaryContext>();
+      return `${itemCount} ${itemCount === 1 ? 'item' : 'items'}`;
     },
-    get isEmpty() {
-      const context = getContext<Context>();
-      return context.itemCount === 0;
+    get isEmpty(): boolean {
+      const { itemCount } = getContext<CartSummaryContext>();
+      return itemCount === 0;
     },
-    get subtotal() {
-      const context = getContext<Context>();
+    get subtotal(): string {
+      const context = getContext<CartSummaryContext>();
       return context.subtotal ?? '';
-    },
-    get buttonStyles() {
-      const config = getConfig('yay-bulk-order/cart-summary');
-      const styles = config?.settings?.styles ?? null;
-
-      return `
-        background-color: ${styles?.colors?.backgroundNormal ?? '#0073aa'};
-        color: ${styles?.colors?.textNormal ?? '#ffffff'};
-        border-radius: ${styles?.borderRadius === 'small' ? '4px' : styles?.borderRadius === 'large' ? '20px' : '8px'};
-      `;
     },
   },
   actions: {
     openMiniCart() {
-      const context = getContext<Context>();
+      const context = getContext<CartSummaryContext>();
       context.isOpen = true;
 
-      document.querySelector('.wc-block-mini-cart__button')?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      document
+        .querySelector<HTMLElement>('.wc-block-mini-cart__button')
+        ?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
     },
   },
-
   callbacks: {
     init() {
-      const ctx = getContext<Context>();
+      const context = getContext<CartSummaryContext>();
+      const sync = () => applyCart(context, readCurrentCart());
 
-      const syncFromCartResponse = (data) => {
-        if (!data?.totals) return;
+      sync();
 
-        const count = data.items_count ?? 0;
-        const subtotal = formatMoney(data.totals.total_items, data.totals);
-
-        ctx.itemCount = count;
-        ctx.subtotal = subtotal;
-      };
-
-      const cartStore = window.wp?.data?.select?.('wc/store/cart');
-      if (cartStore?.getCartData) {
-        syncFromCartResponse(cartStore.getCartData());
-      }
-
-      const originalFetch = window.fetch;
-      window.fetch = async (...args) => {
-        const response = await originalFetch(...args);
-
-        try {
-          const url = typeof args[0] === 'string' ? args[0] : '';
-          if (url?.includes('/wc/store/v1/cart')) {
-            const cloned = response.clone();
-            const json = await cloned.json();
-            syncFromCartResponse(json);
-          }
-        } catch (e) {
-          console.error('error', e);
-        }
-        return response;
-      };
+      window.wp?.data?.subscribe?.(sync);
+      window.jQuery?.(document.body).on('added_to_cart removed_from_cart wc_fragment_refresh', sync);
     },
   },
 };

@@ -39,7 +39,7 @@ const DEFAULT_TEMPLATE: InnerBlocks.Props['template'] = [
     [
       ['yay-bulk-order/product-table-filter', {}],
       ['yay-bulk-order/product-table-search', {}],
-      // ['yay-bulk-order/cart-summary', {}],
+      ['yay-bulk-order/cart-summary', {}],
     ],
   ],
   [

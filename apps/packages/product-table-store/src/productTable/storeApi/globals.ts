@@ -1,13 +1,18 @@
 import type { StoreApiCart } from './type';
 
+/** Minimal shape of the `@wordpress/data` registry this package reads off `window.wp.data`. */
+type WpDataRegistry = {
+  select?(store: string): { getCartData?(): StoreApiCart } | undefined;
+  subscribe?(listener: () => void, storeNameOrDescriptor?: string): () => void;
+  dispatch?(store: string): {
+    receiveCart?(cart: StoreApiCart): void;
+  };
+};
+
 declare global {
   interface Window {
     wp?: {
-      data?: {
-        dispatch?(store: string): {
-          receiveCart?(cart: StoreApiCart): void;
-        };
-      };
+      data?: WpDataRegistry;
     };
     jQuery?: (element: HTMLElement | Document) => {
       trigger(event: string): void;

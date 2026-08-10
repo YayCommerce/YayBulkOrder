@@ -181,20 +181,9 @@ export function syncWooCommerceCart(cart: StoreApiCart): void {
   window.jQuery?.(document.body).trigger('wc_fragment_refresh');
 }
 
-type WpDataCartItem = { id: number; quantity: number };
-
-type WpDataRegistry = {
-  subscribe?(listener: () => void, storeNameOrDescriptor?: string): () => void;
-  select?(storeNameOrDescriptor: string): { getCartData?(): { items?: WpDataCartItem[] } } | undefined;
-};
-
-function getWpDataRegistry(): WpDataRegistry | undefined {
-  return (window as unknown as { wp?: { data?: WpDataRegistry } }).wp?.data;
-}
-
 /** A cheap fingerprint of the cart's contents, used to tell an actual change apart from a no-op notification. */
 function getCartItemsSignature(): string | undefined {
-  const items = getWpDataRegistry()?.select?.('wc/store/cart')?.getCartData?.()?.items;
+  const items = window.wp?.data?.select?.('wc/store/cart')?.getCartData?.()?.items;
 
   if (!items) {
     return undefined;
@@ -230,9 +219,8 @@ export function watchExternalCartChanges(onExternalCartChange: () => void): void
 
   window.jQuery?.(document.body).on('removed_from_cart', notify);
 
-  const wpData = getWpDataRegistry();
   // Watch Store API cart changes.
-  wpData?.subscribe?.(() => {
+  window.wp?.data?.subscribe?.(() => {
     const signature = getCartItemsSignature();
     const isStillSettling = Date.now() - watchStartedAt < EXTERNAL_CHANGE_SETTLE_MS;
     const hasChanged = lastCartSignature !== undefined && signature !== lastCartSignature;
