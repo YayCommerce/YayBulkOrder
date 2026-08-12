@@ -12,14 +12,13 @@ if ( ! function_exists( 'WC' ) ) {
 <div
 	<?php echo get_block_wrapper_attributes(); ?>
 	data-wp-interactive="yay-bulk-order/cart-summary"
-	data-wp-context='{"isOpen": false, "itemCount": 0, "subtotal": ""}'
 	data-wp-init="callbacks.init"
 >
 	<button
 		type="button"
-		data-wp-on--click="actions.openMiniCart"
-		data-wp-bind--aria-label="state.buttonText"
-		data-wp-bind--title="state.buttonText"
+		data-wp-on--click="woocommerce/mini-cart::actions.openDrawer"
+		aria-label="<?php esc_attr_e( 'Open cart', 'yay-bulk-order' ); ?>"
+		title="<?php esc_attr_e( 'Open cart', 'yay-bulk-order' ); ?>"
 		data-wp-class--is-empty="state.isEmpty"
 	>
 		<span class="yay-cart-trigger__icon" aria-hidden="true">🛒</span>

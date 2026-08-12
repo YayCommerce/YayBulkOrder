@@ -26,7 +26,7 @@ export type StoreApiCartTotals = Readonly<{
 
 export type StoreApiCart = Readonly<{
   items: StoreApiCartItem[];
-  items_count?: number;
+  itemsCount?: number;
   totals?: StoreApiCartTotals;
 }>;
 
