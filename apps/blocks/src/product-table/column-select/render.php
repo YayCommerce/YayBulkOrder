@@ -5,15 +5,21 @@
  * @var WP_Block $block The block instance.
  */
 
+$product_id          = absint( $block->context['yay-bulk-order/productId'] ?? get_the_ID() );
+$product             = wc_get_product( $product_id );
+$is_variable_product = $product instanceof WC_Product_Variable;
 ?>
 
 <td
     <?php echo get_block_wrapper_attributes(); ?>
 >
-   <input
-       type="checkbox"
-       data-wp-bind--checked="state.isRowSelected"
-       data-wp-on--change="actions.toggleSelectRow"
-       aria-label="<?php echo esc_attr__( 'Select product', 'yay-bulk-order' ); ?>"
-   />
+    <?php if ( ! $is_variable_product ) : ?>
+        <input
+            type="checkbox"
+            data-wp-bind--checked="state.isRowSelected"
+            data-wp-on--change="actions.toggleSelectRow"
+            data-wp-bind--hidden="state.isAddToCartDisabled"
+            aria-label="<?php echo esc_attr__( 'Select product', 'yay-bulk-order' ); ?>"
+        />
+    <?php endif; ?>
 </td>

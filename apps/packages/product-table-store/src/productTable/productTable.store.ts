@@ -151,6 +151,11 @@ const storeDef = {
       }
       return cartQuantity > 0 ? 'Add more' : addToCartText;
     },
+
+    get isAddToCartDisabled(): boolean {
+      const { isAddingToCart, unitPrice } = getContext<ProductRowContext>();
+      return isAddingToCart || unitPrice <= 0;
+    },
     get isRowSelected(): boolean {
       const { tableState, productId } = getContext<ProductRowState>();
       return Boolean(tableState.select[productId]);
@@ -206,6 +211,17 @@ const storeDef = {
     get showBackToTop(): boolean {
       const { tableState } = getContext<ProductTableContext>();
       return tableState.showBackToTop;
+    },
+    get isProductExpanded(): boolean {
+      const { tableState, productId } = getContext<ProductRowState>();
+      return Boolean(tableState.expandedProducts[productId]);
+    },
+    get viewOptionsText(): string {
+      return this.isProductExpanded ? 'Hide options' : 'View options';
+    },
+    get isVariationRowHidden(): boolean {
+      const { tableState, parentProductId } = getContext<ProductRowState>();
+      return !parentProductId || !tableState.expandedProducts[parentProductId];
     },
   },
   actions: {
@@ -271,6 +287,10 @@ const storeDef = {
     clearSelection() {
       const context = getContext<ProductTableContext>();
       context.tableState.select = {};
+    },
+    toggleProductVariations() {
+      const { tableState, productId } = getContext<ProductRowState>();
+      tableState.expandedProducts[productId] = !tableState.expandedProducts[productId];
     },
     clearCartNotice() {
       const { tableState } = getContext<ProductTableContext>();

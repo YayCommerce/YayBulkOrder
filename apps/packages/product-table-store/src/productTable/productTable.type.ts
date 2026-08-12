@@ -54,12 +54,14 @@ export type ProductTableContext = {
       pageSize: number;
     };
     showBackToTop: boolean;
+    expandedProducts: Record<number, boolean>;
   };
 };
 
 export type ProductRowContext = {
   productId: number;
   variantId?: number;
+  parentProductId?: number;
   unitPrice: number;
   quantity: number;
   isAddingToCart: boolean;

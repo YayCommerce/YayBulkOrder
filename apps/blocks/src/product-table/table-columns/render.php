@@ -19,6 +19,73 @@ $query = new \WP_Query( $query_vars );
 
 $cart_quantities = isset( WC()->cart ) && WC()->cart ? WC()->cart->get_cart_item_quantities() : array();
 
+$render_row = function ( $block, $product_id, $product, $default_cart_quantity, $cart_quantities, $parent_product_id ) {
+    $block_instance = $block->parsed_block;
+    $block_instance['blockName'] = 'core/null';
+
+    $available_context = array_merge(
+        (array) $block->context,
+        array(
+            'yay-bulk-order/productId' => $product_id,
+        )
+    );
+
+    $single_row_content = (
+        new WP_Block(
+            $block_instance,
+            $available_context
+        )
+    )->render( array( 'dynamic' => false ) );
+
+    $cart_quantity = isset( $cart_quantities[ $product_id ] ) ? (int) $cart_quantities[ $product_id ] : 0;
+    $add_to_cart_text = $product->add_to_cart_text() ? $product->add_to_cart_text() : __( 'Add to cart', 'yay-bulk-order' );
+    if ( $product instanceof WC_Product_Variable ) {
+        $unit_price = (float) $product->get_variation_price( 'min', true );
+    } else {
+        $unit_price = (float) wc_get_price_to_display( $product );
+    }
+
+    $product_type = $parent_product_id ? 'simple' : $product->get_type();
+
+    $row_html = '<tr class="{classes}" {rowContext} data-wp-key="{key}" {hidden}{expandedClass}data-wp-watch="callbacks.syncCartQuantityFromExternalChange">
+                    {content}
+                </tr>';
+    $row_classes = 'yay-bulk-order-table-template-row';
+    if ( $parent_product_id ) {
+        $row_classes .= ' yay-bulk-order-table-template-row--variation';
+    }
+
+    $row_context = array(
+        'productId'      => $product_id,
+        'variantId'      => $parent_product_id ? $product_id : 0,
+        'quantity'       => $default_cart_quantity,
+        'unitPrice'      => $unit_price,
+        'productType'    => $product_type,
+        'isAddingToCart' => false,
+        'addToCartText'  => $add_to_cart_text,
+        'cartQuantity'   => $cart_quantity,
+    );
+    if ( $parent_product_id ) {
+        $row_context['parentProductId'] = $parent_product_id;
+    }
+
+    return strtr(
+        $row_html,
+        array(
+            '{classes}'    => esc_attr( $row_classes ),
+            '{rowContext}' => wp_interactivity_data_wp_context( $row_context ),
+            '{key}'        => esc_attr( $product_id ),
+            // Variation rows start collapsed; toggled by
+            // actions.toggleProductVariations() on the parent's row.
+            '{hidden}'     => $parent_product_id ? 'data-wp-bind--hidden="state.isVariationRowHidden" ' : '',
+            // On the parent row only: marks it while its variations are
+            // showing, so the two visually merge into one group (see CSS).
+            '{expandedClass}' => $product instanceof WC_Product_Variable ? 'data-wp-class--is-expanded="state.isProductExpanded" ' : '',
+            '{content}'    => $single_row_content,
+        )
+    );
+};
+
 ?>
 
 <tbody
@@ -41,55 +108,17 @@ if ( $query->have_posts() ) {
         if ( ! $product ) {
             continue;
         }
-        /** Disable all block features of the row placeholder */
-        $block_instance = $block->parsed_block;
-        $block_instance['blockName'] = 'core/null';
 
-        $available_context = array_merge(
-            (array) $block->context,
-            array(
-                'yay-bulk-order/productId'   => $product_id,
-            )
-        );
+        $table_body_content .= $render_row( $block, $product_id, $product, $default_cart_quantity, $cart_quantities, null );
 
-        $single_row_content = (
-            new WP_Block(
-                $block_instance,
-                $available_context
-            )
-        )->render( array( 'dynamic' => false ) );
-
-        $cart_quantity = isset( $cart_quantities[ $product_id ] ) ? (int) $cart_quantities[ $product_id ] : 0;
-        $add_to_cart_text = $product->add_to_cart_text() ? $product->add_to_cart_text() : __( 'Add to cart', 'yay-bulk-order' );
         if ( $product instanceof WC_Product_Variable ) {
-            $unit_price = (float) $product->get_variation_price( 'min', true );
-        } else {
-            $unit_price = (float) wc_get_price_to_display( $product );
+            foreach ( $product->get_available_variations( 'objects' ) as $variation ) {
+                if ( ! $variation instanceof WC_Product_Variation || ! $variation->exists() ) {
+                    continue;
+                }
+                $table_body_content .= $render_row( $block, $variation->get_id(), $variation, $default_cart_quantity, $cart_quantities, $product_id );
+            }
         }
-        $row_html = '<tr class="{classes}" {rowContext} data-wp-key="{key}" data-wp-watch="callbacks.syncCartQuantityFromExternalChange">
-                        {content}
-                    </tr>';
-        $row_classes = 'yay-bulk-order-table-template-row';
-        $row_context = wp_interactivity_data_wp_context( [
-            'productId'      => $product_id,
-            'variantId'      => 0,
-            'quantity'       => $default_cart_quantity,
-            'unitPrice'      => $unit_price,
-            'productType'    => $product->get_type(),
-            'isAddingToCart' => false,
-            'addToCartText'  => $add_to_cart_text,
-            'cartQuantity'   => $cart_quantity,
-        ] );
-
-        $table_body_content .= strtr(
-            $row_html,
-            array(
-                '{classes}'       => esc_attr( $row_classes ),
-                '{rowContext}'    => $row_context,
-                '{key}'           => esc_attr( $product_id ),
-                '{content}'       => $single_row_content,
-            )
-        );
     }
 
     // end row loop

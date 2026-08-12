@@ -17,10 +17,14 @@ if ( ! $product instanceof WC_Product ) {
 }
 
 $thumbnail = $product->get_image( 'woocommerce_thumbnail', array( 'class' => 'ybo-product-thumbnail__image' ) );
+
+$is_variation = $product instanceof WC_Product_Variation;
+$title        = $is_variation ? wc_get_formatted_variation( $product, true, false ) : $product->get_title();
+$permalink    = $product->get_permalink();
 ?>
 
 <td <?php echo get_block_wrapper_attributes(); ?>>
-	<a href="<?php echo esc_url( get_permalink( $product_id ) ); ?>" target="_blank" class="ybo-product-cell">
+	<a href="<?php echo esc_url( $permalink ); ?>" target="_blank" class="ybo-product-cell<?php echo $is_variation ? ' ybo-product-cell--variation' : ''; ?>">
 		<span class="ybo-product-thumbnail">
 			<?php echo $thumbnail; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- WC_Product::get_image() output is already escaped. ?>
 			<span
@@ -29,6 +33,6 @@ $thumbnail = $product->get_image( 'woocommerce_thumbnail', array( 'class' => 'yb
 				data-wp-text="context.cartQuantity"
 			></span>
 		</span>
-		<span class="ybo-product-title"><?php echo esc_html( $product->get_title() ); ?></span>
+		<span class="ybo-product-title"><?php echo esc_html( $title ? $title : $product->get_title() ); ?></span>
 	</a>
 </td>

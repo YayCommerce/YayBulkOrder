@@ -60,6 +60,8 @@ $data_context = [
             'pageSize' => $settings_service->get_settings()['general']['defaultPageSize'],
         ],
         'showBackToTop' => false,
+        // Cast to object for the same `{}` (not `[]`) reason as `select` above.
+        'expandedProducts' => (object) [],
     ],
 ];
 ?>
