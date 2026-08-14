@@ -1,0 +1,98 @@
+div.wp-block-yay-bulk-order-purchase-list {
+  --ybo-foreground: #171719;
+  --ybo-destructive: #d50719;
+  --ybo-border: #e4e4e7;
+  --ybo-input: #e4e4e7;
+  --ybo-primary: #3858e9;
+  --ybo-primary-foreground: #ffffff;
+  --ybo-primary-accent: #2f4ac4;
+  --ybo-muted-foreground: #7b7c80;
+  --ybo-muted-foreground-400: #c7c7ca;
+  --ybo-muted-400: #fafafa;
+  --ybo-background: #ffffff;
+  --ybo-radius-md: 8px;
+  --ybo-shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+
+  .ybo_purchase_list_perpage {
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .ybo_input {
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid var(--ybo-border);
+  }
+
+  .ybo_button {
+    padding: 8px;
+    border: 1px solid var(--ybo-primary);
+    color: var(--ybo-primary);
+    background: white;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border-radius: 4px;
+  }
+
+  .ybo_button:hover {
+    border-color: var(--ybo-primary-accent);
+    color: var(--ybo-primary-accent);
+  }
+
+  .ybo_add_button {
+    background: var(--ybo-primary);
+    color: var(--ybo-primary-foreground);
+  }
+
+  .ybo_add_button:hover {
+    background: var(--ybo-primary-accent);
+    color: var(--ybo-primary-foreground);
+  }
+
+  .ybo_header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+
+    h2 {
+      font-size: 20px;
+    }
+  }
+
+  .ybo_table_wrapper {
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid var(--ybo-border);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    text-align: center;
+
+    td,
+    th {
+      padding: 8px;
+    }
+
+    th {
+      background: var(--ybo-foreground);
+      color: white;
+    }
+
+    .ybo_purchase_list_item_name {
+      width: 50%;
+    }
+    .ybo_purchase_list_item_actions {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+    }
+  }
+}

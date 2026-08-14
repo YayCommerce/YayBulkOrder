@@ -1,0 +1,18 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "yay-bulk-order/purchase-list",
+	"version": "0.1.0",
+	"title": "Purchase List",
+	"category": "woocommerce",
+	"description": "",
+	"example": {},
+	"supports": {
+		"html": false
+	},
+	"textdomain": "purchase-list",
+	"editorScript": "file:./editor.tsx",
+	"editorStyle": "file:./style-editor.css",
+	"style": "file:./style-editor.css",
+	"render": "file:./render.php"
+}
