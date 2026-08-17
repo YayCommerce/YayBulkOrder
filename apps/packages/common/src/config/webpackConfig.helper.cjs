@@ -3,7 +3,11 @@ const DependencyExtractionWebpackPlugin = require('@wordpress/dependency-extract
 const globalModules = [
   // ['@yay-bulk-order/utils', ['YayBulkOrder', 'utils']],
 ];
-const esModules = ['@yay-bulk-order/product-table-store', '@yay-bulk-order/variant-table-store'];
+const esModules = [
+  '@yay-bulk-order/product-table-store',
+  '@yay-bulk-order/variant-table-store',
+  '@yay-bulk-order/purchase-list-store',
+];
 
 const moduleExtractionPlugin = new DependencyExtractionWebpackPlugin({
   requestToExternal(request) {

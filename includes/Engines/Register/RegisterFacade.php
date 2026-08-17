@@ -35,6 +35,10 @@ class RegisterFacade {
         // $module_asset = require_once YAYBULKORDER_PLUGIN_PATH . 'assets/dist/variant-table-store/variant-table-store.asset.php';
         // wp_register_script_module( ScriptName::VARIANT_TABLE_STORE, YAYBULKORDER_PLUGIN_URL . 'assets/dist/variant-table-store/variant-table-store.js', $module_asset['dependencies'], $module_asset['version'] );
         // wp_set_script_translations( ScriptName::VARIANT_TABLE_STORE, 'yay-bulk-order', YAYBULKORDER_PLUGIN_PATH . 'languages' );
+
+        $module_asset = require_once YAYBULKORDER_PLUGIN_PATH . 'assets/dist/purchase-list-store/purchase-list-store.asset.php';
+        wp_register_script_module( ScriptName::PRODUCT_TABLE_STORE, YAYBULKORDER_PLUGIN_URL . 'assets/dist/purchase-list-store/purchase-list-store.js', $module_asset['dependencies'], $module_asset['version'] );
+        wp_set_script_translations( ScriptName::PRODUCT_TABLE_STORE, 'yay-bulk-order', YAYBULKORDER_PLUGIN_PATH . 'languages' );
     }
 
     /**

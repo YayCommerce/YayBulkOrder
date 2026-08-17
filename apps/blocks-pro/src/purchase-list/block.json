@@ -8,11 +8,13 @@
 	"description": "",
 	"example": {},
 	"supports": {
-		"html": false
+		"html": false,
+		"interactivity": true
 	},
 	"textdomain": "purchase-list",
 	"editorScript": "file:./editor.tsx",
 	"editorStyle": "file:./style-editor.css",
 	"style": "file:./style-editor.css",
+	"viewScriptModule": "file:./view.ts",
 	"render": "file:./render.php"
 }

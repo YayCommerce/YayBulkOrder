@@ -13,11 +13,34 @@ div.wp-block-yay-bulk-order-purchase-list {
   --ybo-radius-md: 8px;
   --ybo-shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
 
+  font-size: 14px;
+
+  .ybo_header,
+  .ybo_footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 8px 0px;
+
+    h2 {
+      font-size: 20px;
+    }
+  }
+
   .ybo_purchase_list_perpage {
-    font-size: 14px;
     display: flex;
     align-items: center;
     gap: 6px;
+  }
+
+  .ybo_pagination {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    input {
+      width: 20px !important  ;
+    }
   }
 
   .ybo_input {
@@ -26,6 +49,7 @@ div.wp-block-yay-bulk-order-purchase-list {
     border: 1px solid var(--ybo-border);
   }
 
+  // #region Button variant
   .ybo_button {
     padding: 8px;
     border: 1px solid var(--ybo-primary);
@@ -35,6 +59,7 @@ div.wp-block-yay-bulk-order-purchase-list {
     align-items: center;
     gap: 6px;
     border-radius: 4px;
+    cursor: pointer;
   }
 
   .ybo_button:hover {
@@ -42,29 +67,150 @@ div.wp-block-yay-bulk-order-purchase-list {
     color: var(--ybo-primary-accent);
   }
 
-  .ybo_add_button {
+  .ybo_primary_filled_button {
     background: var(--ybo-primary);
     color: var(--ybo-primary-foreground);
   }
 
-  .ybo_add_button:hover {
+  .ybo_primary_filled_button:hover {
     background: var(--ybo-primary-accent);
     color: var(--ybo-primary-foreground);
   }
 
-  .ybo_header {
+  .ybo_muted_filled_button {
+    background: var(--ybo-muted-foreground-400);
+    color: var(--ybo-foreground);
+    border-color: var(--ybo-muted-foreground-400);
+  }
+
+  .ybo_muted_filled_button:hover {
+    background: var(--ybo-muted-foreground);
+    border-color: var(--ybo-muted-foreground);
+    color: var(--ybo-foreground);
+  }
+
+  .ybo_transparent_button {
+    padding: 4px;
+    border-color: transparent;
+    background: transparent;
+    color: white;
+  }
+
+  .ybo_transparent_button:hover {
+    border-color: transparent;
+    color: white;
+  }
+
+  // #endregion
+
+  .ybo_purchase_list_create_view,
+  .ybo_purchase_list_edit_view {
+    border-radius: var(--ybo-radius-md);
+    overflow: hidden;
+    border: 1px solid var(--ybo-border);
+  }
+
+  .ybo_card_header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    margin-bottom: 8px;
+    gap: 10px;
+    padding: 12px 16px;
+    background: var(--ybo-foreground);
+    color: white;
 
     h2 {
-      font-size: 20px;
+      flex: 1;
+      min-width: 0;
+      font-size: 16px;
+      margin: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .ybo_card_body {
+    padding: 16px;
+    background: white;
+  }
+
+  .ybo_card_row {
+    display: grid;
+    grid-template-columns: 1fr 60px 90px;
+    align-items: center;
+    gap: 32px;
+    padding: 6px 0;
+  }
+
+  .ybo_card_row_head {
+    font-weight: 600;
+  }
+
+  .ybo_card_row_removable {
+    grid-template-columns: 1fr 60px 90px 28px;
+  }
+
+  .ybo_card_clear_row {
+    padding: 4px;
+    border-color: transparent;
+    background: transparent;
+    color: var(--ybo-destructive);
+  }
+
+  .ybo_card_clear_row:hover {
+    border-color: transparent;
+    background: var(--ybo-destructive);
+    color: white;
+  }
+
+  .ybo_card_col_product {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .ybo_card_col_qty {
+    text-align: center;
+  }
+
+  .ybo_card_col_subtotal {
+    text-align: right;
+    color: var(--ybo-muted-foreground);
+  }
+
+  .ybo_card_product_search,
+  .ybo_card_qty {
+    width: 100%;
+    background: white;
+  }
+
+  .ybo_card_new_line {
+    margin-top: 4px;
+  }
+
+  .ybo_card_footer {
+    padding: 16px;
+    background: white;
+    border-top: 1px solid var(--ybo-border);
+  }
+
+  .ybo_card_actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .ybo_card_total {
+    color: var(--ybo-muted-foreground);
+
+    strong {
+      color: var(--ybo-foreground);
+      font-size: 16px;
     }
   }
 
   .ybo_table_wrapper {
-    border-radius: 8px;
+    border-radius: var(--ybo-radius-md);
     overflow: hidden;
     border: 2px solid var(--ybo-border);
   }
@@ -72,7 +218,6 @@ div.wp-block-yay-bulk-order-purchase-list {
   table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 14px;
     text-align: center;
 
     td,
