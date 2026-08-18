@@ -1,6 +1,7 @@
 <?php
 namespace YayBulkOrder\Engines;
 
+use YayBulkOrder\Controllers\PurchaseListRestController;
 use YayBulkOrder\Controllers\SettingsRestController;
 use YayBulkOrder\Utils\SingletonTrait;
 
@@ -21,5 +22,6 @@ class RestAPI {
 
     public function bulk_order_endpoints() {
         SettingsRestController::get_instance();
+        PurchaseListRestController::get_instance();
     }
 }

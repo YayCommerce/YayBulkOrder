@@ -142,6 +142,10 @@ $data_context = [];
 		</div>
 
 		<div class="ybo_card_body">
+			<input class="ybo_input ybo_input_name" type="text" placeholder="<?php esc_attr_e('Purchase List Name', 'yay-bulk-order'); ?>"
+							data-wp-bind--value="state.form.name"
+							data-wp-on--input="actions.inputListName"
+						/>
 			<div class="ybo_card_row ybo_card_row_head">
 				<div class="ybo_card_col_product">
 					<?php esc_html_e('Product', 'yay-bulk-order'); ?>
@@ -150,13 +154,64 @@ $data_context = [];
 				<div class="ybo_card_col_subtotal"><?php esc_html_e('Subtotal', 'yay-bulk-order'); ?></div>
 			</div>
 
-			<?php for ($i = 0; $i < 5; $i++) : ?>
-				<div class="ybo_card_row">
-					<input class="ybo_input ybo_card_product_search" type="text" placeholder="<?php esc_attr_e('Search for a product...', 'yay-bulk-order'); ?>" />
-					<input class="ybo_input ybo_card_qty" type="number" min="0" />
-					<div class="ybo_card_col_subtotal"><?php echo wc_price(0); ?></div>
+			<template data-wp-each--row="state.form.products" data-wp-each-key="context.row.id">
+				<div class="ybo_card_row"
+					<?php echo wp_interactivity_data_wp_context([
+						'isSearching' => false,
+						'isSelected' => false,
+						'search' => '',
+					]); ?>>
+					<div class=" ybo_card_product_search">
+						<input class="ybo_input" type="text" placeholder="<?php esc_attr_e('Search for a product...', 'yay-bulk-order'); ?>"
+							data-wp-bind--value="context.search"
+							data-wp-on--focusin="actions.toggleSearch"
+							data-wp-on--focusout="actions.toggleSearch"
+							data-wp-on--input="actions.searchProducts"
+							data-wp-bind--readonly="context.isSelected"
+						/>
+
+						<button
+							class="ybo_button ybo_card_clear_row"
+							data-wp-bind--hidden="!context.isSelected"
+							data-wp-on--click="actions.clearProduct"
+							aria-label="<?php esc_attr_e('Remove product', 'yay-bulk-order'); ?>"
+						>
+							<?php esc_html_e('Clear', 'yay-bulk-order'); ?>
+						</button>
+
+						<ul
+							class="ybo_products_search_list ybo_products_search_results"
+							data-wp-bind--hidden="!context.isSearching"
+						>
+							<template
+								data-wp-each--product="state.products"
+								data-wp-each-key="context.product.id">
+								<li class="ybo_products_search_item"
+									data-wp-bind--data-row-id="context.row.id"
+									data-wp-on--mousedown="actions.selectProduct">
+									<img class="ybo_products_search_item_image" data-wp-bind--src="context.product.image" data-wp-bind--alt="context.product.name" />
+									<div class="ybo_products_search_info">
+										<span class="ybo_products_search_item_name" data-wp-text="context.product.name"></span>
+										<span class="ybo_products_search_item_price" data-wp-text="context.product.price"></span>
+									</div>
+								</li>
+							</template>
+						</ul>
+					</div>
+					<input
+						class="ybo_input ybo_card_qty"
+						type="number"
+						min="0"
+						data-wp-bind--value="context.row.quantity"
+						data-wp-on--input="actions.inputQuantity"
+						data-wp-bind--data-row-id="context.row.id"
+					/>
+					<div
+						class="ybo_card_col_subtotal"
+						data-wp-text="context.row.subtotal"
+					></div>
 				</div>
-			<?php endfor; ?>
+			</template>
 
 			<button class="ybo_button ybo_card_new_line">
 				<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -174,12 +229,12 @@ $data_context = [];
 					</svg>
 					<?php esc_html_e('Add to Cart', 'yay-bulk-order'); ?>
 				</button>
-				<button class="ybo_button">
+				<button class="ybo_button" data-wp-on--click="actions.createPurchaseList">
 					<?php esc_html_e('Save list', 'yay-bulk-order'); ?>
 				</button>
 			</div>
 			<div class="ybo_card_total">
-				<?php esc_html_e('Total:', 'yay-bulk-order'); ?> <strong><?php echo wc_price(0); ?></strong>
+				<?php esc_html_e('Total:', 'yay-bulk-order'); ?> <strong data-wp-text="state.form.total"></strong>
 			</div>
 		</div>
 	</div>

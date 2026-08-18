@@ -16,6 +16,31 @@ class PurchaseListService {
     public const PURCHASE_LIST_POST_TYPE = 'ybo_purchase_list';
 
     public function get_config() {
+        return [
+            'metadata' => [
+                'isBlockTheme' => wp_is_block_theme(),
+                'products'     => $this->get_all_products(),
+            ],
+            'path'     => [
+                'assetsUrl' => YAYBULKORDER_PLUGIN_URL . 'assets/',
+                'restUrl'   => rest_url( 'yay-bulk-order/v1' ),
+                'ajaxUrl'   => admin_url( 'admin-ajax.php' ),
+                'nonce'     => wp_create_nonce( 'wp_rest' ),
+            ],
+            'wc_meta'  => [
+                'currencyData' => [
+                    'currency'    => get_woocommerce_currency(),
+                    'symbol'      => html_entity_decode( \get_woocommerce_currency_symbol(), ENT_COMPAT ),
+                    'position'    => get_option( 'woocommerce_currency_pos' ),
+                    'thousandSep' => get_option( 'woocommerce_price_thousand_sep' ),
+                    'decimalSep'  => get_option( 'woocommerce_price_decimal_sep' ),
+                    'numDecimals' => intval( get_option( 'woocommerce_price_num_decimals' ) ),
+                ],
+            ],
+        ];
+    }
+
+    public function get_all_products() {
         $products = wc_get_products(
             [
                 'limit'  => -1,
@@ -34,17 +59,6 @@ class PurchaseListService {
             $products
         );
 
-        return [
-            'metadata' => [
-                'isBlockTheme' => wp_is_block_theme(),
-                'products'     => $products,
-            ],
-            'path'     => [
-                'assetsUrl' => YAYBULKORDER_PLUGIN_URL . 'assets/',
-                'restUrl'   => rest_url( 'yay-bulk-order/v1' ),
-                'ajaxUrl'   => admin_url( 'admin-ajax.php' ),
-                'nonce'     => wp_create_nonce( 'wp_rest' ),
-            ],
-        ];
+        return $products;
     }
 }

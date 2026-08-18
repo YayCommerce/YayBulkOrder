@@ -35,7 +35,11 @@ class PurchaseListRestController extends BaseRestController {
     }
 
     // Handler callbacks
-    public function insert_purchase_list() {
+    public function insert_purchase_list( \WP_REST_Request $request ) {
+        $params = $request->get_params();
+        var_dump( $params );
+
+        return true;
     }
 
     // Permission callbacks
@@ -44,6 +48,6 @@ class PurchaseListRestController extends BaseRestController {
             return true;
         }
 
-        return $this->error_forbidden();
+        return $this->error_unauthorized();
     }
 }
