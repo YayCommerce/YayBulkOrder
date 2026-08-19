@@ -59,10 +59,13 @@ async function storeApiRequest<T>(endpoint: string, { method = 'GET', body }: St
 }
 
 export async function createPurchaseList(form: FormState) {
-  const products = form.products.map((row) => ({
-    productId: row.productId,
-    quantity: row.quantity,
-  }));
+  const products = form.products
+    .filter((row) => row.productId)
+    .map((row) => ({
+      productId: row.productId,
+      quantity: row.quantity,
+    }));
+
   return storeApiRequest(PURCHASE_LIST_API.rest.create, {
     method: 'POST',
     body: {

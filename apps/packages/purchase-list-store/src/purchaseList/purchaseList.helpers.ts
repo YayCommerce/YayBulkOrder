@@ -1,4 +1,4 @@
-import { PurchaseListConfig } from './purchaseList.type';
+import { FormRowProduct, Product, PurchaseListConfig } from './purchaseList.type';
 
 export const parseCurrency = (price: string | number, currencyData: PurchaseListConfig['wc_meta']['currencyData']) => {
   if (typeof price === 'string') {
@@ -24,3 +24,17 @@ export const parseCurrency = (price: string | number, currencyData: PurchaseList
       return `${symbol}${formattedPrice}`;
   }
 };
+
+export function getSearchableProducts(
+  all_products: Product[],
+  selectedProducts: FormRowProduct[],
+  excludeRowId: number,
+) {
+  const selectedProductIds = new Set(
+    selectedProducts
+      .filter((row) => row.id !== excludeRowId && row.productId !== undefined)
+      .map((row) => row.productId),
+  );
+
+  return all_products.filter((product) => !selectedProductIds.has(product.id));
+}

@@ -46,7 +46,6 @@ export type FormState = {
 export type PurchaseListConfig = {
   metadata: {
     isBlockTheme: boolean;
-    products: Product[];
   };
   path: {
     assetsUrl: string;
@@ -55,6 +54,7 @@ export type PurchaseListConfig = {
     nonce: string;
   };
   wc_meta: {
+    products: Product[];
     currencyData: {
       currency: string;
       symbol: string;

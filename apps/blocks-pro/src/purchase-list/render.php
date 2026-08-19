@@ -1,7 +1,7 @@
 <?php
 
 
-use YayBulkOrder\Services\PurchaseListService;
+use YayBulkOrder\Pro\Services\PurchaseListService;
 
 /**
  *
@@ -12,37 +12,27 @@ use YayBulkOrder\Services\PurchaseListService;
  *
  */
 
-$sample_data = array(
-	array(
-		'id'         => 1,
-		'name'       => __( 'Weekly Order', 'yay-bulk-order' ),
-		"products" => [
-			1024 => 10,
-			1025 => 4
-		]
-	),
-	array(
-		'id'         => 2,
-		'name'       => __( 'Monthly Restock', 'yay-bulk-order' ),
-		"products" => [
-			1024 => 10,
-			1025 => 4
-		]
-	),
-	array(
-		'id'         => 3,
-		'name'       => __( 'Favorite Items', 'yay-bulk-order' ),
-		"products" => [
-			1024 => 10,
-			1025 => 4
-		]
-	),
-);
-
 $purchase_list_service = PurchaseListService::get_instance();
 wp_interactivity_config(
 	'yay-bulk-order/purchase-list',
 	$purchase_list_service->get_config()
+);
+
+$user_id = get_current_user_id();
+$page = 1;
+$all_purchase_list = $purchase_list_service->get_paginated_purchase_lists($user_id);
+wp_interactivity_state(
+	'yay-bulk-order/purchase-list',
+	[
+		"allPurchaseList" => $all_purchase_list,
+		"page" => $page,
+		"displayPurchaseLists" => $all_purchase_list[$page] ?? [
+			'data'      => [],
+			'total'     => 0,
+			'count'     => 0,
+			'countText' => '',
+		],
+	]
 );
 
 $data_context = [];
@@ -57,24 +47,15 @@ $data_context = [];
 	<div class="ybo_purchase_list_list_view" data-wp-bind--hidden="!state.isListView">
 		<div class="ybo_header">
 			<h2><?php esc_html_e('Purchase lists', 'yay-bulk-order'); ?></h2>
-			<button class="ybo_button ybo_primary_filled_button" data-wp-on--click="actions.showCreateView">
-				<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-					<use href="<?php echo (esc_url(YAYBULKORDER_PLUGIN_URL . 'assets/images/icon/plus.svg')); ?>">#plus_icon</use>
-				</svg>
-				<?php esc_html_e('New List', 'yay-bulk-order'); ?>
-			</button>
-		</div>
-		<div class="ybo_header">
-			<div class="ybo_purchase_list_perpage">
-				<div><?php esc_html_e('Showing: ', 'yay-bulk-order'); ?></div>
-				<select value="5">
-					<option value="5">5</option>
-					<option value="10">10</option>
-					<option value="20">20</option>
-					<option value="50">50</option>
-				</select>
+			<div class="ybo_header_actions">
+				<input class="ybo_input" type="text" placeholder="<?php esc_html_e('Search purchase list...', 'yay-bulk-order'); ?>" />
+				<button class="ybo_button ybo_primary_filled_button" data-wp-on--click="actions.showCreateView">
+					<svg width="16" height="16" viewBox="0 0 22 24" fill="currentColor" aria-hidden="true">
+						<use href="<?php echo (esc_url(YAYBULKORDER_PLUGIN_URL . 'assets/images/icon/plus.svg')); ?>">#plus_icon</use>
+					</svg>
+					<?php esc_html_e('New List', 'yay-bulk-order'); ?>
+				</button>
 			</div>
-			<input class="ybo_input" type="text" placeholder="<?php esc_html_e('Search purchase list...', 'yay-bulk-order'); ?>" />
 		</div>
 		<div class="ybo_table_wrapper">
 			<table>
@@ -86,46 +67,38 @@ $data_context = [];
 					</tr>
 				</thead>
 				<tbody>
-					<?php foreach ($sample_data as $list) : ?>
-						<tr>
-							<td class="ybo_purchase_list_item_name"><?php echo esc_html($list['name']); ?></td>
-							<td>
-								<?php
-								printf(
-									/* translators: %d: number of items in the list */
-									esc_html__('%d items', 'yay-bulk-order'),
-									(int) count($list['products'])
-								);
-								?>
-							</td>
-							<td class="ybo_purchase_list_item_actions">
-								<button class="ybo_button">
-									<span><?php esc_html_e('View', 'yay-bulk-order'); ?></span>
-								</button>
-								<button class="ybo_button">
-									<span><?php esc_html_e('Download', 'yay-bulk-order'); ?></span>
-								</button>
-							</td>
+						<template data-wp-each--purchase-list="state.displayPurchaseLists.data" data-wp-each-key="context.purchaseList.id">
+							<tr>
+								<td class="ybo_purchase_list_item_name" data-wp-text="context.purchaseList.name"></td>
+								<td data-wp-text="context.purchaseList.itemsCount"></td>
+								<td class="ybo_purchase_list_item_actions">
+									<button class="ybo_button" >
+										<span><?php esc_html_e('View', 'yay-bulk-order'); ?></span>
+									</button>
+									<button class="ybo_button">
+										<span><?php esc_html_e('Download', 'yay-bulk-order'); ?></span>
+									</button>
+								</td>
 						</tr>
-					<?php endforeach; ?>
+						</template>
 				</tbody>
 			</table>
 		</div>
 
 		<div class="ybo_footer">
-			<div><?php esc_html_e('Showing 1 to 10 lists ', 'yay-bulk-order'); ?></div>
+			<div data-wp-text="state.displayPurchaseLists.countText"></div>
 			<div class="ybo_pagination">
-				<button class="ybo_button">
-					<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+				<button class="ybo_button" data-wp-on--click="actions.previousPage" data-wp-bind--disabled="state.isPreviousPageDisabled">
+					<svg width="16" height="16" viewBox="0 0 22 24" fill="currentColor" aria-hidden="true">
 						<use href="<?php echo (esc_url(YAYBULKORDER_PLUGIN_URL . 'assets/images/icon/chevron-left.svg')); ?>">#chevron_left_icon</use>
 					</svg>
 				</button>
-				<button class="ybo_button">
-					<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+				<input class="ybo_input" type="number" value="1" data-wp-bind--value="state.page" />
+				<button class="ybo_button" data-wp-on--click="actions.nextPage" data-wp-bind--disabled="state.isNextPageDisabled">
+					<svg width="16" height="16" viewBox="0 0 22 24" fill="currentColor" aria-hidden="true">
 						<use href="<?php echo (esc_url(YAYBULKORDER_PLUGIN_URL . 'assets/images/icon/chevron-right.svg')); ?>">#chevron_right_icon</use>
 					</svg>
 				</button>
-				<input class="ybo_input" type="number" value="1" />
 			</div>
 		</div>
 	</div>
@@ -188,11 +161,11 @@ $data_context = [];
 								data-wp-each-key="context.product.id">
 								<li class="ybo_products_search_item"
 									data-wp-bind--data-row-id="context.row.id"
-									data-wp-on--mousedown="actions.selectProduct">
+									data-wp-on--click="actions.selectProduct">
 									<img class="ybo_products_search_item_image" data-wp-bind--src="context.product.image" data-wp-bind--alt="context.product.name" />
 									<div class="ybo_products_search_info">
 										<span class="ybo_products_search_item_name" data-wp-text="context.product.name"></span>
-										<span class="ybo_products_search_item_price" data-wp-text="context.product.price"></span>
+										<span class="ybo_products_search_item_price" data-wp-text="context.product.priceText"></span>
 									</div>
 								</li>
 							</template>

@@ -1,9 +1,9 @@
 <?php
-namespace YayBulkOrder\Controllers;
+namespace YayBulkOrder\Pro\Controllers;
 
 use YayBulkOrder\Utils\SingletonTrait;
-use WP_REST_Request;
-use YayBulkOrder\Services\PurchaseListService;
+use YayBulkOrder\Controllers\BaseRestController;
+use YayBulkOrder\Pro\Services\PurchaseListService;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -36,8 +36,19 @@ class PurchaseListRestController extends BaseRestController {
 
     // Handler callbacks
     public function insert_purchase_list( \WP_REST_Request $request ) {
-        $params = $request->get_params();
-        var_dump( $params );
+        $list_name = $request->get_param( 'name' );
+        $products  = $request->get_param( 'products' );
+        $user_id   = get_current_user_id();
+
+        if ( empty( $user_id ) || empty( $list_name ) || empty( $products ) ) {
+            return false;
+        }
+
+        $result = $this->purchase_list_service->insert_purchase_list( $user_id, $list_name, $products );
+
+        if ( is_wp_error( $result ) ) {
+            return false;
+        }
 
         return true;
     }

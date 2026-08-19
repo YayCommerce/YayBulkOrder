@@ -29,13 +29,14 @@ div.wp-block-yay-bulk-order-purchase-list {
 
     h2 {
       font-size: 20px;
+      font-weight: 600;
     }
   }
 
-  .ybo_purchase_list_perpage {
+  .ybo_header_actions {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
   }
 
   .ybo_pagination {
@@ -44,7 +45,7 @@ div.wp-block-yay-bulk-order-purchase-list {
     gap: 6px;
 
     input {
-      width: 20px !important  ;
+      width: 30px !important  ;
     }
   }
   // #endregion
@@ -66,8 +67,9 @@ div.wp-block-yay-bulk-order-purchase-list {
   // #region Button variant
   .ybo_button {
     padding: 8px;
-    border: 1px solid var(--ybo-primary);
-    color: var(--ybo-primary);
+    border: 1px solid var(--ybo-border);
+    color: var(--ybo-muted-foreground);
+    box-shadow: 0 1px 2px 0 #0000000d;
     background: #fff;
     display: inline-flex;
     align-items: center;
@@ -81,8 +83,7 @@ div.wp-block-yay-bulk-order-purchase-list {
   }
 
   .ybo_button:hover {
-    border-color: var(--ybo-primary-accent);
-    color: var(--ybo-primary-accent);
+    background: var(--ybo-muted-400);
   }
 
   .ybo_primary_filled_button {
@@ -292,16 +293,21 @@ div.wp-block-yay-bulk-order-purchase-list {
   .ybo_products_search_info {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 2px;
+    font-size: 13px;
   }
 
   .ybo_products_search_item_name {
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
     text-overflow: ellipsis;
-    word-break: keep-all;
+    line-clamp: 1;
   }
 
   .ybo_products_search_item_price {
     color: var(--ybo-muted-foreground);
+    font-size: 12px;
   }
   // #endregion
 

@@ -1,8 +1,7 @@
 <?php
-namespace YayBulkOrder\Engines\Blocks;
+namespace YayBulkOrder\Pro\Engines\Blocks;
 
-use Override;
-use YayBulkOrder\Services\PurchaseListService;
+use YayBulkOrder\Pro\Services\PurchaseListService;
 use YayBulkOrder\Utils\SingletonTrait;
 
 /**
@@ -40,7 +39,6 @@ class PurchaseList {
                 'title',
                 'author',
             ],
-            'map_meta_cap'      => true,
             'capabilities'      => [
                 'edit_post'          => 'read',
                 'read_post'          => 'read',
