@@ -1,14 +1,14 @@
 import { getConfig } from '@wordpress/interactivity';
 
-import { FormState, PurchaseListConfig } from './purchaseList.type';
+import { PurchaseListConfig, PurchaseListForm } from './purchaseList.type';
 
 export const STORE_NAMESPACE = 'yay-bulk-order/purchase-list';
 
 const PURCHASE_LIST_API = {
   rest: {
     create: 'purchase-list',
-    update: 'purchase-list',
-    delete: 'purchase-list',
+    update: (id: number) => `purchase-list/${id}`,
+    delete: (id: number) => `purchase-list/${id}`,
   },
 } as const;
 
@@ -58,7 +58,7 @@ async function storeApiRequest<T>(endpoint: string, { method = 'GET', body }: St
   return data as T;
 }
 
-export async function createPurchaseList(form: FormState) {
+export async function createPurchaseList(form: PurchaseListForm) {
   const products = form.products
     .filter((row) => row.productId)
     .map((row) => ({
@@ -72,5 +72,28 @@ export async function createPurchaseList(form: FormState) {
       name: form.name,
       products: products,
     },
+  });
+}
+
+export async function updatePurchaseList(form: PurchaseListForm) {
+  const products = form.products
+    .filter((row) => row.productId)
+    .map((row) => ({
+      productId: row.productId,
+      quantity: row.quantity,
+    }));
+
+  return storeApiRequest(PURCHASE_LIST_API.rest.update(form.id), {
+    method: 'PUT',
+    body: {
+      name: form.name,
+      products: products,
+    },
+  });
+}
+
+export async function deletePurchaseList(form: PurchaseListForm) {
+  return storeApiRequest(PURCHASE_LIST_API.rest.delete(form.id), {
+    method: 'DELETE',
   });
 }

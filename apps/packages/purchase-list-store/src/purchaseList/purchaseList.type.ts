@@ -1,4 +1,14 @@
 //  #region Context Schema
+// WP Context: General Context
+export type GeneralContext = {
+  isEmptyLists: boolean;
+  page: number;
+  perPage: number;
+  search: string;
+  isPendingCreateList: boolean;
+  isPendingUpdateList: boolean;
+  isPendingDeleteList: boolean;
+};
 // WP-EACH: Schema Product Option context
 export type ProductItemContext = {
   product: Product;
@@ -9,12 +19,14 @@ export type RowItemContext = {
   row: FormRowProduct;
 };
 
-// WP-CONTEXT: Each Row has its own search context
-export type ProductSearchContext = {
+export type FormRowProduct = {
+  id: number;
+  productId?: number;
+  quantity: number;
+  subtotal: string;
   isSearching: boolean;
   isSelected: boolean;
-  search: string;
-  subtotal: string;
+  name: string;
 };
 
 // #endregion
@@ -28,15 +40,16 @@ export type Product = {
   price: number;
 };
 
-export type FormRowProduct = {
+export type PurchaseList = {
   id: number;
-  // Unset until a product is picked for this row.
-  productId?: number;
-  quantity: number;
-  subtotal: string;
+  name: string;
+  products: {
+    productId: number;
+    quantity: number;
+  }[];
 };
 
-export type FormState = {
+export type PurchaseListForm = {
   id: number;
   name: string;
   products: FormRowProduct[];

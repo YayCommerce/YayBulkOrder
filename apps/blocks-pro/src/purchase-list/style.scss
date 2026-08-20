@@ -80,6 +80,12 @@ div.wp-block-yay-bulk-order-purchase-list {
     &[hidden] {
       display: none;
     }
+
+    &[disabled] {
+      background: var(--ybo-muted-400);
+      border: 1px solid var(--ybo-border);
+      color: var(--ybo-muted-foreground-400);
+    }
   }
 
   .ybo_button:hover {

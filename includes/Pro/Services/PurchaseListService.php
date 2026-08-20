@@ -15,7 +15,7 @@ class PurchaseListService {
 
     public const PURCHASE_LIST_POST_TYPE = 'ybo_purchase_list';
     public const PURCHASE_LIST_META_DATA = 'ybo_purchase_list_data';
-    public const PURCHASE_LIST_PER_PAGE  = 1;
+    public const PURCHASE_LIST_PER_PAGE  = 10;
 
     public function get_config() {
         return [
@@ -83,42 +83,6 @@ class PurchaseListService {
         return $result;
     }
 
-    public function get_paginated_purchase_lists( int $user_id ) {
-        $lists = $this->get_purchase_list_by_user( $user_id );
-
-        $counter   = 0;
-        $index     = 0;
-        $all       = count( $lists );
-        $new_page  = [
-            'data'      => [],
-            'total'     => $all,
-            'count'     => 0,
-            'countText' => '',
-        ];
-        $paginated = [
-            $new_page,
-        ];
-        foreach ( $lists as $list ) {
-            if ( $counter >= $this::PURCHASE_LIST_PER_PAGE ) {
-                $paginated[] = $new_page;
-                $counter     = 0;
-                ++$index;
-            }
-
-            ++$counter;
-            $paginated[ $index ]['data'][]    = $list;
-            $paginated[ $index ]['count']    += 1;
-            $paginated[ $index ]['countText'] = sprintf(
-                /* translators: %1$d: number of paginated items, %2$d: number of all items */
-                esc_html__( 'Showing %1$d of %2$d purchase lists', 'yay-bulk-order' ),
-                $paginated[ $index ]['count'],
-                $all
-            );
-        }
-
-        return $paginated;
-    }
-
     public function get_purchase_list_by_user( int $user_id ) {
         if ( $user_id < 1 ) {
             return [];
@@ -172,5 +136,49 @@ class PurchaseListService {
         update_post_meta( $new_purchase_list, $this::PURCHASE_LIST_META_DATA, $list_data );
 
         return $new_purchase_list;
+    }
+
+    public function update_purchase_list( int $list_id, string $list_name, array $list_data ) {
+        $result = wp_update_post(
+            [
+                'ID'         => $list_id,
+                'post_title' => $list_name,
+            ]
+        );
+        if ( is_wp_error( $result ) ) {
+            return false;
+        }
+
+        $result = update_post_meta( $list_id, $this::PURCHASE_LIST_META_DATA, $list_data );
+
+        if ( ! $result ) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function get_purchase_list( int $list_id, int $user_id ) {
+        $post = get_post( $list_id );
+        if ( empty( $post ) || $this::PURCHASE_LIST_POST_TYPE !== $post->post_type ) {
+            return [];
+        }
+
+        if ( intval( $post->post_author ) !== $user_id ) {
+            return [];
+        }
+
+        $products = get_post_meta( $list_id, $this::PURCHASE_LIST_META_DATA, true );
+
+        return [
+            'id'         => $post->ID,
+            'name'       => $post->post_title,
+            'products'   => $products,
+            'itemsCount' => sprintf(
+                        /* translators: %d: number of items in the list */
+                esc_html__( '%d items', 'yay-bulk-order' ),
+                (int) count( $products )
+            ),
+        ];
     }
 }

@@ -356,6 +356,9 @@ importers:
 
   apps/packages/purchase-list-store:
     dependencies:
+      '@wordpress/i18n':
+        specifier: latest
+        version: 6.26.0
       '@wordpress/interactivity':
         specifier: latest
         version: 6.53.0

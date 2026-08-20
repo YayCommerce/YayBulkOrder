@@ -1,14 +1,17 @@
 import { getConfig, getContext, getElement, store } from '@wordpress/interactivity';
 
-import { createPurchaseList, STORE_NAMESPACE } from './purchaseList.api';
+import { createPurchaseList, deletePurchaseList, STORE_NAMESPACE, updatePurchaseList } from './purchaseList.api';
 import { getSearchableProducts, parseCurrency } from './purchaseList.helpers';
-import type {
-  FormState,
-  ProductItemContext,
-  ProductSearchContext,
-  PurchaseListConfig,
-  RowItemContext,
+import {
+  GeneralContext,
+  type ProductItemContext,
+  type PurchaseList,
+  type PurchaseListConfig,
+  type PurchaseListForm,
+  type RowItemContext,
 } from './purchaseList.type';
+
+const { __, sprintf } = window.wp.i18n;
 
 const config = getConfig(STORE_NAMESPACE) as PurchaseListConfig;
 const products = config.wc_meta.products ?? [];
@@ -29,20 +32,46 @@ const { state, callbacks } = store(
         name: '',
         products: [],
         total: parseCurrency(0, currencyData),
-      } as FormState,
+      } as PurchaseListForm,
       // #endregion
 
       // #region : List View states
       get displayPurchaseLists() {
-        if (!state.allPurchaseList || !state.page) return [];
+        const context = getContext<GeneralContext>();
+        if (!state.allPurchaseList || !context.page) return { data: [], total: 0, count: 0, countText: '' };
 
-        return state.allPurchaseList[state.page - 1];
+        const purchaseLists: PurchaseList[] = state.allPurchaseList.filter((list: PurchaseList) =>
+          list.name.toLowerCase().includes(context.search.toLocaleLowerCase()),
+        );
+        const startIndex = (context.page - 1) * context.perPage;
+        const pageItems = purchaseLists.slice(startIndex, startIndex + context.perPage);
+
+        const countText = sprintf(
+          /* translators: %1$d: number of paginated items, %2$d: number of all items */
+          __('Showing %1$d of %2$d purchase lists', 'yay-bulk-order'),
+          pageItems.length,
+          purchaseLists.length,
+        );
+
+        return {
+          data: pageItems,
+          total: purchaseLists.length,
+          count: pageItems.length,
+          countText,
+        };
+      },
+      get totalPages() {
+        if (!state.allPurchaseList) return 0;
+        const context = getContext<GeneralContext>();
+        return Math.max(1, Math.ceil(state.allPurchaseList.length / context.perPage));
       },
       get isNextPageDisabled() {
-        return state.allPurchaseList && state.page && state.page >= state.allPurchaseList.length;
+        const context = getContext<GeneralContext>();
+        return !state.allPurchaseList || !context.page || context.page >= state.totalPages;
       },
       get isPreviousPageDisabled() {
-        return state.allPurchaseList && state.page && state.page - 1 < 1;
+        const context = getContext<GeneralContext>();
+        return !state.allPurchaseList || !context.page || context.page - 1 < 1;
       },
       // #endregion
 
@@ -56,6 +85,9 @@ const { state, callbacks } = store(
       },
       get isEditView() {
         return state.view === 'edit';
+      },
+      get isCreateEditView() {
+        return state.view === 'edit' || state.view === 'create';
       },
       // #endregion
     },
@@ -72,6 +104,9 @@ const { state, callbacks } = store(
             id: index,
             subtotal: parseCurrency(0, currencyData),
             quantity: 0,
+            name: '',
+            isSearching: false,
+            isSelected: false,
           })),
           total: parseCurrency(0, currencyData),
         };
@@ -81,26 +116,52 @@ const { state, callbacks } = store(
         state.view = 'create';
       },
       showEditView() {
+        const { ref } = getElement();
+        const purchaseListId = parseInt((ref as HTMLElement).dataset.purchaseListId ?? '0');
+        if (!purchaseListId) return;
+
+        const purchaseList: PurchaseList | undefined = state.allPurchaseList.find((list) => list.id === purchaseListId);
+        if (!purchaseList) return;
+
+        state.form = {
+          id: purchaseList.id,
+          name: purchaseList.name,
+          products: purchaseList.products.map((product, index) => {
+            const productData = products.find((pr) => pr.id === product.productId);
+
+            return {
+              ...product,
+              id: index,
+              subtotal: parseCurrency(0, currencyData),
+              name: productData ? productData.name : __('This product is not found.', 'yay-bulk-order'),
+              isSearching: false,
+              isSelected: true,
+            };
+          }),
+          total: 0,
+        };
+        callbacks.onFormChange();
+
         state.view = 'edit';
       },
       // #endregion
 
       // #region : Create / Edit View Actions
       toggleSearch(event: FocusEvent) {
-        const context = getContext<ProductSearchContext & RowItemContext>();
+        const context = getContext<RowItemContext>();
 
-        context.isSearching = event.type === 'focusin';
+        context.row.isSearching = event.type === 'focusin';
         const searchableProducts = getSearchableProducts(productsWithPriceText, state.form.products, context.row.id);
         state.products = searchableProducts.filter((product) =>
-          product.name.toLowerCase().includes(context.search.toLowerCase()),
+          product.name.toLowerCase().includes(context.row.name.toLowerCase()),
         );
       },
       searchProducts() {
-        const context = getContext<ProductSearchContext & RowItemContext>();
+        const context = getContext<RowItemContext>();
         const { ref } = getElement();
         const value = (ref as HTMLInputElement).value;
 
-        context.search = value;
+        context.row.name = value;
         const searchableProducts = getSearchableProducts(productsWithPriceText, state.form.products, context.row.id);
         state.products = searchableProducts.filter((product) =>
           product.name.toLowerCase().includes(value.toLowerCase()),
@@ -109,19 +170,21 @@ const { state, callbacks } = store(
       selectProduct(event: MouseEvent) {
         event.preventDefault();
 
-        const context = getContext<ProductSearchContext & ProductItemContext>();
-
-        context.search = context.product.name;
-        context.isSearching = false;
-        context.isSelected = true;
+        const context = getContext<ProductItemContext>();
 
         const { ref } = getElement();
         const target = ref as HTMLElement;
         const rowId = target.dataset.rowId ?? 0;
 
         if (rowId) {
-          state.form.products[rowId].productId = context.product.id;
-          state.form.products[rowId].quantity = 1;
+          state.form.products[rowId] = {
+            ...state.form.products[rowId],
+            productId: context.product.id,
+            quantity: 1,
+            name: context.product.name,
+            isSearching: false,
+            isSelected: true,
+          };
           callbacks.onFormChange();
         }
       },
@@ -141,38 +204,95 @@ const { state, callbacks } = store(
         const target = ref as HTMLInputElement;
         const value = target.value;
 
-        state.form.name = value;
+        (state.form as PurchaseListForm).name = value;
       },
       clearProduct() {
-        const context = getContext<ProductSearchContext & RowItemContext>();
+        const context = getContext<RowItemContext>();
 
-        context.search = '';
-        context.isSelected = false;
-
-        state.form.products[context.row.id] = {
+        (state.form as PurchaseListForm).products[context.row.id] = {
           id: context.row.id,
           quantity: 0,
           subtotal: parseCurrency(0, currencyData),
+          name: '',
+          isSelected: false,
+          isSearching: false,
         };
         callbacks.onFormChange();
+      },
+      addNewProductRow() {
+        const index = (state.form as PurchaseListForm).products.length;
+        (state.form as PurchaseListForm).products.push({
+          id: index,
+          subtotal: parseCurrency(0, currencyData),
+          quantity: 0,
+          name: '',
+          isSearching: false,
+          isSelected: false,
+        });
       },
       // #endregion
 
       // #region : List view actions
+      inputListSearch() {
+        const { ref } = getElement();
+        const target = ref as HTMLInputElement;
+        const value = target.value;
+
+        const context = getContext<GeneralContext>();
+        context.search = value;
+      },
       nextPage() {
-        state.page += 1;
+        const context = getContext<GeneralContext>();
+        context.page += 1;
       },
       previousPage() {
-        state.page -= 1;
+        const context = getContext<GeneralContext>();
+        context.page -= 1;
       },
       // #endregion
 
       // #region : API actions
       *createPurchaseList() {
+        const context = getContext<GeneralContext>();
         try {
+          context.isPendingCreateList = true;
           const res = yield createPurchaseList(state.form);
+          state.view = 'list';
+          state.allPurchaseList = [res, ...state.allPurchaseList];
         } catch (error) {
           console.error(error);
+          alert(error);
+        } finally {
+          context.isPendingCreateList = false;
+        }
+      },
+      *updatePurchaseList() {
+        const context = getContext<GeneralContext>();
+        try {
+          context.isPendingUpdateList = true;
+          const res = (yield updatePurchaseList(state.form)) as PurchaseList;
+          state.allPurchaseList = state.allPurchaseList.map((list: PurchaseList) => (list.id === res.id ? res : list));
+        } catch (error) {
+          console.error(error);
+          alert(error);
+        } finally {
+          context.isPendingUpdateList = false;
+        }
+      },
+      *deletePurchaseList() {
+        const context = getContext<GeneralContext>();
+        try {
+          context.isPendingDeleteList = true;
+          const res = yield deletePurchaseList(state.form);
+          state.view = 'list';
+          if (res) {
+            state.allPurchaseList = state.allPurchaseList.filter((list: PurchaseList) => list.id !== state.form.id);
+          }
+        } catch (error) {
+          console.error(error);
+          alert(error);
+        } finally {
+          context.isPendingDeleteList = false;
         }
       },
       // #endregion
@@ -181,10 +301,8 @@ const { state, callbacks } = store(
       onFormChange() {
         let total = 0.0;
         state.form.products.forEach((row, index) => {
-          const filtered = products.filter((pr) => pr.id === row.productId);
-          if (!filtered.length) return;
-
-          const productData = filtered[0];
+          const productData = products.find((pr) => pr.id === row.productId);
+          if (!productData) return;
 
           const subtotal = productData.price * (row.quantity ?? 0);
           total += subtotal;
