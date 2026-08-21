@@ -1,6 +1,12 @@
 import { getConfig, getContext, getElement, store } from '@wordpress/interactivity';
 
-import { createPurchaseList, deletePurchaseList, STORE_NAMESPACE, updatePurchaseList } from './purchaseList.api';
+import {
+  addPurchaseListToCart,
+  createPurchaseList,
+  deletePurchaseList,
+  STORE_NAMESPACE,
+  updatePurchaseList,
+} from './purchaseList.api';
 import { getSearchableProducts, parseCurrency } from './purchaseList.helpers';
 import {
   GeneralContext,
@@ -63,7 +69,10 @@ const { state, callbacks } = store(
       get totalPages() {
         if (!state.allPurchaseList) return 0;
         const context = getContext<GeneralContext>();
-        return Math.max(1, Math.ceil(state.allPurchaseList.length / context.perPage));
+        const purchaseLists: PurchaseList[] = state.allPurchaseList.filter((list: PurchaseList) =>
+          list.name.toLowerCase().includes(context.search.toLocaleLowerCase()),
+        );
+        return Math.max(1, Math.ceil(purchaseLists.length / context.perPage));
       },
       get isNextPageDisabled() {
         const context = getContext<GeneralContext>();
@@ -72,6 +81,9 @@ const { state, callbacks } = store(
       get isPreviousPageDisabled() {
         const context = getContext<GeneralContext>();
         return !state.allPurchaseList || !context.page || context.page - 1 < 1;
+      },
+      get isEmptyList() {
+        return state.displayPurchaseLists.data.length > 0;
       },
       // #endregion
 
@@ -293,6 +305,19 @@ const { state, callbacks } = store(
           alert(error);
         } finally {
           context.isPendingDeleteList = false;
+        }
+      },
+      *addToCart() {
+        const context = getContext<GeneralContext>();
+        try {
+          context.isPendingAddToCart = true;
+          const res = (yield addPurchaseListToCart(state.form)) as { cartUrl: string };
+          window.location.assign(res.cartUrl);
+        } catch (error) {
+          console.error(error);
+          alert(error);
+        } finally {
+          context.isPendingAddToCart = false;
         }
       },
       // #endregion

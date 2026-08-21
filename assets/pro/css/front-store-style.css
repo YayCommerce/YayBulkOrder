@@ -1,0 +1,21 @@
+.ybo_button_container {
+  display: flex;
+  margin: 10px 0px;
+  justify-content: end;
+  gap: 8px;
+}
+
+.ybo_minicart_button_container{
+  display: flex;
+  justify-content: end;
+  gap: 8px;
+  padding: 16px;
+  padding-top: 0px;
+}
+
+.ybo_slotfill_button_container {
+  display: flex;
+  justify-content: end;
+  gap: 8px;
+  padding: 16px !important;
+}

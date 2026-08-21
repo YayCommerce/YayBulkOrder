@@ -45,7 +45,7 @@ div.wp-block-yay-bulk-order-purchase-list {
     gap: 6px;
 
     input {
-      width: 30px !important  ;
+      width: 50px !important  ;
     }
   }
   // #endregion
@@ -95,11 +95,21 @@ div.wp-block-yay-bulk-order-purchase-list {
   .ybo_primary_filled_button {
     background: var(--ybo-primary);
     color: var(--ybo-primary-foreground);
+
+    &[disabled] {
+      background: var(--ybo-primary-accent);
+      color: var(--ybo-muted-foreground-400);
+    }
   }
 
   .ybo_primary_filled_button:hover {
     background: var(--ybo-primary-accent);
     color: var(--ybo-primary-foreground);
+
+    &[disabled] {
+      background: var(--ybo-primary-accent);
+      color: var(--ybo-muted-foreground-400);
+    }
   }
 
   .ybo_muted_filled_button {
@@ -123,6 +133,7 @@ div.wp-block-yay-bulk-order-purchase-list {
 
   .ybo_transparent_button:hover {
     border-color: transparent;
+    background: transparent;
     color: #fff;
   }
   // #endregion
@@ -152,6 +163,7 @@ div.wp-block-yay-bulk-order-purchase-list {
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
+      color: #fff;
     }
   }
 
@@ -171,10 +183,6 @@ div.wp-block-yay-bulk-order-purchase-list {
   .ybo_card_row_head {
     font-weight: 600;
     padding: 6px 0;
-  }
-
-  .ybo_card_row_removable {
-    grid-template-columns: 1fr 60px 90px 28px;
   }
 
   .ybo_card_clear_row {
@@ -247,7 +255,7 @@ div.wp-block-yay-bulk-order-purchase-list {
 
     button.ybo_card_clear_row {
       position: absolute;
-      right: 0;
+      right: 4px;
       top: 50%;
       border: 1px solid var(--ybo-destructive);
       transform: translateY(-50%);
@@ -332,10 +340,11 @@ div.wp-block-yay-bulk-order-purchase-list {
     td,
     th {
       padding: 8px;
+      text-align: center;
     }
 
     th {
-      background: var(--ybo-foreground);
+      background: var(--ybo-foreground) !important;
       color: #fff;
     }
 
@@ -347,6 +356,13 @@ div.wp-block-yay-bulk-order-purchase-list {
       justify-content: center;
       align-items: center;
       gap: 8px;
+    }
+
+    .ybo_purchase_list_empty {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 120px;
     }
   }
   // #endregion

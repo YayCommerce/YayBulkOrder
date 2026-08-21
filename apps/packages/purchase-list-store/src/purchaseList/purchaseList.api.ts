@@ -1,6 +1,6 @@
 import { getConfig } from '@wordpress/interactivity';
 
-import { PurchaseListConfig, PurchaseListForm } from './purchaseList.type';
+import { AddToCartResponse, PurchaseListConfig, PurchaseListForm } from './purchaseList.type';
 
 export const STORE_NAMESPACE = 'yay-bulk-order/purchase-list';
 
@@ -9,6 +9,9 @@ const PURCHASE_LIST_API = {
     create: 'purchase-list',
     update: (id: number) => `purchase-list/${id}`,
     delete: (id: number) => `purchase-list/${id}`,
+  },
+  ajax: {
+    addToCart: 'ybo_add_purchase_list_to_cart',
   },
 } as const;
 
@@ -19,6 +22,7 @@ function getStoreConfig() {
   return {
     restUrl: config.path.restUrl ?? '',
     nonce: config.path.nonce ?? '',
+    ajaxUrl: config.path.ajaxUrl ?? '',
   };
 }
 
@@ -58,6 +62,37 @@ async function storeApiRequest<T>(endpoint: string, { method = 'GET', body }: St
   return data as T;
 }
 
+type WpAjaxResponse<T> = { success: true; data: T } | { success: false; data?: { message?: string } };
+
+async function storeApiAjax<T>(endpoint: string, { method = 'GET', body }: StoreApiRequestOptions = {}): Promise<T> {
+  const { ajaxUrl, nonce: configNonce } = getStoreConfig();
+  const requestNonce = nonceCache ? nonceCache : configNonce;
+
+  const response = await fetch(`${ajaxUrl}?action=${endpoint}`, {
+    method,
+    credentials: 'same-origin',
+    cache: 'no-store',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(requestNonce ? { 'X-WP-Nonce': requestNonce } : {}),
+    },
+    body: JSON.stringify({ ...body, nonce: requestNonce }),
+  });
+
+  const nextNonce = response.headers.get('Nonce');
+  if (nextNonce) {
+    nonceCache = nextNonce;
+  }
+
+  const result: WpAjaxResponse<T> | undefined = await response.json().catch(() => undefined);
+
+  if (!result || !result.success) {
+    throw new Error(result?.data?.message ?? response.statusText ?? 'Store API request failed');
+  }
+
+  return result.data;
+}
+
 export async function createPurchaseList(form: PurchaseListForm) {
   const products = form.products
     .filter((row) => row.productId)
@@ -95,5 +130,12 @@ export async function updatePurchaseList(form: PurchaseListForm) {
 export async function deletePurchaseList(form: PurchaseListForm) {
   return storeApiRequest(PURCHASE_LIST_API.rest.delete(form.id), {
     method: 'DELETE',
+  });
+}
+
+export async function addPurchaseListToCart(form: PurchaseListForm) {
+  return storeApiAjax<AddToCartResponse>(PURCHASE_LIST_API.ajax.addToCart, {
+    method: 'POST',
+    body: { listId: form.id, products: form.products },
   });
 }

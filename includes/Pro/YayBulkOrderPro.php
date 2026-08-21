@@ -1,6 +1,7 @@
 <?php
 namespace YayBulkOrder\Pro;
 
+use YayBulkOrder\Pro\Engines\Frontend\Frontend;
 use YayBulkOrder\Pro\Engines\Blocks\PurchaseList;
 use YayBulkOrder\Pro\Engines\RestAPI;
 use YayBulkOrder\YayBulkOrderLicenseAdapter;
@@ -23,6 +24,7 @@ class YayBulkOrderPro {
 
         // Pro Engine here
         PurchaseList::get_instance();
+        Frontend::get_instance();
 
         RestAPI::get_instance();
 

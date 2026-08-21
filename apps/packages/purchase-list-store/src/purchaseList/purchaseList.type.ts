@@ -8,6 +8,7 @@ export type GeneralContext = {
   isPendingCreateList: boolean;
   isPendingUpdateList: boolean;
   isPendingDeleteList: boolean;
+  isPendingAddToCart: boolean;
 };
 // WP-EACH: Schema Product Option context
 export type ProductItemContext = {
@@ -54,6 +55,12 @@ export type PurchaseListForm = {
   name: string;
   products: FormRowProduct[];
   total: string;
+};
+
+export type AddToCartResponse = {
+  cartUrl: string;
+  addedCount: number;
+  failedCount: number;
 };
 
 export type PurchaseListConfig = {
