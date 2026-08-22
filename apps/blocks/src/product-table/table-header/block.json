@@ -24,7 +24,6 @@
   "supports": {
     "interactivity": true,
     "inserter": false,
-    "multiple": false,
     "reusable": false,
     "html": false,
     "align": ["wide", "full"],

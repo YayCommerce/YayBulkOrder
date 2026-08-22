@@ -10,7 +10,6 @@
   "supports": {
     "interactivity": true,
     "inserter": false,
-    "multiple": false,
     "reusable": false,
     "html": false,
     "anchor": true,

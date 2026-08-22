@@ -1,23 +1,50 @@
 import { useEffect } from 'react';
 import { ProductTableAttributes } from '@yay-bulk-order/product-table-store';
-import { InnerBlocks, useBlockProps } from '@wordpress/block-editor';
+import { store as blockEditorStore, InnerBlocks, useBlockProps, Warning } from '@wordpress/block-editor';
 import { BlockEditProps } from '@wordpress/blocks';
-import { useInstanceId } from '@wordpress/compose';
+import { useSelect } from '@wordpress/data';
+import { __ } from '@wordpress/i18n';
 
+import metadata from './block.json';
 import { useFormStyle } from './useFormStyle';
 
 export default function Edit(props: BlockEditProps<ProductTableAttributes>) {
-  const { attributes, setAttributes } = props;
+  const { attributes, setAttributes, clientId } = props;
   const { style, ...blockProps } = useBlockProps();
   const formStyle = useFormStyle();
 
-  const queryId = useInstanceId(Edit as React.FC);
+  const { isNestedInsideAnotherProductTable, siblingQueryIds } = useSelect(
+    (select) => {
+      const { getBlockParentsByBlockName, getBlocksByClientId, getClientIdsWithDescendants } = select(blockEditorStore);
+
+      const otherProductTables = getBlocksByClientId(getClientIdsWithDescendants()).filter(
+        (block) => block?.name === metadata.name && block.clientId !== clientId,
+      );
+
+      return {
+        isNestedInsideAnotherProductTable: getBlockParentsByBlockName(clientId, metadata.name).length > 0,
+        siblingQueryIds: otherProductTables.map((block) => block!.attributes.queryId as number),
+      };
+    },
+    [clientId],
+  );
 
   useEffect(() => {
-    if (attributes.queryId === 0) {
-      setAttributes({ queryId });
+    const hasCollision = attributes.queryId === 0 || siblingQueryIds.includes(attributes.queryId);
+    if (hasCollision) {
+      setAttributes({ queryId: Math.max(0, attributes.queryId, ...siblingQueryIds) + 1 });
     }
-  }, [queryId, attributes, setAttributes]);
+  }, [attributes.queryId, siblingQueryIds, setAttributes]);
+
+  if (isNestedInsideAnotherProductTable) {
+    return (
+      <div {...blockProps}>
+        <Warning>
+          {__('A Product Table block cannot be placed inside another Product Table block.', 'yay-bulk-order')}
+        </Warning>
+      </div>
+    );
+  }
 
   return (
     <div style={{ ...style, ...formStyle }} {...blockProps}>

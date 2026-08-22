@@ -262,6 +262,9 @@ importers:
       '@wordpress/data':
         specifier: latest
         version: 10.52.0(@types/react@18.3.31)(react@18.3.1)
+      '@wordpress/hooks':
+        specifier: latest
+        version: 4.52.0
       '@wordpress/i18n':
         specifier: latest
         version: 6.25.0
@@ -3738,10 +3741,6 @@ packages:
 
   '@wordpress/hooks@4.48.1':
     resolution: {integrity: sha512-QZh3Cv9TMJkrCQikuZSsDKTgX+6BBzYJe0MFKp7yP8drj/dtRpkqo5+eYmovBq3pk+HoyP7UJ1vTOb3GPJeU6Q==}
-    engines: {node: '>=18.12.0', npm: '>=8.19.2'}
-
-  '@wordpress/hooks@4.49.0':
-    resolution: {integrity: sha512-65FZ3UXWkSIwFbELFABmcWn1KTA1AUdGAUH8pQlO7HKNO8F+zIrDkkO8gZA/zUHbI3I2vI1PyTA+rherPXg+Kg==}
     engines: {node: '>=18.12.0', npm: '>=8.19.2'}
 
   '@wordpress/hooks@4.52.0':
@@ -13125,7 +13124,7 @@ snapshots:
       '@wordpress/dom': 4.49.0
       '@wordpress/element': 6.46.0
       '@wordpress/escape-html': 3.48.1
-      '@wordpress/hooks': 4.48.1
+      '@wordpress/hooks': 4.52.0
       '@wordpress/html-entities': 4.49.0
       '@wordpress/i18n': 6.25.0
       '@wordpress/icons': 11.8.0(@types/react@18.3.31)(react@18.3.1)
@@ -13359,11 +13358,11 @@ snapshots:
 
   '@wordpress/deprecated@4.48.1':
     dependencies:
-      '@wordpress/hooks': 4.48.1
+      '@wordpress/hooks': 4.52.0
 
   '@wordpress/deprecated@4.49.0':
     dependencies:
-      '@wordpress/hooks': 4.49.0
+      '@wordpress/hooks': 4.52.0
 
   '@wordpress/deprecated@4.52.0':
     dependencies:
@@ -13512,8 +13511,6 @@ snapshots:
 
   '@wordpress/hooks@4.48.1': {}
 
-  '@wordpress/hooks@4.49.0': {}
-
   '@wordpress/hooks@4.52.0': {}
 
   '@wordpress/html-entities@4.49.0': {}
@@ -13531,7 +13528,7 @@ snapshots:
   '@wordpress/i18n@6.22.0':
     dependencies:
       '@tannin/sprintf': 1.3.3
-      '@wordpress/hooks': 4.49.0
+      '@wordpress/hooks': 4.52.0
       gettext-parser: 1.4.0
       memize: 2.1.1
       tannin: 1.2.0

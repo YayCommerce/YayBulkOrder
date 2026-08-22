@@ -39,22 +39,22 @@ function buildCartNotice(cart: StoreApiCart, visible: boolean): TableState['cart
   return { visible, totalFormatted: formatCartTotal(cart.totals) };
 }
 
-/**
- * Builds a URL from the current location, adding/removing the query-scoped
- * `query-{queryId}-{suffix}` params — the JS-side mirror of
- * `BlockHelper::build_query_url()`. A `null` (or empty-string) value removes
- * that param instead of setting it.
- */
+const tableQueryParams = new Map<number, Record<string, string | number | null>>();
+
 function buildTableUrl(queryId: number, updates: Record<string, string | number | null>): string {
+  tableQueryParams.set(queryId, { ...tableQueryParams.get(queryId), ...updates });
+
   const url = new URL(window.location.href);
-  for (const [suffix, value] of Object.entries(updates)) {
-    const key = `query-${queryId}-${suffix}`;
-    if (value === null || value === '') {
-      url.searchParams.delete(key);
-    } else {
-      url.searchParams.set(key, String(value));
+  tableQueryParams.forEach((params, id) => {
+    for (const [suffix, value] of Object.entries(params)) {
+      const key = `query-${id}-${suffix}`;
+      if (value === null || value === '') {
+        url.searchParams.delete(key);
+      } else {
+        url.searchParams.set(key, String(value));
+      }
     }
-  }
+  });
   return url.toString();
 }
 

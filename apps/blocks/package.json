@@ -22,6 +22,7 @@
     "@wordpress/components": "latest",
     "@wordpress/compose": "latest",
     "@wordpress/data": "latest",
+    "@wordpress/hooks": "latest",
     "@wordpress/i18n": "latest",
     "@wordpress/icons": "latest",
     "@wordpress/interactivity": "latest",
