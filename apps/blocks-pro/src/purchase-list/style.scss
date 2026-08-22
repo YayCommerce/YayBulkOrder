@@ -76,6 +76,7 @@ div.wp-block-yay-bulk-order-purchase-list {
     gap: 6px;
     border-radius: 4px;
     cursor: pointer;
+    min-width: fit-content;
 
     &[hidden] {
       display: none;

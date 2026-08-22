@@ -315,8 +315,7 @@ class PurchaseList {
     }
 
     /**
-     * Add the "Purchase List" entry to the My Account menu when using a block theme,
-     * placed immediately below "Account details".
+     * Add the "Purchase List" entry to the My Account menu when using a block theme
      *
      * @param array $items My Account menu items, keyed by endpoint slug.
      * @return array Menu items, with the purchase list entry added when applicable.
@@ -326,9 +325,18 @@ class PurchaseList {
             return $items;
         }
 
+        /**
+         * Menu keys in order
+         * dashboard: Dashboard
+         * orders: Orders
+         * downloads: Downloads
+         * edit-address: Addresses
+         * edit-account: Account details
+         * customer-logout: Log out
+         */
         $new_items = [];
         foreach ( $items as $key => $val ) {
-            if ( $key === 'edit-account' ) {
+            if ( $key === 'orders' ) {
                 $new_items = array_merge(
                     $new_items,
                     [
