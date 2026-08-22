@@ -9,6 +9,7 @@ export type GeneralContext = {
   isPendingUpdateList: boolean;
   isPendingDeleteList: boolean;
   isPendingAddToCart: boolean;
+  isPendingDownloadList: number[];
 };
 // WP-EACH: Schema Product Option context
 export type ProductItemContext = {

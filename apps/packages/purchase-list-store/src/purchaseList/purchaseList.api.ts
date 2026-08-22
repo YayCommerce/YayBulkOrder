@@ -9,6 +9,7 @@ const PURCHASE_LIST_API = {
     create: 'purchase-list',
     update: (id: number) => `purchase-list/${id}`,
     delete: (id: number) => `purchase-list/${id}`,
+    download: (id: number) => `purchase-list/${id}/download`,
   },
   ajax: {
     addToCart: 'ybo_add_purchase_list_to_cart',
@@ -131,6 +132,38 @@ export async function deletePurchaseList(form: PurchaseListForm) {
   return storeApiRequest(PURCHASE_LIST_API.rest.delete(form.id), {
     method: 'DELETE',
   });
+}
+
+export async function downloadPurchaseListProducts(listId: number) {
+  const { restUrl, nonce: configNonce } = getStoreConfig();
+  const requestNonce = nonceCache ? nonceCache : configNonce;
+
+  const response = await fetch(`${restUrl}/${PURCHASE_LIST_API.rest.download(listId)}`, {
+    method: 'GET',
+    credentials: 'same-origin',
+    cache: 'no-store',
+    headers: {
+      ...(requestNonce ? { 'X-WP-Nonce': requestNonce } : {}),
+    },
+  });
+
+  const nextNonce = response.headers.get('Nonce');
+  if (nextNonce) {
+    nonceCache = nextNonce;
+  }
+
+  if (!response.ok) {
+    const data: unknown = await response.json().catch(() => undefined);
+    throw new Error(
+      (data as { message?: string } | undefined)?.message ?? response.statusText ?? 'Download failed',
+    );
+  }
+
+  const disposition = response.headers.get('Content-Disposition') ?? '';
+  const filename = disposition.match(/filename="?([^"]+)"?/)?.[1] ?? `purchase-list-${listId}.csv`;
+  const blob = await response.blob();
+
+  return { blob, filename };
 }
 
 export async function addPurchaseListToCart(form: PurchaseListForm) {

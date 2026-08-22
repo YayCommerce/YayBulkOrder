@@ -181,4 +181,51 @@ class PurchaseListService {
             ),
         ];
     }
+
+    public function build_purchase_list_csv( array $products ) {
+        $rows = [ $this->get_csv_header() ];
+        $rows = array_merge( $rows, $this->get_csv_purchase_list_products( $products ) );
+
+        $csv_content = '';
+
+        foreach ( $rows as $row ) {
+            $escaped      = array_map( fn( $item ) => '"' . $item . '"', $row );
+            $csv_content .= implode( ',', $escaped ) . "\n";
+        }
+
+        return $csv_content;
+    }
+
+    protected function get_csv_header() {
+        return [
+            __( 'Product ID', 'yay-bulk-order' ),
+            __( 'Product Name', 'yay-bulk-order' ),
+            __( 'Product SKU', 'yay-bulk-order' ),
+            __( 'Quantity', 'yay-bulk-order' ),
+            __( 'Total', 'yay-bulk-order' ),
+        ];
+    }
+
+    protected function get_csv_purchase_list_products( array $products ) {
+        $data = [];
+        foreach ( $products as $product ) {
+            $product_data = wc_get_product( $product['productId'] );
+
+            if ( empty( $product_data ) ) {
+                continue;
+            }
+
+            $price = apply_filters( 'ybo_purchase_list_product_price', $product_data->get_price(), $product_data );
+
+            $data[] = [
+                $product_data->get_id(),
+                $product_data->get_name(),
+                $product_data->get_sku(),
+                $product['quantity'],
+                $price * $product['quantity'],
+            ];
+        }
+
+        return $data;
+    }
 }

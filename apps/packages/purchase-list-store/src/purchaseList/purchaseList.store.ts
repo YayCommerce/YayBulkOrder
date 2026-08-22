@@ -4,10 +4,11 @@ import {
   addPurchaseListToCart,
   createPurchaseList,
   deletePurchaseList,
+  downloadPurchaseListProducts,
   STORE_NAMESPACE,
   updatePurchaseList,
 } from './purchaseList.api';
-import { getSearchableProducts, parseCurrency } from './purchaseList.helpers';
+import { downloadAsset, getSearchableProducts, parseCurrency } from './purchaseList.helpers';
 import {
   GeneralContext,
   type ProductItemContext,
@@ -60,7 +61,10 @@ const { state, callbacks } = store(
         );
 
         return {
-          data: pageItems,
+          data: pageItems.map((item) => ({
+            ...item,
+            isPendingDownload: () => context.isPendingDownloadList.includes(item.id),
+          })),
           total: purchaseLists.length,
           count: pageItems.length,
           countText,
@@ -318,6 +322,27 @@ const { state, callbacks } = store(
           alert(error);
         } finally {
           context.isPendingAddToCart = false;
+        }
+      },
+      *download() {
+        const context = getContext<GeneralContext>();
+        const { ref } = getElement();
+        const purchaseListId = parseInt((ref as HTMLElement).dataset.purchaseListId ?? '0');
+        if (!purchaseListId) return;
+
+        try {
+          context.isPendingDownloadList.push(purchaseListId);
+          const { blob, filename } = (yield downloadPurchaseListProducts(purchaseListId)) as {
+            blob: Blob;
+            filename: string;
+          };
+          downloadAsset(blob, filename);
+        } catch (error) {
+          console.error(error);
+          alert(error);
+        } finally {
+          const index = context.isPendingDownloadList.indexOf(purchaseListId);
+          context.isPendingDownloadList.splice(index, 1);
         }
       },
       // #endregion

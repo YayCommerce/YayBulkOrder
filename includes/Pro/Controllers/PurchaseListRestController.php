@@ -49,6 +49,18 @@ class PurchaseListRestController extends BaseRestController {
                 ],
             ]
         );
+
+        register_rest_route(
+            self::REST_NAMESPACE,
+            '/purchase-list/(?P<list_id>\d+)/download',
+            [
+                [
+                    'methods'             => 'GET',
+                    'callback'            => [ $this, 'download_purchase_list_csv' ],
+                    'permission_callback' => [ $this, 'can_manage_purchase_list' ],
+                ],
+            ]
+        );
     }
 
     // Handler callbacks
@@ -105,6 +117,29 @@ class PurchaseListRestController extends BaseRestController {
         }
 
         return true;
+    }
+
+    public function download_purchase_list_csv( \WP_REST_Request $request ) {
+        $list_id = (int) $request->get_param( 'list_id' );
+        $user_id = get_current_user_id();
+
+        $purchase_list = $this->purchase_list_service->get_purchase_list( $list_id, $user_id );
+        if ( empty( $purchase_list ) ) {
+            return $this->error_invalid_arguments( __( 'This purchase list is not found or not belong to the current user', 'yay-bulk-order' ) );
+        }
+
+        $filename    = 'purchase_list_' . str_replace( '-', '_', sanitize_title( $purchase_list['name'] ) ) . '.csv';
+        $csv_content = $this->purchase_list_service->build_purchase_list_csv( $purchase_list['products'] );
+
+        do_action( 'ybo_before_export_purchase_list_products', $csv_content, $purchase_list );
+
+        nocache_headers();
+        header( 'Content-Type: text/csv; charset=utf-8' );
+        header( 'Content-Disposition: attachment; filename="' . $filename . '"' );
+        header( 'Content-Length: ' . strlen( $csv_content ) );
+        echo $csv_content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+
+        return null;
     }
 
     // Permission callbacks

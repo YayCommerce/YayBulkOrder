@@ -37,6 +37,7 @@ $data_context = [
 	"isPendingUpdateLists" => false,
 	"isPendingDeleteLists" => false,
 	"isPendingAddToCart" => false,
+	"isPendingDownloadList" => [],
 ];
 
 ?>
@@ -88,7 +89,12 @@ $data_context = [
 									<button class="ybo_button" data-wp-bind--data-purchase-list-id="context.purchaseList.id" data-wp-on--click="actions.showEditView">
 										<span><?php esc_html_e('View', 'yay-bulk-order'); ?></span>
 									</button>
-									<button class="ybo_button">
+									<button
+										class="ybo_button"
+										data-wp-bind--data-purchase-list-id="context.purchaseList.id"
+										data-wp-on--click="actions.download"
+										data-wp-bind--disabled="context.purchaseList.isPendingDownload"
+									>
 										<span><?php esc_html_e('Download', 'yay-bulk-order'); ?></span>
 									</button>
 								</td>

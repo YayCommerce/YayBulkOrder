@@ -25,6 +25,17 @@ export const parseCurrency = (price: string | number, currencyData: PurchaseList
   }
 };
 
+export const downloadAsset = (blob: Blob, fileName: string) => {
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = fileName;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+};
+
 export function getSearchableProducts(
   all_products: Product[],
   selectedProducts: FormRowProduct[],
