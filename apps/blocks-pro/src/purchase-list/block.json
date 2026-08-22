@@ -7,6 +7,7 @@
 	"category": "woocommerce",
 	"description": "",
 	"example": {},
+	"icon": "book-alt",
 	"supports": {
 		"html": false,
 		"interactivity": true

@@ -35,8 +35,18 @@ class PurchaseList {
         // Other
         add_action( 'woocommerce_order_details_after_order_table', [ $this, 'save_from_order_button' ] );
         add_action( 'woocommerce_thankyou', [ $this, 'save_from_order_button' ] );
+
+        // Add to My Account
+        add_filter( 'woocommerce_account_menu_items', [ $this, 'add_menu_purchase_list' ] );
+        add_action( 'woocommerce_account_ybo-purchase-list-page_endpoint', [ $this, 'render_menu_purchase_list' ] );
     }
 
+    /**
+     * Register the "purchase list" custom post type and, on block themes,
+     * add the "ybo-purchase-list-page" My Account rewrite endpoint.
+     *
+     * @return void
+     */
     public function register_purchase_list_post_type() {
         $post_type = $this->purchase_list_service::PURCHASE_LIST_POST_TYPE;
         $labels    = [
@@ -70,8 +80,17 @@ class PurchaseList {
         ];
 
         register_post_type( $post_type, $args );
+
+        if ( wp_is_block_theme() ) {
+            add_rewrite_endpoint( 'ybo-purchase-list-page', EP_ROOT | EP_PAGES );
+        }
     }
 
+    /**
+     * AJAX handler ("ybo_add_purchase_list_to_cart"): Add purchase list's products to cart
+     *
+     * @return void
+     */
     public function add_purchase_list_to_cart() {
         $raw  = file_get_contents( 'php://input' );
         $data = json_decode( wp_unslash( $raw ), true );
@@ -139,6 +158,11 @@ class PurchaseList {
         );
     }
 
+    /**
+     * AJAX handler ("ybo_save_purchase_list_from_cart"): save as a new purchase list from cart
+     *
+     * @return void
+     */
     public function save_purchase_list_from_cart() {
         $raw  = file_get_contents( 'php://input' );
         $data = json_decode( wp_unslash( $raw ), true );
@@ -180,6 +204,11 @@ class PurchaseList {
         }
     }
 
+    /**
+     * AJAX handler ("ybo_save_purchase_list_from_order"): save as a new purchase list form user's order
+     *
+     * @return void
+     */
     public function save_purchase_list_from_order() {
         $raw  = file_get_contents( 'php://input' );
         $data = json_decode( wp_unslash( $raw ), true );
@@ -231,6 +260,12 @@ class PurchaseList {
         }
     }
 
+    /**
+     * Render the "Save as Purchase list" button shown alongside the classic
+     * (shortcode-based) mini-cart, cart page, and checkout order review.
+     *
+     * @return void
+     */
     public function save_from_cart_button() {
         ?>
         <div class="ybo_button_container">
@@ -239,6 +274,14 @@ class PurchaseList {
         <?php
     }
 
+    /**
+     * Render the "Save as Purchase list" button on the order details view
+     * (order-received/thank-you page and account order view), tagged with
+     * the order ID. No output if the order cannot be resolved.
+     *
+     * @param int|\WC_Order $order Order object or order ID.
+     * @return void
+     */
     public function save_from_order_button( $order ) {
         $order = $order instanceof \WC_Order ? $order : wc_get_order( $order );
 
@@ -252,6 +295,13 @@ class PurchaseList {
         <?php
     }
 
+    /**
+     * Filter callback for the WooCommerce mini-cart footer block: append the
+     * "Save as Purchase list" button markup after the block's own content.
+     *
+     * @param string $block_content Rendered HTML of the mini-cart footer block.
+     * @return string Block content with the purchase list button appended.
+     */
     public function add_to_block_component( $block_content ) {
         ob_start()
         ?>
@@ -262,5 +312,51 @@ class PurchaseList {
         $custom = ob_get_clean();
 
         return $block_content . $custom;
+    }
+
+    /**
+     * Add the "Purchase List" entry to the My Account menu when using a block theme,
+     * placed immediately below "Account details".
+     *
+     * @param array $items My Account menu items, keyed by endpoint slug.
+     * @return array Menu items, with the purchase list entry added when applicable.
+     */
+    public function add_menu_purchase_list( $items ) {
+        if ( ! wp_is_block_theme() ) {
+            return $items;
+        }
+
+        $new_items = [];
+        foreach ( $items as $key => $val ) {
+            if ( $key === 'edit-account' ) {
+                $new_items = array_merge(
+                    $new_items,
+                    [
+                        $key                     => $val,
+                        'ybo-purchase-list-page' => __( 'Purchase List', 'yay-bulk-order' ),
+                    ]
+                );
+            } else {
+                $new_items = array_merge(
+                    $new_items,
+                    [
+                        $key => $val,
+                    ]
+                );
+            }
+        }
+
+        return $new_items;
+    }
+
+
+    /**
+     * Render the Purchase List Block in the My Account menu (Purchase List)
+     *
+     * @return void
+     */
+    public function render_menu_purchase_list() {
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+        echo do_blocks( '<!-- wp:yay-bulk-order/purchase-list /-->' );
     }
 }
