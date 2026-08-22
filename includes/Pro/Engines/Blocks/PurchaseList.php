@@ -25,7 +25,7 @@ class PurchaseList {
 
         // Save From Cart UI
         // Classic
-        add_action( 'woocommerce_widget_shopping_cart_after_buttons', [ $this, 'save_from_cart_button' ] );
+        add_action( 'woocommerce_widget_shopping_cart_after_buttons', [ $this, 'save_from_minicart_button' ] );
         add_action( 'woocommerce_cart_actions', [ $this, 'save_from_cart_button' ] );
         add_action( 'woocommerce_review_order_after_submit', [ $this, 'save_from_cart_button' ] );
 
@@ -34,7 +34,6 @@ class PurchaseList {
 
         // Other
         add_action( 'woocommerce_order_details_after_order_table', [ $this, 'save_from_order_button' ] );
-        add_action( 'woocommerce_thankyou', [ $this, 'save_from_order_button' ] );
 
         // Add to My Account
         add_filter( 'woocommerce_account_menu_items', [ $this, 'add_menu_purchase_list' ] );
@@ -81,9 +80,7 @@ class PurchaseList {
 
         register_post_type( $post_type, $args );
 
-        if ( wp_is_block_theme() ) {
-            add_rewrite_endpoint( 'ybo-purchase-list-page', EP_ROOT | EP_PAGES );
-        }
+        add_rewrite_endpoint( 'ybo-purchase-list-page', EP_ROOT | EP_PAGES );
     }
 
     /**
@@ -262,14 +259,28 @@ class PurchaseList {
 
     /**
      * Render the "Save as Purchase list" button shown alongside the classic
-     * (shortcode-based) mini-cart, cart page, and checkout order review.
+     * (shortcode-based) cart page, and checkout order review.
      *
      * @return void
      */
     public function save_from_cart_button() {
         ?>
         <div class="ybo_button_container">
-            <button class="ybo_save_pl_cart_button wp-element-button"><?php esc_html_e( 'Save as Purchase list', 'yay-bulk-order' ); ?></button>
+            <button class="ybo_save_pl_cart_button wp-element-button checkout"><?php esc_html_e( 'Save as Purchase list', 'yay-bulk-order' ); ?></button>
+        </div>
+        <?php
+    }
+
+    /**
+     * Render the "Save as Purchase list" button shown alongside the classic
+     * (shortcode-based) mini-cart.
+     *
+     * @return void
+     */
+    public function save_from_minicart_button() {
+        ?>
+        <div class="ybo_minicart_button_container">
+            <button class="ybo_save_pl_cart_button wp-element-button checkout"><?php esc_html_e( 'Save as Purchase list', 'yay-bulk-order' ); ?></button>
         </div>
         <?php
     }
@@ -289,7 +300,7 @@ class PurchaseList {
             return;
         }
         ?>
-        <div class="ybo_button_container">
+        <div class="ybo_order_button_container">
             <button class="ybo_save_pl_order_button wp-element-button" data-order-id="<?php echo esc_attr( $order->get_id() ); ?>"><?php esc_html_e( 'Save as Purchase list', 'yay-bulk-order' ); ?></button>
         </div>
         <?php
@@ -321,9 +332,6 @@ class PurchaseList {
      * @return array Menu items, with the purchase list entry added when applicable.
      */
     public function add_menu_purchase_list( $items ) {
-        if ( ! wp_is_block_theme() ) {
-            return $items;
-        }
 
         /**
          * Menu keys in order
