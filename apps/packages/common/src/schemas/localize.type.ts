@@ -15,6 +15,8 @@ export type Meta = {
     restNonce: string;
 
     isBlockTheme: boolean;
+    /** WooCommerce Shop page ID (`wc_get_page_id( 'shop' )`), 0 if unset. */
+    shopPageId: number;
   };
   bulkOrderMeta: {
     pluginUrl: string;

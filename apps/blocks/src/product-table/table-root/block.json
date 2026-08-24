@@ -37,6 +37,7 @@
     "query": "query",
     "productQuery": "productQuery"
   },
+  "usesContext": ["templateSlug"],
   "supports": {
     "interactivity": true,
     "html": false,

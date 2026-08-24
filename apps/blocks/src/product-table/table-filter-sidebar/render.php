@@ -12,11 +12,17 @@ use YayBulkOrder\Services\ProductQueryService;
 use YayBulkOrder\Utils\BlockHelper;
 
 $product_query_service = ProductQueryService::get_instance();
+
+// Product taxonomy archives already scope the table — category filter is redundant.
+if ( $product_query_service->should_hide_filters() ) {
+	return;
+}
+
 $query_id = $block->context['queryId'] ?? 0;
 
-$categories      = $product_query_service->get_filterable_categories();
-$selected_slugs  = BlockHelper::get_category_param( $query_id );
-$selected_slug   = $selected_slugs[0] ?? '';
+$categories     = $product_query_service->get_filterable_categories();
+$selected_slugs = BlockHelper::get_category_param( $query_id );
+$selected_slug  = $selected_slugs[0] ?? '';
 ?>
 
 <div

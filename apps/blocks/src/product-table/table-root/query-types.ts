@@ -1,6 +1,6 @@
 import { ProductQuery } from '@yay-bulk-order/product-table-store';
 import { __ } from '@wordpress/i18n';
-import { category, check, grid, percent, starFilled, starHalf } from '@wordpress/icons';
+import { category, check, grid, percent, starFilled, starHalf, store } from '@wordpress/icons';
 
 export type QueryTypeOption = {
   queryType: ProductQuery['queryType'];
@@ -11,6 +11,16 @@ export type QueryTypeOption = {
 };
 
 export const ALL_PRODUCTS_QUERY: ProductQuery = { queryType: 'all-products' };
+
+export const INHERIT_QUERY: ProductQuery = { queryType: 'inherit' };
+
+/** Auto-applied when inserting on Shop / product archive templates. */
+export const INHERIT_OPTION: QueryTypeOption = {
+  queryType: 'inherit',
+  label: __('Inherit from archive', 'yay-bulk-order'),
+  icon: store,
+  defaultQuery: INHERIT_QUERY,
+};
 
 /**
  * Collections offered by the insertion placeholder, mirroring core's

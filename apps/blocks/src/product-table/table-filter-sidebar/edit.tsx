@@ -1,7 +1,14 @@
 import { useBlockProps } from '@wordpress/block-editor';
 
+import { useIsProductTaxonomyArchiveTemplate } from '../table-root/useProductArchiveTemplate';
+
 export default function Edit() {
   const blockProps = useBlockProps();
+  const isTaxonomyArchive = useIsProductTaxonomyArchiveTemplate();
+
+  if (isTaxonomyArchive) {
+    return null;
+  }
 
   // Static preview only — the real category list is fetched server-side in
   // render.php (get_terms('product_cat')), same reasoning as table-pagination.

@@ -9,6 +9,13 @@
  * @var string   $content    The block default content.
  * @var WP_Block $block      The block instance.
  */
+
+use YayBulkOrder\Services\ProductQueryService;
+
+// Product taxonomy archives already scope the table — category filter is redundant.
+if ( ProductQueryService::get_instance()->should_hide_filters() ) {
+	return;
+}
 ?>
 
 <button

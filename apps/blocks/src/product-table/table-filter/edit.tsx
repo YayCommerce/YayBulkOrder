@@ -1,7 +1,14 @@
 import { useBlockProps } from '@wordpress/block-editor';
 
+import { useIsProductTaxonomyArchiveTemplate } from '../table-root/useProductArchiveTemplate';
+
 export default function Edit() {
   const blockProps = useBlockProps();
+  const isTaxonomyArchive = useIsProductTaxonomyArchiveTemplate();
+
+  if (isTaxonomyArchive) {
+    return null;
+  }
 
   return (
     <button {...blockProps} type="button" className={`${blockProps.className ?? ''} ybo-filter-toggle`}>

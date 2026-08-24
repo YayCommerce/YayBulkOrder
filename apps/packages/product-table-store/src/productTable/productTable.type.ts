@@ -1,6 +1,10 @@
 type AllProductQuery = {
   queryType: 'all-products';
 };
+type InheritProductQuery = {
+  /** Follow the Shop / product archive main query (category, tag, attribute, …). */
+  queryType: 'inherit';
+};
 type CategoryProductQuery = {
   queryType: 'by-category';
   categoryIds: number[];
@@ -21,6 +25,7 @@ type HandPickedProductsQuery = {
 
 export type ProductQuery =
   | AllProductQuery
+  | InheritProductQuery
   | CategoryProductQuery
   | FeaturedProductQuery
   | OnSaleProductQuery

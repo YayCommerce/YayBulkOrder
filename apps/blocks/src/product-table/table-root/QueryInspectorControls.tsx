@@ -1,24 +1,32 @@
 import { ProductQuery, ProductTableAttributes } from '@yay-bulk-order/product-table-store';
 import { InspectorControls } from '@wordpress/block-editor';
-import { PanelBody, SelectControl } from '@wordpress/components';
+import { Notice, PanelBody, SelectControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
 import CategoryPicker from './CategoryPicker';
 import HandPickedPicker from './HandPickedPicker';
-import { ALL_PRODUCTS_OPTION, QUERY_TYPE_OPTIONS } from './query-types';
+import { ALL_PRODUCTS_OPTION, INHERIT_OPTION, QUERY_TYPE_OPTIONS } from './query-types';
 
 type QueryInspectorControlsProps = {
   attributes: ProductTableAttributes;
   setAttributes: (attrs: Partial<ProductTableAttributes>) => void;
+  isCatalogOrArchiveTemplate?: boolean;
 };
 
-const ALL_OPTIONS = [ALL_PRODUCTS_OPTION, ...QUERY_TYPE_OPTIONS];
+const BASE_OPTIONS = [ALL_PRODUCTS_OPTION, ...QUERY_TYPE_OPTIONS];
 
-export default function QueryInspectorControls({ attributes, setAttributes }: QueryInspectorControlsProps) {
+export default function QueryInspectorControls({
+  attributes,
+  setAttributes,
+  isCatalogOrArchiveTemplate = false,
+}: QueryInspectorControlsProps) {
   const { productQuery } = attributes;
+  const isInherit = productQuery.queryType === 'inherit';
+
+  const options = isCatalogOrArchiveTemplate || isInherit ? [INHERIT_OPTION, ...BASE_OPTIONS] : BASE_OPTIONS;
 
   const changeQueryType = (queryType: string) => {
-    const option = ALL_OPTIONS.find((candidate) => candidate.queryType === queryType);
+    const option = options.find((candidate) => candidate.queryType === queryType);
     if (option) {
       setAttributes({ productQuery: option.defaultQuery });
     }
@@ -31,12 +39,21 @@ export default function QueryInspectorControls({ attributes, setAttributes }: Qu
   return (
     <InspectorControls>
       <PanelBody title={__('Products to Show', 'yay-bulk-order')} initialOpen>
+        {isInherit && (
+          <Notice status="info" isDismissible={false} className="ybo-inherit-notice">
+            {__(
+              'This table shows products from the current Shop or product archive. Change the collection below to override.',
+              'yay-bulk-order',
+            )}
+          </Notice>
+        )}
+
         <SelectControl
           __next40pxDefaultSize
           __nextHasNoMarginBottom
           label={__('Collection', 'yay-bulk-order')}
           value={productQuery.queryType}
-          options={ALL_OPTIONS.map((option) => ({ label: option.label, value: option.queryType }))}
+          options={options.map((option) => ({ label: option.label, value: option.queryType }))}
           onChange={changeQueryType}
         />
 

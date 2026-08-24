@@ -12,10 +12,7 @@ $product_query_service = ProductQueryService::get_instance();
 $localize_service = LocalizeService::get_instance();
 $global_config = $localize_service->get_global_config();
 $default_cart_quantity = $global_config['settings']['general']['defaultCartQuantity'];
-$query_vars = $product_query_service->build_query_vars_from_query_block( $block );
-$page_param = $product_query_service->get_page_param( $block );
-$filter_param = $product_query_service->get_filter_param( $block );
-$query = new \WP_Query( $query_vars );
+$query = $product_query_service->create_products_query( $block );
 
 $cart_quantities = isset( WC()->cart ) && WC()->cart ? WC()->cart->get_cart_item_quantities() : array();
 
