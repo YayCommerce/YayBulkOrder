@@ -43,7 +43,7 @@ class PurchaseListService {
     }
 
     public function get_allowed_product_types() {
-        $allowed = [ 'simple', 'subscription', 'subscription_variation', 'variable', 'external', 'bundle' ];
+        $allowed = [ 'simple', 'subscription', 'subscription_variation', 'variable', 'grouped', 'bundle' ];
 
         return apply_filters( 'ybo_allowed_purchase_list_product_types', $allowed );
     }

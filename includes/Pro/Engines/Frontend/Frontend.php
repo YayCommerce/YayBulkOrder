@@ -20,7 +20,7 @@ class Frontend {
         $dep           = [ 'jquery', 'wp-i18n' ];
         $script_handle = 'yay-wholesale-scripts';
 
-        wp_enqueue_script( $script_handle, YAYBULKORDER_PLUGIN_URL . 'assets/pro/js/purchase-list-script.js', $dep, YAYBULKORDER_VERSION, false );
+        wp_enqueue_script( $script_handle, YAYBULKORDER_PLUGIN_URL . 'assets/pro/js/front-store-script.js', $dep, YAYBULKORDER_VERSION, false );
         wp_enqueue_style( 'yay-wholesale-styles', YAYBULKORDER_PLUGIN_URL . 'assets/pro/css/front-store-style.css', [], YAYBULKORDER_VERSION );
 
         $meta = [

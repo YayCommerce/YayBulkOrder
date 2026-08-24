@@ -135,12 +135,19 @@ class PurchaseList {
                 continue;
             }
 
-            $added = $product_data->is_type( 'variation' )
-                ? WC()->cart->add_to_cart( $product_data->get_parent_id(), $quantity, $product_data->get_id() )
-                : WC()->cart->add_to_cart( $product_data->get_id(), $quantity );
-
-            $added ? ++$added_count : ++$failed_count;
-        }
+            if ( $product_data->is_type( 'variation' ) ) {
+                $added = WC()->cart->add_to_cart( $product_data->get_parent_id(), $quantity, $product_data->get_id() );
+                $added ? ++$added_count : ++$failed_count;
+            } elseif ( $product_data->is_type( 'grouped' ) ) {
+                foreach ( $product_data->get_children() as $child_id ) {
+                    $added = WC()->cart->add_to_cart( $child_id, $quantity );
+                    $added ? ++$added_count : ++$failed_count;
+                }
+            } else {
+                $added = WC()->cart->add_to_cart( $product_data->get_id(), $quantity );
+                $added ? ++$added_count : ++$failed_count;
+            }
+        }//end foreach
 
         if ( ! $added_count ) {
             wp_send_json_error( [ 'message' => __( 'No items could be added to the cart', 'yay-bulk-order' ) ], 400 );
