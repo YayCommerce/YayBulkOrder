@@ -37,6 +37,14 @@ class RegisterBlocks {
             LocalizeService::VAR_ADMIN_DATA,
             $this->localize_service->get_admin_data(),
         );
+
+        // Needed by the Product Table block's editor to call the plugin's
+        // own REST endpoints (category checklist, hand-picked product search).
+        wp_localize_script(
+            'wp-blocks',
+            LocalizeService::VAR_META,
+            $this->localize_service->get_meta(),
+        );
     }
 
     private function register_collection( string $blocks_path ) {

@@ -1,13 +1,15 @@
 import { BlockConfiguration, registerBlockType } from '@wordpress/blocks';
 import { addFilter } from '@wordpress/hooks';
-import { cart } from '@wordpress/icons';
+import { table } from '@wordpress/icons';
 
 import metadata from './block.json';
 import Edit from './edit';
 import Save from './save';
 
+import './style.scss';
+
 registerBlockType(metadata as unknown as BlockConfiguration, {
-  icon: cart,
+  icon: table,
   edit: Edit,
   save: Save,
 });

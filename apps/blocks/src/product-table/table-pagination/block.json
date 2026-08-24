@@ -7,7 +7,7 @@
   "category": "woocommerce",
   "description": "Product Table Pagination Buttons.",
   "textdomain": "yay-bulk-order",
-  "usesContext": ["queryId", "query"],
+  "usesContext": ["queryId", "query", "productQuery"],
   "supports": {
     "interactivity": true,
     "inserter": false,

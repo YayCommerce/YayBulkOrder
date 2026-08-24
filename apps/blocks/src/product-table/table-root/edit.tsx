@@ -1,11 +1,13 @@
 import { useEffect } from 'react';
-import { ProductTableAttributes } from '@yay-bulk-order/product-table-store';
+import { ProductQuery, ProductTableAttributes } from '@yay-bulk-order/product-table-store';
 import { store as blockEditorStore, InnerBlocks, useBlockProps, Warning } from '@wordpress/block-editor';
 import { BlockEditProps } from '@wordpress/blocks';
 import { useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 
 import metadata from './block.json';
+import ProductQueryPlaceholder from './ProductQueryPlaceholder';
+import QueryInspectorControls from './QueryInspectorControls';
 import { useFormStyle } from './useFormStyle';
 
 export default function Edit(props: BlockEditProps<ProductTableAttributes>) {
@@ -13,9 +15,10 @@ export default function Edit(props: BlockEditProps<ProductTableAttributes>) {
   const { style, ...blockProps } = useBlockProps();
   const formStyle = useFormStyle();
 
-  const { isNestedInsideAnotherProductTable, siblingQueryIds } = useSelect(
+  const { isNestedInsideAnotherProductTable, siblingQueryIds, hasInnerBlocks } = useSelect(
     (select) => {
-      const { getBlockParentsByBlockName, getBlocksByClientId, getClientIdsWithDescendants } = select(blockEditorStore);
+      const { getBlockParentsByBlockName, getBlocksByClientId, getClientIdsWithDescendants, getBlocks } =
+        select(blockEditorStore);
 
       const otherProductTables = getBlocksByClientId(getClientIdsWithDescendants()).filter(
         (block) => block?.name === metadata.name && block.clientId !== clientId,
@@ -24,6 +27,7 @@ export default function Edit(props: BlockEditProps<ProductTableAttributes>) {
       return {
         isNestedInsideAnotherProductTable: getBlockParentsByBlockName(clientId, metadata.name).length > 0,
         siblingQueryIds: otherProductTables.map((block) => block!.attributes.queryId as number),
+        hasInnerBlocks: getBlocks(clientId).length > 0,
       };
     },
     [clientId],
@@ -46,10 +50,27 @@ export default function Edit(props: BlockEditProps<ProductTableAttributes>) {
     );
   }
 
+  const showPlaceholder = !attributes.hasSelectedQuery && !hasInnerBlocks;
+
+  const handleSelectQuery = (productQuery: ProductQuery) => {
+    setAttributes({ productQuery, hasSelectedQuery: true });
+  };
+
+  if (showPlaceholder) {
+    return (
+      <div style={{ ...style, ...formStyle }} {...blockProps}>
+        <ProductQueryPlaceholder onSelect={handleSelectQuery} />
+      </div>
+    );
+  }
+
   return (
-    <div style={{ ...style, ...formStyle }} {...blockProps}>
-      <InnerBlocks template={DEFAULT_TEMPLATE} />
-    </div>
+    <>
+      <QueryInspectorControls attributes={attributes} setAttributes={setAttributes} />
+      <div style={{ ...style, ...formStyle }} {...blockProps}>
+        <InnerBlocks template={DEFAULT_TEMPLATE} />
+      </div>
+    </>
   );
 }
 

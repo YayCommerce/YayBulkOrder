@@ -63,15 +63,43 @@ class ProductQueryService {
             $query_vars['s'] = $search_param;
         }
 
+        $product_query_restriction = $this->get_product_query_restriction( $block );
+
+        $tax_query_clauses = [];
         if ( ! empty( $category_param ) ) {
-            /* phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_tax_query */
-            $query_vars['tax_query'] = [
-                [
-                    'taxonomy' => 'product_cat',
-                    'field'    => 'slug',
-                    'terms'    => $category_param,
-                ],
+            $tax_query_clauses[] = [
+                'taxonomy' => 'product_cat',
+                'field'    => 'slug',
+                'terms'    => $category_param,
             ];
+        }
+        if ( ! empty( $product_query_restriction['tax_query'] ) ) {
+            $tax_query_clauses = array_merge( $tax_query_clauses, $product_query_restriction['tax_query'] );
+        }
+        if ( ! empty( $tax_query_clauses ) ) {
+            /* phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_tax_query */
+            $query_vars['tax_query'] = count( $tax_query_clauses ) > 1
+                ? array_merge( [ 'relation' => 'AND' ], $tax_query_clauses )
+                : $tax_query_clauses;
+        }
+
+        $post_in_sets = [];
+        if ( 'on-sale' === $filter_param ) {
+            $post_in_sets[] = wc_get_product_ids_on_sale();
+        }
+        if ( isset( $product_query_restriction['post__in'] ) ) {
+            $post_in_sets[] = $product_query_restriction['post__in'];
+        }
+        if ( ! empty( $post_in_sets ) ) {
+            $query_vars['post__in'] = 1 === count( $post_in_sets )
+                ? $post_in_sets[0]
+                : array_values( array_intersect( ...$post_in_sets ) );
+
+            // An empty post__in is ignored by WP_Query (i.e. "no restriction"),
+            // so an empty intersection must be forced to match nothing instead.
+            if ( empty( $query_vars['post__in'] ) ) {
+                $query_vars['post__in'] = [ 0 ];
+            }
         }
 
         if ( 'in-stock' === $filter_param ) {
@@ -83,11 +111,71 @@ class ProductQueryService {
                     'compare' => 'IN',
                 ],
             ];
-        } elseif ( 'on-sale' === $filter_param ) {
-            $query_vars['post__in'] = wc_get_product_ids_on_sale();
+        }
+
+        // Collections like `top-rated` sort rather than restrict — apply
+        // any orderby override the collection asked for.
+        foreach ( [ 'orderby', 'meta_key', 'order' ] as $orderby_key ) {
+            if ( isset( $product_query_restriction[ $orderby_key ] ) ) {
+                $query_vars[ $orderby_key ] = $product_query_restriction[ $orderby_key ];
+            }
         }
 
         return $query_vars;
+    }
+
+    private function get_product_query_restriction( $block ) {
+        $product_query = $block->context['productQuery'] ?? [ 'queryType' => 'all-products' ];
+        $query_type    = $product_query['queryType'] ?? 'all-products';
+
+        switch ( $query_type ) {
+            case 'featured':
+                return [
+                    'tax_query' => [
+                        [
+                            'taxonomy' => 'product_visibility',
+                            'field'    => 'name',
+                            'terms'    => 'featured',
+                        ],
+                    ],
+                ];
+
+            case 'on-sale':
+                return [ 'post__in' => wc_get_product_ids_on_sale() ];
+
+            case 'top-rated':
+                // Mirrors WooCommerce's own [top_rated_products] shortcode:
+                // sort by the cached average-rating meta, highest first.
+                return [
+                    'orderby'  => 'meta_value_num',
+                    'meta_key' => '_wc_average_rating',
+                    'order'    => 'DESC',
+                ];
+
+            case 'hand-picked':
+                $product_ids = ! empty( $product_query['productIds'] )
+                    ? array_map( 'absint', $product_query['productIds'] )
+                    : [ 0 ];
+                return [ 'post__in' => $product_ids ];
+
+            case 'by-category':
+                if ( empty( $product_query['categoryIds'] ) ) {
+                    return [];
+                }
+                return [
+                    'tax_query' => [
+                        [
+                            'taxonomy' => 'product_cat',
+                            'field'    => 'term_id',
+                            'terms'    => array_map( 'absint', $product_query['categoryIds'] ),
+                        ],
+                    ],
+                ];
+
+            case 'all-products':
+            default:
+                return [];
+        }//end switch
     }
 
     /**

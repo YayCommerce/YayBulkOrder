@@ -11,6 +11,9 @@ type FeaturedProductQuery = {
 type OnSaleProductQuery = {
   queryType: 'on-sale';
 };
+type TopRatedProductQuery = {
+  queryType: 'top-rated';
+};
 type HandPickedProductsQuery = {
   queryType: 'hand-picked';
   productIds: number[];
@@ -21,6 +24,7 @@ export type ProductQuery =
   | CategoryProductQuery
   | FeaturedProductQuery
   | OnSaleProductQuery
+  | TopRatedProductQuery
   | HandPickedProductsQuery;
 
 type ProductRowId = string;
@@ -28,6 +32,8 @@ type ProductRowId = string;
 export type ProductTableAttributes = {
   queryId: number;
   productQuery: ProductQuery;
+  /** Editor-only: whether the user has picked a collection in the insertion placeholder. */
+  hasSelectedQuery: boolean;
 };
 
 export type SelectedRow = {
