@@ -18,10 +18,10 @@ class Frontend {
 
     public function enqueue_scripts() {
         $dep           = [ 'jquery', 'wp-i18n' ];
-        $script_handle = 'yay-wholesale-scripts';
+        $script_handle = 'yay-bulk-order-scripts';
 
         wp_enqueue_script( $script_handle, YAYBULKORDER_PLUGIN_URL . 'assets/pro/js/front-store-script.js', $dep, YAYBULKORDER_VERSION, false );
-        wp_enqueue_style( 'yay-wholesale-styles', YAYBULKORDER_PLUGIN_URL . 'assets/pro/css/front-store-style.css', [], YAYBULKORDER_VERSION );
+        wp_enqueue_style( 'yay-bulk-order-styles', YAYBULKORDER_PLUGIN_URL . 'assets/pro/css/front-store-style.css', [], YAYBULKORDER_VERSION );
 
         $meta = [
             'ajaxUrl' => admin_url( 'admin-ajax.php' ),

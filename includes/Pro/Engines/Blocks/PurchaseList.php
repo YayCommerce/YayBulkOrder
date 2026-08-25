@@ -81,6 +81,10 @@ class PurchaseList {
         register_post_type( $post_type, $args );
 
         add_rewrite_endpoint( 'ybo-purchase-list-page', EP_ROOT | EP_PAGES );
+        if ( empty( get_option( 'ybo_flushed_rewrite' ) ) ) {
+            flush_rewrite_rules();
+            update_option( 'ybo_flushed_rewrite', true );
+        }
     }
 
     /**

@@ -88,18 +88,28 @@ class CSVOrderService {
                         ++$logs['success'];
                     }
                 } elseif ( $product->get_type() === 'grouped' ) {
+                    $child_added = 0;
                     foreach ( $product->get_children() as $child_id ) {
-                        $added = WC()->cart->add_to_cart( $child_id, $quantity );
-                        if ( $added ) {
-                            ++$logs['success'];
+                        $child = wc_get_product( $child_id );
+                        if ( $child->is_purchasable() ) {
+                            $added = WC()->cart->add_to_cart( $child_id, $quantity );
+                            if ( $added ) {
+                                ++$logs['success'];
+                                ++$child_added;
+                            }
                         }
+                    }
+                    if ( empty( $child_added ) ) {
+                        // translators: %d: the row number
+                        $logs['failed'][] = sprintf( __( 'Row %d: this product is not purchasable.', 'yay-bulk-order' ), $index + 2 );
+                        continue;
                     }
                 } else {
                     $added = WC()->cart->add_to_cart( $product->get_id(), $quantity );
                     if ( $added ) {
                         ++$logs['success'];
                     }
-                }
+                }//end if
             }//end if
         }//end foreach
 

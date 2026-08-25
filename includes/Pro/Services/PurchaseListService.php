@@ -34,9 +34,9 @@ class PurchaseListService {
                     'currency'    => get_woocommerce_currency(),
                     'symbol'      => html_entity_decode( \get_woocommerce_currency_symbol(), ENT_COMPAT ),
                     'position'    => get_option( 'woocommerce_currency_pos' ),
-                    'thousandSep' => get_option( 'woocommerce_price_thousand_sep' ),
-                    'decimalSep'  => get_option( 'woocommerce_price_decimal_sep' ),
-                    'numDecimals' => intval( get_option( 'woocommerce_price_num_decimals' ) ),
+                    'thousandSep' => wc_get_price_thousand_separator(),
+                    'decimalSep'  => wc_get_price_decimal_separator(),
+                    'numDecimals' => wc_get_price_decimals(),
                 ],
             ],
         ];
@@ -72,12 +72,12 @@ class PurchaseListService {
             }//end if
 
             if ( $product->is_type( 'grouped' ) ) {
-                $price = $this->get_max_grouped_product_price( $product );
+                $price          = $this->get_max_grouped_product_price( $product );
+                $is_purchasable = (float) $price > 0.0;
             } else {
-                $price = apply_filters( 'ybo_purchase_list_product_price', $product->get_price(), $product );
+                $price          = apply_filters( 'ybo_purchase_list_product_price', $product->get_price(), $product );
+                $is_purchasable = apply_filters( 'ybo_purchase_list_product_is_purchasable', $product->is_purchasable(), $product );
             }
-
-            $is_purchasable = apply_filters( 'ybo_purchase_list_product_is_purchasable', $product->is_purchasable() || $product->is_type( 'grouped' ), $product );
 
             if ( $is_purchasable ) {
                 $result[] = [
@@ -97,8 +97,9 @@ class PurchaseListService {
         $price = 0;
 
         foreach ( $product->get_children() as $child_id ) {
-            $child = wc_get_product( $child_id );
-            if ( ! $child || ! $child->is_purchasable() ) {
+            $child          = wc_get_product( $child_id );
+            $is_purchasable = apply_filters( 'ybo_purchase_list_product_is_purchasable', $child->is_purchasable(), $child );
+            if ( ! $child || ! $is_purchasable ) {
                 continue;
             }
 
