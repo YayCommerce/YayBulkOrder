@@ -20,6 +20,7 @@ class YayBulkOrder {
         \YayBulkOrder\Engines\RestAPI::get_instance();
 
         \YayBulkOrder\Engines\Blocks\Patterns\PatternRegistry::get_instance();
+        \YayBulkOrder\Engines\Compatibles\Compatibles::get_instance();
 
         if ( self::is_pro() ) {
             \YayBulkOrder\Pro\YayBulkOrderPro::initialize();

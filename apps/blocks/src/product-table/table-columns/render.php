@@ -7,6 +7,7 @@
 
 use YayBulkOrder\Services\ProductQueryService;
 use YayBulkOrder\Services\LocalizeService;
+use YayBulkOrder\Services\PricingService;
 
 $product_query_service = ProductQueryService::get_instance();
 $localize_service = LocalizeService::get_instance();
@@ -36,11 +37,7 @@ $render_row = function ( $block, $product_id, $product, $default_cart_quantity, 
 
     $cart_quantity = isset( $cart_quantities[ $product_id ] ) ? (int) $cart_quantities[ $product_id ] : 0;
     $add_to_cart_text = $product->add_to_cart_text() ? $product->add_to_cart_text() : __( 'Add to cart', 'yay-bulk-order' );
-    if ( $product instanceof WC_Product_Variable ) {
-        $unit_price = (float) $product->get_variation_price( 'min', true );
-    } else {
-        $unit_price = (float) wc_get_price_to_display( $product );
-    }
+    $unit_price = PricingService::get_instance()->get_display_unit_price( $product, (int) $default_cart_quantity );
 
     $product_type = $parent_product_id ? 'simple' : $product->get_type();
 

@@ -17,7 +17,7 @@ import {
   syncWooCommerceCart,
   type StoreApiCart,
 } from './storeApi';
-import { formatCartTotal, formatPrice } from './storeApi/currency';
+import { formatCartSubtotal, formatPrice } from './storeApi/currency';
 
 /** All currently selected rows, derived from the keyed `select` map. */
 function getSelectedRows(tableState: TableState): SelectedRow[] {
@@ -36,7 +36,7 @@ function getSelectedQuantityTotal(tableState: TableState): number {
  * visibility untouched (single-row add).
  */
 function buildCartNotice(cart: StoreApiCart, visible: boolean): TableState['cartNotice'] {
-  return { visible, totalFormatted: formatCartTotal(cart.totals) };
+  return { visible, totalFormatted: formatCartSubtotal(cart.totals) };
 }
 
 const tableQueryParams = new Map<number, Record<string, string | number | null>>();

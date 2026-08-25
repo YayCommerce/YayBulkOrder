@@ -57,9 +57,11 @@ export function formatCartAmount(rawAmount: string | undefined, totals: StoreApi
   return formatCurrencyAmount(amount, config);
 }
 
-/** Formats a cart's grand total using the currency shape the Store API returns it in. */
-export function formatCartTotal(totals: StoreApiCartTotals | undefined): string {
-  return totals ? formatCartAmount(totals.total_price, totals) : '';
+/**
+ * Formats a cart's subtotal (sum of line item prices, before discounts,
+ */
+export function formatCartSubtotal(totals: StoreApiCartTotals | undefined): string {
+  return totals ? formatCartAmount(totals.total_items, totals) : '';
 }
 
 /** Formats a single amount using the plugin's configured currency settings. */
