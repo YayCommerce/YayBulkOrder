@@ -27,9 +27,7 @@ class CSVOrder {
     }
 
     public function render_csv_order_shortcode( array $attr = [] ) {
-        ob_start();
-        include YAYBULKORDER_PLUGIN_PATH . 'includes/Pro/Templates/csv-order/csv-order.php';
-        return ob_get_clean();
+        return do_blocks( '<!-- wp:yay-bulk-order/quick-csv-order /-->' );
     }
 
     public function handle_add_to_cart() {

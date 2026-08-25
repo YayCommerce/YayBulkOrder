@@ -26,6 +26,7 @@
     "@yay-bulk-order/variant-table-store": "workspace:*"
   },
   "devDependencies": {
+    "@types/jquery": "^4.0.1",
     "@types/wordpress__block-editor": "latest",
     "@yay-bulk-order/common": "workspace:*"
   }
