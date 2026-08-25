@@ -205,7 +205,7 @@ $data_context = [
 			<div data-wp-bind--hidden="state.isEditView">
 				<div class="ybo_footer ybo_card_footer">
 					<div class="ybo_card_actions">
-						<button class="ybo_button ybo_primary_filled_button">
+						<button class="ybo_button ybo_primary_filled_button" data-wp-on--click="actions.addToCart" data-wp-bind--disabled="context.isPendingAddToCart">
 							<svg width="18" height="18" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
 								<use href="<?php echo (esc_url(YAYBULKORDER_PLUGIN_URL . 'assets/images/icon/cart.svg')); ?>">#cart_icon</use>
 							</svg>

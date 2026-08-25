@@ -7,13 +7,12 @@ namespace YayBulkOrder\Engines;
 class ActDeact {
 
     public static function single_activate() {
-        // Flush to add new enpoints: Purchase Lists
-        flush_rewrite_rules();
     }
 
     public static function single_deactivate() {
         // Flush to reset
         flush_rewrite_rules();
+        delete_option( 'ybo_flushed_rewrite' );
     }
 
     public static function single_uninstall() {
