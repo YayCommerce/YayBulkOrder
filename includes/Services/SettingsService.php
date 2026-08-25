@@ -58,6 +58,13 @@ class SettingsService {
     private function get_default_settings() {
         return [
             'general' => [
+                'currency'            => [
+                    'symbol'      => html_entity_decode( get_woocommerce_currency_symbol() ),
+                    'position'    => get_option( 'woocommerce_currency_pos' ),
+                    'decimals'    => wc_get_price_decimals(),
+                    'decimalSep'  => wc_get_price_decimal_separator(),
+                    'thousandSep' => wc_get_price_thousand_separator(),
+                ],
                 'defaultCartQuantity' => 5,
                 'defaultPageSize'     => 10,
             ],

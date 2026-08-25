@@ -9,6 +9,6 @@
 
 <td
     <?php echo get_block_wrapper_attributes(); ?>
+    data-wp-text="state.subtotalFormatted"
 >
-    $123.45
 </td>

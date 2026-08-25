@@ -9,13 +9,16 @@ export default function Edit() {
       style={{
         ...style,
         display: 'grid',
-        gridTemplateColumns: 'repeat(5, 1fr)',
+        gridTemplateColumns: 'repeat(7, 1fr)',
       }}
     >
       <div>Product</div>
+      <div>SKU</div>
+      <div>Description</div>
       <div>Quantity</div>
       <div>Subtotal</div>
       <div>Add to Cart</div>
+      <div></div>
     </div>
   );
 }

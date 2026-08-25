@@ -13,7 +13,14 @@ $settings_service = SettingsService::get_instance();
 
 $global_config = $localize_service->get_global_config();
 $config = wp_interactivity_config('yay-bulk-order/global-config', $global_config);
-
+// Store API credentials for add-to-cart (used by product-table interactivity store).
+wp_interactivity_config(
+	'yay-bulk-order/product-table',
+	array(
+		'restUrl' => esc_url_raw( rest_url() ),
+		'nonce'   => wp_create_nonce( 'wc_store_api' ),
+	)
+);
 $styles = $settings_service->get_styles();
 $style_attr = '';
 foreach ( $styles as $property => $value ) {
