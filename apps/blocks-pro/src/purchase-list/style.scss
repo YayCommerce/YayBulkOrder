@@ -1,0 +1,370 @@
+div.wp-block-yay-bulk-order-purchase-list {
+  // #region CSS Variables
+  --ybo-foreground: #171719;
+  --ybo-destructive: #d50719;
+  --ybo-border: #e4e4e7;
+  --ybo-input: #e4e4e7;
+  --ybo-primary: #3858e9;
+  --ybo-primary-foreground: #ffffff;
+  --ybo-primary-accent: #2f4ac4;
+  --ybo-muted-foreground: #7b7c80;
+  --ybo-muted-foreground-400: #c7c7ca;
+  --ybo-muted-400: #fafafa;
+  --ybo-background: #ffffff;
+  --ybo-radius-md: 8px;
+  --ybo-shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  // #endregion
+
+  // #region Global css
+  font-size: 14px;
+  // #endregion
+
+  // #region Layout
+  .ybo_header,
+  .ybo_footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 8px 0px;
+
+    h2 {
+      font-size: 20px;
+      font-weight: 600;
+    }
+  }
+
+  .ybo_header_actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .ybo_pagination {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    input {
+      width: 50px !important  ;
+    }
+  }
+  // #endregion
+
+  // #region Input variant
+  .ybo_input {
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid var(--ybo-border);
+  }
+
+  .ybo_input_name {
+    margin: 12px 0px;
+    box-sizing: border-box;
+    width: 100%;
+  }
+  // #endregion
+
+  // #region Button variant
+  .ybo_button {
+    padding: 8px;
+    border: 1px solid var(--ybo-border);
+    color: var(--ybo-muted-foreground);
+    box-shadow: 0 1px 2px 0 #0000000d;
+    background: #fff;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border-radius: 4px;
+    cursor: pointer;
+    min-width: fit-content;
+
+    &[hidden] {
+      display: none;
+    }
+
+    &[disabled] {
+      background: var(--ybo-muted-400);
+      border: 1px solid var(--ybo-border);
+      color: var(--ybo-muted-foreground-400);
+    }
+  }
+
+  .ybo_button:hover {
+    background: var(--ybo-muted-400);
+  }
+
+  .ybo_primary_filled_button {
+    background: var(--ybo-primary);
+    color: var(--ybo-primary-foreground);
+
+    &[disabled] {
+      background: var(--ybo-primary-accent);
+      color: var(--ybo-muted-foreground-400);
+    }
+  }
+
+  .ybo_primary_filled_button:hover {
+    background: var(--ybo-primary-accent);
+    color: var(--ybo-primary-foreground);
+
+    &[disabled] {
+      background: var(--ybo-primary-accent);
+      color: var(--ybo-muted-foreground-400);
+    }
+  }
+
+  .ybo_muted_filled_button {
+    background: var(--ybo-muted-foreground-400);
+    color: var(--ybo-foreground);
+    border-color: var(--ybo-muted-foreground-400);
+  }
+
+  .ybo_muted_filled_button:hover {
+    background: var(--ybo-muted-foreground);
+    border-color: var(--ybo-muted-foreground);
+    color: var(--ybo-foreground);
+  }
+
+  .ybo_transparent_button {
+    padding: 4px;
+    border-color: transparent;
+    background: transparent;
+    color: #fff;
+  }
+
+  .ybo_transparent_button:hover {
+    border-color: transparent;
+    background: transparent;
+    color: #fff;
+  }
+  // #endregion
+
+  // #region Card view (Create / Edit)
+  .ybo_purchase_list_create_view,
+  .ybo_purchase_list_edit_view {
+    border-radius: var(--ybo-radius-md);
+    border: 1px solid var(--ybo-border);
+  }
+
+  .ybo_card_header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    background: var(--ybo-foreground);
+    color: #fff;
+    border-top-right-radius: var(--ybo-radius-md);
+    border-top-left-radius: var(--ybo-radius-md);
+
+    h2 {
+      flex: 1;
+      min-width: 0;
+      font-size: 16px;
+      margin: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      color: #fff;
+    }
+  }
+
+  .ybo_card_body {
+    padding: 16px;
+    background: #fff;
+  }
+
+  .ybo_card_row {
+    display: grid;
+    grid-template-columns: 1fr 60px 90px;
+    align-items: center;
+    gap: 32px;
+    padding: 6px 0;
+  }
+
+  .ybo_card_row_head {
+    font-weight: 600;
+    padding: 6px 0;
+  }
+
+  .ybo_card_clear_row {
+    padding: 4px;
+    border-color: #fff;
+    background: #fff;
+    color: var(--ybo-destructive);
+  }
+
+  .ybo_card_clear_row:hover {
+    border-color: #fff;
+    background: var(--ybo-destructive);
+    color: #fff;
+  }
+
+  .ybo_card_col_product {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .ybo_card_col_qty {
+    text-align: center;
+  }
+
+  .ybo_card_col_subtotal {
+    text-align: center;
+    color: var(--ybo-muted-foreground);
+  }
+
+  .ybo_card_product_search,
+  .ybo_card_qty {
+    width: 100%;
+    background: #fff;
+  }
+
+  .ybo_card_new_line {
+    margin-top: 4px;
+  }
+
+  .ybo_card_footer {
+    padding: 16px;
+    background: #fff;
+    border-top: 1px solid var(--ybo-border);
+  }
+
+  .ybo_card_actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .ybo_card_total {
+    color: var(--ybo-muted-foreground);
+
+    strong {
+      color: var(--ybo-foreground);
+      font-size: 16px;
+    }
+  }
+  // #endregion
+
+  // #region Product search dropdown
+  .ybo_card_product_search {
+    position: relative;
+
+    input {
+      width: 100%;
+    }
+
+    button.ybo_card_clear_row {
+      position: absolute;
+      right: 4px;
+      top: 50%;
+      border: 1px solid var(--ybo-destructive);
+      transform: translateY(-50%);
+      font-size: 12px;
+    }
+  }
+
+  .ybo_products_search_results {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    z-index: 999;
+    box-shadow: 0 1px 2px 0 #0000000d;
+    background: #fff;
+    border-radius: var(--ybo-radius-md);
+    width: 100%;
+    overflow: hidden;
+    border: 1px solid var(--ybo-border);
+  }
+
+  .ybo_products_search_list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-height: 240px;
+    overflow-y: auto;
+  }
+
+  .ybo_products_search_item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px;
+    cursor: pointer;
+  }
+
+  .ybo_products_search_item:hover {
+    background: var(--ybo-muted-400);
+  }
+
+  .ybo_products_search_item_image {
+    width: 32px;
+    height: 32px;
+    object-fit: cover;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+
+  .ybo_products_search_info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 13px;
+  }
+
+  .ybo_products_search_item_name {
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    line-clamp: 1;
+  }
+
+  .ybo_products_search_item_price {
+    color: var(--ybo-muted-foreground);
+    font-size: 12px;
+  }
+  // #endregion
+
+  // #region List view table
+  .ybo_table_wrapper {
+    border-radius: var(--ybo-radius-md);
+    overflow: hidden;
+    border: 2px solid var(--ybo-border);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+
+    td,
+    th {
+      padding: 8px;
+      text-align: center;
+    }
+
+    th {
+      background: var(--ybo-foreground) !important;
+      color: #fff;
+    }
+
+    .ybo_purchase_list_item_name {
+      width: 50%;
+    }
+    .ybo_purchase_list_item_actions {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .ybo_purchase_list_empty {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 120px;
+    }
+  }
+  // #endregion
+}

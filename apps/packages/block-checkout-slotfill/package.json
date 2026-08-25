@@ -1,0 +1,20 @@
+{
+  "name": "@yay-bulk-order/block-checkout-slotfill",
+  "version": "0.1.0",
+  "description": "Checkout block slotfill - Save order as Purchase list button.",
+  "author": "YayCommerce",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "wp-scripts start --config webpack.config.cjs",
+    "build": "wp-scripts build --config webpack.config.cjs"
+  },
+  "devDependencies": {
+    "@yay-bulk-order/common": "workspace:*"
+  },
+  "dependencies": {
+    "@wordpress/data": "^10.36.0",
+    "@wordpress/element": "^6.36.0",
+    "@wordpress/i18n": "^6.9.0",
+    "@wordpress/plugins": "^7.36.0"
+  }
+}

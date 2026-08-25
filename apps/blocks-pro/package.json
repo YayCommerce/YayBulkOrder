@@ -22,6 +22,7 @@
     "@wordpress/interactivity": "latest",
     "@wordpress/interactivity-router": "latest",
     "@yay-bulk-order/product-table-store": "workspace:*",
+    "@yay-bulk-order/purchase-list-store": "workspace:*",
     "@yay-bulk-order/variant-table-store": "workspace:*"
   },
   "devDependencies": {
