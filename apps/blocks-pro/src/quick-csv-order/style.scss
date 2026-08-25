@@ -1,0 +1,98 @@
+div.wp-block-yay-bulk-order-quick-csv-order {
+  // #region CSS Variables
+  --ybo-foreground: #171719;
+  --ybo-destructive: #d50719;
+  --ybo-border: #e4e4e7;
+  --ybo-input: #e4e4e7;
+  --ybo-primary: #3858e9;
+  --ybo-primary-foreground: #ffffff;
+  --ybo-primary-accent: #2f4ac4;
+  --ybo-muted-foreground: #7b7c80;
+  --ybo-muted-foreground-400: #c7c7ca;
+  --ybo-muted-400: #fafafa;
+  --ybo-background: #ffffff;
+  --ybo-radius-md: 8px;
+  --ybo-shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  // #endregion
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  .ybo_csv_order_drop_zone {
+    padding: 16px 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: var(--ybo-radius-md);
+    width: 100%;
+    border: 1px dashed var(--ybo-muted-foreground-400);
+    cursor: pointer;
+  }
+
+  .ybo_csv_order_drop_zone:hover,
+  .ybo_csv_order_dropenter {
+    background: var(--ybo-muted-400);
+  }
+
+  .ybo_csv_order_zone_placeholder,
+  .ybo_csv_order_zone_file > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    line-height: 24px;
+    color: var(--ybo-muted-foreground);
+    height: 60px;
+  }
+
+  .ybo_csv_order_file_input,
+  .ybo_csv_order_zone_file {
+    display: none;
+  }
+
+  .ybo_csv_order_file_remove {
+    cursor: pointer;
+    background-color: var(--ybo-muted-foreground);
+    color: white;
+    border-radius: 50%;
+  }
+
+  .ybo_csv_order_file_error {
+    font-size: 13px;
+    color: var(--ybo-destructive);
+    display: none;
+  }
+
+  .ybo_csv_order_actions {
+    display: flex;
+    gap: 8px;
+    justify-content: end;
+  }
+
+  .ybo-button {
+    background-color: var(--ybo-muted-400);
+    color: var(--ybo-foreground);
+    border: 1px solid var(--ybo-border);
+  }
+
+  .ybo_csv_order_help_text {
+    font-size: 13px;
+    color: var(--ybo-muted-foreground);
+  }
+
+  .ybo_csv_order_logs {
+    background: var(--ybo-muted-400);
+    border: 1px solid var(--ybo-border);
+    color: var(--ybo-muted-foreground);
+    padding: 12px;
+    border-radius: var(--ybo-radius-md);
+    font-size: 13px;
+  }
+
+  .ybo_csv_order_logs > :first-child {
+    font-weight: 600;
+    font-size: 14px;
+  }
+}

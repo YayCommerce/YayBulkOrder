@@ -12,7 +12,7 @@
 		"html": false,
 		"interactivity": true
 	},
-	"textdomain": "purchase-list",
+	"textdomain": "yay-bulk-order",
 	"editorScript": "file:./editor.tsx",
 	"editorStyle": "file:./style-editor.css",
 	"style": "file:./style-editor.css",

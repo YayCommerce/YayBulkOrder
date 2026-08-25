@@ -71,16 +71,41 @@ class PurchaseListService {
                 continue;
             }//end if
 
-            $result[] = [
-                'id'    => $product->get_id(),
-                'image' => wp_get_attachment_image_url( $product->get_image_id(), 'thumbnail' ),
-                'sku'   => $product->get_sku(),
-                'price' => apply_filters( 'ybo_purchase_list_product_price', $product->get_price(), $product ),
-                'name'  => $product->get_name(),
-            ];
+            if ( $product->is_type( 'grouped' ) ) {
+                $price = $this->get_max_grouped_product_price( $product );
+            } else {
+                $price = apply_filters( 'ybo_purchase_list_product_price', $product->get_price(), $product );
+            }
+
+            $is_purchasable = apply_filters( 'ybo_purchase_list_product_is_purchasable', $product->is_purchasable() || $product->is_type( 'grouped' ), $product );
+
+            if ( $is_purchasable ) {
+                $result[] = [
+                    'id'    => $product->get_id(),
+                    'image' => wp_get_attachment_image_url( $product->get_image_id(), 'thumbnail' ),
+                    'sku'   => $product->get_sku(),
+                    'price' => $price,
+                    'name'  => $product->get_name(),
+                ];
+            }
+        }//end while
+
+        return apply_filters( 'ybo_purchase_list_products', $result );
+    }
+
+    protected function get_max_grouped_product_price( \WC_Product $product ) {
+        $price = 0;
+
+        foreach ( $product->get_children() as $child_id ) {
+            $child = wc_get_product( $child_id );
+            if ( ! $child || ! $child->is_purchasable() ) {
+                continue;
+            }
+
+            $price += apply_filters( 'ybo_purchase_list_product_price', $child->get_price(), $child );
         }
 
-        return $result;
+        return $price;
     }
 
     public function get_purchase_list_by_user( int $user_id ) {

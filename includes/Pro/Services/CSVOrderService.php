@@ -53,17 +53,24 @@ class CSVOrderService {
             $sku        = $row[0];
             $product_id = wc_get_product_id_by_sku( $sku );
             if ( empty( $product_id ) ) {
-                // translators: %d: the row number
-                $logs['failed'][] = sprintf( __( 'Row %d: No matching product was found with the SKU..', 'yay-bulk-order' ), $index + 2 );
+                // translators: %1$d: the row number, %2$s: the sku
+                $logs['failed'][] = sprintf( __( 'Row %1$d: No matching product was found with the SKU: %2$s.', 'yay-bulk-order' ), $index + 2, $sku );
                 continue;
             }
 
             $product = wc_get_product( $product_id );
             if ( empty( $product ) ) {
-                // translators: %d: the row number
-                $logs['failed'][] = sprintf( __( 'Row %d: No matching product was found with the SKU.', 'yay-bulk-order' ), $index + 2 );
+                // translators: %1$d: the row number, %2$s: the sku
+                $logs['failed'][] = sprintf( __( 'Row %1$d: No matching product was found with the SKU: %2$s.', 'yay-bulk-order' ), $index + 2, $sku );
                 continue;
+            }
 
+            $is_purchasable = apply_filters( 'ybo_csv_order_product_is_purchasable', $product->is_purchasable() || $product->is_type( 'grouped' ), $product );
+
+            if ( ! $is_purchasable ) {
+                // translators: %d: the row number
+                $logs['failed'][] = sprintf( __( 'Row %d: this product is not purchasable.', 'yay-bulk-order' ), $index + 2 );
+                continue;
             }
 
             if ( ! array_key_exists( 1, $row ) ) {
