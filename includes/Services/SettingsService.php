@@ -40,40 +40,55 @@ class SettingsService {
 
     public function get_styles() {
         $settings = $this->get_settings();
-        $colors   = $settings['colors'];
+        $design   = $settings['design'];
 
         return [
-            '--ybo-primary-color'     => $colors['primary'],
-            '--ybo-text-color'        => $colors['text'],
-            '--ybo-description-color' => $colors['description'],
-            '--ybo-border-color'      => $colors['border'],
-            '--ybo-background-color'  => $colors['background'],
+            '--ybo-primary-color'                 => $design['primaryColor'],
+            '--ybo-text-color'                    => $design['textColor'],
+            '--ybo-text-hover-color'              => $design['textHoverColor'],
+            '--ybo-description-color'             => $design['descriptionColor'],
+            '--ybo-border-color'                  => $design['borderColor'],
+            '--ybo-background-color'              => $design['backgroundColor'],
+            '--ybo-button-background-color'       => $design['buttonBackgroundColor'],
+            '--ybo-button-background-hover-color' => $design['buttonBackgroundHoverColor'],
+            '--ybo-button-text-color'             => $design['buttonTextColor'],
+            '--ybo-button-text-hover-color'       => $design['buttonTextHoverColor'],
 
-            'color'                   => 'var(--ybo-text-color)',
-            'background-color'        => 'var(--ybo-background-color)',
-            'border-color'            => 'var(--ybo-border-color)',
+            'color'                               => 'var(--ybo-text-color)',
+            'background-color'                    => 'var(--ybo-background-color)',
+            'border-color'                        => 'var(--ybo-border-color)',
         ];
     }
 
     private function get_default_settings() {
         return [
-            'general' => [
-                'currency'            => [
-                    'symbol'      => html_entity_decode( get_woocommerce_currency_symbol() ),
-                    'position'    => get_option( 'woocommerce_currency_pos' ),
-                    'decimals'    => wc_get_price_decimals(),
-                    'decimalSep'  => wc_get_price_decimal_separator(),
-                    'thousandSep' => wc_get_price_thousand_separator(),
-                ],
+            'general'      => [
                 'defaultCartQuantity' => 5,
-                'defaultPageSize'     => 10,
+                'defaultPageSize'     => 5,
             ],
-            'colors'  => [
-                'primary'     => '#3858e9',
-                'text'        => '#171719',
-                'description' => '#7b7c80',
-                'border'      => '#e4e4e7',
-                'background'  => '#ffffff',
+            'design'       => [
+                'primaryColor'               => '#3858e9',
+                'textColor'                  => '#171719',
+                'textHoverColor'             => '#3858e9',
+                'descriptionColor'           => '#7b7c80',
+                'borderColor'                => '#e4e4e7',
+                'backgroundColor'            => '#ffffff',
+                'buttonBackgroundColor'      => '#3858e9',
+                'buttonBackgroundHoverColor' => '#2d47ba',
+                'buttonTextColor'            => '#ffffff',
+                'buttonTextHoverColor'       => '#ffffff',
+            ],
+            'purchaseList' => [
+                'isAddToAccountPage'     => true,
+                'savePurchaseListButton' => [
+                    'isAddToCartPage'     => true,
+                    'isAddToCheckoutPage' => true,
+                    'isAddToMiniCart'     => false,
+                    'isAddToOrder'        => false,
+                ],
+            ],
+            'csvOrder'     => [
+                'isAddToAccountPage' => false,
             ],
         ];
     }

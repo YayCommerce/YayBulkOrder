@@ -53,4 +53,4 @@ export function getAppAdminRouter() {
   ]);
 }
 
-const settingSubMenus = ['general', 'styles'];
+const settingSubMenus = ['general', 'design', 'advanced'];

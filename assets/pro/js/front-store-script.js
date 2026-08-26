@@ -1,8 +1,10 @@
 // #region Purchase List
+const { __ } = window.wp.i18n;
+
 jQuery(function ($) {
   $(document).ready(() => {
     function saveList($button, action, payload) {
-      var listName = window.prompt(yayBulkOrder.i18n.promptListName);
+      var listName = window.prompt(__('Name this purchase list:', 'yay-bulk-order'));
 
       if (!listName) {
         return;
@@ -26,14 +28,20 @@ jQuery(function ($) {
       })
         .done(function (response) {
           if (response && response.success) {
-            window.alert(yayBulkOrder.i18n.saved);
+            window.alert(__('Purchase list saved.', 'yay-bulk-order'));
           } else {
-            window.alert((response && response.data && response.data.message) || yayBulkOrder.i18n.error);
+            window.alert(
+              (response && response.data && response.data.message) ||
+                __('Something went wrong. Please try again.', 'yay-bulk-order'),
+            );
           }
         })
         .fail(function (jqXHR) {
           var response = jqXHR.responseJSON;
-          window.alert((response && response.data && response.data.message) || yayBulkOrder.i18n.error);
+          window.alert(
+            (response && response.data && response.data.message) ||
+              __('Something went wrong. Please try again.', 'yay-bulk-order'),
+          );
         })
         .always(function () {
           $button.prop('disabled', false);

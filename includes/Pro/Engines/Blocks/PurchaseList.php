@@ -2,6 +2,7 @@
 namespace YayBulkOrder\Pro\Engines\Blocks;
 
 use YayBulkOrder\Pro\Services\PurchaseListService;
+use YayBulkOrder\Services\SettingsService;
 use YayBulkOrder\Utils\SingletonTrait;
 
 /**
@@ -11,9 +12,11 @@ class PurchaseList {
     use SingletonTrait;
 
     private PurchaseListService $purchase_list_service;
+    private SettingsService $settings_service;
 
     protected function __construct() {
         $this->purchase_list_service = PurchaseListService::get_instance();
+        $this->settings_service      = SettingsService::get_instance();
 
         // Register new post type
         add_action( 'init', [ $this, 'register_purchase_list_post_type' ] );
@@ -36,8 +39,8 @@ class PurchaseList {
         add_action( 'woocommerce_order_details_after_order_table', [ $this, 'save_from_order_button' ] );
 
         // Add to My Account
-        add_filter( 'woocommerce_account_menu_items', [ $this, 'add_menu_purchase_list' ] );
-        add_action( 'woocommerce_account_ybo-purchase-list-page_endpoint', [ $this, 'render_menu_purchase_list' ] );
+        add_filter( 'woocommerce_account_menu_items', [ $this, 'add_menu_purchase_list' ], 12, 1 );
+        add_action( 'woocommerce_account_ybo-purchase-list_endpoint', [ $this, 'render_menu_purchase_list' ] );
     }
 
     /**
@@ -80,7 +83,7 @@ class PurchaseList {
 
         register_post_type( $post_type, $args );
 
-        add_rewrite_endpoint( 'ybo-purchase-list-page', EP_ROOT | EP_PAGES );
+        add_rewrite_endpoint( 'ybo-purchase-list', EP_ROOT | EP_PAGES );
         if ( empty( get_option( 'ybo_flushed_rewrite' ) ) ) {
             flush_rewrite_rules();
             update_option( 'ybo_flushed_rewrite', true );
@@ -275,6 +278,15 @@ class PurchaseList {
      * @return void
      */
     public function save_from_cart_button() {
+        $settings = $this->settings_service->get_settings();
+        if ( is_cart() && ! $settings['purchaseList']['savePurchaseListButton']['isAddToCartPage'] ) {
+            return;
+        }
+
+        if ( is_checkout() && ! $settings['purchaseList']['savePurchaseListButton']['isAddToCheckoutPage'] ) {
+            return;
+        }
+
         ?>
         <div class="ybo_button_container">
             <button class="ybo_save_pl_cart_button wp-element-button checkout"><?php esc_html_e( 'Save as Purchase list', 'yay-bulk-order' ); ?></button>
@@ -289,6 +301,10 @@ class PurchaseList {
      * @return void
      */
     public function save_from_minicart_button() {
+        $settings = $this->settings_service->get_settings();
+        if ( ! $settings['purchaseList']['savePurchaseListButton']['isAddToMiniCart'] ) {
+            return;
+        }
         ?>
         <div class="ybo_minicart_button_container">
             <button class="ybo_save_pl_cart_button wp-element-button checkout"><?php esc_html_e( 'Save as Purchase list', 'yay-bulk-order' ); ?></button>
@@ -305,6 +321,11 @@ class PurchaseList {
      * @return void
      */
     public function save_from_order_button( $order ) {
+        $settings = $this->settings_service->get_settings();
+        if ( ! $settings['purchaseList']['savePurchaseListButton']['isAddToOrder'] ) {
+            return;
+        }
+
         $order = $order instanceof \WC_Order ? $order : wc_get_order( $order );
 
         if ( ! $order ) {
@@ -325,6 +346,11 @@ class PurchaseList {
      * @return string Block content with the purchase list button appended.
      */
     public function add_to_block_component( $block_content ) {
+        $settings = $this->settings_service->get_settings();
+        if ( ! $settings['purchaseList']['savePurchaseListButton']['isAddToMiniCart'] ) {
+            return $block_content;
+        }
+
         ob_start()
         ?>
         <div class="ybo_minicart_button_container">
@@ -343,6 +369,10 @@ class PurchaseList {
      * @return array Menu items, with the purchase list entry added when applicable.
      */
     public function add_menu_purchase_list( $items ) {
+        $settings = $this->settings_service->get_settings();
+        if ( ! $settings['purchaseList']['isAddToAccountPage'] ) {
+            return $items;
+        }
 
         /**
          * Menu keys in order
@@ -359,8 +389,8 @@ class PurchaseList {
                 $new_items = array_merge(
                     $new_items,
                     [
-                        $key                     => $val,
-                        'ybo-purchase-list-page' => __( 'Purchase List', 'yay-bulk-order' ),
+                        $key                => $val,
+                        'ybo-purchase-list' => __( 'Purchase List', 'yay-bulk-order' ),
                     ]
                 );
             } else {
@@ -383,6 +413,11 @@ class PurchaseList {
      * @return void
      */
     public function render_menu_purchase_list() {
+        $settings = $this->settings_service->get_settings();
+        if ( ! $settings['purchaseList']['isAddToAccountPage'] ) {
+            return;
+        }
+
         // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
         echo do_blocks( '<!-- wp:yay-bulk-order/purchase-list /-->' );
     }

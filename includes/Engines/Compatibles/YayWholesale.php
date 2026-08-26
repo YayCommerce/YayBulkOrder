@@ -24,6 +24,8 @@ class YayWholesale {
         add_filter( 'yaybulkorder_product_display_price', [ $this, 'adjust_price' ], 10, 2 );
 
         add_filter( 'woocommerce_is_purchasable', [ $this, 'fix_variation_purchasable' ], 20, 2 );
+
+        add_filter( 'yaybulkorder_purchase_list_product_price', [ $this, 'calculate_wholesale_price' ], 100, 2 );
     }
 
     public function adjust_price( float $price, \WC_Product $product ): float {
@@ -64,5 +66,14 @@ class YayWholesale {
         return $product->exists()
             && ( 'publish' === $product->get_status() || current_user_can( 'edit_post', $product->get_id() ) )
             && '' !== $product->get_price();
+    }
+
+    public function calculate_wholesale_price( $price, \WC_Product $product ) {
+        $wholesale_role = \YayWholesaleB2B\Helpers\CustomerHelper::get_current_user_wholesale_role();
+        if ( empty( $wholesale_role ) ) {
+            return $price;
+        }
+
+        return \YayWholesaleB2B\Helpers\PricingHelpers\ShopPricingHelper::get_wholesale_price_for_display( $product, $wholesale_role );
     }
 }

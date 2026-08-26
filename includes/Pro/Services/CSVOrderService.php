@@ -65,7 +65,7 @@ class CSVOrderService {
                 continue;
             }
 
-            $is_purchasable = apply_filters( 'ybo_csv_order_product_is_purchasable', $product->is_purchasable() || $product->is_type( 'grouped' ), $product );
+            $is_purchasable = apply_filters( 'yaybulkorder_csv_order_product_is_purchasable', $product->is_purchasable() || $product->is_type( 'grouped' ), $product );
 
             if ( ! $is_purchasable ) {
                 // translators: %d: the row number
