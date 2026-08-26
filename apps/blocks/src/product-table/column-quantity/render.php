@@ -12,7 +12,10 @@ $default_cart_quantity = $global_config['settings']['general']['defaultCartQuant
 
 ?>
 
-<td <?php echo get_block_wrapper_attributes(); ?>>
+<td
+    <?php echo get_block_wrapper_attributes(); ?>
+    data-wp-class--ybo-quantity-placeholder="state.isNotSimpleProduct"
+>
     <input
         data-wp-bind--hidden="state.isNotSimpleProduct"
         class="ybo-quantity-input"
