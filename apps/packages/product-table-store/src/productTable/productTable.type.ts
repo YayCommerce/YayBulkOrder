@@ -1,3 +1,5 @@
+import type { StoreApiVariationSelection } from './storeApi/type';
+
 type AllProductQuery = {
   queryType: 'all-products';
 };
@@ -44,6 +46,7 @@ export type ProductTableAttributes = {
 export type SelectedRow = {
   productId: number;
   quantity: number;
+  variationSelections?: StoreApiVariationSelection[];
 };
 
 export type ProductTableContext = {
@@ -79,6 +82,7 @@ export type ProductRowContext = {
   addToCartText: string;
   cartQuantity: number;
   productType: string;
+  variationSelections?: StoreApiVariationSelection[];
 };
 
 /** Context of a single checkbox rendered by table-filter/render.php. */

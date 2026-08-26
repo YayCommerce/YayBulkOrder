@@ -264,6 +264,7 @@ const storeDef = {
         context.tableState.select[context.productId] = {
           productId: context.productId,
           quantity: context.quantity,
+          variationSelections: context.variationSelections,
         };
       }
     },
@@ -275,11 +276,11 @@ const storeDef = {
     },
     toggleSelectRow(event: Event) {
       const context = getContext<ProductRowState>();
-      const { productId, quantity } = context;
+      const { productId, quantity, variationSelections } = context;
       const checked = (event.target as HTMLInputElement).checked;
 
       if (checked) {
-        context.tableState.select[productId] = { productId, quantity };
+        context.tableState.select[productId] = { productId, quantity, variationSelections };
       } else {
         delete context.tableState.select[productId];
       }
@@ -321,13 +322,13 @@ const storeDef = {
     *addToCart() {
       const context = getContext<ProductRowContext>();
 
-      const { productId, quantity, isAddingToCart } = context;
+      const { productId, quantity, isAddingToCart, variationSelections } = context;
       if (!productId || isAddingToCart) {
         return;
       }
       context.isAddingToCart = true;
       try {
-        const cart: StoreApiCart = yield addProductToCart(productId, quantity);
+        const cart: StoreApiCart = yield addProductToCart(productId, quantity, variationSelections);
         const item = cart.items?.find((item) => item.id === productId);
         context.cartQuantity = item?.quantity ?? 0;
         syncWooCommerceCart(cart);

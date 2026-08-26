@@ -3,7 +3,14 @@ import './globals';
 import { getConfig } from '@wordpress/interactivity';
 
 import type { SelectedRow } from '../productTable.type';
-import type { BatchRequestItem, BatchResponse, StoreApiCart, StoreApiRequestOptions, StoreConfig } from './type';
+import type {
+  BatchRequestItem,
+  BatchResponse,
+  StoreApiCart,
+  StoreApiRequestOptions,
+  StoreApiVariationSelection,
+  StoreConfig,
+} from './type';
 
 export type { StoreApiCart, StoreApiCartItem, StoreApiCartTotals } from './type';
 
@@ -69,7 +76,11 @@ export async function getCurrentCart(): Promise<StoreApiCart> {
   return storeApiRequest<StoreApiCart>(STORE_API.cart.fetch);
 }
 
-export async function addProductToCart(productId: number, quantityToAdd: number): Promise<StoreApiCart> {
+export async function addProductToCart(
+  productId: number,
+  quantityToAdd: number,
+  variation?: readonly StoreApiVariationSelection[],
+): Promise<StoreApiCart> {
   const cart = await storeApiRequest<StoreApiCart>(STORE_API.cart.fetch);
 
   const existing = cart.items.find((item) => item.id === productId);
@@ -89,6 +100,9 @@ export async function addProductToCart(productId: number, quantityToAdd: number)
     body: {
       id: productId,
       quantity: quantityToAdd,
+      // "Any"-valued variation attributes (e.g. Any Size) need an explicit value;
+      // the row context supplies one resolved to the attribute's first option.
+      ...(variation?.length ? { variation } : {}),
     },
   });
 }
@@ -114,7 +128,7 @@ export async function addProductsToCartBatch(items: readonly SelectedRow[]): Pro
     const requestNonce = nonceCache || configNonce;
     const headers = { Nonce: requestNonce };
 
-    for (const { productId, quantity } of group) {
+    for (const { productId, quantity, variationSelections } of group) {
       const existing = cart.items.find((item) => item.id === productId);
 
       if (existing && existing.quantity_limits?.editable === false) {
@@ -133,7 +147,7 @@ export async function addProductsToCartBatch(items: readonly SelectedRow[]): Pro
               path: `/${STORE_API.cart.addItem}`,
               method: 'POST',
               headers,
-              body: { id: productId, quantity },
+              body: { id: productId, quantity, ...(variationSelections?.length ? { variation: variationSelections } : {}) },
             },
       );
     }
