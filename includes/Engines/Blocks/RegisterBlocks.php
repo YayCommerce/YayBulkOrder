@@ -23,7 +23,7 @@ class RegisterBlocks {
     public function register_blocks() {
         $this->register_collection( YAYBULKORDER_PLUGIN_PATH . 'assets/dist/blocks/product-table' );
         $this->register_collection( YAYBULKORDER_PLUGIN_PATH . 'assets/dist/blocks-pro/' );
-        // $this->register_collection( YAYBULKORDER_PLUGIN_PATH . 'assets/dist/blocks/common' );
+        $this->register_collection( YAYBULKORDER_PLUGIN_PATH . 'assets/dist/blocks/common' );
     }
 
     public function enqueue_block_assets() {
@@ -37,6 +37,14 @@ class RegisterBlocks {
             'wp-blocks',
             LocalizeService::VAR_ADMIN_DATA,
             $this->localize_service->get_admin_data(),
+        );
+
+        // Needed by the Product Table block's editor to call the plugin's
+        // own REST endpoints (category checklist, hand-picked product search).
+        wp_localize_script(
+            'wp-blocks',
+            LocalizeService::VAR_META,
+            $this->localize_service->get_meta(),
         );
     }
 

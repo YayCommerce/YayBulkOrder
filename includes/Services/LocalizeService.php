@@ -41,6 +41,7 @@ class LocalizeService {
                 'restNonce'    => wp_create_nonce( 'wp_rest' ),
 
                 'isBlockTheme' => wp_is_block_theme(),
+                'shopPageId'   => function_exists( 'wc_get_page_id' ) ? (int) wc_get_page_id( 'shop' ) : 0,
             ],
             'bulkOrderMeta' => [
                 'pluginUrl' => YAYBULKORDER_PLUGIN_URL,

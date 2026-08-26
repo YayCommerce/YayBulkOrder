@@ -26,6 +26,10 @@
       "default": {
         "queryType": "all-products"
       }
+    },
+    "hasSelectedQuery": {
+      "type": "boolean",
+      "default": false
     }
   },
   "providesContext": {
@@ -33,6 +37,7 @@
     "query": "query",
     "productQuery": "productQuery"
   },
+  "usesContext": ["templateSlug"],
   "supports": {
     "interactivity": true,
     "html": false,
@@ -40,6 +45,7 @@
     "anchor": true
   },
   "editorScript": "file:./editor.js",
+  "style": "file:./style-editor.css",
   "render": "file:./render.php",
   "viewScriptModule": "file:./frontend-module.js"
 }
