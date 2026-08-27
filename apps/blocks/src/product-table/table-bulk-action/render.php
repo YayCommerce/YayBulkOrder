@@ -20,7 +20,9 @@ $has_products = $product_query_service->get_pagination_info( $block )['totalItem
 ?>
 
 <div <?php echo get_block_wrapper_attributes( array( 'class' => 'ybo-bulk-action-wrap' ) ); ?>>
-    <div class="ybo-bulk-action">
+    <span class="ybo-bulk-action-sentinel" aria-hidden="true" data-wp-init="callbacks.watchBulkActionVisibility"></span>
+
+    <div class="ybo-bulk-action" data-wp-class--is-floating="state.showFloatingBulkAction">
         <a
             href="#top"
             class="ybo-bulk-action__back-to-top"
@@ -28,12 +30,14 @@ $has_products = $product_query_service->get_pagination_info( $block )['totalItem
             data-wp-bind--hidden="!state.showBackToTop"
         ><?php esc_html_e( 'Go Back to Top ↑', 'yay-bulk-order' ); ?></a>
 
+        <?php // No select column means nothing can ever be selected, so the button has nothing to act on. ?>
         <?php if ( $has_products ) : ?>
             <button
                 type="button"
                 class="ybo-bulk-action__submit"
                 data-wp-on--click="actions.addSelectedToCart"
                 data-wp-bind--disabled="state.isBulkAddDisabled"
+                data-wp-bind--hidden="!context.tableState.hasSelectColumn"
                 data-wp-class--is-loading="context.tableState.bulkAdding"
             >
                 <span aria-hidden="true">🛒</span>

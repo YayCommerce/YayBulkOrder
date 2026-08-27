@@ -20,6 +20,7 @@ export function useFormStyle() {
       '--ybo-text-color': colors['text'],
       '--ybo-description-color': colors['description'],
       '--ybo-border-color': colors['border'],
+      '--ybo-border-radius': '8px',
       '--ybo-background-color': colors['background'],
 
       color: 'var(--ybo-text-color)',

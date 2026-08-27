@@ -34,19 +34,17 @@ $page_range = BlockHelper::get_pagination_range( $current_page, $total_pages );
     aria-label="<?php echo esc_attr__( 'Products pagination', 'yay-bulk-order' ); ?>"
 >
     <ul class="ybo-pagination__list">
-        <li>
-            <?php if ( $current_page > 1 ) : ?>
+        <?php if ( $current_page > 1 ) : ?>
+            <li>
                 <a
                     class="ybo-pagination__link ybo-pagination__link--prev"
                     href="<?php echo esc_url( BlockHelper::build_query_url( $query_id, array( 'page' => $current_page - 1 ) ) ); ?>"
                     aria-label="<?php echo esc_attr__( 'Previous page', 'yay-bulk-order' ); ?>"
                     data-wp-on--click="actions.navigatePagination"
                     data-wp-on--mouseenter="actions.prefetchOnHover"
-                >&lsaquo;</a>
-            <?php else : ?>
-                <span class="ybo-pagination__link ybo-pagination__link--prev is-disabled" aria-hidden="true">&lsaquo;</span>
-            <?php endif; ?>
-        </li>
+                >←</a>
+            </li>
+        <?php endif; ?>
 
         <?php foreach ( $page_range as $page ) : ?>
             <li>
@@ -66,18 +64,16 @@ $page_range = BlockHelper::get_pagination_range( $current_page, $total_pages );
             </li>
         <?php endforeach; ?>
 
-        <li>
-            <?php if ( $current_page < $total_pages ) : ?>
+        <?php if ( $current_page < $total_pages ) : ?>
+            <li>
                 <a
                     class="ybo-pagination__link ybo-pagination__link--next"
                     href="<?php echo esc_url( BlockHelper::build_query_url( $query_id, array( 'page' => $current_page + 1 ) ) ); ?>"
                     aria-label="<?php echo esc_attr__( 'Next page', 'yay-bulk-order' ); ?>"
                     data-wp-on--click="actions.navigatePagination"
                     data-wp-on--mouseenter="actions.prefetchOnHover"
-                >&rsaquo;</a>
-            <?php else : ?>
-                <span class="ybo-pagination__link ybo-pagination__link--next is-disabled" aria-hidden="true">&rsaquo;</span>
-            <?php endif; ?>
-        </li>
+                >→</a>
+            </li>
+        <?php endif; ?>
     </ul>
 </nav>

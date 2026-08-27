@@ -47,6 +47,7 @@ class SettingsService {
             '--ybo-text-color'        => $colors['text'],
             '--ybo-description-color' => $colors['description'],
             '--ybo-border-color'      => $colors['border'],
+            '--ybo-border-radius'     => $settings['borderRadius'],
             '--ybo-background-color'  => $colors['background'],
 
             'color'                   => 'var(--ybo-text-color)',
@@ -57,7 +58,7 @@ class SettingsService {
 
     private function get_default_settings() {
         return [
-            'general' => [
+            'general'      => [
                 'currency'            => [
                     'symbol'      => html_entity_decode( get_woocommerce_currency_symbol() ),
                     'position'    => get_option( 'woocommerce_currency_pos' ),
@@ -68,13 +69,14 @@ class SettingsService {
                 'defaultCartQuantity' => 5,
                 'defaultPageSize'     => 10,
             ],
-            'colors'  => [
+            'colors'       => [
                 'primary'     => '#3858e9',
                 'text'        => '#171719',
                 'description' => '#7b7c80',
                 'border'      => '#e4e4e7',
                 'background'  => '#ffffff',
             ],
+            'borderRadius' => '8px',
         ];
     }
 }
