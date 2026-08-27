@@ -361,14 +361,14 @@ table.wp-block-yay-bulk-order-product-table {
     gap: 8px;
     cursor: pointer;
     border: none;
-    border-radius: 10px;
+    border-radius: var(--ybo-border-radius, 8px) !important;
     background-color: #4caf6f;
     color: #fff;
     padding: 10px 20px;
     font-weight: 500;
     white-space: nowrap;
     transition: all 0.2s ease-in-out;
-
+    min-height: 40px;
     &:hover:not(:disabled) {
       background-color: #429f62;
       color: #fff;
