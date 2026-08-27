@@ -1,7 +1,9 @@
 <?php
 namespace YayBulkOrder\Engines\Blocks;
 
+use WP_Block_Patterns_Registry;
 use YayBulkOrder\Services\LocalizeService;
+use YayBulkOrder\Services\PatternService;
 use YayBulkOrder\Utils\SingletonTrait;
 
 /**
@@ -11,9 +13,11 @@ class RegisterBlocks {
     use SingletonTrait;
 
     private LocalizeService $localize_service;
+    private PatternService $pattern_service;
 
     protected function __construct() {
         $this->localize_service = LocalizeService::get_instance();
+        $this->pattern_service  = PatternService::get_instance();
 
         add_action( 'init', [ $this, 'register_blocks' ] );
         add_action( 'enqueue_block_assets', [ $this, 'enqueue_block_assets' ] );
@@ -21,9 +25,8 @@ class RegisterBlocks {
     }
 
     public function register_blocks() {
-        $this->register_collection( YAYBULKORDER_PLUGIN_PATH . 'assets/dist/blocks/product-table' );
-        $this->register_collection( YAYBULKORDER_PLUGIN_PATH . 'assets/dist/blocks-pro/' );
-        $this->register_collection( YAYBULKORDER_PLUGIN_PATH . 'assets/dist/blocks/common' );
+        $this->pattern_service->register_collection( YAYBULKORDER_PLUGIN_PATH . 'assets/dist/blocks/product-table' );
+        $this->pattern_service->register_collection( YAYBULKORDER_PLUGIN_PATH . 'assets/dist/blocks/common' );
     }
 
     public function enqueue_block_assets() {
@@ -46,21 +49,5 @@ class RegisterBlocks {
             LocalizeService::VAR_META,
             $this->localize_service->get_meta(),
         );
-    }
-
-    private function register_collection( string $blocks_path ) {
-        if ( function_exists( 'wp_register_block_types_from_metadata_collection' ) ) {
-            wp_register_block_types_from_metadata_collection( $blocks_path, $blocks_path . '/blocks-manifest.php' );
-            return;
-        }
-
-        if ( function_exists( 'wp_register_block_metadata_collection' ) ) {
-            wp_register_block_metadata_collection( $blocks_path, $blocks_path . '/blocks-manifest.php' );
-        }
-
-        $manifest_data = require $blocks_path . '/blocks-manifest.php';
-        foreach ( array_keys( $manifest_data ) as $block_type ) {
-            register_block_type( $blocks_path . "/{$block_type}" );
-        }
     }
 }
