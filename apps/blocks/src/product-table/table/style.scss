@@ -7,7 +7,7 @@ table.wp-block-yay-bulk-order-product-table {
   border-collapse: separate;
   border-spacing: 0;
   border: 1px solid var(--ybo-border-color);
-  border-radius: 10px;
+  border-radius: var(--ybo-border-radius, 8px);
   overflow: hidden;
   margin: 10px 0 !important;
   table-layout: auto;
@@ -189,7 +189,7 @@ table.wp-block-yay-bulk-order-product-table {
   .ybo-add-to-cart-button {
     cursor: pointer;
     border: none;
-    border-radius: 10px !important;
+    border-radius: var(--ybo-border-radius, 8px) !important;
     background-color: var(--ybo-primary-color, #3858e9) !important;
     padding: 6px 10px !important;
     min-width: 125px !important;
@@ -246,7 +246,7 @@ table.wp-block-yay-bulk-order-product-table {
     box-sizing: border-box;
     padding: 8px 10px;
     border: 1px solid var(--ybo-border-color);
-    border-radius: 8px;
+    border-radius: var(--ybo-border-radius, 8px) !important;
     background-color: var(--ybo-background-color, #fff);
     color: inherit;
     font-size: 0.95rem;
@@ -358,14 +358,15 @@ table.wp-block-yay-bulk-order-product-table {
   &__submit {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 4px;
     cursor: pointer;
     border: none;
     border-radius: var(--ybo-border-radius, 8px) !important;
     background-color: #4caf6f;
     color: #fff;
-    padding: 10px 20px;
-    font-weight: 500;
+    padding: 10px;
+    font-weight: 550;
+    font-size: 16px;
     white-space: nowrap;
     transition: all 0.2s ease-in-out;
     min-height: 40px;
@@ -390,6 +391,13 @@ table.wp-block-yay-bulk-order-product-table {
     &[hidden] {
       display: none;
     }
+  }
+
+  &__submit .ybo-icon-cart {
+    display: inline-flex;
+    align-items: center;
+    line-height: 0;
+    font-size: 20px;
   }
 
   &__clear {
@@ -433,13 +441,13 @@ table.wp-block-yay-bulk-order-product-table {
   &__link {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 4px;
     background-color: #4caf6f;
     color: #fff;
     text-decoration: none !important;
-    font-weight: 500;
-    padding: 10px 22px;
-    border-radius: 10px;
+    font-weight: 550;
+    padding: 10px;
+    border-radius: var(--ybo-border-radius, 8px) !important;
     box-shadow: 0 3px 20px 0 rgba(0, 0, 0, 0.15);
     transition: all 0.2s ease-in-out;
 
@@ -638,7 +646,7 @@ table.wp-block-yay-bulk-order-product-table {
   flex: 0 0 auto;
   width: 220px;
   border: 1px solid var(--ybo-border-color);
-  border-radius: 10px;
+  border-radius: var(--ybo-border-radius, 8px);
   padding: 16px;
   margin-top: 10px !important;
   &__title {
