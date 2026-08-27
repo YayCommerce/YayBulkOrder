@@ -40,19 +40,19 @@ class SettingsService {
 
     public function get_styles() {
         $settings = $this->get_settings();
-        $design   = $settings['design'];
+        $colors   = $settings['colors'];
 
         return [
-            '--ybo-primary-color'                 => $design['primaryColor'],
-            '--ybo-text-color'                    => $design['textColor'],
-            '--ybo-text-hover-color'              => $design['textHoverColor'],
-            '--ybo-description-color'             => $design['descriptionColor'],
-            '--ybo-border-color'                  => $design['borderColor'],
-            '--ybo-background-color'              => $design['backgroundColor'],
-            '--ybo-button-background-color'       => $design['buttonBackgroundColor'],
-            '--ybo-button-background-hover-color' => $design['buttonBackgroundHoverColor'],
-            '--ybo-button-text-color'             => $design['buttonTextColor'],
-            '--ybo-button-text-hover-color'       => $design['buttonTextHoverColor'],
+            '--ybo-primary-color'                 => $colors['primary'],
+            '--ybo-text-color'                    => $colors['text'],
+            '--ybo-text-hover-color'              => $colors['textHover'],
+            '--ybo-description-color'             => $colors['description'],
+            '--ybo-border-color'                  => $colors['border'],
+            '--ybo-background-color'              => $colors['background'],
+            '--ybo-button-background-color'       => $colors['buttonBackground'],
+            '--ybo-button-background-hover-color' => $colors['buttonBackgroundHover'],
+            '--ybo-button-text-color'             => $colors['buttonText'],
+            '--ybo-button-text-hover-color'       => $colors['buttonTextHover'],
 
             'color'                               => 'var(--ybo-text-color)',
             'background-color'                    => 'var(--ybo-background-color)',
@@ -66,17 +66,17 @@ class SettingsService {
                 'defaultCartQuantity' => 5,
                 'defaultPageSize'     => 5,
             ],
-            'design'       => [
-                'primaryColor'               => '#3858e9',
-                'textColor'                  => '#171719',
-                'textHoverColor'             => '#3858e9',
-                'descriptionColor'           => '#7b7c80',
-                'borderColor'                => '#e4e4e7',
-                'backgroundColor'            => '#ffffff',
-                'buttonBackgroundColor'      => '#3858e9',
-                'buttonBackgroundHoverColor' => '#2d47ba',
-                'buttonTextColor'            => '#ffffff',
-                'buttonTextHoverColor'       => '#ffffff',
+            'colors'       => [
+                'primary'               => '#3858e9',
+                'text'                  => '#171719',
+                'textHover'             => '#3858e9',
+                'description'           => '#7b7c80',
+                'border'                => '#e4e4e7',
+                'background'            => '#ffffff',
+                'buttonBackground'      => '#3858e9',
+                'buttonBackgroundHover' => '#2d47ba',
+                'buttonText'            => '#ffffff',
+                'buttonTextHover'       => '#ffffff',
             ],
             'purchaseList' => [
                 'isAddToAccountPage'     => true,
@@ -91,5 +91,9 @@ class SettingsService {
                 'isAddToAccountPage' => false,
             ],
         ];
+    }
+
+    public function get_default_color_preset() {
+        return $this->get_default_settings()['colors'];
     }
 }

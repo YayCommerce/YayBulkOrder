@@ -25,8 +25,8 @@ class LocalizeService {
 
     public function get_admin_data() {
         return [
-            'settings' => $this->settings_service->get_settings(),
-            'general'  => [
+            'settings'       => $this->settings_service->get_settings(),
+            'general'        => [
                 'currency'            => [
                     'symbol'      => html_entity_decode( get_woocommerce_currency_symbol() ),
                     'position'    => get_option( 'woocommerce_currency_pos' ),
@@ -36,6 +36,9 @@ class LocalizeService {
                 ],
                 'defaultCartQuantity' => 5,
                 'defaultPageSize'     => 10,
+            ],
+            'defaultPresets' => [
+                'tableColors' => $this->settings_service->get_default_color_preset(),
             ],
         ];
     }
@@ -61,6 +64,16 @@ class LocalizeService {
                 'version'   => YAYBULKORDER_VERSION,
                 'reviewed'  => get_option( 'yaybulkorder_reviewed', false ),
             ],
+            'wcMeta'        => [
+                'currency_data' => [
+                    'currency'     => get_woocommerce_currency(),
+                    'symbol'       => html_entity_decode( \get_woocommerce_currency_symbol(), ENT_COMPAT ),
+                    'position'     => get_option( 'woocommerce_currency_pos' ),
+                    'thousand_sep' => get_option( 'woocommerce_price_thousand_sep' ),
+                    'decimal_sep'  => get_option( 'woocommerce_price_decimal_sep' ),
+                    'num_decimals' => intval( get_option( 'woocommerce_price_num_decimals' ) ),
+                ],
+            ],
         ];
 
         return $meta;
@@ -72,7 +85,7 @@ class LocalizeService {
 
         return [
             'settings'      => [
-                'colors'  => $admin_data['settings']['design'],
+                'colors'  => $admin_data['settings']['colors'],
                 'general' => $admin_data['general'],
             ],
             'wpMeta'        => $meta['wpMeta'],

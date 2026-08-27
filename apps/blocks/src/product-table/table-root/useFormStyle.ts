@@ -13,19 +13,19 @@ function getAdminData() {
 
 export function useFormStyle() {
   return useMemo(() => {
-    const design = getAdminData().settings.design;
+    const colors = getAdminData().settings.colors;
 
     return {
-      '--ybo-primary-color': design['primaryColor'],
-      '--ybo-text-color': design['textColor'],
-      '--ybo-text-hover-color': design['textHoverColor'],
-      '--ybo-description-color': design['descriptionColor'],
-      '--ybo-border-color': design['borderColor'],
-      '--ybo-background-color': design['backgroundColor'],
-      '--ybo-button-background-color': design['buttonBackgroundColor'],
-      '--ybo-button-background-hover-color': design['buttonBackgroundHoverColor'],
-      '--ybo-button-text-color': design['buttonTextColor'],
-      '--ybo-button-text-hover-color': design['buttonTextHoverColor'],
+      '--ybo-primary-color': colors['primary'],
+      '--ybo-text-color': colors['text'],
+      '--ybo-text-hover-color': colors['textHover'],
+      '--ybo-description-color': colors['description'],
+      '--ybo-border-color': colors['border'],
+      '--ybo-background-color': colors['background'],
+      '--ybo-button-background-color': colors['buttonBackground'],
+      '--ybo-button-background-hover-color': colors['buttonBackgroundHover'],
+      '--ybo-button-text-color': colors['buttonText'],
+      '--ybo-button-text-hover-color': colors['buttonTextHover'],
 
       color: 'var(--ybo-text-color)',
       'background-color': 'var(--ybo-background-color)',
