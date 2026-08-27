@@ -1,8 +1,7 @@
-table.wp-block-yay-bulk-order-product-table {
+.wp-block-yay-bulk-order-product-table {
   font-size: 1rem;
   width: 100%;
   max-width: 100%;
-  min-width: 0;
   box-sizing: border-box;
   border-collapse: separate;
   border-spacing: 0;
@@ -12,18 +11,51 @@ table.wp-block-yay-bulk-order-product-table {
   margin: 10px 0 !important;
   table-layout: auto;
 
-  thead {
-    th {
-      padding: 14px 16px;
-      text-align: left;
-      vertical-align: middle;
-      border-bottom: 1px solid var(--ybo-border-color);
-      font-weight: 600;
-      min-width: 0;
-      * {
-        margin: 0;
-      }
+  thead th {
+    padding: 14px 16px;
+    text-align: left;
+    vertical-align: middle;
+    border:none;
+    border-bottom: 1px solid var(--ybo-border-color);
+    font-weight: 600;
+    // No `min-width: 0` — see the comment on the table rule above; same
+    // reasoning applies per-cell.
+    * {
+      margin: 0;
     }
+  }
+
+  .wp-block-yay-bulk-order-product-table-header,
+  .wp-block-yay-bulk-order-product-table-columns {
+    min-width: 0 !important;
+    margin: 0;
+  }
+
+  .wp-block-yay-bulk-order-product-table-header .ybo-table-cell {
+    display: flex;
+    align-items: center;
+    width: 100% !important;
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--ybo-border-color);
+    font-weight: 600;
+    min-width: 0;
+    box-sizing: border-box;
+    * {
+      margin: 0;
+    }
+  }
+
+  .wp-block-yay-bulk-order-product-table-columns .ybo-table-cell {
+    display: flex;
+    align-items: center;
+    width: 100% !important;
+    padding: 14px 16px;
+    text-align: left;
+    min-width: 0;
+    margin: 0;
+    box-sizing: border-box;
+    overflow-wrap: anywhere;
   }
 
   tbody {
@@ -34,8 +66,8 @@ table.wp-block-yay-bulk-order-product-table {
         padding: 14px 16px;
         text-align: left;
         vertical-align: middle;
+        border:none;
         border-bottom: 1px solid var(--ybo-border-color);
-        min-width: 0;
         overflow-wrap: anywhere;
         display: table-cell !important;
       }
@@ -144,8 +176,8 @@ table.wp-block-yay-bulk-order-product-table {
     justify-content: center;
     min-width: 22px;
     height: 22px;
-    padding: 0 4px;
-    border-radius: 999px;
+    // padding: 0 4px;
+    border-radius: 50%;
     border: 2px solid var(--ybo-background-color, #fff);
     background-color: var(--ybo-primary-color, #3c434a);
     color: #fff;
@@ -270,6 +302,10 @@ table.wp-block-yay-bulk-order-product-table {
       display: none !important;
     }
   }
+
+  .wp-block-yay-bulk-order-product-table-columns .block-editor-button-block-appender {
+    margin-left: 8px;
+  }
 }
 .wp-block-yay-bulk-order-product-table-root {
   width: 100%;
@@ -291,6 +327,7 @@ table.wp-block-yay-bulk-order-product-table {
   flex-wrap: wrap;
   gap: 16px;
   padding: 16px 0;
+  margin: 0;
 }
 
 .ybo-bulk-action-wrap {
@@ -635,6 +672,11 @@ table.wp-block-yay-bulk-order-product-table {
     max-width: 100%;
     min-width: 0;
     overflow-x: auto;
+
+    // Editor: no scrollbar, by request — the Filter Sidebar block is
+    .editor-styles-wrapper & {
+      overflow-x: hidden;
+    }
   }
 }
 
@@ -690,10 +732,7 @@ table.wp-block-yay-bulk-order-product-table {
     }
   }
 }
-// Matches the Brandy theme's own `.woocommerce-pagination ul.page-numbers`
-// pill pagination 1:1 (colors, sizing, radius, transition all taken from
-// its compiled stylesheet) rather than this plugin's earlier, unrelated
-// pagination look.
+
 .ybo-pagination {
   &__list {
     display: inline-flex;
