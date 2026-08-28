@@ -37,5 +37,9 @@ export type Meta = {
       decimal_sep: string;
       num_decimals: number;
     };
+    categories: Array<{
+      id: string;
+      title: string;
+    }>;
   };
 };

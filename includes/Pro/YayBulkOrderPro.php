@@ -1,6 +1,7 @@
 <?php
 namespace YayBulkOrder\Pro;
 
+use YayBulkOrder\Pro\Engines\Admin\ProductTable;
 use YayBulkOrder\Pro\Engines\Blocks\CSVOrder;
 use YayBulkOrder\Pro\Engines\Frontend\Frontend;
 use YayBulkOrder\Pro\Engines\Blocks\PurchaseList;
@@ -28,6 +29,7 @@ class YayBulkOrderPro {
         PurchaseList::get_instance();
         CSVOrder::get_instance();
         Frontend::get_instance();
+        ProductTable::get_instance();
 
         RestAPI::get_instance();
 

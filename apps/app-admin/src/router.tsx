@@ -24,7 +24,16 @@ export function getAppAdminRouter() {
         },
         {
           path: 'product-tables',
-          element: <ProductTablesPage />,
+          children: [
+            {
+              index: true,
+              element: <ProductTablesPage />,
+            },
+            {
+              path: 'new',
+              element: <ProductTablesPage />,
+            },
+          ],
         },
         {
           path: 'settings',
