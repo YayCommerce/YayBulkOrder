@@ -235,7 +235,7 @@
   // Product cell itself is narrow (its own rendered width, not the table
   // or the viewport) — drop the name and keep only the thumbnail; the full
   // title is still available via the native `title` attribute on the cell.
-  @container ybo-product-cell (max-width: 170px) {
+  @container ybo-product-cell (max-width: 120px) {
     .ybo-product-title {
       display: none;
     }
@@ -263,13 +263,16 @@
     border: none;
     border-radius: var(--ybo-border-radius, 8px) !important;
     background-color: var(--ybo-primary-color, #3858e9) !important;
-    padding: 6px 10px !important;
+    padding: 6px 8px !important;
     min-width: 125px !important;
     max-width: 100%;
     box-sizing: border-box;
     color: #fff !important;
-    text-decoration: none;
-    display: inline-block;
+  
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
     text-align: center;
     min-height: 40px !important;
     margin: 0;
@@ -380,6 +383,7 @@
   flex-direction: column;
   align-items: flex-end;
   gap: 16px;
+  min-height: 40px;
 }
 
 // Marks where `.ybo-bulk-action` normally sits, so its visibility can be
@@ -689,7 +693,9 @@
   white-space: nowrap;
   transition: all 0.15s ease-in-out;
   margin: 0 !important;
-
+  + p:empty {
+    display: none !important;
+  }
   &:hover {
     background-color: rgba(0, 0, 0, 0.03);
   }
@@ -770,20 +776,22 @@
     cursor: pointer;
     border: none;
     background: none;
+    background-color: unset !important;
+    box-shadow: none !important;
     padding: 0;
-    color: inherit;
+    color: inherit !important;
     text-align: left;
     font-size: 0.95rem;
     transition: color 0.15s ease-in-out;
-
+    margin: 0 !important;
     &:hover {
-      text-decoration: underline;
+      text-decoration: underline !important;
     }
 
     &.is-active {
       font-weight: 600;
       color: var(--ybo-primary-color, inherit);
-      text-decoration: underline;
+      text-decoration: underline !important;
     }
   }
 }
@@ -800,6 +808,8 @@
 
     li {
       display: flex;
+      margin: 0 !important;
+      padding: 0 !important;
     }
   }
 
