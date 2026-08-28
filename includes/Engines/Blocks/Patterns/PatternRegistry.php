@@ -70,7 +70,7 @@ class PatternRegistry {
         $patterns = apply_filters( 'yaybulkorder_block_patterns', $patterns );
 
         foreach ( $patterns as $pattern ) {
-            if ( empty( $pattern['content'] || empty( $pattern['slug'] ) ) ) {
+            if ( empty( $pattern['content'] ) || empty( $pattern['slug'] ) ) {
                 continue;
             }
 

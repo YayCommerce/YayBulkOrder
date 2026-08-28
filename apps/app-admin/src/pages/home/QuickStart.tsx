@@ -63,7 +63,7 @@ export default function QuickStart() {
                 </p>
                 <p className="text-[12px]">
                   {__(
-                    'Using a Classic Theme? Yay Bulk Order still supports Shortcodes and Classic Settings.',
+                    'Note: Yay Bulk Order still supports Shortcodes and Classic Settings for Classic theme.',
                     'yay-bulk-order',
                   )}
                 </p>
