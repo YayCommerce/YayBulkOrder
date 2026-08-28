@@ -135,15 +135,29 @@
     white-space: nowrap;
   }
 
+  .wp-block-yay-bulk-order-product-table-column-sku {
+    width: 1%;
+    white-space: nowrap;
+  }
+
+  .wp-block-yay-bulk-order-product-table-column-description {
+    width: 260px;
+    max-width: 260px;
+    white-space: normal;
+  }
+
   .ybo-product-cell {
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 14px;
+    width: 100%;
     min-width: 0;
     max-width: 100%;
     text-decoration: none !important;
     color: inherit;
+    container-type: inline-size;
+    container-name: ybo-product-cell;
   }
 
   .ybo-product-thumbnail {
@@ -218,6 +232,32 @@
     }
   }
 
+  // Product cell itself is narrow (its own rendered width, not the table
+  // or the viewport) — drop the name and keep only the thumbnail; the full
+  // title is still available via the native `title` attribute on the cell.
+  @container ybo-product-cell (max-width: 170px) {
+    .ybo-product-title {
+      display: none;
+    }
+
+    .ybo-product-cell {
+      justify-content: center;
+    }
+  }
+
+  // Editor: the "Product name" label is what tells the editing user which
+  // block this is — never hide it there, no matter how narrow the column
+  // gets, so the placeholder doesn't read as broken/empty.
+  .editor-styles-wrapper & {
+    .ybo-product-title {
+      display: -webkit-box !important;
+    }
+
+    .ybo-product-cell {
+      justify-content: flex-start !important;
+    }
+  }
+
   .ybo-add-to-cart-button {
     cursor: pointer;
     border: none;
@@ -232,6 +272,7 @@
     display: inline-block;
     text-align: center;
     min-height: 40px !important;
+    margin: 0;
     font-weight: 500;
     transition: all 0.2s ease-in-out;
 
@@ -284,10 +325,13 @@
     font-size: 0.95rem;
     text-align: center;
     transition: border-color 0.15s ease-in-out;
-
+    margin: 0;
     &:focus {
       outline: none;
       border-color: var(--ybo-primary-color, #3c434a);
+    }
+    &[hidden] {
+      display: none !important;
     }
   }
   
@@ -308,8 +352,8 @@
   }
 }
 .wp-block-yay-bulk-order-product-table-root {
-  width: 100%;
-  max-width: 100%;
+  // width: 100%;
+  // max-width: 100%;
   min-width: 0;
   box-sizing: border-box;
   border: none !important;
@@ -379,12 +423,22 @@
   }
 
   &__back-to-top {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    border: 1px solid var(--ybo-border-color);
+    border-radius: 50%;
+    background-color: var(--ybo-background-color, #fff);
     color: inherit;
+    line-height: 1;
     text-decoration: none !important;
-    white-space: nowrap;
+    transition: all 0.15s ease-in-out;
 
     &:hover {
-      text-decoration: underline;
+      background-color: rgba(0, 0, 0, 0.04);
     }
 
     &[hidden] {
@@ -407,6 +461,7 @@
     white-space: nowrap;
     transition: all 0.2s ease-in-out;
     min-height: 40px;
+    margin:  0 !important;
     &:hover:not(:disabled) {
       background-color: #429f62;
       color: #fff;
@@ -543,7 +598,7 @@
   width: 100%;
 
   &__input {
-    width: 100%;
+    width: 100% !important;
     height: 42px !important;
     min-height: 42px !important;
     max-height: 42px !important;
@@ -558,7 +613,7 @@
     line-height: 40px;
     outline: none;
     transition: border-color 0.15s ease-in-out;
-    margin: 0;
+    margin: 0 !important;
     &::placeholder {
       color: #8a8a8e;
     }
@@ -633,7 +688,7 @@
   font-size: 1rem;
   white-space: nowrap;
   transition: all 0.15s ease-in-out;
-  margin: 0;
+  margin: 0 !important;
 
   &:hover {
     background-color: rgba(0, 0, 0, 0.03);
@@ -739,8 +794,8 @@
     align-items: center;
     flex-wrap: wrap;
     gap: 10px;
-    margin: 0;
-    padding: 0;
+    margin: 0 !important;
+    padding: 0 !important;
     list-style: none;
 
     li {

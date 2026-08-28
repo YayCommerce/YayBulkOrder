@@ -26,9 +26,15 @@ $has_products = $product_query_service->get_pagination_info( $block )['totalItem
         <a
             href="#top"
             class="ybo-bulk-action__back-to-top"
+            aria-label="<?php esc_attr_e( 'Go Back to Top', 'yay-bulk-order' ); ?>"
+            title="<?php esc_attr_e( 'Go Back to Top', 'yay-bulk-order' ); ?>"
             data-wp-on--click="actions.scrollToTop"
             data-wp-bind--hidden="!state.showBackToTop"
-        ><?php esc_html_e( 'Go Back to Top ↑', 'yay-bulk-order' ); ?></a>
+        >
+            <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 19V5M5 12l7-7 7 7"/>
+            </svg>
+        </a>
 
         <?php // No select column means nothing can ever be selected, so the button has nothing to act on. ?>
         <?php if ( $has_products ) : ?>

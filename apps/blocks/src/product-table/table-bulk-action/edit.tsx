@@ -6,8 +6,24 @@ export default function Edit() {
   return (
     <div {...blockProps} className={`${blockProps.className ?? ''} ybo-bulk-action-wrap`}>
       <div className="ybo-bulk-action">
-        <a href="#top" className="ybo-bulk-action__back-to-top" onClick={(e) => e.preventDefault()}>
-          Go Back to Top ↑
+        <a
+          href="#top"
+          className="ybo-bulk-action__back-to-top"
+          aria-label="Go Back to Top"
+          title="Go Back to Top"
+          onClick={(e) => e.preventDefault()}
+        >
+          <svg
+            width="20px"
+            height="20px"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 19V5M5 12l7-7 7 7" />
+          </svg>
         </a>
         <button type="button" className="ybo-bulk-action__submit" disabled>
           <span className="ybo-icon-cart" aria-hidden="true">
@@ -28,8 +44,20 @@ export default function Edit() {
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
-              <path d="M15.1016 11.5496H15.0568" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              <path d="M7.94337 11.5496H7.89863" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <path
+                d="M15.1016 11.5496H15.0568"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M7.94337 11.5496H7.89863"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
           </span>{' '}
           Add selected items to cart
