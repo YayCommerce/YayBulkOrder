@@ -9,7 +9,6 @@
   "textdomain": "yay-bulk-order",
   "usesContext": ["yay-bulk-order/productId"],
   "supports": {
-    "multiple": false,
     "html": false
   },
   "parent": ["yay-bulk-order/product-table-columns"],

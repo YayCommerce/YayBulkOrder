@@ -2,6 +2,7 @@
 
 namespace YayBulkOrder\Pro\Engines\Frontend;
 
+use YayBulkOrder\Services\SettingsService;
 use YayBulkOrder\Utils\SingletonTrait;
 
 defined( 'ABSPATH' ) || exit;
@@ -11,7 +12,10 @@ defined( 'ABSPATH' ) || exit;
 class Frontend {
     use SingletonTrait;
 
+    private SettingsService $settings_service;
+
     protected function __construct() {
+        $this->settings_service = SettingsService::get_instance();
         add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
         add_action( 'enqueue_block_assets', [ $this, 'enqueue_slotfill' ] );
     }
@@ -26,11 +30,6 @@ class Frontend {
         $meta = [
             'ajaxUrl' => admin_url( 'admin-ajax.php' ),
             'nonce'   => wp_create_nonce( 'wp_rest' ),
-            'i18n'    => [
-                'promptListName' => __( 'Name this purchase list:', 'yay-bulk-order' ),
-                'saved'          => __( 'Purchase list saved.', 'yay-bulk-order' ),
-                'error'          => __( 'Something went wrong. Please try again.', 'yay-bulk-order' ),
-            ],
         ];
 
         wp_localize_script(
@@ -55,6 +54,20 @@ class Frontend {
             array_merge( $asset['dependencies'], [ 'wc-blocks-checkout' ] ),
             $asset['version'],
             true
+        );
+
+        wp_localize_script(
+            $slug,
+            'yayBulkOrderSlotFill',
+            [
+                'ybo_meta' => [
+                    'settings' => $this->settings_service->get_settings(),
+                ],
+                'wc_meta'  => [
+                    'isCheckout' => is_checkout(),
+                    'isCart'     => is_cart(),
+                ],
+            ]
         );
     }
 }

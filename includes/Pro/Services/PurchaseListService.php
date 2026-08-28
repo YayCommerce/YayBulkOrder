@@ -45,7 +45,7 @@ class PurchaseListService {
     public function get_allowed_product_types() {
         $allowed = [ 'simple', 'subscription', 'subscription_variation', 'variable', 'grouped', 'bundle' ];
 
-        return apply_filters( 'ybo_allowed_purchase_list_product_types', $allowed );
+        return apply_filters( 'yaybulkorder_allowed_purchase_list_product_types', $allowed );
     }
 
     public function get_all_products() {
@@ -75,8 +75,8 @@ class PurchaseListService {
                 $price          = $this->get_max_grouped_product_price( $product );
                 $is_purchasable = (float) $price > 0.0;
             } else {
-                $price          = apply_filters( 'ybo_purchase_list_product_price', $product->get_price(), $product );
-                $is_purchasable = apply_filters( 'ybo_purchase_list_product_is_purchasable', $product->is_purchasable(), $product );
+                $price          = apply_filters( 'yaybulkorder_purchase_list_product_price', $product->get_price(), $product );
+                $is_purchasable = apply_filters( 'yaybulkorder_purchase_list_product_is_purchasable', $product->is_purchasable(), $product );
             }
 
             if ( $is_purchasable ) {
@@ -90,7 +90,7 @@ class PurchaseListService {
             }
         }//end while
 
-        return apply_filters( 'ybo_purchase_list_products', $result );
+        return apply_filters( 'yaybulkorder_purchase_list_products', $result );
     }
 
     protected function get_max_grouped_product_price( \WC_Product $product ) {
@@ -98,12 +98,12 @@ class PurchaseListService {
 
         foreach ( $product->get_children() as $child_id ) {
             $child          = wc_get_product( $child_id );
-            $is_purchasable = apply_filters( 'ybo_purchase_list_product_is_purchasable', $child->is_purchasable(), $child );
+            $is_purchasable = apply_filters( 'yaybulkorder_purchase_list_product_is_purchasable', $child->is_purchasable(), $child );
             if ( ! $child || ! $is_purchasable ) {
                 continue;
             }
 
-            $price += apply_filters( 'ybo_purchase_list_product_price', $child->get_price(), $child );
+            $price += apply_filters( 'yaybulkorder_purchase_list_product_price', $child->get_price(), $child );
         }
 
         return $price;
@@ -241,7 +241,7 @@ class PurchaseListService {
                 continue;
             }
 
-            $price = apply_filters( 'ybo_purchase_list_product_price', $product_data->get_price(), $product_data );
+            $price = apply_filters( 'yaybulkorder_purchase_list_product_price', $product_data->get_price(), $product_data );
 
             $data[] = [
                 $product_data->get_id(),

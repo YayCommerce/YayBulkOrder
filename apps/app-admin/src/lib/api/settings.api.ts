@@ -6,7 +6,7 @@ export function getSettings() {
   return api.get('settings').json<Settings>();
 }
 
-export function postSettings(data: Settings) {
+export function saveSettings(data: Settings) {
   return api.post('settings', { json: data }).json<Settings>();
 }
 

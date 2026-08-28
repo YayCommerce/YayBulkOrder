@@ -1,10 +1,22 @@
-import { __ } from '@wordpress/i18n';
+import type { ReactNode } from 'react';
+import { Settings } from '@yay-bulk-order/common/src/schemas/settings.schema';
+
+import SavePurchaseListButton from './components/SavePurchaseListButton';
 
 declare global {
   interface Window {
     wc?: {
       blocksCheckout?: {
-        ExperimentalOrderMeta: (props: { children?: unknown }) => unknown;
+        ExperimentalOrderMeta: (props: { children?: ReactNode }) => ReactNode;
+      };
+    };
+    yayBulkOrderSlotFill: {
+      ybo_meta: {
+        settings: Settings;
+      };
+      wc_meta: {
+        isCheckout: boolean;
+        isCart: boolean;
       };
     };
   }
@@ -19,11 +31,7 @@ const Render = () => {
 
   return (
     <ExperimentalOrderMeta>
-      <div className="ybo_slotfill_button_container">
-        <button className="ybo_save_pl_cart_button wp-element-button">
-          {__('Save as Purchase list', 'yay-bulk-order')}
-        </button>
-      </div>
+      <SavePurchaseListButton />
     </ExperimentalOrderMeta>
   );
 };

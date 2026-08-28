@@ -10,7 +10,6 @@
   "usesContext": ["yay-bulk-order/productId"],
   "supports": {
     "inserter": false,
-    "multiple": false,
     "html": false
   },
   "parent": ["yay-bulk-order/product-table-columns"],

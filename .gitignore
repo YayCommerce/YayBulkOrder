@@ -14,3 +14,4 @@ pnpm-debug.log*
 /vendor/
 .DS_Store
 .env.local
+composer.lock

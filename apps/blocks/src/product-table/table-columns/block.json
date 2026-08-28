@@ -7,11 +7,10 @@
   "category": "woocommerce",
   "description": "List of column in order.",
   "textdomain": "yay-bulk-order",
-  "usesContext": ["queryId", "query"],
+  "usesContext": ["queryId", "query", "productQuery"],
   "supports": {
     "interactivity": true,
     "inserter": false,
-    "multiple": false,
     "reusable": false,
     "html": false,
     "align": ["wide", "full"],

@@ -3,6 +3,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { __ } from '@wordpress/i18n';
 
 import { Field, FieldContent, FieldError, FieldLabel } from '@/components/ui/field';
+import { Label } from '@/components/ui/label';
 import { NumberInput } from '@/components/ui/number-input';
 
 export function GeneralTab() {
@@ -14,12 +15,20 @@ export function GeneralTab() {
         control={control}
         name="general.defaultCartQuantity"
         render={({ field, fieldState }) => (
-          <Field className="flex w-full flex-col gap-1.5">
-            <FieldLabel className="text-xs font-medium">{__('Default cart quantity', 'yay-bulk-order')}</FieldLabel>
-            <FieldContent>
-              <NumberInput ref={field.ref} value={field.value} onValueChange={field.onChange} step={5} />
+          <Field orientation="horizontal" className="flex items-center justify-between rounded-md border p-4">
+            <div>
+              <Label
+                htmlFor="purchase-list-is-add-to-account-page"
+                className="flex items-center gap-2 font-medium leading-3"
+              >
+                {__('Default Cart Quantity', 'yay-bulk-order')}
+              </Label>
+              <p className="text-muted-foreground mt-2 text-xs font-normal">
+                {__('Default product quantity input in product table.', 'yay-bulk-order')}
+              </p>
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-            </FieldContent>
+            </div>
+            <NumberInput value={field.value} onValueChange={field.onChange} step={5} className="w-20" />
           </Field>
         )}
       />
@@ -28,12 +37,20 @@ export function GeneralTab() {
         control={control}
         name="general.defaultPageSize"
         render={({ field, fieldState }) => (
-          <Field className="flex w-full flex-col gap-1.5">
-            <FieldLabel className="text-xs font-medium">{__('Default page size', 'yay-bulk-order')}</FieldLabel>
-            <FieldContent>
-              <NumberInput ref={field.ref} value={field.value} onValueChange={field.onChange} step={5} />
+          <Field orientation="horizontal" className="flex items-center justify-between rounded-md border p-4">
+            <div>
+              <Label
+                htmlFor="purchase-list-is-add-to-account-page"
+                className="flex items-center gap-2 font-medium leading-3"
+              >
+                {__('Default Page Size', 'yay-bulk-order')}
+              </Label>
+              <p className="text-muted-foreground mt-2 text-xs font-normal">
+                {__('Number of products per page in product table.', 'yay-bulk-order')}
+              </p>
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-            </FieldContent>
+            </div>
+            <NumberInput value={field.value} onValueChange={field.onChange} step={5} className="w-20" />
           </Field>
         )}
       />

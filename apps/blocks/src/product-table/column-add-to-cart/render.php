@@ -15,6 +15,38 @@ if ( ! $product instanceof WC_Product ) {
 	return;
 }
 $product_type = $product->get_type();
+
+if ( $product instanceof WC_Product_Variable ) {
+	$toggle_attributes = wc_implode_html_attributes(
+		array(
+			'class' => implode(
+				' ',
+				array(
+					'wp-block-button__link',
+					'wp-element-button',
+					'wc-block-components-product-button__button',
+					'ybo-add-to-cart-button',
+					'ybo-view-options-button',
+					'product_type_' . $product_type,
+				)
+			),
+		)
+	);
+	?>
+	<td <?php echo get_block_wrapper_attributes( array( 'class' => 'wp-block-button wc-block-components-product-button' ) ); ?>>
+		<button
+			type="button"
+			<?php echo $toggle_attributes; ?>
+			data-wp-on--click="actions.toggleProductVariations"
+			data-wp-bind--aria-expanded="state.isProductExpanded"
+		>
+			<span data-wp-text="state.viewOptionsText"><?php esc_html_e( 'View options', 'yay-bulk-order' ); ?></span>
+		</button>
+	</td>
+	<?php
+	return;
+}
+
 $button_attributes = wc_implode_html_attributes(
 	array(
 		'class'            => implode(
@@ -39,7 +71,7 @@ $button_text = $product->add_to_cart_text() ?: __( 'Add to cart', 'yay-bulk-orde
 	<?php if ( $product->supports( 'ajax_add_to_cart' ) ) : ?>
 		<button type="button" <?php echo $button_attributes;?>
 			data-wp-on--click="actions.addToCart"
-			data-wp-bind--disabled="context.isAddingToCart"
+			data-wp-bind--disabled="state.isAddToCartDisabled"
 			data-wp-class--loading="context.isAddingToCart"
 		>
 			<span data-wp-text="state.addToCartText"><?php echo esc_html( $button_text ); ?></span>

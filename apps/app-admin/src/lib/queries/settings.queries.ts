@@ -1,12 +1,12 @@
 import { queryOptions, useIsMutating, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { getSettings, postSettings } from '@/lib/api/settings.api';
+import { getSettings, saveSettings } from '@/lib/api/settings.api';
 
 /** Options */
 
 export const SETTINGS_QUERIES = {
   main: queryOptions({
-    queryKey: ['settings'],
+    queryKey: ['settings', 'main'],
     queryFn: async () => {
       const res = await getSettings();
       window.yayBulkOrderAdminData.settings = res;
@@ -30,7 +30,7 @@ export function useSaveSettingsMutation() {
 
   return useMutation({
     mutationKey: ['settings'],
-    mutationFn: postSettings,
+    mutationFn: saveSettings,
     onSuccess: (res) => {
       window.yayBulkOrderAdminData.settings = res;
       queryClient.setQueryData(SETTINGS_QUERIES.main.queryKey, res);

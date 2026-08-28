@@ -43,38 +43,57 @@ class SettingsService {
         $colors   = $settings['colors'];
 
         return [
-            '--ybo-primary-color'     => $colors['primary'],
-            '--ybo-text-color'        => $colors['text'],
-            '--ybo-description-color' => $colors['description'],
-            '--ybo-border-color'      => $colors['border'],
-            '--ybo-background-color'  => $colors['background'],
+            '--ybo-primary-color'                 => $colors['primary'],
+            '--ybo-text-color'                    => $colors['text'],
+            '--ybo-text-hover-color'              => $colors['textHover'],
+            '--ybo-description-color'             => $colors['description'],
+            '--ybo-border-color'                  => $colors['border'],
+            '--ybo-background-color'              => $colors['background'],
+            '--ybo-button-background-color'       => $colors['buttonBackground'],
+            '--ybo-button-background-hover-color' => $colors['buttonBackgroundHover'],
+            '--ybo-button-text-color'             => $colors['buttonText'],
+            '--ybo-button-text-hover-color'       => $colors['buttonTextHover'],
 
-            'color'                   => 'var(--ybo-text-color)',
-            'background-color'        => 'var(--ybo-background-color)',
-            'border-color'            => 'var(--ybo-border-color)',
+            'color'                               => 'var(--ybo-text-color)',
+            'background-color'                    => 'var(--ybo-background-color)',
+            'border-color'                        => 'var(--ybo-border-color)',
         ];
     }
 
     private function get_default_settings() {
         return [
-            'general' => [
-                'currency'            => [
-                    'symbol'      => html_entity_decode( get_woocommerce_currency_symbol() ),
-                    'position'    => get_option( 'woocommerce_currency_pos' ),
-                    'decimals'    => wc_get_price_decimals(),
-                    'decimalSep'  => wc_get_price_decimal_separator(),
-                    'thousandSep' => wc_get_price_thousand_separator(),
-                ],
+            'general'      => [
                 'defaultCartQuantity' => 5,
-                'defaultPageSize'     => 10,
+                'defaultPageSize'     => 5,
             ],
-            'colors'  => [
-                'primary'     => '#3858e9',
-                'text'        => '#171719',
-                'description' => '#7b7c80',
-                'border'      => '#e4e4e7',
-                'background'  => '#ffffff',
+            'colors'       => [
+                'primary'               => '#3858e9',
+                'text'                  => '#171719',
+                'textHover'             => '#3858e9',
+                'description'           => '#7b7c80',
+                'border'                => '#e4e4e7',
+                'background'            => '#ffffff',
+                'buttonBackground'      => '#3858e9',
+                'buttonBackgroundHover' => '#2d47ba',
+                'buttonText'            => '#ffffff',
+                'buttonTextHover'       => '#ffffff',
+            ],
+            'purchaseList' => [
+                'isAddToAccountPage'     => true,
+                'savePurchaseListButton' => [
+                    'isAddToCartPage'     => true,
+                    'isAddToCheckoutPage' => true,
+                    'isAddToMiniCart'     => false,
+                    'isAddToOrder'        => false,
+                ],
+            ],
+            'csvOrder'     => [
+                'isAddToAccountPage' => false,
             ],
         ];
+    }
+
+    public function get_default_color_preset() {
+        return $this->get_default_settings()['colors'];
     }
 }

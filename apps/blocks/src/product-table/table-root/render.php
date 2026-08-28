@@ -29,8 +29,9 @@ foreach ( $styles as $property => $value ) {
 
 $query_id = $attributes['queryId'];
 
-$page_param = BlockHelper::get_page_param( $query_id );
-$filter_param = BlockHelper::get_filter_param( $query_id );
+$page_param     = BlockHelper::get_page_param( $query_id );
+$search_param   = BlockHelper::get_search_param( $query_id );
+$category_param = BlockHelper::get_category_param( $query_id );
 
 $data_context = [
     'formAttributes' => [
@@ -38,12 +39,29 @@ $data_context = [
         'productQuery' => $attributes['productQuery']
     ],
     'tableState' => [
-        'select' => [ 'noop' => false ],
-        'filter' => [ 'noop' => false ],
-        'pagination' => [
-            'pageIndex' => 0,
-            'pageSize' => 10,
+        // Cast to object so an empty selection serializes as `{}`, not `[]`,
+        // keeping it a keyed dictionary (productId => SelectedRow) on the JS side.
+        'select' => (object) [],
+        'bulkAdding' => false,
+        'cartNotice' => [
+            'visible' => false,
+            'totalFormatted' => '',
         ],
+        // Seeded from the current URL so the search box, filter toggle and
+        // pagination state stay in sync across a full page load and a
+        // client-side (interactivity router) navigation alike.
+        'filter' => [
+            'categories' => $category_param,
+            'search' => $search_param,
+            'isOpen' => false,
+        ],
+        'pagination' => [
+            'pageIndex' => max( 0, $page_param - 1 ),
+            'pageSize' => $settings_service->get_settings()['general']['defaultPageSize'],
+        ],
+        'showBackToTop' => false,
+        // Cast to object for the same `{}` (not `[]`) reason as `select` above.
+        'expandedProducts' => (object) [],
     ],
 ];
 ?>
@@ -51,9 +69,10 @@ $data_context = [
 <div
     <?php echo get_block_wrapper_attributes(); ?>
     data-wp-interactive="yay-bulk-order/product-table"
-    data-wp-router-region="yay-bulk-order/product-table"
+    data-wp-router-region="yay-bulk-order/product-table-<?php echo esc_attr( $query_id ); ?>"
     <?php echo wp_interactivity_data_wp_context( $data_context ); ?>
     data-wp-init="callbacks.onRender"
+    data-wp-watch="callbacks.syncCartNoticeFromExternalChange"
     style="<?php echo $style_attr; ?>"
 >
 

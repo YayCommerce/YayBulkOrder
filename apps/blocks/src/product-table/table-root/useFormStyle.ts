@@ -18,9 +18,14 @@ export function useFormStyle() {
     return {
       '--ybo-primary-color': colors['primary'],
       '--ybo-text-color': colors['text'],
+      '--ybo-text-hover-color': colors['textHover'],
       '--ybo-description-color': colors['description'],
       '--ybo-border-color': colors['border'],
       '--ybo-background-color': colors['background'],
+      '--ybo-button-background-color': colors['buttonBackground'],
+      '--ybo-button-background-hover-color': colors['buttonBackgroundHover'],
+      '--ybo-button-text-color': colors['buttonText'],
+      '--ybo-button-text-hover-color': colors['buttonTextHover'],
 
       color: 'var(--ybo-text-color)',
       'background-color': 'var(--ybo-background-color)',

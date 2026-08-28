@@ -8,7 +8,11 @@ export default function Edit(props: BlockEditProps<unknown>) {
 
   return (
     <div {...blockProps}>
-      <button>(10 items) $99.99</button>
+      <button type="button">
+        <span aria-hidden="true">🛒</span>
+        <span>$99.99</span>
+        <span>10 items</span>
+      </button>
     </div>
   );
 }
