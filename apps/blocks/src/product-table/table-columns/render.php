@@ -8,6 +8,7 @@
 use YayBulkOrder\Services\ProductQueryService;
 use YayBulkOrder\Services\LocalizeService;
 use YayBulkOrder\Services\PricingService;
+use YayBulkOrder\Services\VariationAttributeService;
 
 $product_query_service = ProductQueryService::get_instance();
 $localize_service = LocalizeService::get_instance();
@@ -17,7 +18,7 @@ $query = $product_query_service->create_products_query( $block );
 
 $cart_quantities = isset( WC()->cart ) && WC()->cart ? WC()->cart->get_cart_item_quantities() : array();
 
-$render_row = function ( $block, $product_id, $product, $default_cart_quantity, $cart_quantities, $parent_product_id ) {
+$render_row = function ( $block, $product_id, $product, $default_cart_quantity, $cart_quantities, $parent_product_id, $parent_product = null ) {
     $block_instance = $block->parsed_block;
     $block_instance['blockName'] = 'core/null';
 
@@ -61,6 +62,12 @@ $render_row = function ( $block, $product_id, $product, $default_cart_quantity, 
     );
     if ( $parent_product_id ) {
         $row_context['parentProductId'] = $parent_product_id;
+    }
+    if ( $parent_product_id && $product instanceof WC_Product_Variation && $parent_product instanceof WC_Product_Variable ) {
+        $variation_selections = VariationAttributeService::get_instance()->get_variation_selections( $product, $parent_product );
+        if ( ! empty( $variation_selections ) ) {
+            $row_context['variationSelections'] = $variation_selections;
+        }
     }
 
     return strtr(
@@ -110,7 +117,7 @@ if ( $query->have_posts() ) {
                 if ( ! $variation instanceof WC_Product_Variation || ! $variation->exists() ) {
                     continue;
                 }
-                $table_body_content .= $render_row( $block, $variation->get_id(), $variation, $default_cart_quantity, $cart_quantities, $product_id );
+                $table_body_content .= $render_row( $block, $variation->get_id(), $variation, $default_cart_quantity, $cart_quantities, $product_id, $product );
             }
         }
     }

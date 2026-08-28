@@ -53,3 +53,8 @@ export type BatchResponse<T> = Readonly<{
     body: T;
   }>;
 }>;
+
+export type StoreApiVariationSelection = Readonly<{
+  attribute: string;
+  value: string;
+}>;
