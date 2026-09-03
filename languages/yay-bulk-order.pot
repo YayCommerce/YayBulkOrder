@@ -1,0 +1,482 @@
+# Copyright (C) 2026 YayCommerce
+# This file is distributed under the GPLv2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Yay Bulk Order for WooCommerce 0.2.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/YayBulkOrder\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-09-03T04:54:44+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.8.1\n"
+"X-Domain: yay-bulk-order\n"
+
+#. Plugin Name of the plugin
+msgid "Yay Bulk Order for WooCommerce"
+msgstr ""
+
+#. Plugin URI of the plugin
+msgid "https://yaycommerce.com/"
+msgstr ""
+
+#. Description of the plugin
+msgid "WooCommerce plugin for quick bulk ordering."
+msgstr ""
+
+#. Author of the plugin
+msgid "YayCommerce"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://yaycommerce.com"
+msgstr ""
+
+#: assets/dist/blocks/common/cart-summary/render.php:20
+#: assets/dist/blocks/common/cart-summary/render.php:21
+msgid "Open cart"
+msgstr ""
+
+#: assets/dist/blocks/product-table/column-add-to-cart/render.php:43
+msgid "View options"
+msgstr ""
+
+#: assets/dist/blocks/product-table/column-add-to-cart/render.php:67
+#: assets/dist/blocks/product-table/table-columns/render.php:40
+msgid "Add to cart"
+msgstr ""
+
+#: assets/dist/blocks/product-table/column-add-to-cart/render.php:84
+msgid "Not Available"
+msgstr ""
+
+#: assets/dist/blocks/product-table/column-product/render.php:15
+msgid "No Product"
+msgstr ""
+
+#: assets/dist/blocks/product-table/column-quantity/render.php:27
+msgid "Quantity"
+msgstr ""
+
+#: assets/dist/blocks/product-table/column-select/render.php:22
+msgid "Select product"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-bulk-action/render.php:29
+#: assets/dist/blocks/product-table/table-bulk-action/render.php:30
+msgid "Go Back to Top"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-bulk-action/render.php:57
+msgid "Add selected items to cart"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-bulk-action/render.php:64
+msgid "Clear selection"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-bulk-action/render.php:84
+msgid "View cart"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-bulk-action/render.php:90
+msgid "Dismiss"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-filter-sidebar/render.php:32
+msgid "Categories"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-filter-sidebar/render.php:41
+#: assets/dist/blocks/product-table/table-root/editor.js:1
+msgid "All Products"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-filter/render.php:28
+msgid "Filters"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-pagination/render.php:34
+msgid "Products pagination"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-pagination/render.php:42
+msgid "Previous page"
+msgstr ""
+
+#. translators: %d: page number.
+#: assets/dist/blocks/product-table/table-pagination/render.php:59
+msgid "Page %d"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-pagination/render.php:72
+msgid "Next page"
+msgstr ""
+
+#: includes/Engines/Admin/AdminPage.php:31
+msgid "YayBulkOrder"
+msgstr ""
+
+#: includes/Engines/Admin/AdminPage.php:31
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Settings"
+msgstr ""
+
+#: includes/Engines/Blocks/Patterns/PatternRegistry.php:38
+msgid "Bulk Order"
+msgstr ""
+
+#: includes/Engines/Blocks/Patterns/PatternRegistry.php:50
+msgid "Simple Bulk Order"
+msgstr ""
+
+#: includes/Engines/Blocks/Patterns/PatternRegistry.php:51
+msgid "Simple bulk order table."
+msgstr ""
+
+#: includes/Engines/Blocks/Patterns/PatternRegistry.php:57
+msgid "Filterable Bulk Order"
+msgstr ""
+
+#: includes/Engines/Blocks/Patterns/PatternRegistry.php:58
+msgid "Bulk order table with filters."
+msgstr ""
+
+#: includes/Fallback.php:11
+msgid "It looks like you have another YayBulkOrder version installed, please delete it before activating this new version. All of the settings and data are still preserved."
+msgstr ""
+
+#: includes/Fallback.php:12
+#: includes/Fallback.php:13
+msgid "Read more details."
+msgstr ""
+
+#. translators: %s: Woocommerce link
+#: yay-bulk-order.php:58
+msgid "YayBulkOrder is enabled but not effective. It requires %s in order to work"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-columns/editor.js:1
+msgid "Add column"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-root/editor.js:1
+msgid "Inherit from archive"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-root/editor.js:1
+msgid "Featured Products"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-root/editor.js:1
+msgid "On Sale Products"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-root/editor.js:1
+msgid "Top Rated Products"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-root/editor.js:1
+msgid "Hand-Picked Products"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-root/editor.js:1
+msgid "Products by Category"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-root/editor.js:1
+msgid "What products do you want to show?"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-root/editor.js:1
+msgid "or"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-root/editor.js:1
+msgid "create your own"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-root/editor.js:1
+msgid "Could not load categories."
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-root/editor.js:1
+msgid "No product categories found."
+msgstr ""
+
+#. translators: %d: number of products in the category
+#: assets/dist/blocks/product-table/table-root/editor.js:2
+msgid "%d product"
+msgid_plural "%d products"
+msgstr[0] ""
+msgstr[1] ""
+
+#: assets/dist/blocks/product-table/table-root/editor.js:2
+msgid "Products"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-root/editor.js:2
+msgid "Products to Show"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-root/editor.js:2
+msgid "This table shows products from the current Shop or product archive. Change the collection below to override."
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-root/editor.js:2
+msgid "Collection"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-root/editor.js:2
+msgid "A Product Table block cannot be placed inside another Product Table block."
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Thank you for using YayBulkOrder from <link/>."
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "We need your support to keep updating and improving the plugin. Please <review>help us by leaving a good review</review>. Thanks!"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Home"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Product Tables"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Back to home"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Default cart quantity"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Default page size"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Primary Color"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Text Color"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Description Color"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Border Color"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Background Color"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Save Changes"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Save"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Settings saved!"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "General"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Styles"
+msgstr ""
+
+#: assets/dist/blocks/common/cart-summary/block.json
+msgctxt "block title"
+msgid "Cart Summary"
+msgstr ""
+
+#: assets/dist/blocks/common/cart-summary/block.json
+msgctxt "block description"
+msgid "Display cart items, totals, and checkout buttons."
+msgstr ""
+
+#: assets/dist/blocks/product-table/column-add-to-cart/block.json
+msgctxt "block title"
+msgid "Column Add to Cart"
+msgstr ""
+
+#: assets/dist/blocks/product-table/column-add-to-cart/block.json
+msgctxt "block description"
+msgid "Add to Cart Button"
+msgstr ""
+
+#: assets/dist/blocks/product-table/column-description/block.json
+msgctxt "block title"
+msgid "Column Description"
+msgstr ""
+
+#: assets/dist/blocks/product-table/column-description/block.json
+msgctxt "block description"
+msgid "Product Short Description"
+msgstr ""
+
+#: assets/dist/blocks/product-table/column-product/block.json
+msgctxt "block title"
+msgid "Column Product"
+msgstr ""
+
+#: assets/dist/blocks/product-table/column-product/block.json
+msgctxt "block description"
+msgid "Thumbnail and Product Title"
+msgstr ""
+
+#: assets/dist/blocks/product-table/column-quantity/block.json
+msgctxt "block title"
+msgid "Column Quantity"
+msgstr ""
+
+#: assets/dist/blocks/product-table/column-quantity/block.json
+msgctxt "block description"
+msgid "Quantity Input"
+msgstr ""
+
+#: assets/dist/blocks/product-table/column-select/block.json
+msgctxt "block title"
+msgid "Column Select"
+msgstr ""
+
+#: assets/dist/blocks/product-table/column-select/block.json
+msgctxt "block description"
+msgid "Check to select product"
+msgstr ""
+
+#: assets/dist/blocks/product-table/column-sku/block.json
+msgctxt "block title"
+msgid "Column SKU"
+msgstr ""
+
+#: assets/dist/blocks/product-table/column-sku/block.json
+msgctxt "block description"
+msgid "Product SKU"
+msgstr ""
+
+#: assets/dist/blocks/product-table/column-subtotal/block.json
+msgctxt "block title"
+msgid "Column Subtotal"
+msgstr ""
+
+#: assets/dist/blocks/product-table/column-subtotal/block.json
+msgctxt "block description"
+msgid "Subtotal price of quantity"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-bulk-action/block.json
+msgctxt "block title"
+msgid "Table Bulk Actions"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-bulk-action/block.json
+msgctxt "block description"
+msgid "Product Table Bulk Actions."
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-columns/block.json
+msgctxt "block title"
+msgid "Product Table Columns"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-columns/block.json
+msgctxt "block description"
+msgid "List of column in order."
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-filter-sidebar/block.json
+msgctxt "block title"
+msgid "Table Filter Sidebar"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-filter-sidebar/block.json
+msgctxt "block description"
+msgid "Product category list toggled by the Table Filter Button."
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-filter/block.json
+msgctxt "block title"
+msgid "Table Filter Button"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-filter/block.json
+msgctxt "block description"
+msgid "Product Table Filter by Categories."
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-footer/block.json
+msgctxt "block title"
+msgid "Table Footer"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-footer/block.json
+msgctxt "block description"
+msgid "Product Table Footer."
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-header/block.json
+msgctxt "block title"
+msgid "Table Header"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-header/block.json
+msgctxt "block description"
+msgid "Product Table Header."
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-pagination/block.json
+msgctxt "block title"
+msgid "Table Pagination"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-pagination/block.json
+msgctxt "block description"
+msgid "Product Table Pagination Buttons."
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-root/block.json
+msgctxt "block title"
+msgid "Product Table"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-root/block.json
+msgctxt "block description"
+msgid "WooCommerce Products as Table optimized for bulk ordering."
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-search/block.json
+msgctxt "block title"
+msgid "Table Search"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-search/block.json
+msgctxt "block description"
+msgid "Product Table Search Input."
+msgstr ""
+
+#: assets/dist/blocks/product-table/table/block.json
+msgctxt "block title"
+msgid "Table"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table/block.json
+msgctxt "block description"
+msgid "Product Table Wrapper."
+msgstr ""
