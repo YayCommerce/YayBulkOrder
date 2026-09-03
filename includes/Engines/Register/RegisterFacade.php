@@ -26,7 +26,7 @@ class RegisterFacade {
     }
 
     public function register_all_assets() {
-        wp_register_style( ScriptName::STYLE_ADMIN_PAGE, YAYBULKORDER_PLUGIN_URL . 'assets/dist/app-admin/style.css', [], YAYBULKORDER_VERSION );
+        wp_register_style( ScriptName::STYLE_ADMIN_PAGE, YAYBULKORDER_PLUGIN_URL . 'assets/dist/page-admin/style.css', [], YAYBULKORDER_VERSION );
 
         // $module_asset = require_once YAYBULKORDER_PLUGIN_PATH . 'assets/dist/product-table-store/product-table-store.asset.php';
         // wp_register_script_module( ScriptName::PRODUCT_TABLE_STORE, YAYBULKORDER_PLUGIN_URL . 'assets/dist/product-table-store/product-table-store.js', $module_asset['dependencies'], $module_asset['version'] );
