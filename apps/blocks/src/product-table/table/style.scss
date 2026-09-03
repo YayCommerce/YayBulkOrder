@@ -423,7 +423,7 @@
 
     .ybo-bulk-action__back-to-top,
     .ybo-bulk-action__clear {
-      display: none;
+      display: none !important;
     }
 
     .ybo-bulk-action__submit {
@@ -511,6 +511,7 @@
     cursor: pointer !important;
     border: none !important;
     background: transparent;
+    box-shadow: none;
     color: inherit !important;
     font-size: 0.9rem !important;
     line-height: 1;
