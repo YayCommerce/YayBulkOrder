@@ -87,3 +87,9 @@ readonly: product id
 state: quantity input
 
 Store Cart : import from Woocommerce
+
+# run release
+
+./release.sh # prompts you to pick Pro/Lite
+./release.sh pro # builds Pro directly, no prompt
+./release.sh lite # builds Lite directly, no prompt

@@ -4,7 +4,11 @@
   "private": true,
   "scripts": {
     "dev:admin": "pnpm --filter @yay-bulk-order/app-admin dev",
-    "dev:blocks": "pnpm --filter @yay-bulk-order/blocks dev"
+    "dev:blocks": "pnpm --filter @yay-bulk-order/blocks dev",
+    
+    "build:admin:pro": "pnpm --filter @yay-bulk-order/app-admin... build:pro",
+    "build:admin:lite": "pnpm --filter @yay-bulk-order/app-admin... build:lite",
+    "build:blocks": "pnpm --filter @yay-bulk-order/blocks... build"
   },
   "keywords": [],
   "author": "Yay Commerce",

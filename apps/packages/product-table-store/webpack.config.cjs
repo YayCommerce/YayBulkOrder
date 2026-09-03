@@ -3,7 +3,7 @@ const path = require('path');
 const {
   moduleExtractionPlugin,
   defaultModuleConfig,
-} = require('@yay-bulk-order/common//config/webpackConfig.helper.cjs');
+} = require('@yay-bulk-order/common/src/config/webpackConfig.helper.cjs');
 
 module.exports = {
   ...defaultModuleConfig,
