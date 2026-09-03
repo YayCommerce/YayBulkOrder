@@ -15,6 +15,9 @@ class ProductTablesService {
     public const PREBUILD_CONFIG_META          = 'ybo_product_table_config';
     public const PREBUILD_PRODUCT_DISPLAY_META = 'ybo_product_table_products';
 
+    private const QUERY_BY_OPTIONS   = [ 'all', 'categories', 'featured', 'sale' ];
+    private const RESPONSIVE_OPTIONS = [ 'always-show', 'hide-on-mobile', 'hide-on-tablet' ];
+
     public function get_paginated_product_tables( string $search, int $page, int $per_page, $display_type = 'all-type' ) {
         $args = [
             'post_type'              => self::POST_TYPE,
@@ -32,7 +35,7 @@ class ProductTablesService {
             $args['s'] = $search;
         }
 
-        if ( 'all-type' !== $display_type ) {
+        if ( 'all-tables' !== $display_type ) {
             $args['meta_query'][] = [
                 'key'     => self::PREBUILD_PRODUCT_DISPLAY_META,
                 'value'   => $display_type,
@@ -63,7 +66,7 @@ class ProductTablesService {
     }
 
     public function create_product_table( array $data ) {
-        $title = empty( $data['title'] ) ? sanitize_text_field( $data['title'] ) : __( 'Untitled table', 'yay-bulk-order' );
+        $title = ! empty( $data['title'] ) ? sanitize_text_field( $data['title'] ) : __( 'Untitled table', 'yay-bulk-order' );
 
         $id = wp_insert_post(
             [
@@ -98,7 +101,7 @@ class ProductTablesService {
         $display = $this->get_product_display( $data );
 
         update_post_meta( $id, self::PREBUILD_CONFIG_META, $this->sanitize_config( $data ) );
-        update_post_meta( $id, self::PREBUILD_PRODUCT_DISPLAY_META, $this->sanitize_config( $display ) );
+        update_post_meta( $id, self::PREBUILD_PRODUCT_DISPLAY_META, $display );
 
         return $this->get_product_table_by_id( $id );
     }
@@ -112,64 +115,81 @@ class ProductTablesService {
     }
 
     protected function get_product_display( array $data ) {
-        $display_options = [ 'all', 'by-cat', 'featured', 'on-sale' ];
-        $display         = ! empty( $data['productsDisplay'] ) && in_array( $data['productsDisplay'], $display_options, true )
-            ? $data['productsDisplay']
-            : 'all';
-        return $display;
+        $query_by = $data['query']['queryBy'] ?? 'all';
+        return in_array( $query_by, self::QUERY_BY_OPTIONS, true ) ? $query_by : 'all';
     }
 
     private function default_config() {
         return [
-            'productsDisplay' => 'all',
-            'categoryIds'     => [],
-            'columns'         => [],
-            'filterable'      => false,
-            'searchable'      => false,
-            'pagination'      => false,
-            'pageSize'        => 10,
+            'query'    => [
+                'queryBy'    => 'all',
+                'categories' => [],
+            ],
+            'columns'  => [],
+            'features' => [
+                'hasFilter'     => false,
+                'hasSearch'     => false,
+                'hasPagination' => false,
+                'pageSize'      => 10,
+            ],
         ];
     }
 
     private function get_cleanned_data( \WP_Post $post ) {
-        $config           = get_post_meta( $post->ID, self::PREBUILD_CONFIG_META, true );
-        $products_display = get_post_meta( $post->ID, self::PREBUILD_PRODUCT_DISPLAY_META, true );
-        $config           = is_array( $config ) ? $config : [];
+        $config = get_post_meta( $post->ID, self::PREBUILD_CONFIG_META, true );
+        $config = is_array( $config ) ? $config : [];
 
         return array_merge(
             $this->default_config(),
             $config,
             [
-                'id'              => $post->ID,
-                'title'           => $post->post_title,
-                'productsDisplay' => $products_display,
+                'id'    => $post->ID,
+                'title' => $post->post_title,
             ]
         );
     }
 
     private function sanitize_config( array $data ) {
+        $defaults = $this->default_config();
+
+        $query_by = isset( $data['query']['queryBy'] ) && in_array( $data['query']['queryBy'], self::QUERY_BY_OPTIONS, true )
+            ? $data['query']['queryBy']
+            : $defaults['query']['queryBy'];
+
+        $categories = isset( $data['query']['categories'] )
+            ? array_values( array_map( 'sanitize_text_field', (array) $data['query']['categories'] ) )
+            : [];
+
         $columns = [];
         if ( ! empty( $data['columns'] ) && is_array( $data['columns'] ) ) {
             foreach ( $data['columns'] as $column ) {
                 if ( empty( $column['slug'] ) ) {
                     continue;
                 }
-                $columns[] = [
+                $responsive = ! empty( $column['responsive'] ) ? sanitize_key( $column['responsive'] ) : 'always-show';
+                $columns[]  = [
                     'slug'       => sanitize_key( $column['slug'] ),
-                    'active'     => ! empty( $column['active'] ),
+                    'enabled'    => ! empty( $column['enabled'] ),
                     'heading'    => isset( $column['heading'] ) ? sanitize_text_field( $column['heading'] ) : '',
-                    'responsive' => ! empty( $column['responsive'] ) ? sanitize_key( $column['responsive'] ) : 'always-show',
+                    'responsive' => in_array( $responsive, self::RESPONSIVE_OPTIONS, true ) ? $responsive : 'always-show',
                 ];
             }
         }
 
+        $features = isset( $data['features'] ) && is_array( $data['features'] ) ? $data['features'] : [];
+
         return [
-            'categoryIds' => isset( $data['categoryIds'] ) ? array_map( 'sanitize_text_field', (array) $data['categoryIds'] ) : [],
-            'columns'     => $columns,
-            'filterable'  => ! empty( $data['filterable'] ),
-            'searchable'  => ! empty( $data['searchable'] ),
-            'pagination'  => ! empty( $data['pagination'] ),
-            'pageSize'    => isset( $data['pageSize'] ) ? max( 0, absint( $data['pageSize'] ) ) : 0,
+            'query'    => [
+                'queryBy'    => $query_by,
+                'categories' => $categories,
+            ],
+            'columns'  => $columns,
+            'features' => [
+                'hasFilter'     => ! empty( $features['hasFilter'] ),
+                'hasSearch'     => ! empty( $features['hasSearch'] ),
+                'hasPagination' => ! empty( $features['hasPagination'] ),
+                'pageSize'      => isset( $features['pageSize'] ) ? max( 0, absint( $features['pageSize'] ) ) : $defaults['features']['pageSize'],
+            ],
         ];
     }
 }

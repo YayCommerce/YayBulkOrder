@@ -1,5 +1,8 @@
 import { useState } from 'react';
 import { Popover } from '@radix-ui/react-popover';
+import { ProductTable } from '@yay-bulk-order/common/src/schemas';
+import { useFormContext } from 'react-hook-form';
+import { __ } from '@wordpress/i18n';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -14,30 +17,49 @@ import { Command, CommandItem, CommandList } from '@/components/ui/command';
 import { PopoverContent } from '@/components/ui/popover';
 import { HelpTip } from '@/components/ui/tooltip';
 import { TablePreview } from '@/pages/product-tables/table-builder/prebuild/TablePreview';
-import { BuilderStepsProps, prebuildTemplates } from '@/pages/product-tables/table-builder/TableBuilder.helper';
+import {
+  BuilderSteps,
+  BuilderStepsProps,
+  PREBUILD_TEMPLATES,
+} from '@/pages/product-tables/table-builder/table-builder.helper';
 
 export default function TablePrebuild({ setSteps }: BuilderStepsProps) {
   const [selected, setSelected] = useState({
-    slug: prebuildTemplates[0].slug,
-    data: prebuildTemplates[0].data,
+    slug: PREBUILD_TEMPLATES[0].slug,
+    data: PREBUILD_TEMPLATES[0].data,
   });
 
   const [comboOpen, setComboOpen] = useState(false);
   const [selectedCatIds, setSelectedCatIds] = useState<string[]>([]);
 
+  const { reset } = useFormContext<ProductTable>();
+
   const toggleCategory = (id: string) => {
     setSelectedCatIds((prev) => (prev.includes(id) ? prev.filter((catId) => catId !== id) : [...prev, id]));
   };
 
+  const applyTemplate = (nextStep: BuilderSteps) => {
+    reset({
+      ...selected.data,
+      query:
+        selected.data.query.queryBy === 'categories'
+          ? { ...selected.data.query, categories: selectedCatIds }
+          : selected.data.query,
+    });
+    setSteps(nextStep);
+  };
+
   return (
-    <div className="mx-auto flex h-full max-w-6xl flex-col justify-center gap-4">
-      <p className="text-muted-foreground mb-4 text-center text-base">Choose a template to get started</p>
+    <div className="mx-auto flex flex-col justify-center gap-4">
+      <p className="text-muted-foreground mb-4 text-center text-base">
+        {__('Choose a template to get started', 'yay-bulk-order')}
+      </p>
 
       <div className="mx-auto grid w-full grid-cols-[1fr_3fr] gap-4">
         {/* Left: template selection */}
         <div className="flex flex-col gap-2">
-          {prebuildTemplates.map(({ slug, data, title, desc }) => (
-            <button
+          {PREBUILD_TEMPLATES.map(({ slug, data, title, desc }) => (
+            <div
               key={slug}
               onClick={() => setSelected({ slug, data })}
               className={cn(
@@ -47,7 +69,7 @@ export default function TablePrebuild({ setSteps }: BuilderStepsProps) {
             >
               <span className="text-sm font-medium">{title}</span>
               <span className="text-muted-foreground text-xs">{desc}</span>
-            </button>
+            </div>
           ))}
         </div>
 
@@ -58,11 +80,11 @@ export default function TablePrebuild({ setSteps }: BuilderStepsProps) {
           <div className="border-border flex flex-wrap items-center gap-3 border-t px-4 py-3">
             {selected.slug === 'some-categories' && (
               <div className="flex items-center gap-2">
-                <span className="text-muted-foreground text-xs">Categories:</span>
+                <span className="text-muted-foreground text-xs">{__('Categories:', 'yay-bulk-order')}</span>
                 <Popover open={comboOpen} onOpenChange={setComboOpen}>
                   <ComboboxTrigger className="min-w-45 max-w-70">
                     {selectedCatIds.length === 0 ? (
-                      <span className="text-muted-foreground text-sm">Select...</span>
+                      <span className="text-muted-foreground text-sm">{__('Select...', 'yay-bulk-order')}</span>
                     ) : (
                       <div className="flex flex-wrap gap-1 overflow-hidden">
                         {selectedCatIds.map((id) => (
@@ -94,15 +116,19 @@ export default function TablePrebuild({ setSteps }: BuilderStepsProps) {
             <div className="ml-auto flex gap-2">
               <HelpTip
                 trigger={
-                  <Button variant="outline" size="sm" onClick={() => setSteps('products')}>
-                    Build from this template
+                  <Button variant="outline" size="sm" onClick={() => applyTemplate('products')}>
+                    {__('Build from this template', 'yay-bulk-order')}
                   </Button>
                 }
-                content="Continue to further edit steps"
+                content={__('Continue to further edit steps', 'yay-bulk-order')}
               />
               <HelpTip
-                trigger={<Button size="sm">Create from this template</Button>}
-                content="Skip editing and go straight to the last step"
+                trigger={
+                  <Button size="sm" onClick={() => applyTemplate('publish')}>
+                    {__('Create from this template', 'yay-bulk-order')}
+                  </Button>
+                }
+                content={__('Skip editing and go straight to the last step', 'yay-bulk-order')}
               />
             </div>
           </div>
@@ -117,10 +143,10 @@ export default function TablePrebuild({ setSteps }: BuilderStepsProps) {
               className="text-primary cursor-pointer text-sm hover:underline"
               onClick={() => setSteps('products')}
             >
-              Create from scratch
+              {__('Create from scratch', 'yay-bulk-order')}
             </button>
           }
-          content="Start with a blank table and configure everything yourself"
+          content={__('Start with a blank table and configure everything yourself', 'yay-bulk-order')}
         />
       </div>
     </div>

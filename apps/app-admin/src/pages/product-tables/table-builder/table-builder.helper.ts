@@ -6,7 +6,14 @@ export type BuilderStepsProps = {
   setSteps: (e: BuilderSteps) => void;
 };
 
-export const allProductTableColumns: ProductTable['columns'] = [
+export const REQUIRED_PRODUCT_TABLE_COLS: ProductTableColumn['slug'][] = ['cart'];
+
+export const getColumnsBySlugs = (slugs: ProductTableColumn['slug'][]) => {
+  const wanted = new Set<ProductTableColumn['slug']>([...slugs, ...REQUIRED_PRODUCT_TABLE_COLS]);
+  return ALL_PRODUCT_TABLE_COLS.filter((col) => wanted.has(col.slug));
+};
+
+export const ALL_PRODUCT_TABLE_COLS: ProductTable['columns'] = [
   {
     slug: 'product',
     heading: __('Product', 'yay-bulk-order'),
@@ -17,7 +24,7 @@ export const allProductTableColumns: ProductTable['columns'] = [
     slug: 'sku',
     heading: __('SKU', 'yay-bulk-order'),
     enabled: true,
-    responsive: 'mobile-hide',
+    responsive: 'hide-on-mobile',
   },
   {
     slug: 'price',
@@ -35,13 +42,13 @@ export const allProductTableColumns: ProductTable['columns'] = [
     slug: 'subtotal',
     heading: __('Subtotal', 'yay-bulk-order'),
     enabled: true,
-    responsive: 'mobile-hide',
+    responsive: 'hide-on-mobile',
   },
   {
     slug: 'summary',
     heading: __('Summary', 'yay-bulk-order'),
     enabled: true,
-    responsive: 'tablet-hide',
+    responsive: 'hide-on-tablet',
   },
   {
     slug: 'cart',
@@ -51,12 +58,7 @@ export const allProductTableColumns: ProductTable['columns'] = [
   },
 ];
 
-const getColumnsBySlugs = (slugs: ProductTableColumn['slug'][]) => {
-  slugs = [...slugs, 'cart'];
-  return allProductTableColumns.filter((col) => slugs.includes(col.slug));
-};
-
-export const prebuildTemplates: TablePrebuildTemplate[] = [
+export const PREBUILD_TEMPLATES: TablePrebuildTemplate[] = [
   {
     slug: 'full-featured',
     title: __('Full Featured Table', 'yay-bulk-order'),
@@ -66,7 +68,7 @@ export const prebuildTemplates: TablePrebuildTemplate[] = [
         queryBy: 'all',
       },
       title: __('Full Featured Table', 'yay-bulk-order'),
-      columns: allProductTableColumns,
+      columns: ALL_PRODUCT_TABLE_COLS,
       features: {
         hasFilter: true,
         hasSearch: true,

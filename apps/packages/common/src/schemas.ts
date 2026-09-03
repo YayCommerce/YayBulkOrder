@@ -6,5 +6,5 @@ export {
   type TablePrebuildTemplate,
   type ProductTableColumn,
   type ProductTable,
-} from './schemas/prebullds.schema';
+} from './schemas/product-tables.schema';
 export { type AdminData, type Meta } from './schemas/localize.type';

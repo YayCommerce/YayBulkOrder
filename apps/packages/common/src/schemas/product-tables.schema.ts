@@ -4,12 +4,12 @@ export const productTableColumnSchema = z.object({
   slug: z.enum(['product', 'sku', 'price', 'quantity', 'subtotal', 'summary', 'cart']),
   enabled: z.boolean(),
   heading: z.string(),
-  responsive: z.enum(['always-show', 'mobile-hide', 'tablet-hide']),
+  responsive: z.enum(['always-show', 'hide-on-mobile', 'hide-on-tablet']),
 });
 
 export const productTableSchema = z.object({
   id: z.number().optional(),
-  title: z.string(),
+  title: z.string().optional(),
   query: z.object({
     queryBy: z.enum(['all', 'categories', 'featured', 'sale']),
     categories: z.array(z.string()).optional(),
@@ -33,3 +33,16 @@ export const prebuildTemplateSchema = z.object({
 export type ProductTableColumn = z.infer<typeof productTableColumnSchema>;
 export type ProductTable = z.infer<typeof productTableSchema>;
 export type TablePrebuildTemplate = z.infer<typeof prebuildTemplateSchema>;
+
+export type ProductTableListParams = {
+  page: number;
+  perPage: number;
+  search: string;
+  productsDisplay: 'all-tables' | ProductTable['query']['queryBy'];
+};
+export type PaginatedProductTables = {
+  currentPage: number;
+  totalPage: number;
+  totalItems: number;
+  data: ProductTable[];
+};
