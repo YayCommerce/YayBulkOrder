@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { flexRender, getCoreRowModel, PaginationState, RowSelectionState, useReactTable } from '@tanstack/react-table';
 import { ProductTableListParams } from '@yay-bulk-order/common/src/schemas/product-tables.schema';
 import { Search, Trash2Icon } from 'lucide-react';
+import { useNavigate } from 'react-router';
 import { useDebounce } from 'rooks';
 import { toast } from 'sonner';
 import { __, sprintf } from '@wordpress/i18n';
@@ -47,6 +48,7 @@ export default function ProductTablesList() {
   const [pagination, setPagination] = useState<PaginationState>({ pageIndex: 0, pageSize: 10 });
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [openBulkDelete, setOpenBulkDelete] = useState(false);
+  const navigate = useNavigate();
 
   const setSearchDebounced = useDebounce(setSearch, 300);
 
@@ -99,12 +101,15 @@ export default function ProductTablesList() {
   return (
     <Card className="shadow-xs min-w-0 gap-4 p-4 md:p-5 2xl:p-6">
       {/* Header */}
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div className="flex w-full flex-col items-end justify-end gap-4 sm:flex-row">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center justify-between gap-x-4 gap-y-2 sm:flex-row sm:items-center sm:justify-between">
+          <h1 className="text-2xl font-bold">{__('Product Tables', 'yay-bulk-order')}</h1>
+        </div>
+        <div className="flex w-fit flex-col items-end justify-end gap-4 sm:flex-row">
           <InputGroup className="md:w-76 w-full">
             <InputGroupInput
               placeholder={__('Search by table title', 'yay-bulk-order')}
-              value={search}
+              defaultValue={search}
               onChange={(e) => {
                 table.setPageIndex(0);
                 setSearchDebounced(e.target.value);
@@ -135,6 +140,16 @@ export default function ProductTablesList() {
               </SelectGroup>
             </SelectContent>
           </Select>
+          <Button
+            variant="primary-outline-fill"
+            size="sm"
+            className="h-9"
+            onClick={() => {
+              navigate('/product-tables/new');
+            }}
+          >
+            {__('Build Product Table', 'yay-bulk-order')}
+          </Button>
         </div>
       </div>
 

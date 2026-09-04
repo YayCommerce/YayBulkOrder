@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ProductTable } from '@yay-bulk-order/common/src/schemas';
+import { ProductTableForm } from '@yay-bulk-order/common/src/schemas/product-tables.schema';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { __ } from '@wordpress/i18n';
 
@@ -19,7 +19,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { BuilderStepsProps } from '@/pages/product-tables/table-builder/table-builder.helper';
 
 export default function ProductsStep({ setSteps }: BuilderStepsProps) {
-  const { control } = useFormContext<ProductTable>();
+  const { control } = useFormContext<ProductTableForm>();
   const queryBy = useWatch({ control, name: 'query.queryBy' });
 
   const [comboOpen, setComboOpen] = useState(false);

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Popover } from '@radix-ui/react-popover';
-import { ProductTable } from '@yay-bulk-order/common/src/schemas';
+import { ProductTableForm } from '@yay-bulk-order/common/src/schemas/product-tables.schema';
 import { useFormContext } from 'react-hook-form';
 import { __ } from '@wordpress/i18n';
 
@@ -32,7 +32,7 @@ export default function TablePrebuild({ setSteps }: BuilderStepsProps) {
   const [comboOpen, setComboOpen] = useState(false);
   const [selectedCatIds, setSelectedCatIds] = useState<string[]>([]);
 
-  const { reset } = useFormContext<ProductTable>();
+  const { reset } = useFormContext<ProductTableForm>();
 
   const toggleCategory = (id: string) => {
     setSelectedCatIds((prev) => (prev.includes(id) ? prev.filter((catId) => catId !== id) : [...prev, id]));

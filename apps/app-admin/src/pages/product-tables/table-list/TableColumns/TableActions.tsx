@@ -3,7 +3,7 @@ import { CirclePlus, Copy, MoreHorizontalIcon, PencilIcon, Trash2Icon } from 'lu
 import { useNavigate } from 'react-router';
 import { __ } from '@wordpress/i18n';
 
-import { useDeleteProductTableMutation } from '@/lib/queries/product-table.queries';
+import { useCacheProductTable, useDeleteProductTableMutation } from '@/lib/queries/product-table.queries';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -16,6 +16,7 @@ import {
 export function ProductTableActions({ table }: { table: ProductTable }) {
   const navigate = useNavigate();
   const deleteMutation = useDeleteProductTableMutation(table.id ?? 0);
+  const { cacheTable } = useCacheProductTable();
 
   return (
     <DropdownMenu>
@@ -25,7 +26,12 @@ export function ProductTableActions({ table }: { table: ProductTable }) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => {
+            cacheTable(table);
+            navigate(`/product-tables/edit/${table.id}`);
+          }}
+        >
           <PencilIcon className="size-4" />
           {__('Edit', 'yay-bulk-order')}
         </DropdownMenuItem>

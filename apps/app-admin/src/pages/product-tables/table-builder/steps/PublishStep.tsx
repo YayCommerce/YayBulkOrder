@@ -1,5 +1,5 @@
-import { ProductTable } from '@yay-bulk-order/common/src/schemas';
-import { Controller, useFormContext, useWatch } from 'react-hook-form';
+import { ProductTableForm } from '@yay-bulk-order/common/src/schemas/product-tables.schema';
+import { Controller, useFormContext } from 'react-hook-form';
 import { __ } from '@wordpress/i18n';
 
 import { useIsMutatingProductTables } from '@/lib/queries/product-table.queries';
@@ -9,10 +9,13 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { HelpTip } from '@/components/ui/tooltip';
 
-export default function PublishStep() {
-  const { control } = useFormContext<ProductTable>();
+type PublishStepProps = {
+  isSavedDisabled: boolean;
+};
+
+export default function PublishStep({ isSavedDisabled }: PublishStepProps) {
+  const { control } = useFormContext<ProductTableForm>();
   const isSaving = useIsMutatingProductTables();
-  const isSaved = (useWatch({ control, name: 'id' }) ?? 0) > 0;
 
   return (
     <Card className="w-2xl max-w-2xl">
@@ -37,9 +40,9 @@ export default function PublishStep() {
                   type="submit"
                   form="product-table-form"
                   loading={isSaving}
-                  disabled={isSaving || isSaved}
+                  disabled={isSaving || isSavedDisabled}
                 >
-                  {isSaved ? __('Saved', 'yay-bulk-order') : __('Save for later', 'yay-bulk-order')}
+                  {isSavedDisabled ? __('Saved', 'yay-bulk-order') : __('Save for later', 'yay-bulk-order')}
                 </LoadingButton>
               }
               content={<div>{__('Save to Table List to reuse', 'yay-bulk-order')}</div>}

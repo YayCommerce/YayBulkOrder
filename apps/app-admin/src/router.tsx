@@ -33,6 +33,10 @@ export function getAppAdminRouter() {
               path: 'new',
               element: <ProductTablesPage />,
             },
+            {
+              path: 'edit/:tableId',
+              element: <ProductTablesPage />,
+            },
           ],
         },
         {

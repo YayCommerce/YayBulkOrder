@@ -1,4 +1,4 @@
-import { ProductTable } from '@yay-bulk-order/common/src/schemas';
+import { ProductTableForm } from '@yay-bulk-order/common/src/schemas/product-tables.schema';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { __ } from '@wordpress/i18n';
 
@@ -10,7 +10,7 @@ import { Switch } from '@/components/ui/switch';
 import { BuilderStepsProps } from '@/pages/product-tables/table-builder/table-builder.helper';
 
 export default function FeaturesStep({ setSteps }: BuilderStepsProps) {
-  const { control } = useFormContext<ProductTable>();
+  const { control } = useFormContext<ProductTableForm>();
   const hasPagination = useWatch({ control, name: 'features.hasPagination' });
 
   return (

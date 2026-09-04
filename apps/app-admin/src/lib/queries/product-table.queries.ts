@@ -7,7 +7,7 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import { ProductTable } from '@yay-bulk-order/common/src/schemas';
-import { ProductTableListParams } from '@yay-bulk-order/common/src/schemas/product-tables.schema';
+import { ProductTableForm, ProductTableListParams } from '@yay-bulk-order/common/src/schemas/product-tables.schema';
 
 import {
   bulkDeleteProductTable,
@@ -65,7 +65,7 @@ export function useCreateProductTableMutation() {
 
   return useMutation({
     mutationKey: PRODUCT_TABLE_MUTATION_KEYS.add,
-    mutationFn: (data: ProductTable) => createProductTable(data),
+    mutationFn: (data: ProductTableForm) => createProductTable(data),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: PRODUCT_TABLE_QUERIES.all }),
   });
 }
@@ -75,7 +75,7 @@ export function useUpdateProductTableMutation(id: number) {
 
   return useMutation({
     mutationKey: PRODUCT_TABLE_MUTATION_KEYS.update(id),
-    mutationFn: (data: ProductTable) => updateProductTable(id, data),
+    mutationFn: (data: ProductTableForm) => updateProductTable(id, data),
     onSuccess: (res) => {
       queryClient.setQueryData(PRODUCT_TABLE_QUERIES.single(id).queryKey, res);
       queryClient.invalidateQueries({ queryKey: PRODUCT_TABLE_QUERIES.all });
@@ -111,4 +111,16 @@ export function useIsMutatingProductTables() {
 
 export function useIsMutatingBulkProductTables() {
   return useIsMutating({ mutationKey: PRODUCT_TABLE_MUTATION_KEYS.bulk }) > 0;
+}
+
+/** ─── Derived Hooks ─────────────────────────────────── */
+
+export function useCacheProductTable() {
+  const queryClient = useQueryClient();
+
+  function cacheTable(productTable: ProductTable) {
+    queryClient.setQueryData(PRODUCT_TABLE_QUERIES.single(productTable.id).queryKey, productTable);
+  }
+
+  return { cacheTable };
 }

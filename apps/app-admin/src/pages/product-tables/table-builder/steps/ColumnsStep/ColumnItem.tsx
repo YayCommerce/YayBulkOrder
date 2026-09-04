@@ -1,6 +1,7 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { ProductTable, ProductTableColumn } from '@yay-bulk-order/common/src/schemas';
+import { ProductTableColumn } from '@yay-bulk-order/common/src/schemas';
+import { ProductTableForm } from '@yay-bulk-order/common/src/schemas/product-tables.schema';
 import { GripVerticalIcon, XIcon } from 'lucide-react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { __ } from '@wordpress/i18n';
@@ -23,7 +24,7 @@ type ColumnItemProps = {
 export default function ColumnItem({ index, column, onRemove }: ColumnItemProps) {
   const isDefault = REQUIRED_PRODUCT_TABLE_COLS.includes(column.slug);
 
-  const { control } = useFormContext<ProductTable>();
+  const { control } = useFormContext<ProductTableForm>();
   const enabled = useWatch({ control, name: `columns.${index}.enabled` });
 
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({

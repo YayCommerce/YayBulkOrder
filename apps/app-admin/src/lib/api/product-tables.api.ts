@@ -1,6 +1,7 @@
 import { ProductTable } from '@yay-bulk-order/common/src/schemas';
 import {
   PaginatedProductTables,
+  ProductTableForm,
   ProductTableListParams,
 } from '@yay-bulk-order/common/src/schemas/product-tables.schema';
 
@@ -24,11 +25,11 @@ export function getProductTable(id: number) {
   return api.get(`product-tables/${id}`).json<ProductTable>();
 }
 
-export function createProductTable(data: ProductTable) {
+export function createProductTable(data: ProductTableForm) {
   return api.post('product-tables', { json: data }).json<ProductTable>();
 }
 
-export function updateProductTable(id: number, data: ProductTable) {
+export function updateProductTable(id: number, data: ProductTableForm) {
   return api.put(`product-tables/${id}`, { json: data }).json<ProductTable>();
 }
 

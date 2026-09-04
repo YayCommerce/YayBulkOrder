@@ -8,7 +8,6 @@ export const productTableColumnSchema = z.object({
 });
 
 export const productTableSchema = z.object({
-  id: z.number().optional(),
   title: z.string().optional(),
   query: z.object({
     queryBy: z.enum(['all', 'categories', 'featured', 'sale']),
@@ -27,11 +26,12 @@ export const prebuildTemplateSchema = z.object({
   slug: z.string(),
   title: z.string(),
   desc: z.string(),
-  data: productTableSchema.omit({ id: true }),
+  data: productTableSchema,
 });
 
 export type ProductTableColumn = z.infer<typeof productTableColumnSchema>;
-export type ProductTable = z.infer<typeof productTableSchema>;
+export type ProductTableForm = z.infer<typeof productTableSchema>;
+export type ProductTable = z.infer<typeof productTableSchema> & { id: number };
 export type TablePrebuildTemplate = z.infer<typeof prebuildTemplateSchema>;
 
 export type ProductTableListParams = {
