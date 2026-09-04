@@ -78,7 +78,7 @@ function ColumnSkeleton({ col }: { col: string }) {
           <Skeleton className="h-6 w-6 rounded-sm" />
         </div>
       );
-    case 'cart':
+    case 'add-to-cart':
       return <Skeleton className="h-7 w-20 rounded-md" />;
     default:
       return <Skeleton className="h-4 w-14" />;

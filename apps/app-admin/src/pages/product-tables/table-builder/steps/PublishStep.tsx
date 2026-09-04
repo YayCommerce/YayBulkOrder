@@ -1,5 +1,7 @@
 import { ProductTableForm } from '@yay-bulk-order/common/src/schemas/product-tables.schema';
 import { Controller, useFormContext } from 'react-hook-form';
+import { useClipboard } from 'rooks';
+import { toast } from 'sonner';
 import { __ } from '@wordpress/i18n';
 
 import { useIsMutatingProductTables } from '@/lib/queries/product-table.queries';
@@ -8,14 +10,27 @@ import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/ca
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { HelpTip } from '@/components/ui/tooltip';
+import { makeBlockText } from '@/pages/product-tables/product-tables.helper';
 
 type PublishStepProps = {
   isSavedDisabled: boolean;
 };
 
 export default function PublishStep({ isSavedDisabled }: PublishStepProps) {
-  const { control } = useFormContext<ProductTableForm>();
+  const { control, getValues } = useFormContext<ProductTableForm>();
+  const { copy } = useClipboard();
   const isSaving = useIsMutatingProductTables();
+
+  const copyAsBlock = async () => {
+    const table = getValues();
+    try {
+      await copy(makeBlockText(table));
+      toast.success(__('Copied', 'yay-bulk-order'));
+    } catch (err) {
+      console.log(err);
+      toast.error(__('Cannot Copy', 'yay-bulk-order'));
+    }
+  };
 
   return (
     <Card className="w-2xl max-w-2xl">
@@ -69,7 +84,10 @@ export default function PublishStep({ isSavedDisabled }: PublishStepProps) {
                 )}
               </p>
             </div>
-            <div className="border-border hover:bg-accent hover:text-accent-foreground min-h-18 flex cursor-pointer flex-col gap-1 rounded-md border p-3 transition-all">
+            <div
+              onClick={() => copyAsBlock()}
+              className="border-border hover:bg-accent hover:text-accent-foreground min-h-18 flex cursor-pointer flex-col gap-1 rounded-md border p-3 transition-all"
+            >
               <Label>{__('Copy as Blocks', 'yay-bulk-order')}</Label>
               <p className="text-muted-foreground text-xs">
                 {__('Copy the table as blocks to use in the editor.', 'yay-bulk-order')}

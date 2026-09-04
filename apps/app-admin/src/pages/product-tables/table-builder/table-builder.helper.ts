@@ -6,7 +6,7 @@ export type BuilderStepsProps = {
   setSteps: (e: BuilderSteps) => void;
 };
 
-export const REQUIRED_PRODUCT_TABLE_COLS: ProductTableColumn['slug'][] = ['cart'];
+export const REQUIRED_PRODUCT_TABLE_COLS: ProductTableColumn['slug'][] = ['add-to-cart'];
 
 export const getColumnsBySlugs = (slugs: ProductTableColumn['slug'][]) => {
   const wanted = new Set<ProductTableColumn['slug']>([...slugs, ...REQUIRED_PRODUCT_TABLE_COLS]);
@@ -27,8 +27,8 @@ export const ALL_PRODUCT_TABLE_COLS: ProductTable['columns'] = [
     responsive: 'hide-on-mobile',
   },
   {
-    slug: 'price',
-    heading: __('Price', 'yay-bulk-order'),
+    slug: 'description',
+    heading: __('Description', 'yay-bulk-order'),
     enabled: true,
     responsive: 'always-show',
   },
@@ -51,7 +51,7 @@ export const ALL_PRODUCT_TABLE_COLS: ProductTable['columns'] = [
     responsive: 'hide-on-tablet',
   },
   {
-    slug: 'cart',
+    slug: 'add-to-cart',
     heading: __('Add to Cart', 'yay-bulk-order'),
     enabled: true,
     responsive: 'always-show',
@@ -86,7 +86,7 @@ export const PREBUILD_TEMPLATES: TablePrebuildTemplate[] = [
         categories: [],
       },
       title: __('Some Categories Table', 'yay-bulk-order'),
-      columns: getColumnsBySlugs(['product', 'price', 'quantity', 'subtotal', 'cart']),
+      columns: getColumnsBySlugs(['product', 'description', 'quantity', 'subtotal', 'add-to-cart']),
       features: {
         hasFilter: false,
         hasSearch: true,
@@ -103,7 +103,7 @@ export const PREBUILD_TEMPLATES: TablePrebuildTemplate[] = [
         queryBy: 'all',
       },
       title: __('Simple Table', 'yay-bulk-order'),
-      columns: getColumnsBySlugs(['product', 'quantity', 'subtotal', 'cart']),
+      columns: getColumnsBySlugs(['product', 'quantity', 'subtotal', 'add-to-cart']),
       features: {
         hasFilter: true,
         hasSearch: false,

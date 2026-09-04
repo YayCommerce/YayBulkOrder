@@ -192,4 +192,26 @@ class ProductTablesService {
             ],
         ];
     }
+
+    public function get_block_labels() {
+        return [
+            'product'     => 'Product',
+            'sku'         => 'SKU',
+            'description' => 'Description',
+            'quantity'    => 'Quantity',
+            'subtotal'    => 'Subtotal',
+            'add-to-cart' => 'Add to Cart',
+            'select'      => '',
+        ];
+    }
+
+    public function get_query_type_map() {
+        return [
+            'inherit'    => 'inherit',
+            'all'        => 'all-products',
+            'categories' => 'by-category',
+            'featured'   => 'featured',
+            'sale'       => 'on-sale',
+        ];
+    }
 }

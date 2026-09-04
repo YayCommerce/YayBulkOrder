@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const productTableColumnSchema = z.object({
-  slug: z.enum(['product', 'sku', 'price', 'quantity', 'subtotal', 'summary', 'cart']),
+  slug: z.enum(['product', 'sku', 'description', 'quantity', 'subtotal', 'summary', 'add-to-cart']),
   enabled: z.boolean(),
   heading: z.string(),
   responsive: z.enum(['always-show', 'hide-on-mobile', 'hide-on-tablet']),

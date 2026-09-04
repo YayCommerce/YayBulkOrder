@@ -1,6 +1,7 @@
 <?php
 namespace YayBulkOrder\Engines\Shortcodes;
 
+use YayBulkOrder\Pro\Services\ProductTablesService;
 use YayBulkOrder\Utils\SingletonTrait;
 
 defined( 'ABSPATH' ) || exit;
@@ -13,22 +14,27 @@ class ProductTableShortcode {
     use SingletonTrait;
 
     private const SHORTCODE_TAG = 'ybo-product-table';
+    private ProductTablesService $product_tables_service;
 
     protected function __construct() {
+        $this->product_tables_service = ProductTablesService::get_instance();
         add_shortcode( self::SHORTCODE_TAG, [ $this, 'render' ] );
     }
 
     /**
      * Render the default Product Table block markup.
      *
+     * @param array $attrs shortcode attributes.
      * @return string
      */
-    public function render(): string {
+    public function render( array $attrs ): string {
         if ( ! function_exists( 'WC' ) ) {
             return '';
         }
 
         $template = $this->is_product_archive() ? 'product-table-archive.php' : 'product-table-default.php';
+
+        $attrs = $this->operate_shortcode_attrs( $attrs );
 
         ob_start();
         include YAYBULKORDER_PLUGIN_PATH . 'includes/Engines/Shortcodes/templates/' . $template;
@@ -62,5 +68,51 @@ class ProductTableShortcode {
         $html = preg_replace( '/>\s+</', '><', $html );
 
         return trim( $html );
+    }
+
+    private function operate_shortcode_attrs( array $attrs ) {
+        $raw_attrs = shortcode_atts(
+            [
+                'id'             => 0,
+                'query_by'       => 'all',
+                'categories'     => '',
+                'columns'        => 'product,sku,description,quantity,subtotal,summary,add-to-cart',
+                'has_filter'     => true,
+                'has_search'     => true,
+                'has_pagination' => true,
+                'page_size'      => 0,
+            ],
+            $attrs,
+            self::SHORTCODE_TAG,
+        );
+
+        if ( ! empty( $raw_attrs['id'] ) ) {
+            $table = $this->product_tables_service->get_product_table_by_id( (int) $raw_attrs['id'] );
+            if ( ! empty( $table ) ) {
+                $enabled_columns = array_filter(
+                    (array) $table['columns'],
+                    static function ( $column ) {
+                        return ! empty( $column['enabled'] );
+                    }
+                );
+
+                return [
+                    'query_by'       => $table['query']['queryBy'] ?? 'all',
+                    'categories'     => array_values(
+                        array_map( 'absint', (array) ( $table['query']['categories'] ?? [] ) )
+                    ),
+                    'columns'        => array_values( array_column( $enabled_columns, 'slug' ) ),
+                    'has_filter'     => $table['features']['hasFilter'],
+                    'has_search'     => $table['features']['hasSearch'],
+                    'has_pagination' => $table['features']['hasPagination'],
+                    'page_size'      => $table['features']['pageSize'] ?? 0,
+                ];
+            }//end if
+        }//end if
+
+        $raw_attrs['categories'] = explode( ',', $raw_attrs['categories'] );
+        $raw_attrs['columns']    = explode( ',', $raw_attrs['columns'] );
+
+        return $raw_attrs;
     }
 }

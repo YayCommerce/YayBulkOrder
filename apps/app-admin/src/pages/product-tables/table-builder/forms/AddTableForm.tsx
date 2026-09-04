@@ -23,7 +23,7 @@ const DEFAULT_VALUE: ProductTableForm = {
   query: {
     queryBy: 'all',
   },
-  columns: getColumnsBySlugs(['product', 'price', 'quantity', 'subtotal', 'cart']),
+  columns: getColumnsBySlugs(['product', 'description', 'quantity', 'subtotal', 'add-to-cart']),
   features: {
     hasFilter: true,
     hasSearch: true,
