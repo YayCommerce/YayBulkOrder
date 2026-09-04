@@ -2,11 +2,11 @@ import { useBlockProps } from '@wordpress/block-editor';
 import { BlockEditProps } from '@wordpress/blocks';
 
 export default function Edit(props: BlockEditProps) {
-  const blockProps = useBlockProps();
+  const blockProps = useBlockProps({ className: 'ybo-table-cell' });
 
   return (
-    <td {...blockProps}>
-      <input type="number" value="5" />
-    </td>
+    <div {...blockProps}>
+      <input className="ybo-quantity-input" type="number" min="1" defaultValue="5" aria-label="Quantity" />
+    </div>
   );
 }

@@ -16,6 +16,7 @@ class YayBulkOrder {
     protected function __construct() {
         \YayBulkOrder\Engines\Register\RegisterFacade::get_instance();
         \YayBulkOrder\Engines\Blocks\RegisterBlocks::get_instance();
+        \YayBulkOrder\Engines\Shortcodes\ProductTableShortcode::get_instance();
         \YayBulkOrder\Engines\Admin\AdminPage::get_instance();
         \YayBulkOrder\Engines\RestAPI::get_instance();
 

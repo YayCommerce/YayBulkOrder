@@ -212,6 +212,10 @@ const storeDef = {
       const { tableState } = getContext<ProductTableContext>();
       return tableState.showBackToTop;
     },
+    get showFloatingBulkAction(): boolean {
+      const { tableState } = getContext<ProductTableContext>();
+      return tableState.bulkActionOutOfView && this.hasSelectedRows;
+    },
     get isProductExpanded(): boolean {
       const { tableState, productId } = getContext<ProductRowState>();
       return Boolean(tableState.expandedProducts[productId]);
@@ -425,6 +429,22 @@ const storeDef = {
 
       const observer = new IntersectionObserver(([entry]) => {
         context.tableState.showBackToTop = !entry.isIntersecting;
+      });
+      observer.observe(ref);
+
+      return () => observer.disconnect();
+    },
+
+    watchBulkActionVisibility() {
+      const context = getContext<ProductTableContext>();
+      const { ref } = getElement();
+
+      if (!ref) {
+        return;
+      }
+
+      const observer = new IntersectionObserver(([entry]) => {
+        context.tableState.bulkActionOutOfView = !entry.isIntersecting;
       });
       observer.observe(ref);
 

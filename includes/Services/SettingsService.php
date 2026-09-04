@@ -90,6 +90,7 @@ class SettingsService {
             'csvOrder'     => [
                 'isAddToAccountPage' => false,
             ],
+            'borderRadius' => '8px',
         ];
     }
 

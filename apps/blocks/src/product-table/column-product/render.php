@@ -24,7 +24,7 @@ $permalink    = $product->get_permalink();
 ?>
 
 <td <?php echo get_block_wrapper_attributes(); ?>>
-	<a href="<?php echo esc_url( $permalink ); ?>" target="_blank" class="ybo-product-cell<?php echo $is_variation ? ' ybo-product-cell--variation' : ''; ?>">
+	<a href="<?php echo esc_url( $permalink ); ?>" target="_blank" class="ybo-product-cell<?php echo $is_variation ? ' ybo-product-cell--variation' : ''; ?>" title="<?php echo esc_attr( $title ? $title : $product->get_title() ); ?>">
 		<span class="ybo-product-thumbnail">
 			<?php echo $thumbnail; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- WC_Product::get_image() output is already escaped. ?>
 			<span

@@ -1,7 +1,14 @@
 import { useBlockProps } from '@wordpress/block-editor';
 
 export default function Edit() {
-  const blockProps = useBlockProps();
+  const blockProps = useBlockProps({ className: 'ybo-table-cell' });
 
-  return <div {...blockProps}>Product</div>;
+  return (
+    <div {...blockProps}>
+      <span className="ybo-product-cell">
+        <span className="ybo-product-thumbnail" />
+        <span className="ybo-product-title">Product name</span>
+      </span>
+    </div>
+  );
 }

@@ -1,13 +1,9 @@
-import { InnerBlocks, useBlockProps } from '@wordpress/block-editor';
+import { InnerBlocks, useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 
 export default function Edit() {
-  const blockProps = useBlockProps();
+  const innerBlocksProps = useInnerBlocksProps(useBlockProps(), { template: DEFAULT_TEMPLATE });
 
-  return (
-    <div {...blockProps}>
-      <InnerBlocks template={DEFAULT_TEMPLATE} />
-    </div>
-  );
+  return <div {...innerBlocksProps} />;
 }
 
 const DEFAULT_TEMPLATE: InnerBlocks.Props['template'] = [

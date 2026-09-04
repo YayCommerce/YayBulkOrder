@@ -68,6 +68,8 @@ export type ProductTableContext = {
       pageSize: number;
     };
     showBackToTop: boolean;
+    bulkActionOutOfView: boolean;
+    hasSelectColumn: boolean;
     expandedProducts: Record<number, boolean>;
   };
 };
