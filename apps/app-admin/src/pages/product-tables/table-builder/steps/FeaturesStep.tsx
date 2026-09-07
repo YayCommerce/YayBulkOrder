@@ -58,7 +58,14 @@ export default function FeaturesStep({ setSteps }: BuilderStepsProps) {
               render={({ field }) => (
                 <div className="border-border flex items-center justify-between rounded-md border px-4 py-3">
                   <Label className="text-sm">{__('Page Size', 'yay-bulk-order')}</Label>
-                  <NumberInput value={field.value} onValueChange={field.onChange} min={5} max={100} className="w-20" />
+                  <NumberInput
+                    value={field.value}
+                    onValueChange={field.onChange}
+                    min={0}
+                    placeholder={__('Auto', 'yay-bulk-order')}
+                    max={100}
+                    className="w-20"
+                  />
                 </div>
               )}
             />

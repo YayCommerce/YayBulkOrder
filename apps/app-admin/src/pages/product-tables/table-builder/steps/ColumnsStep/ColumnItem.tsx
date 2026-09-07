@@ -9,7 +9,7 @@ import { __ } from '@wordpress/i18n';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Field, FieldLabel } from '@/components/ui/field';
+import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
@@ -74,28 +74,34 @@ export default function ColumnItem({ index, column, onRemove }: ColumnItemProps)
         )}
       </div>
       <div className={cn('grid grid-cols-2 gap-2 border-t px-3 py-2', !enabled && 'hidden')}>
-        <Field className="gap-1">
-          <FieldLabel className="font-normal">{__('Heading', 'yay-bulk-order')}</FieldLabel>
-          <Controller
-            control={control}
-            name={`columns.${index}.heading`}
-            render={({ field }) => (
-              <Input {...field} placeholder={__('Column heading', 'yay-bulk-order')} className="h-8" />
-            )}
-          />
-        </Field>
-        <Field className="gap-1">
-          <FieldLabel className="font-normal">{__('Responsive', 'yay-bulk-order')}</FieldLabel>
-          <Controller
-            control={control}
-            name={`columns.${index}.responsive`}
-            render={({ field }) => (
+        <Controller
+          control={control}
+          name={`columns.${index}.heading`}
+          render={({ field, fieldState: { error, invalid } }) => (
+            <Field className="gap-1">
+              <FieldLabel className="font-normal">{__('Heading', 'yay-bulk-order')}</FieldLabel>
+              <Input
+                {...field}
+                placeholder={__('Column heading', 'yay-bulk-order')}
+                className="h-8"
+                aria-invalid={invalid}
+              />
+              {error && <FieldError errors={[{ message: error.message }]} />}
+            </Field>
+          )}
+        />
+        <Controller
+          control={control}
+          name={`columns.${index}.responsive`}
+          render={({ field, fieldState: { error, invalid } }) => (
+            <Field className="gap-1">
+              <FieldLabel className="font-normal">{__('Responsive', 'yay-bulk-order')}</FieldLabel>
               <Select
                 value={isDefault ? 'always-show' : field.value}
                 disabled={isDefault}
                 onValueChange={field.onChange}
               >
-                <SelectTrigger size="sm" className="w-full">
+                <SelectTrigger size="sm" className="w-full" aria-invalid={invalid}>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -104,9 +110,10 @@ export default function ColumnItem({ index, column, onRemove }: ColumnItemProps)
                   <SelectItem value="hide-on-tablet">{__('Hide on tablet', 'yay-bulk-order')}</SelectItem>
                 </SelectContent>
               </Select>
-            )}
-          />
-        </Field>
+              {error && <FieldError errors={[{ message: error.message }]} />}
+            </Field>
+          )}
+        />
       </div>
     </div>
   );

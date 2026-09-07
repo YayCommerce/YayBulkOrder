@@ -76,7 +76,8 @@ class ProductTableShortcode {
                 'id'             => 0,
                 'query_by'       => 'all',
                 'categories'     => '',
-                'columns'        => 'product,sku,description,quantity,subtotal,summary,add-to-cart',
+                'products'       => '',
+                'columns'        => 'product|Product|always-show,sku|SKU|hide-on-mobile,description|Description|always-show,quantity|Quantity|always-show,subtotal|Subtotal|hide-on-mobile,add-to-cart|Add To Cart|always-show',
                 'has_filter'     => true,
                 'has_search'     => true,
                 'has_pagination' => true,
@@ -101,7 +102,10 @@ class ProductTableShortcode {
                     'categories'     => array_values(
                         array_map( 'absint', (array) ( $table['query']['categories'] ?? [] ) )
                     ),
-                    'columns'        => array_values( array_column( $enabled_columns, 'slug' ) ),
+                    'products'       => array_values(
+                        array_map( 'absint', (array) ( $table['query']['products'] ?? [] ) )
+                    ),
+                    'columns'        => $enabled_columns,
                     'has_filter'     => $table['features']['hasFilter'],
                     'has_search'     => $table['features']['hasSearch'],
                     'has_pagination' => $table['features']['hasPagination'],
@@ -111,8 +115,41 @@ class ProductTableShortcode {
         }//end if
 
         $raw_attrs['categories'] = explode( ',', $raw_attrs['categories'] );
-        $raw_attrs['columns']    = explode( ',', $raw_attrs['columns'] );
+        $raw_attrs['products']   = explode( ',', $raw_attrs['products'] );
+        $raw_attrs['columns']    = $this->normalize_columns( $raw_attrs['columns'] );
 
         return $raw_attrs;
+    }
+
+    /**
+     * Normalize the `columns` attribute into an ordered list of column configs.
+     *
+     * @param string|array $columns Raw columns data.
+     * @return array<int, array{slug: string, heading: string, responsive: string}>
+     */
+    private function normalize_columns( $columns ): array {
+        if ( is_string( $columns ) ) {
+            $columns = explode( ',', $columns );
+        }
+
+        $normalized = [];
+
+        foreach ( (array) $columns as $column ) {
+            if ( is_array( $column ) ) {
+                $slug       = $column['slug'] ?? '';
+                $heading    = $column['heading'] ?? '';
+                $responsive = $column['responsive'] ?? '';
+            } else {
+                [ $slug, $heading, $responsive ] = array_pad( explode( '|', (string) $column, 3 ), 3, '' );
+            }
+
+            $normalized[] = [
+                'slug'       => $slug,
+                'heading'    => $heading,
+                'responsive' => in_array( $responsive, $this->product_tables_service::RESPONSIVE_OPTIONS, true ) ? $responsive : 'always-show',
+            ];
+        }
+
+        return $normalized;
     }
 }

@@ -126,7 +126,8 @@ export function createApi(base: string): AbstractApi {
   }
 }
 
-export const yayWholesaleApi = createApi(window.yayBulkOrderMeta.wpMeta.restBase);
+export const yayBulkOrderApi = createApi(window.yayBulkOrderMeta.wpMeta.restBase);
 export const wordpressApi = createApi('wp/v2');
+export const wooCommerceApi = createApi('wc/v3');
 
-export const api = yayWholesaleApi;
+export const api = yayBulkOrderApi;

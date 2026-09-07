@@ -45,12 +45,6 @@ export const ALL_PRODUCT_TABLE_COLS: ProductTable['columns'] = [
     responsive: 'hide-on-mobile',
   },
   {
-    slug: 'summary',
-    heading: __('Summary', 'yay-bulk-order'),
-    enabled: true,
-    responsive: 'hide-on-tablet',
-  },
-  {
     slug: 'add-to-cart',
     heading: __('Add to Cart', 'yay-bulk-order'),
     enabled: true,
@@ -65,7 +59,7 @@ export const PREBUILD_TEMPLATES: TablePrebuildTemplate[] = [
     desc: __('All columns, with performant filters and pagination', 'yay-bulk-order'),
     data: {
       query: {
-        queryBy: 'all',
+        queryBy: 'all-products',
       },
       title: __('Full Featured Table', 'yay-bulk-order'),
       columns: ALL_PRODUCT_TABLE_COLS,
@@ -82,7 +76,7 @@ export const PREBUILD_TEMPLATES: TablePrebuildTemplate[] = [
     desc: __('Show all products from some selected categories.', 'yay-bulk-order'),
     data: {
       query: {
-        queryBy: 'categories',
+        queryBy: 'by-categories',
         categories: [],
       },
       title: __('Some Categories Table', 'yay-bulk-order'),
@@ -100,7 +94,7 @@ export const PREBUILD_TEMPLATES: TablePrebuildTemplate[] = [
     desc: __('Only 4 essential columns, fit for small space', 'yay-bulk-order'),
     data: {
       query: {
-        queryBy: 'all',
+        queryBy: 'all-products',
       },
       title: __('Simple Table', 'yay-bulk-order'),
       columns: getColumnsBySlugs(['product', 'quantity', 'subtotal', 'add-to-cart']),

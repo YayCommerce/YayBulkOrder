@@ -1,17 +1,19 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { ProductTable } from '@yay-bulk-order/common/src/schemas';
 import { CircleCheck, CircleX } from 'lucide-react';
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ProductTableActions } from '@/pages/product-tables/table-list/TableColumns/TableActions';
 
 const QUERY_BY_LABELS: Record<ProductTable['query']['queryBy'], string> = {
-  all: __('All products', 'yay-bulk-order'),
-  categories: __('By categories', 'yay-bulk-order'),
+  'all-products': __('All products', 'yay-bulk-order'),
+  'by-categories': __('By categories', 'yay-bulk-order'),
   featured: __('Featured', 'yay-bulk-order'),
-  sale: __('On sale', 'yay-bulk-order'),
+  'on-sale': __('On sale', 'yay-bulk-order'),
+  'top-rated': __('Top rated', 'yay-bulk-order'),
+  'hand-picked': __('Hand-picked', 'yay-bulk-order'),
 };
 
 export const ProductTableColumns: ColumnDef<ProductTable>[] = [
@@ -50,16 +52,22 @@ export const ProductTableColumns: ColumnDef<ProductTable>[] = [
     header: __('Products', 'yay-bulk-order'),
     accessorFn: (row) => row.query.queryBy,
     cell: ({ row }) => {
-      const { queryBy, categories } = row.original.query;
+      const { queryBy, categories, products } = row.original.query;
       return (
         <div className="flex items-center gap-1.5">
           <Badge variant="secondary">{QUERY_BY_LABELS[queryBy]}</Badge>
-          {queryBy === 'categories' && categories?.length ? (
+          {queryBy === 'by-categories' && categories?.length && (
             <span className="text-muted-foreground text-xs">
               {/* translators: %d: number of categories */}
-              {categories.length} {__('categories', 'yay-bulk-order')}
+              {sprintf(__('%d categories', 'yay-bulk-order'), categories.length)}
             </span>
-          ) : null}
+          )}
+          {queryBy === 'hand-picked' && products?.length && (
+            <span className="text-muted-foreground text-xs">
+              {/* translators: %d: number of products */}
+              {sprintf(__('%d products', 'yay-bulk-order'), products.length)}
+            </span>
+          )}
         </div>
       );
     },

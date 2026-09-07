@@ -15,8 +15,8 @@ class ProductTablesService {
     public const PREBUILD_CONFIG_META          = 'ybo_product_table_config';
     public const PREBUILD_PRODUCT_DISPLAY_META = 'ybo_product_table_products';
 
-    private const QUERY_BY_OPTIONS   = [ 'all', 'categories', 'featured', 'sale' ];
-    private const RESPONSIVE_OPTIONS = [ 'always-show', 'hide-on-mobile', 'hide-on-tablet' ];
+    public const QUERY_BY_OPTIONS   = [ 'all-products', 'by-categories', 'featured', 'on-sale', 'top-rated', 'hand-picked' ];
+    public const RESPONSIVE_OPTIONS = [ 'always-show', 'hide-on-mobile', 'hide-on-tablet' ];
 
     public function get_paginated_product_tables( string $search, int $page, int $per_page, $display_type = 'all-type' ) {
         $args = [
@@ -115,15 +115,16 @@ class ProductTablesService {
     }
 
     protected function get_product_display( array $data ) {
-        $query_by = $data['query']['queryBy'] ?? 'all';
-        return in_array( $query_by, self::QUERY_BY_OPTIONS, true ) ? $query_by : 'all';
+        $query_by = $data['query']['queryBy'] ?? 'all-products';
+        return in_array( $query_by, self::QUERY_BY_OPTIONS, true ) ? $query_by : 'all-products';
     }
 
     private function default_config() {
         return [
             'query'    => [
-                'queryBy'    => 'all',
+                'queryBy'    => 'all-products',
                 'categories' => [],
+                'products'   => [],
             ],
             'columns'  => [],
             'features' => [
@@ -160,6 +161,10 @@ class ProductTablesService {
             ? array_values( array_map( 'sanitize_text_field', (array) $data['query']['categories'] ) )
             : [];
 
+        $products = isset( $data['query']['products'] )
+            ? array_values( array_filter( array_map( 'absint', (array) $data['query']['products'] ) ) )
+            : [];
+
         $columns = [];
         if ( ! empty( $data['columns'] ) && is_array( $data['columns'] ) ) {
             foreach ( $data['columns'] as $column ) {
@@ -182,6 +187,7 @@ class ProductTablesService {
             'query'    => [
                 'queryBy'    => $query_by,
                 'categories' => $categories,
+                'products'   => $products,
             ],
             'columns'  => $columns,
             'features' => [
@@ -190,28 +196,6 @@ class ProductTablesService {
                 'hasPagination' => ! empty( $features['hasPagination'] ),
                 'pageSize'      => isset( $features['pageSize'] ) ? max( 0, absint( $features['pageSize'] ) ) : $defaults['features']['pageSize'],
             ],
-        ];
-    }
-
-    public function get_block_labels() {
-        return [
-            'product'     => 'Product',
-            'sku'         => 'SKU',
-            'description' => 'Description',
-            'quantity'    => 'Quantity',
-            'subtotal'    => 'Subtotal',
-            'add-to-cart' => 'Add to Cart',
-            'select'      => '',
-        ];
-    }
-
-    public function get_query_type_map() {
-        return [
-            'inherit'    => 'inherit',
-            'all'        => 'all-products',
-            'categories' => 'by-category',
-            'featured'   => 'featured',
-            'sale'       => 'on-sale',
         ];
     }
 }

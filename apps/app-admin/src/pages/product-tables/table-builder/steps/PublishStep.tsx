@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { ProductTableForm } from '@yay-bulk-order/common/src/schemas/product-tables.schema';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useClipboard } from 'rooks';
@@ -5,26 +6,49 @@ import { toast } from 'sonner';
 import { __ } from '@wordpress/i18n';
 
 import { useIsMutatingProductTables } from '@/lib/queries/product-table.queries';
-import { LoadingButton } from '@/components/ui/button';
+import { Button, LoadingButton } from '@/components/ui/button';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { HelpTip } from '@/components/ui/tooltip';
-import { makeBlockText } from '@/pages/product-tables/product-tables.helper';
+import {
+  makeBlockText,
+  makeShortcodeWithId,
+  makeShortcodeWithTable,
+} from '@/pages/product-tables/product-tables.helper';
 
 type PublishStepProps = {
-  isSavedDisabled: boolean;
+  tableId: number;
 };
 
-export default function PublishStep({ isSavedDisabled }: PublishStepProps) {
-  const { control, getValues } = useFormContext<ProductTableForm>();
+export default function PublishStep({ tableId }: PublishStepProps) {
+  const { control, getValues, formState } = useFormContext<ProductTableForm>();
   const { copy } = useClipboard();
   const isSaving = useIsMutatingProductTables();
+  const isFormSaved = useMemo(() => {
+    const { isDirty } = formState;
+    return !isDirty && tableId > 0;
+  }, [formState, tableId]);
 
   const copyAsBlock = async () => {
     const table = getValues();
     try {
-      await copy(makeBlockText(table));
+      await copy(makeBlockText(table, tableId));
+      toast.success(__('Copied', 'yay-bulk-order'));
+    } catch (err) {
+      console.log(err);
+      toast.error(__('Cannot Copy', 'yay-bulk-order'));
+    }
+  };
+
+  const copyAsShortcode = async () => {
+    try {
+      if (isFormSaved) {
+        await copy(makeShortcodeWithId(tableId));
+      } else {
+        const table = getValues();
+        await copy(makeShortcodeWithTable(table));
+      }
       toast.success(__('Copied', 'yay-bulk-order'));
     } catch (err) {
       console.log(err);
@@ -55,9 +79,9 @@ export default function PublishStep({ isSavedDisabled }: PublishStepProps) {
                   type="submit"
                   form="product-table-form"
                   loading={isSaving}
-                  disabled={isSaving || isSavedDisabled}
+                  disabled={isSaving || isFormSaved}
                 >
-                  {isSavedDisabled ? __('Saved', 'yay-bulk-order') : __('Save for later', 'yay-bulk-order')}
+                  {isFormSaved ? __('Saved', 'yay-bulk-order') : __('Save for later', 'yay-bulk-order')}
                 </LoadingButton>
               }
               content={<div>{__('Save to Table List to reuse', 'yay-bulk-order')}</div>}
@@ -69,45 +93,54 @@ export default function PublishStep({ isSavedDisabled }: PublishStepProps) {
             {__('Publish options', 'yay-bulk-order')}
           </p>
           <div className="grid grid-cols-2 gap-2">
-            <div className="border-border hover:bg-accent hover:text-accent-foreground flex cursor-pointer flex-col gap-1 rounded-md border p-3 transition-all">
-              <Label>{__('Create Pattern', 'yay-bulk-order')}</Label>
-              <p className="text-muted-foreground text-xs">
-                {__('Publish the table as a reusable block pattern to the Library.', 'yay-bulk-order')}
-              </p>
-            </div>
-            <div className="border-border hover:bg-accent hover:text-accent-foreground min-h-18 flex cursor-pointer flex-col gap-1 rounded-md border p-3 transition-all">
-              <Label>{__('Use in Shop/Category Page', 'yay-bulk-order')}</Label>
-              <p className="text-muted-foreground text-xs">
-                {__(
-                  'Use the table in shop or category pages. This will replace the default product table.',
-                  'yay-bulk-order',
-                )}
-              </p>
-            </div>
-            <div
-              onClick={() => copyAsBlock()}
-              className="border-border hover:bg-accent hover:text-accent-foreground min-h-18 flex cursor-pointer flex-col gap-1 rounded-md border p-3 transition-all"
-            >
-              <Label>{__('Copy as Blocks', 'yay-bulk-order')}</Label>
-              <p className="text-muted-foreground text-xs">
-                {__('Copy the table as blocks to use in the editor.', 'yay-bulk-order')}
-              </p>
-            </div>
-            <div className="border-border hover:bg-accent hover:text-accent-foreground min-h-18 flex cursor-pointer flex-col gap-1 rounded-md border p-3 transition-all">
-              <Label>{__('Copy as Shortcode', 'yay-bulk-order')}</Label>
-              <p className="text-muted-foreground text-xs">
-                {__('Copy the table as a shortcode to use in the editor.', 'yay-bulk-order')}
-              </p>
-            </div>
-            <div className="border-border hover:bg-accent hover:text-accent-foreground min-h-18 flex cursor-pointer flex-col gap-1 rounded-md border p-3 transition-all">
-              <Label>{__('Add new Page', 'yay-bulk-order')}</Label>
-              <p className="text-muted-foreground text-xs">
-                {__('Create a new page with the table.', 'yay-bulk-order')}
-              </p>
-            </div>
+            <PublishOption
+              title={__('Create Pattern', 'yay-bulk-order')}
+              description={__('Publish the table as a reusable block pattern to the Library.', 'yay-bulk-order')}
+            />
+            <PublishOption
+              title={__('Use in Shop/Category Page', 'yay-bulk-order')}
+              description={__(
+                'Use the table in shop or category pages. This will replace the default product table.',
+                'yay-bulk-order',
+              )}
+            />
+            <PublishOption
+              title={__('Copy as Blocks', 'yay-bulk-order')}
+              description={__('Copy the table as blocks to use in the editor.', 'yay-bulk-order')}
+              onClick={copyAsBlock}
+            />
+            <PublishOption
+              title={__('Copy as Shortcode', 'yay-bulk-order')}
+              description={__('Copy the table as a shortcode to use in the editor.', 'yay-bulk-order')}
+              onClick={copyAsShortcode}
+            />
+            <PublishOption
+              title={__('Add new Page', 'yay-bulk-order')}
+              description={__('Create a new page with the table.', 'yay-bulk-order')}
+            />
           </div>
         </div>
       </div>
     </Card>
+  );
+}
+
+type PublishOptionProps = {
+  title: string;
+  description: string;
+  onClick?: () => void;
+};
+
+function PublishOption({ title, description, onClick }: PublishOptionProps) {
+  return (
+    <Button
+      type="button"
+      variant="outline"
+      onClick={onClick}
+      className="h-auto min-h-20 flex-col items-start justify-start gap-1 whitespace-normal px-2.5 py-2 text-left"
+    >
+      <span className="text-sm font-medium">{title}</span>
+      <span className="text-muted-foreground text-xs font-normal">{description}</span>
+    </Button>
   );
 }

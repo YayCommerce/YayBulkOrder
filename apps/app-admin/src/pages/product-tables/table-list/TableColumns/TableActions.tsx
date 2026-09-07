@@ -1,6 +1,8 @@
 import { ProductTable } from '@yay-bulk-order/common/src/schemas';
 import { CirclePlus, Copy, MoreHorizontalIcon, PencilIcon, Trash2Icon } from 'lucide-react';
 import { useNavigate } from 'react-router';
+import { useClipboard } from 'rooks';
+import { toast } from 'sonner';
 import { __ } from '@wordpress/i18n';
 
 import { useCacheProductTable, useDeleteProductTableMutation } from '@/lib/queries/product-table.queries';
@@ -12,11 +14,33 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { makeBlockText, makeShortcodeWithId } from '@/pages/product-tables/product-tables.helper';
 
 export function ProductTableActions({ table }: { table: ProductTable }) {
   const navigate = useNavigate();
+  const { copy } = useClipboard();
   const deleteMutation = useDeleteProductTableMutation(table.id ?? 0);
   const { cacheTable } = useCacheProductTable();
+
+  const copyAsBlock = async () => {
+    try {
+      await copy(makeBlockText(table, table.id));
+      toast.success(__('Copied', 'yay-bulk-order'));
+    } catch (err) {
+      console.log(err);
+      toast.error(__('Cannot Copy', 'yay-bulk-order'));
+    }
+  };
+
+  const copyAsShortcode = async () => {
+    try {
+      await copy(makeShortcodeWithId(table.id));
+      toast.success(__('Copied', 'yay-bulk-order'));
+    } catch (err) {
+      console.log(err);
+      toast.error(__('Cannot Copy', 'yay-bulk-order'));
+    }
+  };
 
   return (
     <DropdownMenu>
@@ -49,10 +73,10 @@ export function ProductTableActions({ table }: { table: ProductTable }) {
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
-          <Copy className="size-4" />
+          <Copy className="size-4" onClick={copyAsBlock} />
           {__('Copy as Blocks', 'yay-bulk-order')}
         </DropdownMenuItem>
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={copyAsShortcode}>
           <Copy className="size-4" />
           {__('Copy as Shortcode', 'yay-bulk-order')}
         </DropdownMenuItem>

@@ -63,13 +63,6 @@ function ColumnSkeleton({ col }: { col: string }) {
           <Skeleton className="h-4 w-20" />
         </div>
       );
-    case 'summary':
-      return (
-        <div className="flex w-full flex-col gap-1">
-          <Skeleton className="h-3 w-full" />
-          <Skeleton className="h-3 w-4/5" />
-        </div>
-      );
     case 'quantity':
       return (
         <div className="flex items-center gap-1">

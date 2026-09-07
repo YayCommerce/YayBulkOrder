@@ -18,7 +18,7 @@ export default function ColumnsStep({ setSteps }: BuilderStepsProps) {
   const [addPopoverOpen, setAddPopoverOpen] = useState(false);
   const [addPending, setAddPending] = useState<ProductTableColumn['slug'][]>([]);
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 6 } }));
-  const { control } = useFormContext<ProductTable>();
+  const { control, trigger } = useFormContext<ProductTable>();
   const { fields, append, remove, move } = useFieldArray({ control, name: 'columns' });
 
   const handleDragEnd = (event: DragEndEvent) => {
@@ -31,6 +31,11 @@ export default function ColumnsStep({ setSteps }: BuilderStepsProps) {
 
   const togglePendingAdd = (slug: ProductTableColumn['slug']) => {
     setAddPending((prev) => (prev.includes(slug) ? prev.filter((s) => s !== slug) : [...prev, slug]));
+  };
+
+  const handleNext = async () => {
+    const headingPaths = fields.map((_, index) => `columns.${index}.heading` as const);
+    if (await trigger(headingPaths)) setSteps('features');
   };
 
   const addColumns = () => {
@@ -101,7 +106,7 @@ export default function ColumnsStep({ setSteps }: BuilderStepsProps) {
         <Button variant="outline" size="sm" onClick={() => setSteps('products')}>
           {__('Back', 'yay-bulk-order')}
         </Button>
-        <Button variant="primary" size="sm" onClick={() => setSteps('features')}>
+        <Button variant="primary" size="sm" onClick={handleNext}>
           {__('Next', 'yay-bulk-order')}
         </Button>
       </div>

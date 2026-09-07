@@ -38,7 +38,7 @@ export type Meta = {
       num_decimals: number;
     };
     categories: Array<{
-      id: string;
+      id: number;
       title: string;
     }>;
   };

@@ -60,10 +60,22 @@ class PatternRegistry {
             // 'content'     => $this->pattern_service->render_pattern( 'filterable' ),
             // ],
             [
-                'slug'        => 'yay-bulk-order/product-table',
-                'title'       => __( 'Product Table', 'yay-bulk-order' ),
-                'description' => __( 'Display products in a clean, scannable table so customers can browse and add items to cart in bulk. The foundation of every bulk order experience.', 'yay-bulk-order' ),
-                'content'     => $this->pattern_service->render_pattern( 'product-table' ),
+                'slug'        => 'yay-bulk-order/full-featured-product-table',
+                'title'       => __( 'Full Featured Product Table', 'yay-bulk-order' ),
+                'description' => __( 'Display products in a clean, scannable table so customers can browse and add items to cart in bulk. The foundation of every bulk order experience. (All columns, with performant filters, search and pagination)', 'yay-bulk-order' ),
+                'content'     => $this->pattern_service->render_pattern( 'product-table__full-features' ),
+            ],
+            [
+                'slug'        => 'yay-bulk-order/some-categories-product-table',
+                'title'       => __( 'Some Categories Product Table', 'yay-bulk-order' ),
+                'description' => __( 'Display products in a clean, scannable table so customers can browse and add items to cart in bulk. The foundation of every bulk order experience. (Show all products from some selected categories)', 'yay-bulk-order' ),
+                'content'     => $this->pattern_service->render_pattern( 'product-table__some-categories' ),
+            ],
+            [
+                'slug'        => 'yay-bulk-order/simple-product-table',
+                'title'       => __( 'Simple Product Table', 'yay-bulk-order' ),
+                'description' => __( 'Display products in a clean, scannable table so customers can browse and add items to cart in bulk. The foundation of every bulk order experience. (Only 4 essential columns, fit for small space)', 'yay-bulk-order' ),
+                'content'     => $this->pattern_service->render_pattern( 'product-table__simple' ),
             ],
         ];
 

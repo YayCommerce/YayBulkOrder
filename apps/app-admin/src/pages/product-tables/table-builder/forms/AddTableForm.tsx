@@ -21,14 +21,13 @@ import { BuilderSteps, getColumnsBySlugs } from '@/pages/product-tables/table-bu
 const DEFAULT_VALUE: ProductTableForm = {
   title: __('My Product Table', 'yay-bulk-order'),
   query: {
-    queryBy: 'all',
+    queryBy: 'all-products',
   },
   columns: getColumnsBySlugs(['product', 'description', 'quantity', 'subtotal', 'add-to-cart']),
   features: {
     hasFilter: true,
     hasSearch: true,
     hasPagination: true,
-    pageSize: 10,
   },
 };
 
@@ -36,7 +35,7 @@ export default function AddTableForm() {
   const isOpening = useMatch({ path: '/product-tables/new' }) !== null;
 
   const [step, setStep] = useState<BuilderSteps>('prebuild');
-  const [isSaved, setSaved] = useState(false);
+  const [savedId, setSavedId] = useState(0);
 
   const form = useForm<ProductTableForm>({
     resolver: zodResolver(productTableSchema),
@@ -50,13 +49,13 @@ export default function AddTableForm() {
     if (isMutating) return;
 
     try {
-      await createMutation.mutateAsync(data);
+      const res = await createMutation.mutateAsync(data);
       form.reset(data);
       toast.success(__('Product Table Saved!', 'yay-wholesale-b2b'));
-      setSaved(true);
+      setSavedId(res.id);
     } catch (error) {
       toast.error(await getErrorMsg(error));
-      setSaved(false);
+      setSavedId(0);
     }
   };
 
@@ -68,7 +67,7 @@ export default function AddTableForm() {
     if (!isOpening) return;
     form.reset(DEFAULT_VALUE);
     setStep('prebuild');
-    setSaved(false);
+    setSavedId(0);
   }, [isOpening]);
 
   return (
@@ -96,7 +95,7 @@ export default function AddTableForm() {
           {step === 'products' && <ProductsStep setSteps={setStep} />}
           {step === 'columns' && <ColumnsStep setSteps={setStep} />}
           {step === 'features' && <FeaturesStep setSteps={setStep} />}
-          {step === 'publish' && <PublishStep isSavedDisabled={isSaved && !form.formState.isDirty} />}
+          {step === 'publish' && <PublishStep tableId={savedId} />}
         </form>
       </div>
     </FormProvider>

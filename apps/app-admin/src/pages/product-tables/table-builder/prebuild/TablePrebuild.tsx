@@ -30,19 +30,27 @@ export default function TablePrebuild({ setSteps }: BuilderStepsProps) {
   });
 
   const [comboOpen, setComboOpen] = useState(false);
-  const [selectedCatIds, setSelectedCatIds] = useState<string[]>([]);
+  const [selectedCatIds, setSelectedCatIds] = useState<number[]>([]);
+  const [catError, setCatError] = useState('');
 
   const { reset } = useFormContext<ProductTableForm>();
 
-  const toggleCategory = (id: string) => {
+  const toggleCategory = (id: number) => {
+    setCatError('');
     setSelectedCatIds((prev) => (prev.includes(id) ? prev.filter((catId) => catId !== id) : [...prev, id]));
   };
 
   const applyTemplate = (nextStep: BuilderSteps) => {
+    if (nextStep !== 'products') {
+      if (selected.data.query.queryBy === 'by-categories' && selectedCatIds.length === 0) {
+        setCatError(__('Select at least one category', 'yay-bulk-order'));
+        return;
+      }
+    }
     reset({
       ...selected.data,
       query:
-        selected.data.query.queryBy === 'categories'
+        selected.data.query.queryBy === 'by-categories'
           ? { ...selected.data.query, categories: selectedCatIds }
           : selected.data.query,
     });
@@ -79,37 +87,40 @@ export default function TablePrebuild({ setSteps }: BuilderStepsProps) {
 
           <div className="border-border flex flex-wrap items-center gap-3 border-t px-4 py-3">
             {selected.slug === 'some-categories' && (
-              <div className="flex items-center gap-2">
-                <span className="text-muted-foreground text-xs">{__('Categories:', 'yay-bulk-order')}</span>
-                <Popover open={comboOpen} onOpenChange={setComboOpen}>
-                  <ComboboxTrigger className="min-w-45 max-w-70">
-                    {selectedCatIds.length === 0 ? (
-                      <span className="text-muted-foreground text-sm">{__('Select...', 'yay-bulk-order')}</span>
-                    ) : (
-                      <div className="flex flex-wrap gap-1 overflow-hidden">
-                        {selectedCatIds.map((id) => (
-                          <ComboboxBadge key={id}>
-                            {categories.find((cat) => cat.id === id)?.title ?? id}
-                            <ComboboxRemove onRemove={() => toggleCategory(id)} />
-                          </ComboboxBadge>
-                        ))}
-                      </div>
-                    )}
-                    <ComboboxIcon />
-                  </ComboboxTrigger>
-                  <PopoverContent className="w-52 p-0" align="start">
-                    <Command>
-                      <CommandList>
-                        {categories.map((cat) => (
-                          <CommandItem key={cat.id} value={cat.id} onSelect={() => toggleCategory(cat.id)}>
-                            <ComboboxCheckbox selected={selectedCatIds.includes(cat.id)} />
-                            {cat.title}
-                          </CommandItem>
-                        ))}
-                      </CommandList>
-                    </Command>
-                  </PopoverContent>
-                </Popover>
+              <div className="flex flex-col gap-1.5">
+                <div className="flex items-center gap-2">
+                  <span className="text-muted-foreground text-xs">{__('Categories:', 'yay-bulk-order')}</span>
+                  <Popover open={comboOpen} onOpenChange={setComboOpen}>
+                    <ComboboxTrigger className="min-w-45 max-w-70">
+                      {selectedCatIds.length === 0 ? (
+                        <span className="text-muted-foreground text-sm">{__('Select...', 'yay-bulk-order')}</span>
+                      ) : (
+                        <div className="flex flex-wrap gap-1 overflow-hidden">
+                          {selectedCatIds.map((id) => (
+                            <ComboboxBadge key={id}>
+                              {categories.find((cat) => cat.id === id)?.title ?? id}
+                              <ComboboxRemove onRemove={() => toggleCategory(id)} />
+                            </ComboboxBadge>
+                          ))}
+                        </div>
+                      )}
+                      <ComboboxIcon />
+                    </ComboboxTrigger>
+                    <PopoverContent className="w-52 p-0" align="start">
+                      <Command>
+                        <CommandList>
+                          {categories.map((cat) => (
+                            <CommandItem key={cat.id} value={cat.id.toString()} onSelect={() => toggleCategory(cat.id)}>
+                              <ComboboxCheckbox selected={selectedCatIds.includes(cat.id)} />
+                              {cat.title}
+                            </CommandItem>
+                          ))}
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
+                </div>
+                {catError && <p className="text-destructive text-xs">{catError}</p>}
               </div>
             )}
 

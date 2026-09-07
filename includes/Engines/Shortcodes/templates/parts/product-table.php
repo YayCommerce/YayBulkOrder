@@ -15,34 +15,32 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$ybo_default_query_by = $ybo_default_query_by ?? 'all';
+$ybo_default_query_by = $ybo_default_query_by ?? 'all-products';
 
-$ybo_column_labels = $this->product_tables_service->get_block_labels();
+// Columns — normalized by ProductTableShortcode into [ slug, heading, responsive ] configs.
+$ybo_columns           = (array) ( $attrs['columns'] ?? [] );
+$ybo_column_slugs      = [];
+$ybo_column_responsive = [];
+$ybo_header_cells      = '';
+foreach ( $ybo_columns as $ybo_column ) {
+    $ybo_slug           = $ybo_column['slug'] ?? '';
+    $ybo_column_slugs[] = $ybo_slug;
 
-// Columns
-$ybo_columns_raw = $attrs['columns'];
-if ( is_string( $ybo_columns_raw ) ) {
-    $ybo_columns_raw = array_map( 'trim', explode( ',', $ybo_columns_raw ) );
-}
-$ybo_columns_raw = (array) $ybo_columns_raw;
+    $ybo_heading    = $ybo_column['heading'] ?? '';
+    $ybo_responsive = $ybo_column['responsive'] ?? 'always-show';
 
-$ybo_header_cells = '';
-foreach ( $ybo_columns_raw as $ybo_slug ) {
-    if ( isset( $ybo_column_labels[ $ybo_slug ] ) ) {
-        $ybo_header_cells .= '<th>' . esc_html( $ybo_column_labels[ $ybo_slug ] ?? '' ) . '</th>';
-    }
+    $ybo_responsive_class               = ( 'always-show' !== $ybo_responsive ) ? 'ybo-' . $ybo_responsive : '';
+    $ybo_column_responsive[ $ybo_slug ] = $ybo_responsive_class;
+    $ybo_th_class                       = '' !== $ybo_responsive_class ? ' class="' . esc_attr( $ybo_responsive_class ) . '"' : '';
+
+    $ybo_header_cells .= '<th' . $ybo_th_class . '>' . esc_html( $ybo_heading ) . '</th>';
 }
 
 // Query
 $ybo_query_by = $attrs['query_by'] ?? $ybo_default_query_by;
 
-$ybo_query_type_map = $this->product_tables_service->get_query_type_map();
-$ybo_query_type     = $ybo_query_type_map[ $ybo_query_by ]
-    ?? $ybo_query_type_map[ $ybo_default_query_by ]
-    ?? 'all-products';
-
-$ybo_product_query = [ 'queryType' => $ybo_query_type ];
-if ( 'by-category' === $ybo_query_type ) {
+$ybo_product_query = [ 'queryType' => $ybo_query_by ];
+if ( 'by-category' === $ybo_query_by ) {
     $ybo_categories = $attrs['categories'] ?? [];
     if ( is_string( $ybo_categories ) ) {
         $ybo_categories = explode( ',', $ybo_categories );
@@ -52,26 +50,32 @@ if ( 'by-category' === $ybo_query_type ) {
     );
 }
 
+if ( 'hand-picked' === $ybo_query_by ) {
+    $ybo_products = $attrs['products'] ?? [];
+    if ( is_string( $ybo_products ) ) {
+        $ybo_products = explode( ',', $ybo_products );
+    }
+    $ybo_product_query['productIds'] = array_values(
+        array_filter( array_map( 'absint', (array) $ybo_products ) )
+    );
+}
+
+$ybo_has_pagination                 = filter_var( $attrs['has_pagination'], FILTER_VALIDATE_BOOLEAN );
+$ybo_per_page                       = (int) $attrs['page_size'];
+$ybo_product_query['hasPagination'] = $ybo_has_pagination;
+if ( $ybo_per_page > 0 ) {
+    $ybo_product_query['pageSize'] = $ybo_per_page;
+}
+
 $ybo_root_attrs = [
     'queryId'          => 1,
     'productQuery'     => $ybo_product_query,
     'hasSelectedQuery' => true,
 ];
 
-$ybo_per_page = (int) $attrs['page_size'];
-if ( $ybo_per_page > 0 ) {
-    $ybo_root_attrs['query'] = [
-        'perPage'  => $ybo_per_page,
-        'postType' => 'product',
-        'order'    => 'desc',
-        'orderBy'  => 'date',
-    ];
-}
-
 // Features
-$ybo_has_filter     = filter_var( $attrs['has_filter'], FILTER_VALIDATE_BOOLEAN );
-$ybo_has_search     = filter_var( $attrs['has_search'], FILTER_VALIDATE_BOOLEAN );
-$ybo_has_pagination = filter_var( $attrs['has_pagination'], FILTER_VALIDATE_BOOLEAN );
+$ybo_has_filter = filter_var( $attrs['has_filter'], FILTER_VALIDATE_BOOLEAN );
+$ybo_has_search = filter_var( $attrs['has_search'], FILTER_VALIDATE_BOOLEAN );
 
 // Render
 // phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped -- static block markup / values escaped above.
@@ -97,14 +101,19 @@ $ybo_has_pagination = filter_var( $attrs['has_pagination'], FILTER_VALIDATE_BOOL
 <?php endif ?>
 <!-- wp:group {"className":"ybo-table-column"} -->
 <div class="wp-block-group ybo-table-column"><!-- wp:yay-bulk-order/product-table -->
-<table class="wp-block-yay-bulk-order-product-table"><!-- wp:yay-bulk-order/product-table-header <?php echo wp_json_encode( [ 'columns' => array_map( static fn( $slug ) => 'yay-bulk-order/product-table-column-' . $slug, $ybo_columns_raw ) ], JSON_HEX_TAG | JSON_HEX_AMP | JSON_UNESCAPED_SLASHES ); ?> -->
+<table class="wp-block-yay-bulk-order-product-table"><!-- wp:yay-bulk-order/product-table-header <?php echo wp_json_encode( [ 'columns' => array_map( static fn( $slug ) => 'yay-bulk-order/product-table-column-' . $slug, $ybo_column_slugs ) ], JSON_HEX_TAG | JSON_HEX_AMP | JSON_UNESCAPED_SLASHES ); ?> -->
 <thead class="wp-block-yay-bulk-order-product-table-header" data-wp-init="callbacks.watchBackToTopVisibility"><tr><?php echo $ybo_header_cells; ?></tr></thead>
 <!-- /wp:yay-bulk-order/product-table-header -->
 
 <!-- wp:yay-bulk-order/product-table-columns -->
-<?php foreach ( $ybo_columns_raw as $ybo_slug ) : ?>
-    <?php echo '<!-- wp:yay-bulk-order/product-table-column-' . $ybo_slug . ' /-->'; ?>
+<?php
+foreach ( $ybo_column_slugs as $ybo_slug ) :
+    $ybo_column_attrs = ! empty( $ybo_column_responsive[ $ybo_slug ] )
+        ? ' ' . wp_json_encode( [ 'className' => $ybo_column_responsive[ $ybo_slug ] ], JSON_HEX_TAG | JSON_HEX_AMP | JSON_UNESCAPED_SLASHES )
+        : '';
+    ?>
 
+    <!-- wp:yay-bulk-order/product-table-column-<?php echo ( $ybo_slug ); ?> <?php echo ( $ybo_column_attrs ); ?> /-->
 <?php endforeach ?>
 <!-- wp:yay-bulk-order/product-table-column-select /-->
 <!-- /wp:yay-bulk-order/product-table-columns --></table>

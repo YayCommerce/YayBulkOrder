@@ -133,10 +133,12 @@ export default function ProductTablesList() {
               <SelectGroup>
                 <SelectLabel>{__('Tables Filter', 'yay-bulk-order')}</SelectLabel>
                 <SelectItem value="all-tables">{__('All tables', 'yay-bulk-order')}</SelectItem>
-                <SelectItem value="all">{__('All products', 'yay-bulk-order')}</SelectItem>
-                <SelectItem value="categories">{__('Categories', 'yay-bulk-order')}</SelectItem>
+                <SelectItem value="all-products">{__('All products', 'yay-bulk-order')}</SelectItem>
+                <SelectItem value="by-categories">{__('Categories', 'yay-bulk-order')}</SelectItem>
                 <SelectItem value="featured">{__('Featured products', 'yay-bulk-order')}</SelectItem>
-                <SelectItem value="sale">{__('On sale products', 'yay-bulk-order')}</SelectItem>
+                <SelectItem value="on-sale">{__('On sale products', 'yay-bulk-order')}</SelectItem>
+                <SelectItem value="top-rated">{__('Top rated products', 'yay-bulk-order')}</SelectItem>
+                <SelectItem value="hand-picked">{__('Hand-picked products', 'yay-bulk-order')}</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
