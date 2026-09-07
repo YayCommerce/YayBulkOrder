@@ -1,2 +1,2 @@
 export { settingsSchema, type Settings } from './schemas/settings.schema';
-export { type AdminData, type Meta } from './schemas/localize.type';
+export { type AdminData, type Currency, type Meta } from './schemas/localize.type';

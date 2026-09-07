@@ -15,12 +15,23 @@ class SettingsService {
 
     public function get_settings() {
         $settings = get_option( 'yay_bulk_order_settings', [] );
-        return array_replace_recursive( $this->get_default_settings(), $settings );
+        return $this->strip_legacy_currency( array_replace_recursive( $this->get_default_settings(), $settings ) );
     }
 
     public function save_settings( array $settings ) {
-        $settings = array_replace_recursive( $this->get_default_settings(), $settings );
+        $settings = $this->strip_legacy_currency( array_replace_recursive( $this->get_default_settings(), $settings ) );
         return update_option( 'yay_bulk_order_settings', $settings );
+    }
+
+    /**
+     * Currency used to be persisted under `general.currency`, which baked a stale
+     * value into the saved option on every save. It now lives in LocalizeService::get_global_config()
+     * so it always reflects the live WooCommerce settings. Strip any leftover key
+     * from options saved before this change.
+     */
+    private function strip_legacy_currency( array $settings ) {
+        unset( $settings['general']['currency'] );
+        return $settings;
     }
 
     public function get_config() {
@@ -59,13 +70,6 @@ class SettingsService {
     private function get_default_settings() {
         return [
             'general'      => [
-                'currency'            => [
-                    'symbol'      => html_entity_decode( get_woocommerce_currency_symbol() ),
-                    'position'    => get_option( 'woocommerce_currency_pos' ),
-                    'decimals'    => wc_get_price_decimals(),
-                    'decimalSep'  => wc_get_price_decimal_separator(),
-                    'thousandSep' => wc_get_price_thousand_separator(),
-                ],
                 'defaultCartQuantity' => 5,
                 'defaultPageSize'     => 10,
             ],

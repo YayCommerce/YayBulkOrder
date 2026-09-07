@@ -29,9 +29,7 @@ function currencyConfigFromCartTotals(totals: StoreApiCartTotals): CurrencyForma
   };
 }
 
-function currencyConfigFromGlobalCurrency(
-  currency: GlobalConfig['settings']['general']['currency'],
-): CurrencyFormatConfig {
+function currencyConfigFromGlobalCurrency(currency: GlobalConfig['currency']): CurrencyFormatConfig {
   const { decimals: minorUnit, thousandSep, decimalSep, symbol } = currency;
 
   switch (currency.position) {
@@ -65,6 +63,6 @@ export function formatCartSubtotal(totals: StoreApiCartTotals | undefined): stri
 }
 
 /** Formats a single amount using the plugin's configured currency settings. */
-export function formatPrice(amount: number, currency: GlobalConfig['settings']['general']['currency']): string {
+export function formatPrice(amount: number, currency: GlobalConfig['currency']): string {
   return formatCurrencyAmount(amount, currencyConfigFromGlobalCurrency(currency));
 }

@@ -131,8 +131,7 @@ const storeDef = {
     },
     get subtotalFormatted() {
       const { unitPrice, quantity, productType, variantId } = getContext<ProductRowContext>();
-      const { currency } = getGlobalConfig().settings.general;
-
+      const { currency } = getGlobalConfig();
       switch (productType) {
         case 'simple':
           return formatPrice(unitPrice * quantity, currency);
