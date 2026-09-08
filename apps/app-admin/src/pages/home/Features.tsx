@@ -2,20 +2,22 @@ import { ExternalLink } from 'lucide-react';
 import { __ } from '@wordpress/i18n';
 
 import { patternLibraryUrl } from '@/lib/helpers/wp.helper';
+import { isPro } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { UpgradeToProBadge } from '@/components/custom/upgrate-to-pro';
 
 const { isBlockTheme } = window.yayBulkOrderMeta.wpMeta;
 
 type Feature = {
   title: string;
-  badge?: boolean;
   description: string;
   linkLabel: string;
   type: 'pattern' | 'template';
+  isProFeature: boolean;
 };
 
 const FEATURES: Feature[] = [
@@ -27,26 +29,27 @@ const FEATURES: Feature[] = [
     ),
     linkLabel: __('Patterns', 'yay-bulk-order'),
     type: 'pattern',
+    isProFeature: false,
   },
   {
     title: __('Variant Table', 'yay-bulk-order'),
-    badge: true,
     description: __(
       'Let customers select product variants directly in the table without navigating to individual product pages. Speeds up ordering for stores with many SKUs.',
       'yay-bulk-order',
     ),
     linkLabel: __('Patterns', 'yay-bulk-order'),
     type: 'pattern',
+    isProFeature: true,
   },
   {
     title: __('Purchase List', 'yay-bulk-order'),
-    badge: true,
     description: __(
       'Save frequently ordered items into named lists for one-click re-ordering. Perfect for B2B customers with recurring orders.',
       'yay-bulk-order',
     ),
     linkLabel: __('Patterns', 'yay-bulk-order'),
     type: 'pattern',
+    isProFeature: true,
   },
   {
     title: __('Shop / Category Page', 'yay-bulk-order'),
@@ -56,6 +59,7 @@ const FEATURES: Feature[] = [
     ),
     linkLabel: __('Template', 'yay-bulk-order'),
     type: 'template',
+    isProFeature: false,
   },
 ];
 
@@ -78,15 +82,18 @@ export default function Features() {
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {FEATURES.map(({ title, badge, description, linkLabel, type }) => (
+        {FEATURES.map(({ title, description, linkLabel, type, isProFeature }) => (
           <Card key={title} className="gap-1">
-            <CardHeader>
+            <CardHeader className="flex items-center justify-between">
               <CardTitle className="text-sm">{title}</CardTitle>
-              {badge && (
-                <CardAction>
-                  <Badge variant="success-soft">{__('Enabled', 'yay-bulk-order')}</Badge>
-                </CardAction>
-              )}
+              {isProFeature &&
+                (isPro ? (
+                  <CardAction>
+                    <Badge variant="success-soft">{__('Enabled', 'yay-bulk-order')}</Badge>
+                  </CardAction>
+                ) : (
+                  <UpgradeToProBadge />
+                ))}
             </CardHeader>
             <CardContent className="text-muted-foreground flex-1 text-xs">{description}</CardContent>
             <div className="mt-4 flex items-center gap-3 text-xs">
@@ -100,6 +107,7 @@ export default function Features() {
                   variant="link"
                   onClick={() => linkTo(type ?? 'pattern', title)}
                   className="p-0! h-fit text-xs font-normal no-underline hover:no-underline"
+                  disabled={!isPro && isProFeature}
                 >
                   {linkLabel}
                   <ExternalLink className="size-3" />

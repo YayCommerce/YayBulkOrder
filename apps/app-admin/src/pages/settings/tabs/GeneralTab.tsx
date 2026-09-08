@@ -28,7 +28,7 @@ export function GeneralTab() {
               </p>
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </div>
-            <NumberInput value={field.value} onValueChange={field.onChange} step={5} className="w-20" />
+            <NumberInput value={field.value} onValueChange={field.onChange} min={0} step={1} className="w-20" />
           </Field>
         )}
       />
@@ -50,7 +50,7 @@ export function GeneralTab() {
               </p>
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </div>
-            <NumberInput value={field.value} onValueChange={field.onChange} step={5} className="w-20" />
+            <NumberInput value={field.value} onValueChange={field.onChange} min={0} step={1} className="w-20" />
           </Field>
         )}
       />
