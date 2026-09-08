@@ -283,9 +283,6 @@ importers:
       '@yay-bulk-order/product-table-store':
         specifier: workspace:*
         version: link:../packages/product-table-store
-      '@yay-bulk-order/variant-table-store':
-        specifier: workspace:*
-        version: link:../packages/variant-table-store
     devDependencies:
       '@types/wordpress__block-editor':
         specifier: latest

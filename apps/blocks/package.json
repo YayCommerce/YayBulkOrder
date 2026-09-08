@@ -28,8 +28,7 @@
     "@wordpress/interactivity": "latest",
     "@wordpress/interactivity-router": "latest",
     "@yay-bulk-order/common": "workspace:*",
-    "@yay-bulk-order/product-table-store": "workspace:*",
-    "@yay-bulk-order/variant-table-store": "workspace:*"
+    "@yay-bulk-order/product-table-store": "workspace:*"
   },
   "devDependencies": {
     "@types/wordpress__block-editor": "latest",

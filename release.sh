@@ -89,10 +89,23 @@ if [ "$BUILD_VARIANT" = "lite" ]; then
     # built counterpart of that same code and equally Pro-only.
     rm -rf "$DEST_PATH/includes/Pro"
     rm -rf "$DEST_PATH/assets/dist/blocks-pro"
+    rm -rf "$DEST_PATH/assets/dist/variant-table-store"
+    rm -rf "$DEST_PATH/assets/dist/purchase-list-store"
+
+    cp "$PROJECT_PATH/composer.json" "$DEST_PATH/composer.json"
+    [ -f "$PROJECT_PATH/composer.lock" ] && cp "$PROJECT_PATH/composer.lock" "$DEST_PATH/composer.lock"
+    composer dump-autoload --optimize --no-dev --working-dir="$DEST_PATH"
+    rm -f "$DEST_PATH/composer.json" "$DEST_PATH/composer.lock"
 fi
 
 echo "Generating zip file..."
 cd "$BUILD_PATH" || exit
+# `zip -r` updates an existing archive in place — it never removes an entry
+# whose file is no longer on disk — so a stale zip from a previous run (e.g.
+# before a file got stripped or renamed) would keep carrying it forever.
+# Delete any previous zip first so this run's is a clean, exact reflection
+# of $DEST_PATH.
+#rm -f "${PLUGIN_SLUG}-${BUILD_VARIANT}.zip"
 zip -q -r "${PLUGIN_SLUG}-${BUILD_VARIANT}.zip" "${PLUGIN_SLUG}-${BUILD_VARIANT}/"
 rm -rf "${PLUGIN_SLUG}-${BUILD_VARIANT}"
 echo "${PLUGIN_SLUG}-${BUILD_VARIANT}.zip file generated!"

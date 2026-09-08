@@ -28,17 +28,23 @@ class RegisterFacade {
     public function register_all_assets() {
         wp_register_style( ScriptName::STYLE_ADMIN_PAGE, YAYBULKORDER_PLUGIN_URL . 'assets/dist/page-admin/style.css', [], YAYBULKORDER_VERSION );
 
-        // $module_asset = require_once YAYBULKORDER_PLUGIN_PATH . 'assets/dist/product-table-store/product-table-store.asset.php';
-        // wp_register_script_module( ScriptName::PRODUCT_TABLE_STORE, YAYBULKORDER_PLUGIN_URL . 'assets/dist/product-table-store/product-table-store.js', $module_asset['dependencies'], $module_asset['version'] );
-        // wp_set_script_translations( ScriptName::PRODUCT_TABLE_STORE, 'yay-bulk-order', YAYBULKORDER_PLUGIN_PATH . 'languages' );
-
-        // $module_asset = require_once YAYBULKORDER_PLUGIN_PATH . 'assets/dist/variant-table-store/variant-table-store.asset.php';
-        // wp_register_script_module( ScriptName::VARIANT_TABLE_STORE, YAYBULKORDER_PLUGIN_URL . 'assets/dist/variant-table-store/variant-table-store.js', $module_asset['dependencies'], $module_asset['version'] );
-        // wp_set_script_translations( ScriptName::VARIANT_TABLE_STORE, 'yay-bulk-order', YAYBULKORDER_PLUGIN_PATH . 'languages' );
-
-        $module_asset = require_once YAYBULKORDER_PLUGIN_PATH . 'assets/dist/purchase-list-store/purchase-list-store.asset.php';
-        wp_register_script_module( ScriptName::PRODUCT_TABLE_STORE, YAYBULKORDER_PLUGIN_URL . 'assets/dist/purchase-list-store/purchase-list-store.js', $module_asset['dependencies'], $module_asset['version'] );
+        $module_asset = require_once YAYBULKORDER_PLUGIN_PATH . 'assets/dist/product-table-store/product-table-store.asset.php';
+        wp_register_script_module( ScriptName::PRODUCT_TABLE_STORE, YAYBULKORDER_PLUGIN_URL . 'assets/dist/product-table-store/product-table-store.js', $module_asset['dependencies'], $module_asset['version'] );
         wp_set_script_translations( ScriptName::PRODUCT_TABLE_STORE, 'yay-bulk-order', YAYBULKORDER_PLUGIN_PATH . 'languages' );
+
+        // Pro-only: `assets/dist/variant-table-store` and
+        // `.../purchase-list-store` aren't shipped in a Lite build (see
+        // release.sh), so only touch them once `includes/Pro` — and
+        // therefore Pro itself — is actually present.
+        if ( \YayBulkOrder\YayBulkOrder::is_pro() ) {
+            $module_asset = require_once YAYBULKORDER_PLUGIN_PATH . 'assets/dist/variant-table-store/variant-table-store.asset.php';
+            wp_register_script_module( ScriptName::VARIANT_TABLE_STORE, YAYBULKORDER_PLUGIN_URL . 'assets/dist/variant-table-store/variant-table-store.js', $module_asset['dependencies'], $module_asset['version'] );
+            wp_set_script_translations( ScriptName::VARIANT_TABLE_STORE, 'yay-bulk-order', YAYBULKORDER_PLUGIN_PATH . 'languages' );
+
+            $module_asset = require_once YAYBULKORDER_PLUGIN_PATH . 'assets/dist/purchase-list-store/purchase-list-store.asset.php';
+            wp_register_script_module( ScriptName::PURCHASE_LIST_STORE, YAYBULKORDER_PLUGIN_URL . 'assets/dist/purchase-list-store/purchase-list-store.js', $module_asset['dependencies'], $module_asset['version'] );
+            wp_set_script_translations( ScriptName::PURCHASE_LIST_STORE, 'yay-bulk-order', YAYBULKORDER_PLUGIN_PATH . 'languages' );
+        }
     }
 
     /**
