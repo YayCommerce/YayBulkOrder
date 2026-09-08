@@ -26,17 +26,6 @@ class LocalizeService {
     public function get_admin_data() {
         return [
             'settings'       => $this->settings_service->get_settings(),
-            'general'        => [
-                'currency'            => [
-                    'symbol'      => html_entity_decode( get_woocommerce_currency_symbol() ),
-                    'position'    => get_option( 'woocommerce_currency_pos' ),
-                    'decimals'    => wc_get_price_decimals(),
-                    'decimalSep'  => wc_get_price_decimal_separator(),
-                    'thousandSep' => wc_get_price_thousand_separator(),
-                ],
-                'defaultCartQuantity' => 5,
-                'defaultPageSize'     => 10,
-            ],
             'defaultPresets' => [
                 'tableColors' => $this->settings_service->get_default_color_preset(),
             ],
@@ -103,7 +92,7 @@ class LocalizeService {
         return [
             'settings'      => [
                 'colors'  => $admin_data['settings']['colors'],
-                'general' => $admin_data['general'],
+                'general' => $admin_data['settings']['general'],
             ],
             'wpMeta'        => $meta['wpMeta'],
             'bulkOrderMeta' => $meta['bulkOrderMeta'],
