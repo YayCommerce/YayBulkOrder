@@ -72,8 +72,8 @@ export function ProductTableActions({ table }: { table: ProductTable }) {
           {__('Create with new page', 'yay-bulk-order')}
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <Copy className="size-4" onClick={copyAsBlock} />
+        <DropdownMenuItem onClick={copyAsBlock}>
+          <Copy className="size-4" />
           {__('Copy as Blocks', 'yay-bulk-order')}
         </DropdownMenuItem>
         <DropdownMenuItem onClick={copyAsShortcode}>

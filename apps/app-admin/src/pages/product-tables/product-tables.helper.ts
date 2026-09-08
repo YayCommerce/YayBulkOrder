@@ -40,11 +40,6 @@ export const makeBlockText = (table: ProductTableForm, tableId?: number): string
   // Columns
   const enabledColumns = table.columns.filter((col) => col.enabled);
 
-  const columnBlockNames = [
-    ...enabledColumns.map((col) => `yay-bulk-order/product-table-column-${col.slug}`),
-    'yay-bulk-order/product-table-column-select',
-  ];
-
   const headerCells = [
     ...enabledColumns.map((col) => {
       const cls = responsiveClass(col.responsive);
@@ -62,7 +57,16 @@ export const makeBlockText = (table: ProductTableForm, tableId?: number): string
     '<!-- wp:yay-bulk-order/product-table-column-select /-->',
   ].join('\n\n');
 
-  const headerAttrs = JSON.stringify({ columns: columnBlockNames });
+  const headerColumns = [
+    ...enabledColumns.map((col) => {
+      const cls = responsiveClass(col.responsive);
+      return cls
+        ? { name: `yay-bulk-order/product-table-column-${col.slug}`, className: cls }
+        : { name: `yay-bulk-order/product-table-column-${col.slug}` };
+    }),
+    { name: 'yay-bulk-order/product-table-column-select' },
+  ];
+  const headerAttrs = JSON.stringify({ columns: headerColumns });
 
   // Features
   const toolbarBlocks = [

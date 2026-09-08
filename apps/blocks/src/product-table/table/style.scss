@@ -135,16 +135,14 @@
     white-space: nowrap;
   }
 
-  @media (max-width: 782px) {
-    th.ybo-hide-on-tablet,
-    td.ybo-hide-on-tablet {
+  @media (max-width: 1024px) {
+    .ybo-hide-on-tablet {
       display: none !important;
     }
   }
 
   @media (max-width: 480px) {
-    th.ybo-hide-on-mobile,
-    td.ybo-hide-on-mobile {
+    .ybo-hide-on-mobile {
       display: none !important;
     }
   }

@@ -11,13 +11,13 @@
     "columns": {
       "type": "array",
       "default": [
-        "yay-bulk-order/product-table-column-product",
-        "yay-bulk-order/product-table-column-sku",
-        "yay-bulk-order/product-table-column-description",
-        "yay-bulk-order/product-table-column-quantity",
-        "yay-bulk-order/product-table-column-subtotal",
-        "yay-bulk-order/product-table-column-add-to-cart",
-        "yay-bulk-order/product-table-column-select"
+        { "name": "yay-bulk-order/product-table-column-product" },
+        { "name": "yay-bulk-order/product-table-column-sku" },
+        { "name": "yay-bulk-order/product-table-column-description" },
+        { "name": "yay-bulk-order/product-table-column-quantity" },
+        { "name": "yay-bulk-order/product-table-column-subtotal" },
+        { "name": "yay-bulk-order/product-table-column-add-to-cart" },
+        { "name": "yay-bulk-order/product-table-column-select" }
       ]
     }
   },

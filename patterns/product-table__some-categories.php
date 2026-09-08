@@ -23,7 +23,7 @@
 <!-- wp:group {"className":"ybo-filter-layout","layout":{"type":"flex","flexWrap":"nowrap"}} -->
 <div class="wp-block-group ybo-filter-layout"><!-- wp:group {"className":"ybo-table-column"} -->
 <div class="wp-block-group ybo-table-column"><!-- wp:yay-bulk-order/product-table -->
-<table class="wp-block-yay-bulk-order-product-table"><!-- wp:yay-bulk-order/product-table-header {"columns":["yay-bulk-order/product-table-column-product","yay-bulk-order/product-table-column-description","yay-bulk-order/product-table-column-quantity","yay-bulk-order/product-table-column-subtotal","yay-bulk-order/product-table-column-add-to-cart","yay-bulk-order/product-table-column-select"]} -->
+<table class="wp-block-yay-bulk-order-product-table"><!-- wp:yay-bulk-order/product-table-header {"columns":[{"name":"yay-bulk-order/product-table-column-product"},{"name":"yay-bulk-order/product-table-column-description"},{"name":"yay-bulk-order/product-table-column-quantity"},{"name":"yay-bulk-order/product-table-column-subtotal"},{"name":"yay-bulk-order/product-table-column-add-to-cart"},{"name":"yay-bulk-order/product-table-column-select"}]} -->
 <thead class="wp-block-yay-bulk-order-product-table-header" data-wp-init="callbacks.watchBackToTopVisibility"><tr><th>Product</th><th>Description</th><th>Quantity</th><th>Subtotal</th><th>Add to Cart</th><th></th></tr></thead>
 <!-- /wp:yay-bulk-order/product-table-header -->
 

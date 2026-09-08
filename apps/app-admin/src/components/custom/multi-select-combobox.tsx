@@ -53,7 +53,7 @@ export function MultiSelectCombobox({
           <div className="flex flex-wrap gap-1 overflow-hidden">
             {value.map((id) => (
               <ComboboxBadge key={id}>
-                {labelOf(id)}
+                {loading ? <Spinner /> : labelOf(id)}
                 <ComboboxRemove onRemove={() => toggle(id)} />
               </ComboboxBadge>
             ))}
