@@ -2,6 +2,7 @@
 namespace YayBulkOrder\Engines\Blocks;
 
 use YayBulkOrder\Services\LocalizeService;
+use YayBulkOrder\Utils\BlockHelper;
 use YayBulkOrder\Utils\SingletonTrait;
 
 /**
@@ -21,8 +22,8 @@ class RegisterBlocks {
     }
 
     public function register_blocks() {
-        $this->register_collection( YAYBULKORDER_PLUGIN_PATH . 'assets/dist/blocks/product-table' );
-        $this->register_collection( YAYBULKORDER_PLUGIN_PATH . 'assets/dist/blocks/common' );
+        BlockHelper::register_block_collection( YAYBULKORDER_PLUGIN_PATH . 'assets/dist/blocks/product-table' );
+        BlockHelper::register_block_collection( YAYBULKORDER_PLUGIN_PATH . 'assets/dist/blocks/common' );
     }
 
     public function enqueue_block_assets() {
@@ -45,21 +46,5 @@ class RegisterBlocks {
             LocalizeService::VAR_META,
             $this->localize_service->get_meta(),
         );
-    }
-
-    private function register_collection( string $blocks_path ) {
-        if ( function_exists( 'wp_register_block_types_from_metadata_collection' ) ) {
-            wp_register_block_types_from_metadata_collection( $blocks_path, $blocks_path . '/blocks-manifest.php' );
-            return;
-        }
-
-        if ( function_exists( 'wp_register_block_metadata_collection' ) ) {
-            wp_register_block_metadata_collection( $blocks_path, $blocks_path . '/blocks-manifest.php' );
-        }
-
-        $manifest_data = require $blocks_path . '/blocks-manifest.php';
-        foreach ( array_keys( $manifest_data ) as $block_type ) {
-            register_block_type( $blocks_path . "/{$block_type}" );
-        }
     }
 }

@@ -32,7 +32,11 @@ export function SettingsPage() {
     if (isMutatingSettings > 0) return;
 
     try {
-      await saveSettingsMutation.mutateAsync(data);
+      // Re-baseline the form against what the server actually persisted, so
+      // `formState.isDirty` (and the beforeunload guard below) clears instead
+      // of staying stuck "dirty" against the pre-save defaultValues.
+      const saved = await saveSettingsMutation.mutateAsync(data);
+      form.reset(saved);
       toast.success(__('Settings saved!', 'yay-bulk-order'));
     } catch (error) {
       toast.error(await getErrorMsg(error));

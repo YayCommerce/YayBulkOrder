@@ -1,0 +1,21 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "yay-bulk-order/variant-table-footer",
+  "version": "0.1.0",
+  "title": "Table Footer",
+  "category": "woocommerce",
+  "description": "Total price, Add to cart and Clear selection.",
+  "textdomain": "yay-bulk-order",
+  "supports": {
+    "interactivity": true,
+    "inserter": false,
+    "reusable": false,
+    "html": false,
+    "align": ["wide", "full"],
+    "anchor": true
+  },
+  "ancestor": ["yay-bulk-order/variant-table-root"],
+  "editorScript": "file:./editor.js",
+  "render": "file:./render.php"
+}

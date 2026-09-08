@@ -70,10 +70,26 @@ pnpm run "build:admin:${BUILD_VARIANT}"
 echo "Running Block JS Build..."
 pnpm run build
 
+if [ "$BUILD_VARIANT" = "pro" ]; then
+    echo "Running Block JS Build (Pro)..."
+    pnpm run build:pro
+fi
+
 echo "Syncing files..."
 rsync -rc --exclude-from="$PROJECT_PATH/.distignore" "$PROJECT_PATH/" "$DEST_PATH/" --delete --delete-excluded
 
 rm -rf "$DEST_PATH/includes/Engines/Register/RegisterDev.php"
+
+if [ "$BUILD_VARIANT" = "lite" ]; then
+    echo "Stripping Pro-only files from Lite build..."
+    # `YayBulkOrder::is_pro()` gates the plugin on whether `includes/Pro/`
+    # (PSR-4 autoloaded as `YayBulkOrder\Pro\`) is present at all, not on a
+    # license check — a Lite build must not ship it, or a Lite install
+    # would activate its Pro code path. `assets/dist/blocks-pro` is the
+    # built counterpart of that same code and equally Pro-only.
+    rm -rf "$DEST_PATH/includes/Pro"
+    rm -rf "$DEST_PATH/assets/dist/blocks-pro"
+fi
 
 echo "Generating zip file..."
 cd "$BUILD_PATH" || exit

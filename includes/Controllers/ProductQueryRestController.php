@@ -44,14 +44,20 @@ class ProductQueryRestController extends BaseRestController {
                     'callback'            => [ $this, 'search_products' ],
                     'permission_callback' => [ $this, 'can_edit_product_table' ],
                     'args'                => [
-                        'search'  => [
+                        'search'       => [
                             'type'    => 'string',
                             'default' => '',
                         ],
-                        'include' => [
+                        'include'      => [
                             'type'    => 'array',
                             'items'   => [ 'type' => 'integer' ],
                             'default' => [],
+                        ],
+                        // Restricts results to a single WooCommerce product type
+                        // (e.g. 'variable' for the Variant Table block's picker).
+                        'product_type' => [
+                            'type'    => 'string',
+                            'default' => '',
                         ],
                     ],
                 ],
@@ -75,8 +81,9 @@ class ProductQueryRestController extends BaseRestController {
     }
 
     public function search_products( WP_REST_Request $request ) {
-        $search  = $request->get_param( 'search' );
-        $include = $request->get_param( 'include' );
+        $search       = $request->get_param( 'search' );
+        $include      = $request->get_param( 'include' );
+        $product_type = $request->get_param( 'product_type' );
 
         $query_args = [
             'post_type'      => 'product',
@@ -96,6 +103,16 @@ class ProductQueryRestController extends BaseRestController {
             $query_args['orderby']        = 'post__in';
         } else {
             $query_args['s'] = $search;
+        }
+
+        if ( $product_type ) {
+            $query_args['tax_query'] = [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
+                [
+                    'taxonomy' => 'product_type',
+                    'field'    => 'slug',
+                    'terms'    => sanitize_key( $product_type ),
+                ],
+            ];
         }
 
         $query = new \WP_Query( $query_args );

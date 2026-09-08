@@ -58,3 +58,10 @@ export type StoreApiVariationSelection = Readonly<{
   attribute: string;
   value: string;
 }>;
+
+/** One line item for `addProductsToCartBatch` — a product/variation row plus how much of it to add. */
+export type BatchCartItem = {
+  productId: number;
+  quantity: number;
+  variationSelections?: StoreApiVariationSelection[];
+};

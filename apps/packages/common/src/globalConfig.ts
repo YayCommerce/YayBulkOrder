@@ -1,4 +1,4 @@
-import type { Currency, Meta, Settings } from '@yay-bulk-order/common/src/schemas';
+import type { Currency, Meta, Settings } from './schemas';
 import { getConfig } from '@wordpress/interactivity';
 
 /** Configuration is readonly. Store path, meta, admin settings */

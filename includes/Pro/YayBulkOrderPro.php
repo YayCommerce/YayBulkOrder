@@ -20,6 +20,7 @@ class YayBulkOrderPro {
         // }
 
         // Pro Engine here
+        \YayBulkOrder\Pro\Engines\Blocks\RegisterBlocks::get_instance();
 
         $this->register_admin_menu();
     }

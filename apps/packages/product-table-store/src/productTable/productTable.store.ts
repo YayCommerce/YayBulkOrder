@@ -1,7 +1,16 @@
 import { getContext, getElement, store } from '@wordpress/interactivity';
 
-import { getGlobalConfig } from '../utils';
-import { initCartSync } from './cartSync';
+import { initCartSync } from '@yay-bulk-order/common/src/cartSync';
+import { getGlobalConfig } from '@yay-bulk-order/common/src/globalConfig';
+import {
+  addProductsToCartBatch,
+  addProductToCart,
+  STORE_NAMESPACE,
+  syncWooCommerceCart,
+  type StoreApiCart,
+} from '@yay-bulk-order/common/src/storeApi';
+import { formatCartSubtotal, formatPrice } from '@yay-bulk-order/common/src/storeApi/currency';
+
 import type {
   FilterCategoryOptionContext,
   ProductRowContext,
@@ -10,14 +19,6 @@ import type {
   SelectedRow,
   TableState,
 } from './productTable.type';
-import {
-  addProductsToCartBatch,
-  addProductToCart,
-  STORE_NAMESPACE,
-  syncWooCommerceCart,
-  type StoreApiCart,
-} from './storeApi';
-import { formatCartSubtotal, formatPrice } from './storeApi/currency';
 
 /** All currently selected rows, derived from the keyed `select` map. */
 function getSelectedRows(tableState: TableState): SelectedRow[] {

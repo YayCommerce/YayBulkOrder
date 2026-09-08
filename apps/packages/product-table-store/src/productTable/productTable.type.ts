@@ -1,4 +1,4 @@
-import type { StoreApiVariationSelection } from './storeApi/type';
+import type { StoreApiVariationSelection } from '@yay-bulk-order/common/src/storeApi/type';
 
 type AllProductQuery = {
   queryType: 'all-products';

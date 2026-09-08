@@ -91,6 +91,29 @@ class BlockHelper {
         return false;
     }
 
+    /**
+     * Registers every block found in a `blocks-manifest.php` metadata
+     * collection. Shared by the free and Pro block registries so each one
+     * only has to point at its own `assets/dist/...` directory.
+     *
+     * @param string $blocks_path Absolute path to the collection's directory.
+     */
+    public static function register_block_collection( string $blocks_path ): void {
+        if ( function_exists( 'wp_register_block_types_from_metadata_collection' ) ) {
+            wp_register_block_types_from_metadata_collection( $blocks_path, $blocks_path . '/blocks-manifest.php' );
+            return;
+        }
+
+        if ( function_exists( 'wp_register_block_metadata_collection' ) ) {
+            wp_register_block_metadata_collection( $blocks_path, $blocks_path . '/blocks-manifest.php' );
+        }
+
+        $manifest_data = require $blocks_path . '/blocks-manifest.php';
+        foreach ( array_keys( $manifest_data ) as $block_type ) {
+            register_block_type( $blocks_path . "/{$block_type}" );
+        }
+    }
+
     public static function get_pagination_range( int $current_page, int $total_pages ): array {
         $window = 1;
         $range  = [];
