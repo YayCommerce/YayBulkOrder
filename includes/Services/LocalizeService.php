@@ -87,7 +87,7 @@ class LocalizeService {
             array_map(
                 function ( $term ) {
                     return [
-                        'id'    => (string) $term->term_id,
+                        'id'    => $term->term_id,
                         'title' => $term->name,
                     ];
                 },

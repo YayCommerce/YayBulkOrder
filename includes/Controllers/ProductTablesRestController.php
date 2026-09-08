@@ -1,8 +1,8 @@
 <?php
-namespace YayBulkOrder\Pro\Controllers;
+namespace YayBulkOrder\Controllers;
 
 use YayBulkOrder\Controllers\BaseRestController;
-use YayBulkOrder\Pro\Services\ProductTablesService;
+use YayBulkOrder\Services\ProductTablesService;
 use YayBulkOrder\Utils\SingletonTrait;
 
 defined( 'ABSPATH' ) || exit;

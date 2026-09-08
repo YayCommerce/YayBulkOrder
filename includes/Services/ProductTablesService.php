@@ -1,5 +1,5 @@
 <?php
-namespace YayBulkOrder\Pro\Services;
+namespace YayBulkOrder\Services;
 
 use YayBulkOrder\Utils\SingletonTrait;
 
@@ -158,7 +158,7 @@ class ProductTablesService {
             : $defaults['query']['queryBy'];
 
         $categories = isset( $data['query']['categories'] )
-            ? array_values( array_map( 'sanitize_text_field', (array) $data['query']['categories'] ) )
+            ? array_values( array_filter( array_map( 'absint', (array) $data['query']['categories'] ) ) )
             : [];
 
         $products = isset( $data['query']['products'] )
