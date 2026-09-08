@@ -10,6 +10,7 @@
   overflow: hidden;
   margin: 10px 0 !important;
   table-layout: auto;
+  background-color: var(--ybo-background-color, #fff);
 
   thead th {
     padding: 14px 16px;
@@ -634,7 +635,7 @@
     padding: 0 48px 0 20px !important;
     border: 1px solid var(--ybo-border-color);
     border-radius: var(--ybo-border-radius, 8px) !important;
-    background-color: var(--ybo-background-color, #fff);
+    background-color: #fff !important;
     color: inherit;
     font-size: 1rem;
     line-height: 40px;
@@ -704,7 +705,8 @@
   cursor: pointer;
   border: 1px solid var(--ybo-border-color) !important;
   border-radius: var(--ybo-border-radius, 8px) !important;
-  background: var(--ybo-background-color, transparent);
+
+  background: #fff !important;
   color: inherit !important;
   height: 42px !important;
   min-height: 42px !important;
@@ -775,7 +777,7 @@
   padding: 16px;
   margin-top: 10px !important;
   &__title {
-    margin: 0 0 12px;
+    margin: 0 0 12px !important;
     font-size: 1rem;
     font-weight: 600;
   }
