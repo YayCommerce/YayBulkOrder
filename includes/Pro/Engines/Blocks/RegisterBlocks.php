@@ -1,36 +1,46 @@
 <?php
 namespace YayBulkOrder\Pro\Engines\Blocks;
 
+use YayBulkOrder\Services\PatternService;
 use YayBulkOrder\Utils\BlockHelper;
 use YayBulkOrder\Utils\SingletonTrait;
 
-defined( 'ABSPATH' ) || exit;
-
 /**
- * Registers the Pro-only block collections under assets/dist/blocks-pro —
- * one per block family (e.g. `variant-table`), same convention as the free
- * `Engines\Blocks\RegisterBlocks` registering `product-table` and `common`
- * separately. Kept separate from the free registry so the free build never
- * has to know this directory exists.
+ * Register Blocks
  */
 class RegisterBlocks {
     use SingletonTrait;
 
+    private PatternService $pattern_service;
+
     protected function __construct() {
+        $this->pattern_service = PatternService::get_instance();
+
         add_action( 'init', [ $this, 'register_blocks' ] );
+        add_filter( 'yaybulkorder_block_patterns', [ $this, 'pro_patterns' ] );
     }
 
     public function register_blocks() {
-        $this->register_collection_if_built( 'variant-table' );
+        BlockHelper::register_block_collection( YAYBULKORDER_PLUGIN_PATH . 'assets/dist/blocks-pro/' );
     }
 
-    private function register_collection_if_built( string $family ) {
-        $blocks_path = YAYBULKORDER_PLUGIN_PATH . 'assets/dist/blocks-pro/' . $family;
-
-        if ( ! file_exists( $blocks_path . '/blocks-manifest.php' ) ) {
-            return;
-        }
-
-        BlockHelper::register_block_collection( $blocks_path );
+    public function pro_patterns( array $patterns ) {
+        return array_merge(
+            $patterns,
+            [
+                [
+                    'slug'        => 'yay-bulk-order/purchase-list',
+                    'title'       => __( 'Purchase List', 'yay-bulk-order' ),
+                    'description' => __( 'Save frequently ordered items into named lists for one-click re-ordering. Perfect for B2B customers with recurring orders.', 'yay-bulk-order' ),
+                    'content'     => $this->pattern_service->render_pattern( 'purchase-list' ),
+                ],
+                [
+                    'slug'        => 'yay-bulk-order/csv-order',
+                    'title'       => __( 'Quick Order via CSV', 'yay-bulk-order' ),
+                    'description' => __( 'Bulk Adding to cart quickly with just a csv file uploaded', 'yay-bulk-order' ),
+                    'content'     => $this->pattern_service->render_pattern( 'csv-order' ),
+                ],
+            ]
+        );
     }
 }

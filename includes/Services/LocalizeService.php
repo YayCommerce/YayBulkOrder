@@ -25,7 +25,21 @@ class LocalizeService {
 
     public function get_admin_data() {
         return [
-            'settings' => $this->settings_service->get_settings(),
+            'settings'       => $this->settings_service->get_settings(),
+            'general'        => [
+                'currency'            => [
+                    'symbol'      => html_entity_decode( get_woocommerce_currency_symbol() ),
+                    'position'    => get_option( 'woocommerce_currency_pos' ),
+                    'decimals'    => wc_get_price_decimals(),
+                    'decimalSep'  => wc_get_price_decimal_separator(),
+                    'thousandSep' => wc_get_price_thousand_separator(),
+                ],
+                'defaultCartQuantity' => 5,
+                'defaultPageSize'     => 10,
+            ],
+            'defaultPresets' => [
+                'tableColors' => $this->settings_service->get_default_color_preset(),
+            ],
         ];
     }
 
@@ -50,9 +64,36 @@ class LocalizeService {
                 'version'   => YAYBULKORDER_VERSION,
                 'reviewed'  => get_option( 'yaybulkorder_reviewed', false ),
             ],
+            'wcMeta'        => [
+                'currency_data' => [
+                    'currency'     => get_woocommerce_currency(),
+                    'symbol'       => html_entity_decode( \get_woocommerce_currency_symbol(), ENT_COMPAT ),
+                    'position'     => get_option( 'woocommerce_currency_pos' ),
+                    'thousand_sep' => get_option( 'woocommerce_price_thousand_sep' ),
+                    'decimal_sep'  => get_option( 'woocommerce_price_decimal_sep' ),
+                    'num_decimals' => intval( get_option( 'woocommerce_price_num_decimals' ) ),
+                ],
+                'categories'    => $this->get_product_categories(),
+            ],
         ];
 
         return $meta;
+    }
+
+    private function get_product_categories() {
+        $terms = ProductQueryService::get_instance()->get_filterable_categories();
+
+        return array_values(
+            array_map(
+                function ( $term ) {
+                    return [
+                        'id'    => (string) $term->term_id,
+                        'title' => $term->name,
+                    ];
+                },
+                $terms
+            )
+        );
     }
 
     public function get_global_config() {
@@ -62,7 +103,7 @@ class LocalizeService {
         return [
             'settings'      => [
                 'colors'  => $admin_data['settings']['colors'],
-                'general' => $admin_data['settings']['general'],
+                'general' => $admin_data['general'],
             ],
             'wpMeta'        => $meta['wpMeta'],
             'bulkOrderMeta' => $meta['bulkOrderMeta'],

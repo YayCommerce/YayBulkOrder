@@ -25,14 +25,18 @@ type HandPickedProductsQuery = {
   productIds: number[];
 };
 
-export type ProductQuery =
+export type ProductQuery = (
   | AllProductQuery
   | InheritProductQuery
   | CategoryProductQuery
   | FeaturedProductQuery
   | OnSaleProductQuery
   | TopRatedProductQuery
-  | HandPickedProductsQuery;
+  | HandPickedProductsQuery
+) & {
+  hasPagination: boolean;
+  pageSize?: number;
+};
 
 type ProductRowId = string;
 

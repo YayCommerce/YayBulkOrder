@@ -25,3 +25,5 @@ const FLEXIBLE_COLUMN_MIN_WIDTH = '140px';
 export function getGridTemplateColumns(columns: string[]): string {
   return columns.map((name) => FIXED_COLUMN_TRACKS[name] ?? `minmax(${FLEXIBLE_COLUMN_MIN_WIDTH}, 1fr)`).join(' ');
 }
+
+export type HeaderColumn = { name: string; className?: string };

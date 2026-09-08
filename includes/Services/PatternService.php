@@ -78,4 +78,20 @@ class PatternService {
             'yay-bulk-order/column-add-to-cart',
         ];
     }
+
+    public function register_collection( string $blocks_path ) {
+        if ( function_exists( 'wp_register_block_types_from_metadata_collection' ) ) {
+            wp_register_block_types_from_metadata_collection( $blocks_path, $blocks_path . '/blocks-manifest.php' );
+            return;
+        }
+
+        if ( function_exists( 'wp_register_block_metadata_collection' ) ) {
+            wp_register_block_metadata_collection( $blocks_path, $blocks_path . '/blocks-manifest.php' );
+        }
+
+        $manifest_data = require $blocks_path . '/blocks-manifest.php';
+        foreach ( array_keys( $manifest_data ) as $block_type ) {
+            register_block_type( $blocks_path . "/{$block_type}" );
+        }
+    }
 }

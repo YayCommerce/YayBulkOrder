@@ -4,10 +4,9 @@
   "description": "Pro Gutenberg blocks for Yay Bulk Order",
   "author": "YayCommerce",
   "scripts": {
-    "dev": "pnpm run dev:variant-table",
-    "dev:variant-table": "wp-scripts start --config webpack.config.cjs --source-path=./src/variant-table --output-path=../../assets/dist/blocks-pro/variant-table --blocks-manifest --experimental-modules",
-    "build": "pnpm run build:variant-table",
-    "build:variant-table": "wp-scripts build --config webpack.config.cjs --source-path=./src/variant-table --output-path=../../assets/dist/blocks-pro/variant-table --blocks-manifest --experimental-modules",
+    "dev": "wp-scripts start --config webpack.config.cjs --source-path=./src --output-path=../../assets/dist/blocks-pro --blocks-manifest --experimental-modules",
+    "build": "wp-scripts build --config webpack.config.cjs --source-path=./src --output-path=../../assets/dist/blocks-pro --blocks-manifest --experimental-modules",
+    
     "format": "wp-scripts format",
     "lint:css": "wp-scripts lint-style",
     "lint:js": "wp-scripts lint-js",
@@ -24,9 +23,12 @@
     "@wordpress/icons": "latest",
     "@wordpress/interactivity": "latest",
     "@wordpress/interactivity-router": "latest",
+    "@yay-bulk-order/product-table-store": "workspace:*",
+    "@yay-bulk-order/purchase-list-store": "workspace:*",
     "@yay-bulk-order/variant-table-store": "workspace:*"
   },
   "devDependencies": {
+    "@types/jquery": "^4.0.1",
     "@types/wordpress__block-editor": "latest",
     "@yay-bulk-order/common": "workspace:*"
   }

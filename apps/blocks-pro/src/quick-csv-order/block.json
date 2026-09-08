@@ -1,0 +1,20 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "yay-bulk-order/quick-csv-order",
+	"version": "0.1.0",
+	"title": "Quick CSV Order",
+	"category": "woocommerce",
+	"description": "",
+	"example": {},
+	"icon": "upload",
+	"supports": {
+		"html": false
+	},
+	"textdomain": "yay-bulk-order",
+	"editorScript": "file:./editor.tsx",
+	"editorStyle": "file:./style-editor.css",
+	"style": "file:./style-editor.css",
+	"viewScriptModule": "file:./view.ts",
+	"render": "file:./render.php"
+}

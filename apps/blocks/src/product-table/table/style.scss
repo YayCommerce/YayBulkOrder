@@ -15,7 +15,7 @@
     padding: 14px 16px;
     text-align: left;
     vertical-align: middle;
-    border:none;
+    border: none;
     border-bottom: 1px solid var(--ybo-border-color);
     font-weight: 600;
     // No `min-width: 0` — see the comment on the table rule above; same
@@ -66,7 +66,7 @@
         padding: 14px 16px;
         text-align: left;
         vertical-align: middle;
-        border:none;
+        border: none;
         border-bottom: 1px solid var(--ybo-border-color);
         overflow-wrap: anywhere;
         display: table-cell !important;
@@ -120,7 +120,7 @@
     width: 1%;
   }
 
-  .wp-block-yay-bulk-order-product-table-column-quantity.ybo-quantity-placeholder{
+  .wp-block-yay-bulk-order-product-table-column-quantity.ybo-quantity-placeholder {
     text-align: center;
   }
 
@@ -133,6 +133,18 @@
   .wp-block-yay-bulk-order-product-table-column-add-to-cart {
     width: 1%;
     white-space: nowrap;
+  }
+
+  @media (max-width: 1024px) {
+    .ybo-hide-on-tablet {
+      display: none !important;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .ybo-hide-on-mobile {
+      display: none !important;
+    }
   }
 
   .wp-block-yay-bulk-order-product-table-column-sku {
@@ -174,7 +186,7 @@
     width: 56px;
     height: 56px;
     background-color: var(--ybo-thumbnail-background, rgba(0, 0, 0, 0.04));
-    
+
     border-radius: 10px;
     line-height: 0;
   }
@@ -342,7 +354,7 @@
       display: none !important;
     }
   }
-  
+
   input[type='checkbox'] {
     width: 18px;
     height: 18px;
@@ -416,7 +428,7 @@
     bottom: 20px;
     justify-content: center;
     width: auto;
-    
+
     translate: -50% 0;
     z-index: 9999999;
     animation: pulse 2s infinite;
@@ -470,7 +482,7 @@
     white-space: nowrap;
     transition: all 0.2s ease-in-out;
     min-height: 40px;
-    margin:  0 !important;
+    margin: 0 !important;
     &:hover:not(:disabled) {
       background-color: var(--ybo-button-background-hover-color, #429f62) !important;
       color: var(--ybo-button-text-hover-color, #fff) !important;
@@ -482,7 +494,7 @@
       color: #fff !important;
       opacity: 1;
       cursor: not-allowed !important;
-      &:hover{
+      &:hover {
         background-color: #b7bcc2;
       }
     }
@@ -837,7 +849,9 @@
     background: #f2f2f2;
     color: #5a6d80;
     text-decoration: none !important;
-    transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
+    transition:
+      background 0.2s ease-in-out,
+      color 0.2s ease-in-out;
   }
 
   &__link {

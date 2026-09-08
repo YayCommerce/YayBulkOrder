@@ -12,8 +12,9 @@ import { useIsMutatingSettings, useSaveSettingsMutation, useSettingsQuery } from
 import { LoadingButton } from '@/components/ui/button';
 import { SideNavMenuItem, SideNavMenuList } from '@/components/ui/navmenu-side';
 import { toast } from '@/components/ui/sonner';
+import { AdvancedTab } from '@/pages/settings/tabs/AdvancedTab';
+import { DesignTab } from '@/pages/settings/tabs/DesignTab/DesignTab';
 import { GeneralTab } from './tabs/GeneralTab';
-import { StylesTab } from './tabs/StylesTab';
 
 export function SettingsPage() {
   const navigate = useNavigate();
@@ -32,11 +33,8 @@ export function SettingsPage() {
     if (isMutatingSettings > 0) return;
 
     try {
-      // Re-baseline the form against what the server actually persisted, so
-      // `formState.isDirty` (and the beforeunload guard below) clears instead
-      // of staying stuck "dirty" against the pre-save defaultValues.
-      const saved = await saveSettingsMutation.mutateAsync(data);
-      form.reset(saved);
+      await saveSettingsMutation.mutateAsync(data);
+      form.reset(data);
       toast.success(__('Settings saved!', 'yay-bulk-order'));
     } catch (error) {
       toast.error(await getErrorMsg(error));
@@ -83,9 +81,14 @@ export function SettingsPage() {
                           <span>{__('General', 'yay-bulk-order')}</span>
                         </SideNavMenuItem>
                       </TabsPrimitive.Trigger>
-                      <TabsPrimitive.Trigger value="styles" asChild>
+                      <TabsPrimitive.Trigger value="design" asChild>
                         <SideNavMenuItem>
-                          <span>{__('Styles', 'yay-bulk-order')}</span>
+                          <span>{__('Design', 'yay-bulk-order')}</span>
+                        </SideNavMenuItem>
+                      </TabsPrimitive.Trigger>
+                      <TabsPrimitive.Trigger value="advanced" asChild>
+                        <SideNavMenuItem>
+                          <span>{__('Advanced', 'yay-bulk-order')}</span>
                         </SideNavMenuItem>
                       </TabsPrimitive.Trigger>
                     </SideNavMenuList>
@@ -95,8 +98,11 @@ export function SettingsPage() {
                   <TabsPrimitive.Content value="general" className="bg-card h-full rounded-md border p-6 sm:w-full">
                     <GeneralTab />
                   </TabsPrimitive.Content>
-                  <TabsPrimitive.Content value="styles" className="bg-card h-full rounded-md border p-6 sm:w-full">
-                    <StylesTab />
+                  <TabsPrimitive.Content value="design" className="bg-card h-full rounded-md border p-6 sm:w-full">
+                    <DesignTab />
+                  </TabsPrimitive.Content>
+                  <TabsPrimitive.Content value="advanced" className="bg-card h-full rounded-md border p-6 sm:w-full">
+                    <AdvancedTab />
                   </TabsPrimitive.Content>
                 </div>
               </div>

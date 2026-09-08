@@ -1,6 +1,7 @@
 <?php
 namespace YayBulkOrder\Services;
 
+use WP_Block;
 use YayBulkOrder\Services\SettingsService;
 use YayBulkOrder\Utils\BlockHelper;
 use YayBulkOrder\Utils\SingletonTrait;
@@ -77,12 +78,12 @@ class ProductQueryService {
      * @return array The extended query vars.
      */
     public function extend_product_table_query_vars( $query_vars, $block ) {
-        $filter_param   = $this->get_filter_param( $block );
-        $search_param   = $this->get_search_param( $block );
-        $category_param = $this->get_category_param( $block );
-        $settings       = $this->settings_service->get_settings();
+        $filter_param      = $this->get_filter_param( $block );
+        $search_param      = $this->get_search_param( $block );
+        $category_param    = $this->get_category_param( $block );
+        $products_per_page = $this->get_products_per_page( $block );
 
-        $query_vars['posts_per_page'] = $settings['general']['defaultPageSize'];
+        $query_vars['posts_per_page'] = $products_per_page;
 
         if ( '' !== $search_param ) {
             $query_vars['s'] = $search_param;
@@ -184,10 +185,12 @@ class ProductQueryService {
             }
         }
 
+        $products_per_page = $this->get_products_per_page( $block );
+
         $query_vars = [
             'post_type'           => 'product',
             'post_status'         => 'publish',
-            'posts_per_page'      => (int) $settings['general']['defaultPageSize'],
+            'posts_per_page'      => $products_per_page,
             'paged'               => $page,
             'ignore_sticky_posts' => true,
         ];
@@ -216,7 +219,7 @@ class ProductQueryService {
         } else {
             $query_vars['orderby'] = 'date ID';
             $query_vars['order']   = 'DESC';
-        }
+        }//end if
 
         $search_param = $this->get_search_param( $block );
         if ( '' !== $search_param ) {
@@ -230,15 +233,15 @@ class ProductQueryService {
 
         $filter_param = $this->get_filter_param( $block );
         if ( 'on-sale' === $filter_param ) {
-            $on_sale = wc_get_product_ids_on_sale();
+            $on_sale                = wc_get_product_ids_on_sale();
             $query_vars['post__in'] = ! empty( $on_sale ) ? $on_sale : [ 0 ];
         }
         if ( 'in-stock' === $filter_param ) {
             /* phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_meta_query */
-            $meta_query   = isset( $query_vars['meta_query'] ) && is_array( $query_vars['meta_query'] )
+            $meta_query               = isset( $query_vars['meta_query'] ) && is_array( $query_vars['meta_query'] )
                 ? $query_vars['meta_query']
                 : [];
-            $meta_query[] = [
+            $meta_query[]             = [
                 'key'     => '_stock_status',
                 'value'   => [ 'instock' ],
                 'compare' => 'IN',
@@ -395,8 +398,8 @@ class ProductQueryService {
         $query = $this->create_products_query(
             $block,
             [
-                'fields'         => 'ids',
-                'no_found_rows'  => false,
+                'fields'        => 'ids',
+                'no_found_rows' => false,
             ]
         );
 
@@ -405,5 +408,30 @@ class ProductQueryService {
             'totalPages'  => max( 1, (int) $query->max_num_pages ),
             'totalItems'  => (int) $query->found_posts,
         ];
+    }
+
+    /**
+     * Get the pagination data from context, if not get the default in settings
+     *
+     * @param WP_Block $block The block instance.
+     * @return int
+     */
+    public function get_products_per_page( $block ) {
+        $context = $block->context['productQuery'] ?? [];
+        if ( ! isset( $context['hasPagination'] ) ) {
+            $settings = $this->settings_service->get_settings();
+            return $settings['general']['defaultPageSize'];
+        }
+
+        if ( $context['hasPagination'] === true ) {
+            if ( array_key_exists( 'pageSize', $context ) ) {
+                return $context['pageSize'];
+            } else {
+                $settings = $this->settings_service->get_settings();
+                return $settings['general']['defaultPageSize'];
+            }
+        }
+
+        return -1;
     }
 }

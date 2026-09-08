@@ -24,7 +24,20 @@ export function getAppAdminRouter() {
         },
         {
           path: 'product-tables',
-          element: <ProductTablesPage />,
+          children: [
+            {
+              index: true,
+              element: <ProductTablesPage />,
+            },
+            {
+              path: 'new',
+              element: <ProductTablesPage />,
+            },
+            {
+              path: 'edit/:tableId',
+              element: <ProductTablesPage />,
+            },
+          ],
         },
         {
           path: 'settings',
@@ -53,4 +66,4 @@ export function getAppAdminRouter() {
   ]);
 }
 
-const settingSubMenus = ['general', 'styles'];
+const settingSubMenus = ['general', 'design', 'advanced'];

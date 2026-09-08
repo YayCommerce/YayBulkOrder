@@ -2,6 +2,9 @@ import { Settings } from './settings.schema';
 
 export type AdminData = {
   settings: Settings;
+  defaultPresets: {
+    tableColors: Settings['colors'];
+  };
 };
 
 /**
@@ -36,5 +39,19 @@ export type Meta = {
 
     version: string;
     reviewed: boolean;
+  };
+  wcMeta: {
+    currency_data: {
+      currency: string;
+      symbol: string;
+      position: string;
+      thousand_sep: string;
+      decimal_sep: string;
+      num_decimals: number;
+    };
+    categories: Array<{
+      id: number;
+      title: string;
+    }>;
   };
 };

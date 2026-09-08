@@ -1,6 +1,12 @@
 <?php
 namespace YayBulkOrder\Pro;
 
+use YayBulkOrder\Pro\Engines\Admin\ProductTable;
+use YayBulkOrder\Pro\Engines\Blocks\CSVOrder;
+use YayBulkOrder\Pro\Engines\Frontend\Frontend;
+use YayBulkOrder\Pro\Engines\Blocks\PurchaseList;
+use YayBulkOrder\Pro\Engines\Blocks\RegisterBlocks;
+use YayBulkOrder\Pro\Engines\RestAPI;
 use YayBulkOrder\YayBulkOrderLicenseAdapter;
 use YayBulkOrder\Pro\YayBulkOrderProLicenseAdapter;
 use YayBulkOrder\Utils\SingletonTrait;
@@ -20,7 +26,14 @@ class YayBulkOrderPro {
         // }
 
         // Pro Engine here
-        \YayBulkOrder\Pro\Engines\Blocks\RegisterBlocks::get_instance();
+        PurchaseList::get_instance();
+        CSVOrder::get_instance();
+        Frontend::get_instance();
+        ProductTable::get_instance();
+
+        RestAPI::get_instance();
+
+        RegisterBlocks::get_instance();
 
         $this->register_admin_menu();
     }
