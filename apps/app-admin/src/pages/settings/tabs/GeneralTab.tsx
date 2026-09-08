@@ -2,7 +2,7 @@ import { Settings } from '@yay-bulk-order/common/src/schemas';
 import { Controller, useFormContext } from 'react-hook-form';
 import { __ } from '@wordpress/i18n';
 
-import { Field, FieldContent, FieldError, FieldLabel } from '@/components/ui/field';
+import { Field, FieldError } from '@/components/ui/field';
 import { Label } from '@/components/ui/label';
 import { NumberInput } from '@/components/ui/number-input';
 
@@ -28,7 +28,13 @@ export function GeneralTab() {
               </p>
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </div>
-            <NumberInput value={field.value} onValueChange={field.onChange} step={5} className="w-20" />
+            <NumberInput
+              value={field.value}
+              onValueChange={field.onChange}
+              step={5}
+              className="w-20"
+              aria-invalid={fieldState.invalid}
+            />
           </Field>
         )}
       />
@@ -50,7 +56,13 @@ export function GeneralTab() {
               </p>
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </div>
-            <NumberInput value={field.value} onValueChange={field.onChange} step={5} className="w-20" />
+            <NumberInput
+              value={field.value}
+              onValueChange={field.onChange}
+              step={5}
+              className="w-20"
+              aria-invalid={fieldState.invalid}
+            />
           </Field>
         )}
       />

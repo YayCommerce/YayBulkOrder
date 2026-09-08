@@ -86,7 +86,7 @@ export default function QuickStart() {
             </CardDescription>
           </div>
           <Button variant="outline" className="w-fit" asChild>
-            <NavLink to="/product-tables">
+            <NavLink to="/product-tables/new">
               {__('Open Builder', 'yay-bulk-order')}
               <ArrowRight className="size-4" />
             </NavLink>
