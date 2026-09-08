@@ -7,4 +7,4 @@ export {
   type ProductTableColumn,
   type ProductTable,
 } from './schemas/product-tables.schema';
-export { type AdminData, type Meta } from './schemas/localize.type';
+export { type AdminData, type Currency, type Meta } from './schemas/localize.type';

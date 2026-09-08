@@ -72,7 +72,7 @@
         display: table-cell !important;
       }
 
-      &:last-child td {
+      &:not(:has(~ tr:not([hidden]))) td {
         border-bottom: none;
       }
 
