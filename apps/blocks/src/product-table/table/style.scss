@@ -436,6 +436,9 @@
     &[hidden] {
       display: none !important;
     }
+    &:focus {
+      outline: none !important;
+    }
   }
 
   .wp-block-yay-bulk-order-product-table-columns .block-editor-button-block-appender {
@@ -521,17 +524,18 @@
     width: 40px;
     height: 40px;
     cursor: pointer;
-    border: 1px solid var(--ybo-border-color);
+    border: 1px solid var(--ybo-border-default-color, #e2e2e2);
     border-radius: 50%;
-    background-color: var(--ybo-background-color, #fff);
-    color: inherit;
+    background-color: var(--ybo-background-default-color, #fff) !important;
+    color: #6b6b6f !important;
     line-height: 1;
     text-decoration: none !important;
     transition: all 0.15s ease-in-out;
 
     &:hover {
-      // background-color: rgba(0, 0, 0, 0.04);
-      color: var(--ybo-text-hover-color, #000) !important;
+      border: 1px solid var(--ybo-border-default-hover-color, #171719);
+      background: transparent !important;
+      color: #171719 !important;
     }
 
     &[hidden] {

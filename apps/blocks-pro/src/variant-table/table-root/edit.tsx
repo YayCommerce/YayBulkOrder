@@ -8,6 +8,7 @@ import type { VariantTableAttributes } from '@yay-bulk-order/variant-table-store
 
 import { fetchProductById } from './api';
 import SingleProductPicker from './SingleProductPicker';
+import { useFormStyle } from './useFormStyle';
 
 type VariantTableEditProps = BlockEditProps<VariantTableAttributes> & {
   context?: { postId?: number; postType?: string };
@@ -17,7 +18,8 @@ type VariantTableEditProps = BlockEditProps<VariantTableAttributes> & {
 const TEMPLATE_SHELL_POST_TYPES = new Set(['wp_template', 'wp_template_part', 'wp_block', 'wp_navigation']);
 
 export default function Edit({ attributes, setAttributes, context, clientId }: VariantTableEditProps) {
-  const blockProps = useBlockProps();
+  const { style, ...blockProps } = useBlockProps();
+  const formStyle = useFormStyle();
   const contextPostId = context?.postId;
   const contextPostType = context?.postType;
 
@@ -114,7 +116,7 @@ export default function Edit({ attributes, setAttributes, context, clientId }: V
   // Verification is pending: render nothing rather than flashing the picker
   // and then immediately replacing it with the table.
   if (needsVerification && verified === 'unknown') {
-    return <div {...blockProps} />;
+    return <div style={{ ...style, ...formStyle }} {...blockProps} />;
   }
 
   // Only the very first insertion (nothing picked, no inner blocks yet)
@@ -124,7 +126,7 @@ export default function Edit({ attributes, setAttributes, context, clientId }: V
 
   if (showPlaceholder) {
     return (
-      <div {...blockProps}>
+      <div style={{ ...style, ...formStyle }} {...blockProps}>
         <SingleProductPicker
           productId={attributes.productId}
           onSelect={(productId) => setAttributes({ productId, hasSelectedProduct: Boolean(productId) })}
@@ -146,7 +148,7 @@ export default function Edit({ attributes, setAttributes, context, clientId }: V
           </PanelBody>
         </InspectorControls>
       )}
-      <div {...blockProps}>
+      <div style={{ ...style, ...formStyle }} {...blockProps}>
         <InnerBlocks template={DEFAULT_TEMPLATE} />
       </div>
     </>

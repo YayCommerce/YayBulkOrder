@@ -5,20 +5,23 @@
   box-sizing: border-box;
   border-collapse: separate;
   border-spacing: 0;
-  border: 1px solid var(--ybo-border-color, #e4e4e7);
+  border: 1px solid var(--ybo-border-color);
   border-radius: var(--ybo-border-radius, 8px);
-  overflow: hidden;
+  overflow: hidden !important;
   margin: 10px 0 !important;
   table-layout: auto;
-  background-color: var(--ybo-background-color, #fff);
+
+  th,
+  td {
+    background-color: var(--ybo-background-color, #fff) !important;
+  }
 
   thead th {
     padding: 14px 16px;
     text-align: left;
     vertical-align: middle;
     border: none;
-    border-bottom: 1px solid var(--ybo-border-color, #e4e4e7);
-    background-color: var(--ybo-table-header-background, rgba(0, 0, 0, 0.02));
+    border-bottom: 1px solid var(--ybo-border-color);
     font-weight: 600;
     color: var(--ybo-text-color, #171719);
     * {
@@ -38,8 +41,7 @@
     width: 100% !important;
     padding: 14px 16px;
     text-align: left;
-    background-color: var(--ybo-table-header-background, rgba(0, 0, 0, 0.02));
-    border-bottom: 1px solid var(--ybo-border-color, #e4e4e7);
+    border-bottom: 1px solid var(--ybo-border-color);
     font-weight: 600;
     min-width: 0;
     box-sizing: border-box;
@@ -69,7 +71,7 @@
         text-align: left;
         vertical-align: middle;
         border: none;
-        border-bottom: 1px solid var(--ybo-border-color, #e4e4e7);
+        border-bottom: 1px solid var(--ybo-border-color);
         overflow-wrap: anywhere;
         display: table-cell !important;
       }
@@ -262,6 +264,12 @@
     vertical-align: middle;
     accent-color: var(--ybo-primary-color, #3c434a);
     cursor: pointer;
+    &:focus {
+      outline: none !important;
+    }
+    &[hidden] {
+      display: none !important;
+    }
   }
 }
 
@@ -431,7 +439,12 @@
   transition: all 0.2s ease-in-out;
   min-height: 40px;
   margin:  0 !important;
-  
+  .ybo-icon-cart{
+    display: inline-flex;
+    align-items: center;
+    line-height: 0;
+    font-size: 20px;
+  }
   &:hover:not(:disabled) {
     background-color: var(--ybo-button-background-hover-color, #429f62) !important;
     color: var(--ybo-button-text-hover-color, #fff) !important;
