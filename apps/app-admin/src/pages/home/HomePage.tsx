@@ -1,7 +1,5 @@
-import { __ } from '@wordpress/i18n';
-
 import { Separator } from '@/components/ui/separator';
-import Features from '@/pages/home/Features';
+import Features from '@/pages/home/Features/Features';
 import QuickStart from '@/pages/home/QuickStart';
 
 export function HomePage() {

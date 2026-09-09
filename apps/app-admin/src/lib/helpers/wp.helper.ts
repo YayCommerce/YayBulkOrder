@@ -1,4 +1,7 @@
-const { isBlockTheme, adminUrl } = window.yayBulkOrderMeta.wpMeta;
+const { isBlockTheme, adminUrl, themeSlug } = window.yayBulkOrderMeta.wpMeta;
+
+/** WooCommerce Site Editor template slug for the shop / product archive. */
+const ARCHIVE_PRODUCT_TEMPLATE = 'archive-product';
 
 /** Pattern category slug registered by the plugin (see PatternRegistry). */
 const PATTERN_CATEGORY = 'yay-bulk-order';
@@ -43,4 +46,24 @@ export function templateLibraryUrl(): string | null {
   }
 
   return wpAdminUrl('site-editor.php', { p: '/template' });
+}
+
+/**
+ * URL to edit WooCommerce's Shop / Category page layout — the `archive-product`
+ * template — directly in the Site Editor canvas.
+ *
+ * The template id is `<theme>//archive-product`; the Site Editor resolves it
+ * through the template hierarchy even when the active theme doesn't override it
+ * (WooCommerce provides the fallback). Returns `null` on classic themes.
+ */
+export function archiveProductTemplateUrl(): string | null {
+  if (!isBlockTheme) {
+    return null;
+  }
+
+  return wpAdminUrl('site-editor.php', {
+    postType: 'wp_template',
+    postId: `${themeSlug}//${ARCHIVE_PRODUCT_TEMPLATE}`,
+    canvas: 'edit',
+  });
 }

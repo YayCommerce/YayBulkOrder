@@ -1,6 +1,6 @@
 import { ComponentProps, CSSProperties } from 'react';
 import { Settings } from '@yay-bulk-order/common/src/schemas';
-import { Image } from 'lucide-react';
+import { Image, Minus, Plus } from 'lucide-react';
 import { useFormContext } from 'react-hook-form';
 import { __ } from '@wordpress/i18n';
 
@@ -73,18 +73,24 @@ export function DesignPreviewTable() {
               </PreviewTableCell>
               <PreviewTableCell style={cellStyle}>{product.sku}</PreviewTableCell>
               <PreviewTableCell style={cellStyle}>
-                <input
-                  disabled
-                  type="number"
-                  value={watch('general.defaultCartQuantity')}
-                  readOnly
-                  className="h-6 w-12 rounded-md bg-white py-4 text-xs"
+                <div
+                  className="text-foreground flex w-fit items-center gap-1 rounded-md bg-[#f9f9f9] p-2"
                   style={{
-                    background: watch('colors.background'),
-                    color: watch('colors.text'),
+                    // background: watch('colors.background'),
+                    // color: watch('colors.text'),
                     borderColor: watch('colors.border'),
                   }}
-                />
+                >
+                  <Minus className="size-3" />
+                  <input
+                    disabled
+                    type="number"
+                    value={watch('general.defaultCartQuantity')}
+                    readOnly
+                    className="h-fit w-8 border-none bg-transparent text-xs font-semibold"
+                  />
+                  <Plus className="size-3" />
+                </div>
               </PreviewTableCell>
               <PreviewTableCell style={cellStyle}>{parseWCCurrency(product.price)}</PreviewTableCell>
               <PreviewTableCell style={cellStyle}>

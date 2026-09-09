@@ -10,6 +10,7 @@
   overflow: hidden !important;
   margin: 10px 0 !important;
   table-layout: auto;
+  background-color: var(--ybo-background-color, #fff) !important;
 
   th,
   td {
@@ -347,7 +348,7 @@
     width: fit-content;
     padding: 4px;
     box-sizing: border-box;
-    background-color: var(--ybo-quantity-background, #F9F9F9);
+    background-color: var(--ybo-quantity-background, #f9f9f9);
     border-radius: var(--ybo-border-radius, 8px) !important;
     border: 1px solid var(--ybo-border-color, #e4e4e7) !important;
     &[hidden] {
@@ -400,7 +401,7 @@
     padding: 0;
     border: none;
     background: transparent;
-    color: var(--ybo-text-color, #171719);
+    color: var(--ybo-text-default-color, #171719);
     font-weight: 600;
     font-size: 14px !important;
     text-align: center;

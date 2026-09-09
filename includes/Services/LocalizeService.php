@@ -45,6 +45,7 @@ class LocalizeService {
 
                 'isBlockTheme' => wp_is_block_theme(),
                 'shopPageId'   => function_exists( 'wc_get_page_id' ) ? (int) wc_get_page_id( 'shop' ) : 0,
+                'themeSlug'    => get_stylesheet(),
             ],
             'bulkOrderMeta' => [
                 'pluginUrl' => YAYBULKORDER_PLUGIN_URL,

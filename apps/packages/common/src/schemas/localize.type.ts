@@ -32,6 +32,8 @@ export type Meta = {
     isBlockTheme: boolean;
     /** WooCommerce Shop page ID (`wc_get_page_id( 'shop' )`), 0 if unset. */
     shopPageId: number;
+    /** Active theme stylesheet slug (`get_stylesheet()`), used to build Site Editor template ids. */
+    themeSlug: string;
   };
   bulkOrderMeta: {
     pluginUrl: string;
