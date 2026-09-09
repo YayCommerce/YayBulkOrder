@@ -60,22 +60,48 @@ function buildTableUrl(queryId: number, updates: Record<string, string | number 
 }
 
 /**
+ * Raw HTML fetched ahead of a click (from `prefetchOnHover`), keyed by URL.
+ * `@wordpress/interactivity-router`'s own prefetch cache isn't reusable here
+ * — `navigateWithHiddenParams` feeds it fetched HTML directly instead of
+ * asking it to fetch the (hidden-params) URL itself, so without this, every
+ * click re-fetched the page from scratch even after already hovering it.
+ */
+const prefetchedHtml = new Map<string, Promise<string>>();
+
+function fetchHtml(url: string): Promise<string> {
+  const normalizedUrl = new URL(url, window.location.href).toString();
+
+  if (!prefetchedHtml.has(normalizedUrl)) {
+    const request = window.fetch(normalizedUrl, { credentials: 'same-origin' }).then((response) => {
+      if (!response.ok) {
+        throw new Error(`Request failed with status ${response.status}`);
+      }
+      return response.text();
+    });
+    // Don't cache a failed request — let the next attempt retry the fetch.
+    request.catch(() => prefetchedHtml.delete(normalizedUrl));
+    prefetchedHtml.set(normalizedUrl, request);
+  }
+
+  return prefetchedHtml.get(normalizedUrl) as Promise<string>;
+}
+
+/**
  * Fetches the filtered page directly and updates the router region
  * without exposing query parameters in the browser URL.
  */
-async function navigateWithHiddenParams(fetchUrl: string): Promise<void> {
+async function navigateWithHiddenParams(fetchUrl: string, context: ProductTableContext): Promise<void> {
   const { actions } = await import('@wordpress/interactivity-router');
 
+  context.tableState.isTableLoading = true;
   try {
-    const response = await window.fetch(fetchUrl, { credentials: 'same-origin' });
-    if (!response.ok) {
-      throw new Error(`Request failed with status ${response.status}`);
-    }
-    const html = await response.text();
+    const html = await fetchHtml(fetchUrl);
     await actions.navigate(window.location.href, { html, replace: true, force: true });
   } catch (error) {
     console.error('Failed to refresh the product table without changing the URL', error);
     await actions.navigate(fetchUrl);
+  } finally {
+    context.tableState.isTableLoading = false;
   }
 }
 
@@ -90,7 +116,7 @@ async function navigateToFilterState(context: ProductTableContext): Promise<void
     search: search || null,
   });
 
-  await navigateWithHiddenParams(url);
+  await navigateWithHiddenParams(url, context);
 }
 
 // Debounces search-as-you-type navigation, one timer per table instance (queryId).
@@ -153,8 +179,8 @@ const storeDef = {
     },
 
     get isAddToCartDisabled(): boolean {
-      const { isAddingToCart, unitPrice } = getContext<ProductRowContext>();
-      return isAddingToCart || unitPrice <= 0;
+      const { isAddingToCart, isPurchasable } = getContext<ProductRowContext>();
+      return isAddingToCart || !isPurchasable;
     },
     get isRowSelected(): boolean {
       const { tableState, productId } = getContext<ProductRowState>();
@@ -212,6 +238,11 @@ const storeDef = {
       const { tableState } = getContext<ProductTableContext>();
       return tableState.showBackToTop;
     },
+    /** True while a pagination / filter / search click is refetching the table. */
+    get isTableLoading(): boolean {
+      const { tableState } = getContext<ProductTableContext>();
+      return tableState.isTableLoading;
+    },
     get showFloatingBulkAction(): boolean {
       const { tableState } = getContext<ProductTableContext>();
       return tableState.bulkActionOutOfView && this.hasSelectedRows;
@@ -240,13 +271,15 @@ const storeDef = {
         yield actions.navigate(ref.href);
       }
     },
-    *prefetchOnHover() {
+    // Warms `fetchHtml`'s cache so `navigatePagination` below doesn't have
+    // to wait on a fresh fetch once the click actually lands.
+    prefetchOnHover() {
       const { ref } = getElement();
 
       if (isValidLink(ref)) {
-        const { actions } = yield import('@wordpress/interactivity-router');
-
-        yield actions.prefetch(ref.href);
+        fetchHtml(ref.href).catch(() => {
+          // Ignore — navigatePagination's own fetch will retry and surface the error.
+        });
       }
     },
     // Navigates pagination while keeping query params out of the URL.
@@ -255,7 +288,8 @@ const storeDef = {
 
       if (isValidLink(ref) && isValidEvent(event)) {
         event.preventDefault();
-        yield navigateWithHiddenParams(ref.href);
+        const context = getContext<ProductTableContext>();
+        yield navigateWithHiddenParams(ref.href, context);
       }
     },
     updateQuantity(event: Event) {

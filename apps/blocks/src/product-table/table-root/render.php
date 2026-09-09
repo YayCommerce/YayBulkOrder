@@ -68,6 +68,7 @@ $data_context = [
             'pageSize' => $settings_service->get_settings()['general']['defaultPageSize'],
         ],
         'showBackToTop' => false,
+        'isTableLoading' => false,
         'bulkActionOutOfView' => false,
         'hasSelectColumn' => $has_select_column,
         // Cast to object for the same `{}` (not `[]`) reason as `select` above.
@@ -87,5 +88,13 @@ $data_context = [
 >
 
     <?php echo do_blocks( $content ); ?>
+
+    <div
+        class="ybo-table-loading-overlay"
+        data-wp-bind--hidden="!state.isTableLoading"
+        aria-hidden="true"
+    >
+        <span class="ybo-table-loading-overlay__spinner"></span>
+    </div>
 
 </div>

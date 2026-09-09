@@ -72,6 +72,8 @@ export type ProductTableContext = {
       pageSize: number;
     };
     showBackToTop: boolean;
+    /** True while a pagination / filter / search click is refetching the table. */
+    isTableLoading: boolean;
     bulkActionOutOfView: boolean;
     hasSelectColumn: boolean;
     expandedProducts: Record<number, boolean>;
@@ -83,6 +85,8 @@ export type ProductRowContext = {
   variantId?: number;
   parentProductId?: number;
   unitPrice: number;
+  /** Mirrors `WC_Product::is_purchasable()` — a zero price (e.g. "0") is still purchasable. */
+  isPurchasable: boolean;
   quantity: number;
   isAddingToCart: boolean;
   addToCartText: string;
