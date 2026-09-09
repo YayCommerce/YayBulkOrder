@@ -4,6 +4,7 @@ import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { __ } from '@wordpress/i18n';
 
 import { useAllProductsQuery } from '@/lib/queries/products.queries';
+import { isPro } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
@@ -57,24 +58,39 @@ export default function ProductsStep({ setSteps }: BuilderStepsProps) {
                 <Label htmlFor="query-all-products">{__('All products', 'yay-bulk-order')}</Label>
               </div>
               <div className="flex items-center gap-2">
-                <RadioGroupItem value="by-categories" id="query-by-categories" />
-                <Label htmlFor="query-by-categories">{__('By categories', 'yay-bulk-order')}</Label>
+                <RadioGroupItem value="by-categories" id="query-by-categories" disabled={!isPro} />
+                <Label htmlFor="query-by-categories">
+                  {__('By categories', 'yay-bulk-order')}{' '}
+                  {!isPro && <span className="text-warning text-[11px]">PRO</span>}
+                </Label>
               </div>
               <div className="flex items-center gap-2">
-                <RadioGroupItem value="featured" id="query-featured" />
-                <Label htmlFor="query-featured">{__('Featured products', 'yay-bulk-order')}</Label>
+                <RadioGroupItem value="featured" id="query-featured" disabled={!isPro} />
+                <Label htmlFor="query-featured">
+                  {__('Featured products', 'yay-bulk-order')}{' '}
+                  {!isPro && <span className="text-warning text-[11px]">PRO</span>}
+                </Label>
               </div>
               <div className="flex items-center gap-2">
-                <RadioGroupItem value="sale" id="query-sale" />
-                <Label htmlFor="query-sale">{__('On sale products', 'yay-bulk-order')}</Label>
+                <RadioGroupItem value="sale" id="query-sale" disabled={!isPro} />
+                <Label htmlFor="query-sale">
+                  {__('On sale products', 'yay-bulk-order')}{' '}
+                  {!isPro && <span className="text-warning text-[11px]">PRO</span>}
+                </Label>
               </div>
               <div className="flex items-center gap-2">
-                <RadioGroupItem value="top-rated" id="query-top-rated" />
-                <Label htmlFor="query-top-rated">{__('Top rated products', 'yay-bulk-order')}</Label>
+                <RadioGroupItem value="top-rated" id="query-top-rated" disabled={!isPro} />
+                <Label htmlFor="query-top-rated">
+                  {__('Top rated products', 'yay-bulk-order')}{' '}
+                  {!isPro && <span className="text-warning text-[11px]">PRO</span>}
+                </Label>
               </div>
               <div className="flex items-center gap-2">
-                <RadioGroupItem value="hand-picked" id="query-hand-picked" />
-                <Label htmlFor="query-hand-picked">{__('Hand-picked products', 'yay-bulk-order')}</Label>
+                <RadioGroupItem value="hand-picked" id="query-hand-picked" disabled={!isPro} />
+                <Label htmlFor="query-hand-picked">
+                  {__('Hand-picked products', 'yay-bulk-order')}{' '}
+                  {!isPro && <span className="text-warning text-[11px]">PRO</span>}
+                </Label>
               </div>
             </RadioGroup>
           )}

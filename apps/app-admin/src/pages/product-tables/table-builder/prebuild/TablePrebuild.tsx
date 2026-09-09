@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { HelpTip } from '@/components/ui/tooltip';
 import { MultiSelectCombobox, MultiSelectOption } from '@/components/custom/multi-select-combobox';
+import { UpgradeToProButton } from '@/components/custom/upgrate-to-pro';
 import { TablePreview } from '@/pages/product-tables/table-builder/prebuild/TablePreview';
 import {
   BuilderSteps,
@@ -22,6 +23,11 @@ export default function TablePrebuild({ setSteps }: BuilderStepsProps) {
 
   const [selectedCatIds, setSelectedCatIds] = useState<number[]>([]);
   const [catError, setCatError] = useState('');
+
+  const proTemplate = useMemo(
+    () => PREBUILD_TEMPLATES.filter((t) => t.isProTemplate).map((t) => t.slug),
+    [PREBUILD_TEMPLATES],
+  );
 
   const { reset } = useFormContext<ProductTableForm>();
 
@@ -96,24 +102,29 @@ export default function TablePrebuild({ setSteps }: BuilderStepsProps) {
                 {catError && <p className="text-destructive text-xs">{catError}</p>}
               </div>
             )}
-
             <div className="ml-auto flex gap-2">
-              <HelpTip
-                trigger={
-                  <Button variant="outline" size="sm" onClick={() => applyTemplate('products')}>
-                    {__('Build from this template', 'yay-bulk-order')}
-                  </Button>
-                }
-                content={__('Continue to further edit steps', 'yay-bulk-order')}
-              />
-              <HelpTip
-                trigger={
-                  <Button size="sm" onClick={() => applyTemplate('publish')}>
-                    {__('Create from this template', 'yay-bulk-order')}
-                  </Button>
-                }
-                content={__('Skip editing and go straight to the last step', 'yay-bulk-order')}
-              />
+              {proTemplate.includes(selected.slug) ? (
+                <UpgradeToProButton />
+              ) : (
+                <>
+                  <HelpTip
+                    trigger={
+                      <Button variant="outline" size="sm" onClick={() => applyTemplate('products')}>
+                        {__('Build from this template', 'yay-bulk-order')}
+                      </Button>
+                    }
+                    content={__('Continue to further edit steps', 'yay-bulk-order')}
+                  />
+                  <HelpTip
+                    trigger={
+                      <Button size="sm" onClick={() => applyTemplate('publish')}>
+                        {__('Create from this template', 'yay-bulk-order')}
+                      </Button>
+                    }
+                    content={__('Skip editing and go straight to the last step', 'yay-bulk-order')}
+                  />
+                </>
+              )}
             </div>
           </div>
         </div>

@@ -49,6 +49,7 @@ export const prebuildTemplateSchema = z.object({
   title: z.string(),
   desc: z.string(),
   data: productTableSchema,
+  isProTemplate: z.boolean(),
 });
 
 export type ProductTableColumn = z.infer<typeof productTableColumnSchema>;
