@@ -85,6 +85,17 @@
   position: relative;
 }
 
+.editor-styles-wrapper .wp-block-yay-bulk-order-product-table-root {
+  padding: 6px;
+  outline: 1px dashed transparent;
+  outline-offset: -1px;
+  transition: outline-color 0.1s ease;
+
+  &:hover {
+    outline-color: #949494;
+  }
+}
+
 .ybo-table-loading-overlay {
   position: absolute;
   inset: 0;
