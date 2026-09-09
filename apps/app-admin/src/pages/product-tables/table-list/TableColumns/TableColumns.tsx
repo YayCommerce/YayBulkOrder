@@ -12,7 +12,6 @@ const QUERY_BY_LABELS: Record<ProductTable['query']['queryBy'], string> = {
   'by-categories': __('By categories', 'yay-bulk-order'),
   featured: __('Featured', 'yay-bulk-order'),
   'on-sale': __('On sale', 'yay-bulk-order'),
-  'top-rated': __('Top rated', 'yay-bulk-order'),
   'hand-picked': __('Hand-picked', 'yay-bulk-order'),
 };
 

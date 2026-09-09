@@ -39,8 +39,9 @@ class SettingsService {
     }
 
     public function get_styles() {
-        $settings = $this->get_settings();
-        $colors   = $settings['colors'];
+        $settings       = $this->get_settings();
+        $default_colors = $this->get_default_color_preset();
+        $colors         = $settings['colors'];
 
         return [
             '--ybo-primary-color'                 => $colors['primary'],
@@ -53,6 +54,12 @@ class SettingsService {
             '--ybo-button-background-hover-color' => $colors['buttonBackgroundHover'],
             '--ybo-button-text-color'             => $colors['buttonText'],
             '--ybo-button-text-hover-color'       => $colors['buttonTextHover'],
+
+            '--ybo-text-default-color'            => $default_colors['text'],
+            '--ybo-text-hover-default-color'      => $default_colors['textHover'],
+            '--ybo-description-default-color'     => $default_colors['description'],
+            '--ybo-border-default-color'          => $default_colors['border'],
+            '--ybo-background-default-color'      => $default_colors['background'],
 
             'color'                               => 'var(--ybo-text-color)',
             'border-color'                        => 'var(--ybo-border-color)',

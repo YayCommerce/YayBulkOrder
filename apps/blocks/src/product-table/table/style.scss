@@ -7,10 +7,14 @@
   border-spacing: 0;
   border: 1px solid var(--ybo-border-color);
   border-radius: var(--ybo-border-radius, 8px);
-  overflow: hidden;
+  overflow: hidden !important;
   margin: 10px 0 !important;
   table-layout: auto;
-  background-color: var(--ybo-background-color, #fff);
+
+  th,
+  td {
+    background-color: var(--ybo-background-color, #fff) !important;
+  }
 
   thead th {
     padding: 14px 16px;
@@ -526,7 +530,8 @@
     transition: all 0.15s ease-in-out;
 
     &:hover {
-      background-color: rgba(0, 0, 0, 0.04);
+      // background-color: rgba(0, 0, 0, 0.04);
+      color: var(--ybo-text-hover-color, #000) !important;
     }
 
     &[hidden] {
@@ -699,7 +704,7 @@
     box-sizing: border-box !important;
     // Room on the right for the search icon / clear button overlaid on top.
     padding: 0 48px 0 20px !important;
-    border: 1px solid var(--ybo-border-color, #e4e4e7) !important;
+    border: 1px solid var(--ybo-border-default-color, #e4e4e7) !important;
     border-radius: var(--ybo-border-radius, 8px) !important;
     background-color: #fff !important;
     color: inherit;
@@ -717,7 +722,7 @@
     }
 
     &:focus {
-      outline-color: var(--ybo-border-color, #e4e4e7) !important;
+      outline-color: var(--ybo-border-default-color, #e4e4e7) !important;
       border-color: transparent !important;
       outline-width: 2px;
       outline-style: solid;
@@ -773,11 +778,11 @@
   gap: 8px;
   cursor: pointer;
   // border: 1px solid var(--ybo-border-color) !important;
-  border: 1px solid var(--ybo-border-color) !important;
+  border: 1px solid var(--ybo-border-default-color) !important;
   border-radius: var(--ybo-border-radius, 8px) !important;
 
-  background: #fff !important;
-  color: inherit !important;
+  background: var(--ybo-background-default-color, #fff) !important;
+  color: var(--ybo-text-default-color, #000) !important;
   height: 42px !important;
   min-height: 42px !important;
   max-height: 42px !important;
@@ -842,10 +847,12 @@
 .ybo-filter-sidebar {
   flex: 0 0 auto;
   width: 220px;
-  border: 1px solid var(--ybo-border-color);
+  border: 1px solid var(--ybo-border-default-color);
   border-radius: var(--ybo-border-radius, 8px);
   padding: 16px;
   margin-top: 10px !important;
+  background-color: var(--ybo-background-default-color, #fff);
+  color: var(--ybo-text-default-color, inherit) !important;
   &__title {
     margin: 0 0 12px !important;
     font-size: 1rem;
@@ -855,7 +862,7 @@
   &__divider {
     margin: 0 0 12px;
     border: none;
-    border-top: 1px solid var(--ybo-border-color);
+    border-top: 1px solid var(--ybo-border-default-color);
   }
 
   &__list {
@@ -873,7 +880,6 @@
     background-color: unset !important;
     box-shadow: none !important;
     padding: 0 !important;
-    color: inherit !important;
     text-align: left !important;
     font-size: 0.95rem;
     transition: color 0.15s ease-in-out !important;
@@ -884,7 +890,7 @@
 
     &.is-active {
       font-weight: 600;
-      color: var(--ybo-primary-color, inherit);
+      color: var(--ybo-primary-color, inherit) !important;
       text-decoration: underline !important;
     }
   }

@@ -79,13 +79,6 @@ export default function ProductsStep({ setSteps }: BuilderStepsProps) {
                 </Label>
               </div>
               <div className="flex items-center gap-2">
-                <RadioGroupItem value="top-rated" id="query-top-rated" disabled={!isPro} />
-                <Label htmlFor="query-top-rated">
-                  {__('Top rated products', 'yay-bulk-order')}{' '}
-                  {!isPro && <span className="text-warning text-[11px]">PRO</span>}
-                </Label>
-              </div>
-              <div className="flex items-center gap-2">
                 <RadioGroupItem value="hand-picked" id="query-hand-picked" disabled={!isPro} />
                 <Label htmlFor="query-hand-picked">
                   {__('Hand-picked products', 'yay-bulk-order')}{' '}

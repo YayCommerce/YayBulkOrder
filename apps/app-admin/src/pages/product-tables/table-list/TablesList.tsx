@@ -137,7 +137,6 @@ export default function ProductTablesList() {
                 <SelectItem value="by-categories">{__('Categories', 'yay-bulk-order')}</SelectItem>
                 <SelectItem value="featured">{__('Featured products', 'yay-bulk-order')}</SelectItem>
                 <SelectItem value="on-sale">{__('On sale products', 'yay-bulk-order')}</SelectItem>
-                <SelectItem value="top-rated">{__('Top rated products', 'yay-bulk-order')}</SelectItem>
                 <SelectItem value="hand-picked">{__('Hand-picked products', 'yay-bulk-order')}</SelectItem>
               </SelectGroup>
             </SelectContent>

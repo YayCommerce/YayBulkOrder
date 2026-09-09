@@ -18,10 +18,10 @@ div.wp-block-yay-bulk-order-cart-summary {
     max-height: 42px !important;
     box-sizing: border-box !important;
     padding: 0 16px !important;
-    border: 1px solid var(--ybo-border-color, #e2e2e2);
+    border: 1px solid var(--ybo-border-default-color, #e2e2e2);
     border-radius: var(--ybo-border-radius, 8px) !important;
-    background-color: #fff !important;
-    color: var(--ybo-text-color, inherit);
+    background-color: var(--ybo-background-default-color, #fff) !important;
+    color: var(--ybo-text-default-color, inherit);
     cursor: pointer;
     white-space: nowrap;
     margin: 0;
@@ -40,7 +40,7 @@ div.wp-block-yay-bulk-order-cart-summary {
   }
 
   .yay-cart-trigger__count {
-    color: var(--ybo-description-color, #6b6b6f);
+    color: var(--ybo-description-default-color, #6b6b6f);
     font-size: 0.9rem;
   }
 }
