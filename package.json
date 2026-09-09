@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev:admin": "pnpm --filter @yay-bulk-order/app-admin dev",
+    "dev:admin:lite": "pnpm --filter @yay-bulk-order/app-admin dev:lite",
+    "dev:admin:pro": "pnpm --filter @yay-bulk-order/app-admin dev:pro",
     "dev": "pnpm --filter @yay-bulk-order/blocks dev",
     "dev:pro": "pnpm --filter @yay-bulk-order/blocks-pro dev",
 

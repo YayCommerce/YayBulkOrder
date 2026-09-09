@@ -39,6 +39,7 @@ export type Meta = {
 
     version: string;
     reviewed: boolean;
+    isPro: boolean;
   };
   wcMeta: {
     currency_data: {

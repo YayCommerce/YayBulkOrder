@@ -52,6 +52,7 @@ class LocalizeService {
 
                 'version'   => YAYBULKORDER_VERSION,
                 'reviewed'  => get_option( 'yaybulkorder_reviewed', false ),
+                'isPro'     => \YayBulkOrder\YayBulkOrder::is_pro(),
             ],
             'wcMeta'        => [
                 'currency_data' => [

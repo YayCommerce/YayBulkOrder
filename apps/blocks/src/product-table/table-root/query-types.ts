@@ -1,6 +1,7 @@
+import { Meta } from '@yay-bulk-order/common/src/schemas';
 import { ProductQuery } from '@yay-bulk-order/product-table-store';
 import { __ } from '@wordpress/i18n';
-import { category, check, grid, percent, starFilled, starHalf, store } from '@wordpress/icons';
+import { category, check, grid, percent, starFilled, store } from '@wordpress/icons';
 
 export type QueryTypeOption = {
   queryType: ProductQuery['queryType'];
@@ -8,7 +9,17 @@ export type QueryTypeOption = {
   icon: JSX.Element;
   /** Attributes merged into `productQuery` when this option is picked. */
   defaultQuery: ProductQuery;
+  /** Lite can only ever pick All Products — every other collection is Pro-only. */
+  requiresPro?: boolean;
 };
+
+/** Sales page linked from the "Pro" badge on locked, Lite-only collections. */
+export const UPGRADE_TO_PRO_URL = 'https://yaycommerce.com/yaybulkorder/';
+
+export function isProPlan(): boolean {
+  const meta = (window as Window & { yayBulkOrderMeta?: Meta }).yayBulkOrderMeta;
+  return meta?.bulkOrderMeta?.isPro ?? false;
+}
 
 export const ALL_PRODUCTS_QUERY: ProductQuery = { queryType: 'all-products' };
 
@@ -33,30 +44,28 @@ export const QUERY_TYPE_OPTIONS: QueryTypeOption[] = [
     label: __('Featured Products', 'yay-bulk-order'),
     icon: starFilled,
     defaultQuery: { queryType: 'featured' },
+    requiresPro: true,
   },
   {
     queryType: 'on-sale',
     label: __('On Sale Products', 'yay-bulk-order'),
     icon: percent,
     defaultQuery: { queryType: 'on-sale' },
-  },
-  {
-    queryType: 'top-rated',
-    label: __('Top Rated Products', 'yay-bulk-order'),
-    icon: starHalf,
-    defaultQuery: { queryType: 'top-rated' },
+    requiresPro: true,
   },
   {
     queryType: 'hand-picked',
     label: __('Hand-Picked Products', 'yay-bulk-order'),
     icon: check,
     defaultQuery: { queryType: 'hand-picked', productIds: [] },
+    requiresPro: true,
   },
   {
     queryType: 'by-category',
     label: __('Products by Category', 'yay-bulk-order'),
     icon: category,
     defaultQuery: { queryType: 'by-category', categoryIds: [] },
+    requiresPro: true,
   },
 ];
 
