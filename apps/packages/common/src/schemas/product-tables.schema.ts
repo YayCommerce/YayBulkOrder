@@ -19,7 +19,7 @@ export const productTableColumnSchema = z.object({
 
 const productTableQuerySchema = z
   .object({
-    queryBy: z.enum(['all-products', 'by-categories', 'featured', 'on-sale', 'top-rated', 'hand-picked']),
+    queryBy: z.enum(['all-products', 'by-categories', 'featured', 'on-sale', 'hand-picked']),
     categories: z.array(z.number()).optional(),
     products: z.array(z.number()).optional(),
   })
