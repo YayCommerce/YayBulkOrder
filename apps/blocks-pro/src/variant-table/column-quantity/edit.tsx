@@ -6,7 +6,15 @@ export default function Edit(props: BlockEditProps) {
 
   return (
     <div {...blockProps}>
-      <input className="ybo-quantity-input" type="number" min="1" defaultValue="1" aria-label="Quantity" />
+      <div className="ybo-quantity-stepper">
+        <button type="button" className="ybo-quantity-stepper__button ybo-quantity-stepper__button--minus" disabled>
+          −
+        </button>
+        <input className="ybo-quantity-input" type="number" min="1" defaultValue="1" aria-label="Quantity" />
+        <button type="button" className="ybo-quantity-stepper__button ybo-quantity-stepper__button--plus" disabled>
+          +
+        </button>
+      </div>
     </div>
   );
 }

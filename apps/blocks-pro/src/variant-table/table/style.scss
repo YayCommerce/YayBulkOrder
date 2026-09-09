@@ -166,21 +166,92 @@
     line-height: 1.4;
   }
 
-  .ybo-quantity-input {
-    width: 72px;
+  // Pill-shaped +/- stepper, independent of the active theme's own quantity
+  // input styling (WooCommerce themes vary widely here). Kept identical to
+  // the Product Table block's own stepper (see product-table/table/style.scss).
+  .ybo-quantity-stepper {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    width: fit-content;
+    padding: 4px;
     box-sizing: border-box;
-    padding: 8px 10px;
-    border: 1px solid var(--ybo-border-color, #e4e4e7);
+    background-color: var(--ybo-quantity-background, #F9F9F9);
     border-radius: var(--ybo-border-radius, 8px) !important;
-    background-color: var(--ybo-background-color, #fff);
-    color: inherit;
-    font-size: 0.95rem;
-    text-align: center;
-    transition: border-color 0.15s ease-in-out;
-    margin: 0;
+    border: 1px solid var(--ybo-border-color, #e4e4e7) !important;
+    &[hidden] {
+      display: none !important;
+    }
+  }
+
+  .ybo-quantity-stepper__button {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    min-height: 28px;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    color: #6b6b6f !important;
+    font-size: 16px;
+    font-weight: 550;
+    line-height: 1;
+    box-shadow: none;
+    cursor: pointer;
+    transition:
+      background-color 0.15s ease-in-out,
+      color 0.15s ease-in-out;
+
+    &:hover:not(:disabled) {
+      background: transparent !important;
+      color: #171719 !important;
+    }
     &:focus {
-      outline: none;
-      border-color: var(--ybo-border-color, #e4e4e7)
+      outline: none !important;
+      background: unset;
+      border: unset;
+    }
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  }
+
+  .ybo-quantity-input {
+    flex: 1 1 auto;
+    width: 25px;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--ybo-text-color, #171719);
+    font-weight: 600;
+    font-size: 14px !important;
+    text-align: center;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    height: auto;
+    // Hide the native number-input spinner — the +/- buttons replace it.
+    -moz-appearance: textfield;
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    &:focus {
+      outline: none !important;
+      background: unset;
+      border: unset;
+    }
+    &[hidden] {
+      display: none !important;
     }
   }
 

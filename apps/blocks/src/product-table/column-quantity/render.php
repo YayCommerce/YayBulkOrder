@@ -16,15 +16,28 @@ $default_cart_quantity = $global_config['settings']['general']['defaultCartQuant
     <?php echo get_block_wrapper_attributes(); ?>
     data-wp-class--ybo-quantity-placeholder="state.isNotSimpleProduct"
 >
-    <input
-        data-wp-bind--hidden="state.isNotSimpleProduct"
-        class="ybo-quantity-input"
-        type="number"
-        min="1"
-        step="<?php echo esc_attr($default_cart_quantity); ?>"
-        data-wp-bind--value="context.quantity"
-        data-wp-on--input="actions.updateQuantity"
-        aria-label="<?php echo esc_attr__( 'Quantity', 'yay-bulk-order' ); ?>"
-    />
+    <div class="ybo-quantity-stepper" data-wp-bind--hidden="state.isNotSimpleProduct">
+        <button
+            type="button"
+            class="ybo-quantity-stepper__button ybo-quantity-stepper__button--minus"
+            data-wp-on--click="actions.decrementQuantity"
+            aria-label="<?php echo esc_attr__( 'Decrease quantity', 'yay-bulk-order' ); ?>"
+        >−</button>
+        <input
+            class="ybo-quantity-input"
+            type="number"
+            min="1"
+            step="<?php echo esc_attr($default_cart_quantity); ?>"
+            data-wp-bind--value="context.quantity"
+            data-wp-on--input="actions.updateQuantity"
+            aria-label="<?php echo esc_attr__( 'Quantity', 'yay-bulk-order' ); ?>"
+        />
+        <button
+            type="button"
+            class="ybo-quantity-stepper__button ybo-quantity-stepper__button--plus"
+            data-wp-on--click="actions.incrementQuantity"
+            aria-label="<?php echo esc_attr__( 'Increase quantity', 'yay-bulk-order' ); ?>"
+        >+</button>
+    </div>
     <span data-wp-bind--hidden="!state.isNotSimpleProduct" aria-hidden="true">—</span>
 </td>

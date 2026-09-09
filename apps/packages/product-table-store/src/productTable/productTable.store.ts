@@ -30,6 +30,20 @@ function getSelectedQuantityTotal(tableState: TableState): number {
   return getSelectedRows(tableState).reduce((total, row) => total + row.quantity, 0);
 }
 
+/** Applies a new row quantity (clamped to a minimum of 1) and keeps the bulk selection snapshot in sync. */
+function setRowQuantity(context: ProductRowState, quantity: number): void {
+  context.quantity = Number.isFinite(quantity) && quantity > 0 ? quantity : 1;
+
+  const selected = context.tableState.select[context.productId];
+  if (selected) {
+    context.tableState.select[context.productId] = {
+      productId: context.productId,
+      quantity: context.quantity,
+      variationSelections: context.variationSelections,
+    };
+  }
+}
+
 /**
  * Builds the "View cart" notice shown after an add-to-cart request.
  * `visible` is passed in rather than hardcoded so callers can either show the
@@ -294,17 +308,16 @@ const storeDef = {
     },
     updateQuantity(event: Event) {
       const context = getContext<ProductRowState>();
-      const quantity = Number((event.target as HTMLInputElement).value);
-      context.quantity = Number.isFinite(quantity) && quantity > 0 ? quantity : 1;
-      // Keep the bulk selection snapshot in sync if this row is selected.
-      const selected = context.tableState.select[context.productId];
-      if (selected) {
-        context.tableState.select[context.productId] = {
-          productId: context.productId,
-          quantity: context.quantity,
-          variationSelections: context.variationSelections,
-        };
-      }
+      setRowQuantity(context, Number((event.target as HTMLInputElement).value));
+    },
+    // +/- stepper buttons flanking the quantity input.
+    incrementQuantity() {
+      const context = getContext<ProductRowState>();
+      setRowQuantity(context, context.quantity + context.quantityStep);
+    },
+    decrementQuantity() {
+      const context = getContext<ProductRowState>();
+      setRowQuantity(context, context.quantity - context.quantityStep);
     },
     scrollToTop(event: MouseEvent) {
       event.preventDefault();

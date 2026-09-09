@@ -27,6 +27,21 @@ function getSelectedQuantityTotal(tableState: TableState): number {
   return getSelectedRows(tableState).reduce((total, row) => total + row.quantity, 0);
 }
 
+/** Applies a new row quantity (clamped to a minimum of 1) and keeps the selection snapshot in sync. */
+function setRowQuantity(context: VariantRowState, quantity: number): void {
+  context.quantity = Number.isFinite(quantity) && quantity > 0 ? quantity : 1;
+
+  const selected = context.tableState.select[context.variationId];
+  if (selected) {
+    context.tableState.select[context.variationId] = {
+      variationId: context.variationId,
+      quantity: context.quantity,
+      unitPrice: context.unitPrice,
+      variationSelections: context.variationSelections,
+    };
+  }
+}
+
 const storeDef = {
   state: {
     // Latest cart quantities by variation ID.
@@ -95,19 +110,16 @@ const storeDef = {
   actions: {
     updateQuantity(event: Event) {
       const context = getContext<VariantRowState>();
-      const quantity = Number((event.target as HTMLInputElement).value);
-      context.quantity = Number.isFinite(quantity) && quantity > 0 ? quantity : 1;
-
-      // Keep the selection snapshot in sync if this row is currently selected.
-      const selected = context.tableState.select[context.variationId];
-      if (selected) {
-        context.tableState.select[context.variationId] = {
-          variationId: context.variationId,
-          quantity: context.quantity,
-          unitPrice: context.unitPrice,
-          variationSelections: context.variationSelections,
-        };
-      }
+      setRowQuantity(context, Number((event.target as HTMLInputElement).value));
+    },
+    // +/- stepper buttons flanking the quantity input.
+    incrementQuantity() {
+      const context = getContext<VariantRowState>();
+      setRowQuantity(context, context.quantity + context.quantityStep);
+    },
+    decrementQuantity() {
+      const context = getContext<VariantRowState>();
+      setRowQuantity(context, context.quantity - context.quantityStep);
     },
     toggleSelectRow(event: Event) {
       const context = getContext<VariantRowState>();

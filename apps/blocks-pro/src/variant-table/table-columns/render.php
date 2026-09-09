@@ -41,6 +41,8 @@ $render_row = function ( $block, $variation, $parent_product, $cart_quantities )
     $row_context = array(
         'variationId'  => $variation_id,
         'quantity'     => 1,
+        // Matches the row's own "always starts at 1" convention above.
+        'quantityStep' => 1,
         'unitPrice'    => $unit_price,
         'cartQuantity' => $cart_quantity,
     );

@@ -33,6 +33,8 @@ export type VariantRowContext = {
   variationId: number;
   unitPrice: number;
   quantity: number;
+  /** Increment used by the +/- stepper buttons — mirrors the quantity input's `step` attribute. */
+  quantityStep: number;
   cartQuantity: number;
   variationSelections?: StoreApiVariationSelection[];
 };

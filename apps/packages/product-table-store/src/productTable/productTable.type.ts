@@ -88,6 +88,8 @@ export type ProductRowContext = {
   /** Mirrors `WC_Product::is_purchasable()` — a zero price (e.g. "0") is still purchasable. */
   isPurchasable: boolean;
   quantity: number;
+  /** Increment used by the +/- stepper buttons — mirrors the quantity input's `step` attribute. */
+  quantityStep: number;
   isAddingToCart: boolean;
   addToCartText: string;
   cartQuantity: number;
