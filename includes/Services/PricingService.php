@@ -15,12 +15,25 @@ class PricingService {
     use SingletonTrait;
 
     public function get_display_unit_price( \WC_Product $product, int $quantity = 1 ): float {
+        $quantity = max( 1, $quantity );
+
         if ( $product instanceof \WC_Product_Variable ) {
-            $price = (float) $product->get_variation_price( 'min', true );
-        } else {
-            $price = (float) wc_get_price_to_display( $product );
+            $prices = [];
+            foreach ( $product->get_children() as $variation_id ) {
+                $variation = wc_get_product( $variation_id );
+                if ( ! $variation instanceof \WC_Product_Variation || ! $variation->exists() ) {
+                    continue;
+                }
+                $prices[] = $this->get_display_unit_price( $variation, $quantity );
+            }
+            return empty( $prices ) ? 0.0 : (float) min( $prices );
         }
 
-        return (float) apply_filters( 'yaybulkorder_product_display_price', $price, $product, max( 1, $quantity ) );
+        $clone = clone $product;
+        do_action( 'yaybulkorder_adjust_raw_price', $clone, $quantity );
+
+        $raw_price = (float) $clone->get_price( 'edit' );
+
+        return (float) apply_filters( 'woocommerce_product_get_price', $raw_price, $product );
     }
 }

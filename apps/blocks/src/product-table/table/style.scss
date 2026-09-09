@@ -107,7 +107,7 @@
       }
 
       &.is-expanded td {
-        background-color: var(--ybo-variation-row-color, #fafafa) !important;
+        background-color: var(--ybo-background-color, #fff) !important;
       }
     }
   }
@@ -633,7 +633,7 @@
     box-sizing: border-box !important;
     // Room on the right for the search icon / clear button overlaid on top.
     padding: 0 48px 0 20px !important;
-    border: 1px solid var(--ybo-border-color);
+    border: 1px solid var(--ybo-border-color, #e4e4e7) !important;
     border-radius: var(--ybo-border-radius, 8px) !important;
     background-color: #fff !important;
     color: inherit;
@@ -651,7 +651,10 @@
     }
 
     &:focus {
-      border-color: var(--ybo-primary-color, #3c434a);
+      outline-color: var(--ybo-border-color, #e4e4e7) !important;
+      border-color: transparent !important;
+      outline-width: 2px;
+      outline-style: solid;
     }
   }
 
@@ -703,6 +706,7 @@
   align-items: center;
   gap: 8px;
   cursor: pointer;
+  // border: 1px solid var(--ybo-border-color) !important;
   border: 1px solid var(--ybo-border-color) !important;
   border-radius: var(--ybo-border-radius, 8px) !important;
 
