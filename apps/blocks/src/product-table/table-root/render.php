@@ -29,6 +29,14 @@ foreach ( $styles as $property => $value ) {
 
 $query_id = $attributes['queryId'];
 
+// Whether the "select" column (checkboxes) is still part of the table's
+// column composition — the user can remove it in the editor, in which case
+// the bulk-action button has nothing to act on and shouldn't render at all.
+$has_select_column = BlockHelper::inner_blocks_contain(
+    $block->parsed_block['innerBlocks'] ?? array(),
+    'yay-bulk-order/product-table-column-select'
+);
+
 $page_param     = BlockHelper::get_page_param( $query_id );
 $search_param   = BlockHelper::get_search_param( $query_id );
 $category_param = BlockHelper::get_category_param( $query_id );
@@ -60,6 +68,8 @@ $data_context = [
             'pageSize' => $settings_service->get_settings()['general']['defaultPageSize'],
         ],
         'showBackToTop' => false,
+        'bulkActionOutOfView' => false,
+        'hasSelectColumn' => $has_select_column,
         // Cast to object for the same `{}` (not `[]`) reason as `select` above.
         'expandedProducts' => (object) [],
     ],

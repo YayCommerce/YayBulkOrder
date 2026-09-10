@@ -35,5 +35,9 @@ if ( ProductQueryService::get_instance()->should_hide_filters() ) {
             <circle cx="11" cy="12" r="1.6" fill="currentColor"/>
         </svg>
     </span>
-    <span class="ybo-filter-toggle__icon" data-wp-bind--hidden="!state.isFilterOpen" aria-hidden="true">&#10005;</span>
+    <span class="ybo-filter-toggle__icon" data-wp-bind--hidden="!state.isFilterOpen" aria-hidden="true">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+    </span>
 </button>

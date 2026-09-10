@@ -21,6 +21,7 @@ export function useFormStyle() {
       '--ybo-text-hover-color': colors['textHover'],
       '--ybo-description-color': colors['description'],
       '--ybo-border-color': colors['border'],
+      '--ybo-border-radius': '8px',
       '--ybo-background-color': colors['background'],
       '--ybo-button-background-color': colors['buttonBackground'],
       '--ybo-button-background-hover-color': colors['buttonBackgroundHover'],

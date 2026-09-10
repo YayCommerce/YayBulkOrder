@@ -107,7 +107,7 @@ export default function Features() {
               ) : (
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <span className="flex h-fit items-center gap-1 text-xs font-normal">
+                    <span className="flex h-fit cursor-default items-center gap-1 text-xs">
                       {linkLabel}
                       <ExternalLink className="size-3" />
                     </span>

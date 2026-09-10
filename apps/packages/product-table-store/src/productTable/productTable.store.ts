@@ -131,8 +131,7 @@ const storeDef = {
     },
     get subtotalFormatted() {
       const { unitPrice, quantity, productType, variantId } = getContext<ProductRowContext>();
-      const { currency } = getGlobalConfig().settings.general;
-
+      const { currency } = getGlobalConfig();
       switch (productType) {
         case 'simple':
           return formatPrice(unitPrice * quantity, currency);
@@ -211,6 +210,10 @@ const storeDef = {
     get showBackToTop(): boolean {
       const { tableState } = getContext<ProductTableContext>();
       return tableState.showBackToTop;
+    },
+    get showFloatingBulkAction(): boolean {
+      const { tableState } = getContext<ProductTableContext>();
+      return tableState.bulkActionOutOfView && this.hasSelectedRows;
     },
     get isProductExpanded(): boolean {
       const { tableState, productId } = getContext<ProductRowState>();
@@ -425,6 +428,22 @@ const storeDef = {
 
       const observer = new IntersectionObserver(([entry]) => {
         context.tableState.showBackToTop = !entry.isIntersecting;
+      });
+      observer.observe(ref);
+
+      return () => observer.disconnect();
+    },
+
+    watchBulkActionVisibility() {
+      const context = getContext<ProductTableContext>();
+      const { ref } = getElement();
+
+      if (!ref) {
+        return;
+      }
+
+      const observer = new IntersectionObserver(([entry]) => {
+        context.tableState.bulkActionOutOfView = !entry.isIntersecting;
       });
       observer.observe(ref);
 

@@ -73,10 +73,27 @@ class LocalizeService {
                     'decimal_sep'  => get_option( 'woocommerce_price_decimal_sep' ),
                     'num_decimals' => intval( get_option( 'woocommerce_price_num_decimals' ) ),
                 ],
+                'categories'    => $this->get_product_categories(),
             ],
         ];
 
         return $meta;
+    }
+
+    private function get_product_categories() {
+        $terms = ProductQueryService::get_instance()->get_filterable_categories();
+
+        return array_values(
+            array_map(
+                function ( $term ) {
+                    return [
+                        'id'    => (string) $term->term_id,
+                        'title' => $term->name,
+                    ];
+                },
+                $terms
+            )
+        );
     }
 
     public function get_global_config() {
@@ -90,6 +107,13 @@ class LocalizeService {
             ],
             'wpMeta'        => $meta['wpMeta'],
             'bulkOrderMeta' => $meta['bulkOrderMeta'],
+            'currency'      => [
+                'symbol'      => html_entity_decode( get_woocommerce_currency_symbol() ),
+                'position'    => get_option( 'woocommerce_currency_pos' ),
+                'decimals'    => wc_get_price_decimals(),
+                'decimalSep'  => wc_get_price_decimal_separator(),
+                'thousandSep' => wc_get_price_thousand_separator(),
+            ],
         ];
     }
 }

@@ -39,7 +39,6 @@ function applyCartSnapshot(cart: StoreApiCart | undefined): void {
   if (!cart?.totals) {
     return;
   }
-  console.log({ cart });
   state.itemCount = cart.itemsCount ?? 0;
   state.subtotal = formatCartAmount(cart.totals.total_items, cart.totals);
 }

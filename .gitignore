@@ -14,4 +14,7 @@ pnpm-debug.log*
 /vendor/
 .DS_Store
 .env.local
+
+*.xml
+vendor-prefixed/
 composer.lock

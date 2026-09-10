@@ -5,15 +5,16 @@
  * @var WP_Block $block The block instance.
  */
 
-$product_id          = absint( $block->context['yay-bulk-order/productId'] ?? get_the_ID() );
-$product             = wc_get_product( $product_id );
-$is_variable_product = $product instanceof WC_Product_Variable;
+$product_id = absint( $block->context['yay-bulk-order/productId'] ?? get_the_ID() );
+$product    = wc_get_product( $product_id );
+
+$is_selectable = $product instanceof WC_Product && $product->supports( 'ajax_add_to_cart' );
 ?>
 
 <td
     <?php echo get_block_wrapper_attributes(); ?>
 >
-    <?php if ( ! $is_variable_product ) : ?>
+    <?php if ( $is_selectable ) : ?>
         <input
             type="checkbox"
             data-wp-bind--checked="state.isRowSelected"

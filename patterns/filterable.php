@@ -4,7 +4,10 @@
  * Slug: yay-bulk-order/filterable-bulk-order
  * Categories: yay-bulk-order
  * Block Types: yay-bulk-order/bulk-order-form
+ *
+ * @package yaycommerce/yay-bulk-order
  */
+
 ?>
 
 <!-- wp:yay-bulk-order/bulk-order-form {"queryId":9} -->
@@ -14,7 +17,7 @@
 
 <!-- wp:group {"style":{"spacing":{"blockGap":"var:preset|spacing|20"},"layout":{"type":"flex","orientation":"vertical","flexWrap":"nowrap"}}} -->
 <div class="wp-block-group">
-    
+
     <!-- wp:group {"layout":{"type":"flex","justifyContent":"space-between","flexWrap":"nowrap"}} -->
     <div class="wp-block-group">
         <!-- wp:yay-bulk-order/table-filter /-->

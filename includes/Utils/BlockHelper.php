@@ -71,6 +71,26 @@ class BlockHelper {
         return esc_url( (string) $url );
     }
 
+    /**
+     * Recursively checks whether a block of the given name appears anywhere
+     * in a parsed block tree (e.g. `$block->parsed_block['innerBlocks']`),
+     * regardless of how deeply it's nested.
+     *
+     * @param array  $inner_blocks Parsed inner blocks, as returned by `parse_blocks()`.
+     * @param string $block_name   Fully-qualified block name to look for.
+     */
+    public static function inner_blocks_contain( array $inner_blocks, string $block_name ): bool {
+        foreach ( $inner_blocks as $inner_block ) {
+            if ( ( $inner_block['blockName'] ?? null ) === $block_name ) {
+                return true;
+            }
+            if ( ! empty( $inner_block['innerBlocks'] ) && self::inner_blocks_contain( $inner_block['innerBlocks'], $block_name ) ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static function get_pagination_range( int $current_page, int $total_pages ): array {
         $window = 1;
         $range  = [];

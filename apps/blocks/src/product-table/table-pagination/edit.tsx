@@ -8,9 +8,9 @@ export default function Edit() {
   return (
     <nav {...blockProps} className={`${blockProps.className ?? ''} ybo-pagination`}>
       <ul className="ybo-pagination__list">
-        <li>
-          <span className="ybo-pagination__link is-disabled">‹</span>
-        </li>
+        {/* <li>
+          <span className="ybo-pagination__link is-disabled">←</span>
+        </li> */}
         <li>
           <span className="ybo-pagination__link is-current">1</span>
         </li>
@@ -21,7 +21,7 @@ export default function Edit() {
           <span className="ybo-pagination__link">3</span>
         </li>
         <li>
-          <span className="ybo-pagination__link">›</span>
+          <span className="ybo-pagination__link">→</span>
         </li>
       </ul>
     </nav>

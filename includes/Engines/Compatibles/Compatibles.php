@@ -16,5 +16,6 @@ class Compatibles {
     protected function __construct() {
         YayWholesale::get_instance();
         YayPricing::get_instance();
+        RocketLoader::get_instance();
     }
 }

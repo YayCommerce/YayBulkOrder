@@ -7,6 +7,18 @@ export type AdminData = {
   };
 };
 
+/**
+ * Read live from WooCommerce on every request (see `LocalizeService::get_global_config()`),
+ * not persisted into `Settings` — a saved settings option must never bake in a stale currency.
+ */
+export type Currency = {
+  symbol: string;
+  position: 'left' | 'left_space' | 'right' | 'right_space';
+  decimals: number;
+  decimalSep: string;
+  thousandSep: string;
+};
+
 export type Meta = {
   wpMeta: {
     siteUrl: string;
@@ -37,5 +49,9 @@ export type Meta = {
       decimal_sep: string;
       num_decimals: number;
     };
+    categories: Array<{
+      id: number;
+      title: string;
+    }>;
   };
 };

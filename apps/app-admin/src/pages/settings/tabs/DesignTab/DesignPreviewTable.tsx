@@ -11,16 +11,16 @@ import { Button } from '@/components/ui/button';
 
 const products = [
   { name: __('Product A', 'yay-bulk-order'), sku: 'SKU-001', price: 1000 },
-  { name: __('Product B', 'yay-bulk-order'), sku: 'SKU-002', price: 1500 },
-  { name: __('Product C', 'yay-bulk-order'), sku: 'SKU-003', badge: 3, price: 2000 },
+  { name: __('Product B', 'yay-bulk-order'), sku: 'SKU-002', price: 150 },
+  { name: __('Product C', 'yay-bulk-order'), sku: 'SKU-003', badge: 3, price: 200 },
 ];
 
 function PreviewTableHeader({ className, ...props }: ComponentProps<'th'>) {
-  return <th className={cn('border border-t-0 px-2.5 py-2 font-medium', className)} {...props} />;
+  return <th className={cn('border-b border-t-0 px-3.5 py-4 font-medium', className)} {...props} />;
 }
 
 function PreviewTableCell({ className, ...props }: ComponentProps<'td'>) {
-  return <td className={cn('border px-2.5 py-2 align-middle', className)} {...props} />;
+  return <td className={cn('border-b px-3.5 py-4', className)} {...props} />;
 }
 
 export function DesignPreviewTable() {
@@ -47,10 +47,7 @@ export function DesignPreviewTable() {
         <tbody>
           {products.map((product) => (
             <tr key={product.sku} className="border-b" style={cellStyle}>
-              <PreviewTableCell
-                className="flex flex-col items-center justify-center gap-1 border-0 py-3.5"
-                style={cellStyle}
-              >
+              <PreviewTableCell className="flex items-center gap-2 border-0" style={cellStyle}>
                 <div className="relative">
                   <div className="bg-muted text-muted-foreground flex h-10 w-10 items-center justify-center rounded-md">
                     <Image className="size-5" />
@@ -81,7 +78,12 @@ export function DesignPreviewTable() {
                   type="number"
                   value={watch('general.defaultCartQuantity')}
                   readOnly
-                  className="h-6 w-12 bg-white text-xs"
+                  className="h-6 w-12 rounded-md bg-white py-4 text-xs"
+                  style={{
+                    background: watch('colors.background'),
+                    color: watch('colors.text'),
+                    borderColor: watch('colors.border'),
+                  }}
                 />
               </PreviewTableCell>
               <PreviewTableCell style={cellStyle}>{parseWCCurrency(product.price)}</PreviewTableCell>
@@ -101,7 +103,7 @@ export function DesignPreviewTable() {
                 </Button>
               </PreviewTableCell>
               <PreviewTableCell className="text-center" style={cellStyle}>
-                <input type="checkbox" className="rounded-xs bg-white" />
+                <input type="checkbox" className="rounded-xs size-5 bg-white" />
               </PreviewTableCell>
             </tr>
           ))}

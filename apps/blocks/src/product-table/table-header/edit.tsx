@@ -3,9 +3,9 @@ import { store as blockEditorStore, useBlockProps } from '@wordpress/block-edito
 import { BlockEditProps } from '@wordpress/blocks';
 import { useSelect } from '@wordpress/data';
 
-import { COLUMN_LABELS, TABLE_COLUMNS_BLOCK_NAME } from './columns';
+import { COLUMN_LABELS, getGridTemplateColumns, HeaderColumn, TABLE_COLUMNS_BLOCK_NAME } from './columns';
 
-type TableHeaderAttributes = { columns: string[] };
+type TableHeaderAttributes = { columns: HeaderColumn[] };
 
 export default function Edit({ clientId, attributes, setAttributes }: BlockEditProps<TableHeaderAttributes>) {
   const { style, ...blockProps } = useBlockProps();
@@ -27,7 +27,10 @@ export default function Edit({ clientId, attributes, setAttributes }: BlockEditP
           (block) =>
             (block.attributes as { metadata?: { blockVisibility?: boolean } })?.metadata?.blockVisibility !== false,
         )
-        .map((block) => block.name);
+        .map((block) => ({
+          name: block.name,
+          className: (block.attributes as { className?: string })?.className,
+        }));
     },
     [clientId],
   );
@@ -46,11 +49,14 @@ export default function Edit({ clientId, attributes, setAttributes }: BlockEditP
       style={{
         ...style,
         display: 'grid',
-        gridTemplateColumns: `repeat(${columns.length}, 1fr)`,
+        minWidth: 0,
+        gridTemplateColumns: getGridTemplateColumns(columns.map(({ name }) => name)),
       }}
     >
-      {columns.map((name, index) => (
-        <div key={`${name}-${index}`}>{COLUMN_LABELS[name] ?? ''}</div>
+      {columns.map(({ name, className }, index) => (
+        <div key={`${name}-${index}`} className={['ybo-table-cell', className].filter(Boolean).join(' ')}>
+          {COLUMN_LABELS[name] ?? ''}
+        </div>
       ))}
     </div>
   );

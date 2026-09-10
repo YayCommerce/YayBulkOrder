@@ -26,7 +26,9 @@ release.sh
 /release
 README.md
 
-vendor/*
+/vendor/bin
+/vendor/yaycommerce
 scoper.inc.php
+
 composer.json
 composer.lock
