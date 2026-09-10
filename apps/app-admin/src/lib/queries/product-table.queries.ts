@@ -15,6 +15,7 @@ import {
   deleteProductTable,
   getProductTable,
   getProductTables,
+  stashNewPageBlocks,
   updateProductTable,
 } from '@/lib/api/product-tables.api';
 
@@ -43,6 +44,7 @@ const PRODUCT_TABLE_MUTATION_KEYS = {
   update: (id: number) => ['product-tables', id, 'update'] as const,
   delete: (id: number) => ['product-tables', id, 'delete'] as const,
   bulk_delete: ['product-tables', 'bulk', 'delete'] as const,
+  stash: ['product-tables', 'stash'] as const,
   // For isMutating
   bulk: ['product-tables', 'bulk'] as const,
   all: ['product-tables'] as const,
@@ -100,6 +102,13 @@ export function useBulkDeleteProductTablesMutation() {
     mutationKey: PRODUCT_TABLE_MUTATION_KEYS.bulk_delete,
     mutationFn: (ids: number[]) => bulkDeleteProductTable(ids),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: PRODUCT_TABLE_QUERIES.all }),
+  });
+}
+
+export function useStashNewPageBlocksMutation() {
+  return useMutation({
+    mutationKey: PRODUCT_TABLE_MUTATION_KEYS.stash,
+    mutationFn: (content: string) => stashNewPageBlocks(content),
   });
 }
 

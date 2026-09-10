@@ -1,3 +1,5 @@
+import { WooProduct } from '@yay-bulk-order/common/src/schemas';
+
 import { wooCommerceApi } from '@/lib/api/api';
 
 export const PRODUCTS_PER_PAGE = 100;
@@ -13,8 +15,6 @@ export type ProductsPage = {
   page: number;
   totalPages: number;
 };
-
-type WooProduct = { id: number; name: string; images?: Array<{ src?: string }> };
 
 /** Fetch a single page of published products from the WooCommerce REST base. */
 export async function getProductsPage(page: number): Promise<ProductsPage> {

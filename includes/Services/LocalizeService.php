@@ -18,9 +18,11 @@ class LocalizeService {
     public const VAR_META       = 'yayBulkOrderMeta';
 
     private SettingsService $settings_service;
+    private PatternService $pattern_service;
 
     protected function __construct() {
         $this->settings_service = SettingsService::get_instance();
+        $this->pattern_service  = PatternService::get_instance();
     }
 
     public function get_admin_data() {
@@ -35,17 +37,18 @@ class LocalizeService {
     public function get_meta() {
         $meta = [
             'wpMeta'        => [
-                'siteUrl'      => esc_url_raw( site_url() ),
-                'adminUrl'     => esc_url_raw( admin_url() ),
-                'ajaxUrl'      => esc_url_raw( admin_url( 'admin-ajax.php' ) ),
+                'siteUrl'           => esc_url_raw( site_url() ),
+                'adminUrl'          => esc_url_raw( admin_url() ),
+                'ajaxUrl'           => esc_url_raw( admin_url( 'admin-ajax.php' ) ),
 
-                'restRoot'     => esc_url_raw( rest_url() ),
-                'restBase'     => BaseRestController::REST_NAMESPACE,
-                'restNonce'    => wp_create_nonce( 'wp_rest' ),
+                'restRoot'          => esc_url_raw( rest_url() ),
+                'restBase'          => BaseRestController::REST_NAMESPACE,
+                'restNonce'         => wp_create_nonce( 'wp_rest' ),
 
-                'isBlockTheme' => wp_is_block_theme(),
-                'shopPageId'   => function_exists( 'wc_get_page_id' ) ? (int) wc_get_page_id( 'shop' ) : 0,
-                'themeSlug'    => get_stylesheet(),
+                'isBlockTheme'      => wp_is_block_theme(),
+                'shopPageId'        => function_exists( 'wc_get_page_id' ) ? (int) wc_get_page_id( 'shop' ) : 0,
+                'themeSlug'         => get_stylesheet(),
+                'patternCategoryId' => $this->pattern_service->get_pattern_category_id(),
             ],
             'bulkOrderMeta' => [
                 'pluginUrl' => YAYBULKORDER_PLUGIN_URL,

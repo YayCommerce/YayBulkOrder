@@ -48,6 +48,29 @@ export function templateLibraryUrl(): string | null {
   return wpAdminUrl('site-editor.php', { p: '/template' });
 }
 
+/** URL to the "new page" editor. */
+export function newPageUrl(): string {
+  return wpAdminUrl('post-new.php', { post_type: 'page' });
+}
+
+/**
+ * URL to edit a single user pattern (`wp_block` post) by id.
+ *
+ * Block themes open it in the Site Editor canvas; classic themes fall back to the
+ * standard post editor screen.
+ */
+export function patternEditUrl(id: number): string {
+  if (!isBlockTheme) {
+    return wpAdminUrl('post.php', { post: String(id), action: 'edit' });
+  }
+
+  return wpAdminUrl('site-editor.php', {
+    postType: 'wp_block',
+    postId: String(id),
+    canvas: 'edit',
+  });
+}
+
 /**
  * URL to edit WooCommerce's Shop / Category page layout — the `archive-product`
  * template — directly in the Site Editor canvas.

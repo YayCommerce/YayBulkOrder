@@ -50,6 +50,16 @@ class ProductTablesRestController extends BaseRestController {
 
         register_rest_route(
             self::REST_NAMESPACE,
+            '/product-tables/stash-blocks',
+            [
+                'methods'             => 'POST',
+                'callback'            => [ $this, 'stash_new_page_blocks' ],
+                'permission_callback' => [ $this, 'can_manage_product_tables' ],
+            ]
+        );
+
+        register_rest_route(
+            self::REST_NAMESPACE,
             '/product-tables/(?P<id>\d+)',
             [
                 [
@@ -153,6 +163,18 @@ class ProductTablesRestController extends BaseRestController {
         }
 
         return $deleted_count;
+    }
+
+    public function stash_new_page_blocks( \WP_REST_Request $request ) {
+        $content = (string) ( $request->get_json_params()['content'] ?? '' );
+
+        if ( '' === trim( $content ) ) {
+            return $this->error_invalid_arguments( __( 'Missing block content.', 'yay-bulk-order' ) );
+        }
+
+        $this->product_tables_service->stash_new_page_blocks( $content );
+
+        return true;
     }
 
     public function can_manage_product_tables() {

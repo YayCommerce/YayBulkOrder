@@ -33,7 +33,7 @@ const productTableQuerySchema = z
   });
 
 export const productTableSchema = z.object({
-  title: z.string().optional(),
+  title: z.string(),
   query: productTableQuerySchema,
   columns: z.array(productTableColumnSchema),
   features: z.object({

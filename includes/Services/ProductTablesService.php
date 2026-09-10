@@ -6,17 +6,19 @@ use YayBulkOrder\Utils\SingletonTrait;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Table Prebuilds Service
+ * Product Table Service
  */
 class ProductTablesService {
     use SingletonTrait;
 
-    public const POST_TYPE                     = 'ybo_product_table';
-    public const PREBUILD_CONFIG_META          = 'ybo_product_table_config';
-    public const PREBUILD_PRODUCT_DISPLAY_META = 'ybo_product_table_products';
+    public const POST_TYPE                  = 'ybo_product_table';
+    public const TABLE_CONFIG_META          = 'ybo_product_table_config';
+    public const TABLE_PRODUCT_DISPLAY_META = 'ybo_product_table_products';
 
     public const QUERY_BY_OPTIONS   = [ 'all-products', 'by-categories', 'featured', 'on-sale', 'hand-picked' ];
     public const RESPONSIVE_OPTIONS = [ 'always-show', 'hide-on-mobile', 'hide-on-tablet' ];
+
+    private const STASHED_NEW_PAGE_CONTENT_TRANSIENT = 'ybo_new_page_blocks_';
 
     public function get_paginated_product_tables( string $search, int $page, int $per_page, $display_type = 'all-type' ) {
         $args = [
@@ -37,7 +39,7 @@ class ProductTablesService {
 
         if ( 'all-tables' !== $display_type ) {
             $args['meta_query'][] = [
-                'key'     => self::PREBUILD_PRODUCT_DISPLAY_META,
+                'key'     => self::TABLE_PRODUCT_DISPLAY_META,
                 'value'   => $display_type,
                 'compare' => '=',
                 'type'    => 'CHAR',
@@ -82,8 +84,8 @@ class ProductTablesService {
 
         $display = $this->get_product_display( $data );
 
-        update_post_meta( $id, self::PREBUILD_CONFIG_META, $this->sanitize_config( $data ) );
-        update_post_meta( $id, self::PREBUILD_PRODUCT_DISPLAY_META, $display );
+        update_post_meta( $id, self::TABLE_CONFIG_META, $this->sanitize_config( $data ) );
+        update_post_meta( $id, self::TABLE_PRODUCT_DISPLAY_META, $display );
 
         return $this->get_product_table_by_id( $id );
     }
@@ -100,8 +102,8 @@ class ProductTablesService {
 
         $display = $this->get_product_display( $data );
 
-        update_post_meta( $id, self::PREBUILD_CONFIG_META, $this->sanitize_config( $data ) );
-        update_post_meta( $id, self::PREBUILD_PRODUCT_DISPLAY_META, $display );
+        update_post_meta( $id, self::TABLE_CONFIG_META, $this->sanitize_config( $data ) );
+        update_post_meta( $id, self::TABLE_PRODUCT_DISPLAY_META, $display );
 
         return $this->get_product_table_by_id( $id );
     }
@@ -112,6 +114,27 @@ class ProductTablesService {
         }
 
         return (bool) wp_delete_post( $id, true );
+    }
+
+    public function stash_new_page_blocks( string $content ): void {
+        set_transient(
+            self::STASHED_NEW_PAGE_CONTENT_TRANSIENT . get_current_user_id(),
+            $content,
+            5 * MINUTE_IN_SECONDS
+        );
+    }
+
+    public function pop_new_page_block_content(): string {
+        $key     = self::STASHED_NEW_PAGE_CONTENT_TRANSIENT . get_current_user_id();
+        $content = get_transient( $key );
+
+        if ( false === $content ) {
+            return '';
+        }
+
+        delete_transient( $key );
+
+        return (string) $content;
     }
 
     protected function get_product_display( array $data ) {
@@ -131,13 +154,13 @@ class ProductTablesService {
                 'hasFilter'     => false,
                 'hasSearch'     => false,
                 'hasPagination' => false,
-                'pageSize'      => 10,
+                'pageSize'      => 0,
             ],
         ];
     }
 
     private function get_cleanned_data( \WP_Post $post ) {
-        $config = get_post_meta( $post->ID, self::PREBUILD_CONFIG_META, true );
+        $config = get_post_meta( $post->ID, self::TABLE_CONFIG_META, true );
         $config = is_array( $config ) ? $config : [];
 
         return array_merge(

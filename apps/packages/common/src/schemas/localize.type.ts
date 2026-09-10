@@ -34,6 +34,8 @@ export type Meta = {
     shopPageId: number;
     /** Active theme stylesheet slug (`get_stylesheet()`), used to build Site Editor template ids. */
     themeSlug: string;
+    /** `wp_pattern_category` term id user-created patterns are filed under, 0 if unavailable. */
+    patternCategoryId: number;
   };
   bulkOrderMeta: {
     pluginUrl: string;

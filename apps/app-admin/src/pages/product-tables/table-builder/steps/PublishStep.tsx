@@ -4,7 +4,13 @@ import { useClipboard } from 'rooks';
 import { toast } from 'sonner';
 import { __ } from '@wordpress/i18n';
 
-import { useIsMutatingProductTables } from '@/lib/queries/product-table.queries';
+import { newPageUrl, patternEditUrl } from '@/lib/helpers/wp.helper';
+import { useCreateProductTablePatternMutation, useIsMutatingPatterns } from '@/lib/queries/blocks.queries';
+import {
+  useCreateProductTableMutation,
+  useIsMutatingProductTables,
+  useStashNewPageBlocksMutation,
+} from '@/lib/queries/product-table.queries';
 import { Button, LoadingButton } from '@/components/ui/button';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -27,8 +33,43 @@ export default function PublishStep({ tableId }: PublishStepProps) {
     formState: { isDirty },
   } = useFormContext<ProductTableForm>();
   const { copy } = useClipboard();
-  const isSaving = useIsMutatingProductTables();
   const isFormSaved = !isDirty && tableId > 0;
+
+  const { isPending: isSaving } = useCreateProductTableMutation();
+  const createPatternMutation = useCreateProductTablePatternMutation(tableId);
+  const stashPageBlocksMutation = useStashNewPageBlocksMutation();
+  const isMutatingPattern = useIsMutatingPatterns();
+  const isMutatingProductTable = useIsMutatingProductTables();
+
+  const createTablePattern = async () => {
+    if (isMutatingPattern) return;
+    try {
+      const table = getValues();
+      const data = await createPatternMutation.mutateAsync({
+        title: table.title,
+        content: makeBlockText(table, tableId),
+      });
+      const patternId = data.id;
+
+      toast.success(__('Pattern created successfully.', 'yay-bulk-order'));
+      window.open(patternEditUrl(patternId));
+    } catch (err) {
+      console.error(err);
+      toast.error(__('Cannot create this table pattern', 'yay-bulk-order'));
+    }
+  };
+
+  const addNewPage = async () => {
+    if (isMutatingProductTable) return;
+    try {
+      const table = getValues();
+      await stashPageBlocksMutation.mutateAsync(makeBlockText(table, tableId));
+      window.open(newPageUrl());
+    } catch (err) {
+      console.error(err);
+      toast.error(__('Could not open the page editor', 'yay-bulk-order'));
+    }
+  };
 
   const copyAsBlock = async () => {
     const table = getValues();
@@ -93,10 +134,14 @@ export default function PublishStep({ tableId }: PublishStepProps) {
             {__('Publish options', 'yay-bulk-order')}
           </p>
           <div className="grid grid-cols-2 gap-2">
-            <PublishOption
-              title={__('Create Pattern', 'yay-bulk-order')}
-              description={__('Publish the table as a reusable block pattern to the Library.', 'yay-bulk-order')}
-            />
+            {isBlockTheme && (
+              <PublishOption
+                title={__('Create Pattern', 'yay-bulk-order')}
+                description={__('Publish the table as a reusable block pattern to the Library.', 'yay-bulk-order')}
+                onClick={createTablePattern}
+                disabled={createPatternMutation.isPending}
+              />
+            )}
             <PublishOption
               title={__('Use in Shop/Category Page', 'yay-bulk-order')}
               description={__(
@@ -117,6 +162,8 @@ export default function PublishStep({ tableId }: PublishStepProps) {
             <PublishOption
               title={__('Add new Page', 'yay-bulk-order')}
               description={__('Create a new page with the table.', 'yay-bulk-order')}
+              onClick={addNewPage}
+              disabled={stashPageBlocksMutation.isPending}
             />
           </div>
         </div>
@@ -129,14 +176,16 @@ type PublishOptionProps = {
   title: string;
   description: string;
   onClick?: () => void;
+  disabled?: boolean;
 };
 
-function PublishOption({ title, description, onClick }: PublishOptionProps) {
+function PublishOption({ title, description, onClick, disabled }: PublishOptionProps) {
   return (
     <Button
       type="button"
       variant="outline"
       onClick={onClick}
+      disabled={disabled}
       className="h-auto min-h-20 flex-col items-start justify-start gap-1 whitespace-normal px-2.5 py-2 text-left"
     >
       <span className="text-sm font-medium">{title}</span>
@@ -144,3 +193,5 @@ function PublishOption({ title, description, onClick }: PublishOptionProps) {
     </Button>
   );
 }
+
+const { isBlockTheme } = window.yayBulkOrderMeta.wpMeta;
