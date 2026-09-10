@@ -131,7 +131,7 @@ class ProductTablesService {
                 'hasFilter'     => false,
                 'hasSearch'     => false,
                 'hasPagination' => false,
-                'pageSize'      => 10,
+                'pageSize'      => 0,
             ],
         ];
     }
