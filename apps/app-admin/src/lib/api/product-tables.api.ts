@@ -42,5 +42,9 @@ export function bulkDeleteProductTable(ids: number[]) {
 }
 
 export function stashNewPageBlocks(content: string) {
-  return api.post('product-tables/stash-blocks', { json: { content } }).json<boolean>();
+  return api.post('product-tables/stash', { json: { content } }).json<boolean>();
+}
+
+export function applyToShopPage(tableId: number) {
+  return api.post('product-tables/apply_to_shop', { json: { tableId } }).json<boolean>();
 }

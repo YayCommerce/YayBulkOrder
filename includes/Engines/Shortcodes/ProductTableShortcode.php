@@ -32,7 +32,7 @@ class ProductTableShortcode {
             return '';
         }
 
-        $template = $this->is_product_archive() ? 'product-table-archive.php' : 'product-table-default.php';
+        $template = $this->product_tables_service->is_product_archive() ? 'product-table-archive.php' : 'product-table-default.php';
 
         $attrs = $this->operate_shortcode_attrs( $attrs );
 
@@ -42,16 +42,6 @@ class ProductTableShortcode {
         $html   = do_blocks( $markup );
         $html   = $this->clean_rendered_html( $html );
         return $html;
-    }
-
-    /**
-     * Whether the current request is a WooCommerce product archive
-     * (Shop, product category/tag, or any other product taxonomy archive).
-     *
-     * @return bool
-     */
-    private function is_product_archive(): bool {
-        return is_shop() || is_product_taxonomy();
     }
 
     private function clean_rendered_html( string $html ): string {
@@ -97,20 +87,25 @@ class ProductTableShortcode {
                     }
                 );
 
-                return [
-                    'query_by'       => $table['query']['queryBy'] ?? 'all',
-                    'categories'     => array_values(
-                        array_map( 'absint', (array) ( $table['query']['categories'] ?? [] ) )
-                    ),
-                    'products'       => array_values(
-                        array_map( 'absint', (array) ( $table['query']['products'] ?? [] ) )
-                    ),
+                $normalized_attrs = [
                     'columns'        => $enabled_columns,
                     'has_filter'     => $table['features']['hasFilter'],
                     'has_search'     => $table['features']['hasSearch'],
                     'has_pagination' => $table['features']['hasPagination'],
                     'page_size'      => $table['features']['pageSize'] ?? 0,
                 ];
+
+                if ( ! $this->product_tables_service->is_product_archive() ) {
+                    $normalized_attrs['query_by']   = $table['query']['queryBy'] ?? 'all';
+                    $normalized_attrs['categories'] = array_values(
+                        array_map( 'absint', (array) ( $table['query']['categories'] ?? [] ) )
+                    );
+                    $normalized_attrs['products']   = array_values(
+                        array_map( 'absint', (array) ( $table['query']['products'] ?? [] ) )
+                    );
+                }
+
+                return $normalized_attrs;
             }//end if
         }//end if
 

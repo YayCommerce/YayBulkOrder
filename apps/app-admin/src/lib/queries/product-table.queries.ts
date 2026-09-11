@@ -10,6 +10,7 @@ import { ProductTable } from '@yay-bulk-order/common/src/schemas';
 import { ProductTableForm, ProductTableListParams } from '@yay-bulk-order/common/src/schemas/product-tables.schema';
 
 import {
+  applyToShopPage,
   bulkDeleteProductTable,
   createProductTable,
   deleteProductTable,
@@ -45,6 +46,7 @@ const PRODUCT_TABLE_MUTATION_KEYS = {
   delete: (id: number) => ['product-tables', id, 'delete'] as const,
   bulk_delete: ['product-tables', 'bulk', 'delete'] as const,
   stash: ['product-tables', 'stash'] as const,
+  apply_to_shop: ['product-tables', 'apply_to_shop'] as const,
   // For isMutating
   bulk: ['product-tables', 'bulk'] as const,
   all: ['product-tables'] as const,
@@ -109,6 +111,13 @@ export function useStashNewPageBlocksMutation() {
   return useMutation({
     mutationKey: PRODUCT_TABLE_MUTATION_KEYS.stash,
     mutationFn: (content: string) => stashNewPageBlocks(content),
+  });
+}
+
+export function useApplyToShopMutation() {
+  return useMutation({
+    mutationKey: PRODUCT_TABLE_MUTATION_KEYS.apply_to_shop,
+    mutationFn: (tableId: number) => applyToShopPage(tableId),
   });
 }
 

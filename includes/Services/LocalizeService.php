@@ -19,10 +19,12 @@ class LocalizeService {
 
     private SettingsService $settings_service;
     private PatternService $pattern_service;
+    private ProductTablesService $product_tables_service;
 
     protected function __construct() {
-        $this->settings_service = SettingsService::get_instance();
-        $this->pattern_service  = PatternService::get_instance();
+        $this->settings_service       = SettingsService::get_instance();
+        $this->pattern_service        = PatternService::get_instance();
+        $this->product_tables_service = ProductTablesService::get_instance();
     }
 
     public function get_admin_data() {
@@ -31,6 +33,7 @@ class LocalizeService {
             'defaultPresets' => [
                 'tableColors' => $this->settings_service->get_default_color_preset(),
             ],
+            'shopTableId'    => $this->product_tables_service->get_shop_page_product_table(),
         ];
     }
 
@@ -47,6 +50,7 @@ class LocalizeService {
 
                 'isBlockTheme'      => wp_is_block_theme(),
                 'shopPageId'        => function_exists( 'wc_get_page_id' ) ? (int) wc_get_page_id( 'shop' ) : 0,
+                'shopPageUrl'       => function_exists( 'wc_get_page_permalink' ) ? esc_url_raw( wc_get_page_permalink( 'shop' ) ) : '',
                 'themeSlug'         => get_stylesheet(),
                 'patternCategoryId' => $this->pattern_service->get_pattern_category_id(),
             ],

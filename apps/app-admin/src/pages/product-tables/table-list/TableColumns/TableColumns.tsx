@@ -5,6 +5,7 @@ import { __, sprintf } from '@wordpress/i18n';
 
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
+import { isShopApplied } from '@/pages/product-tables/product-tables.helper';
 import { ProductTableActions } from '@/pages/product-tables/table-list/TableColumns/TableActions';
 
 const QUERY_BY_LABELS: Record<ProductTable['query']['queryBy'], string> = {
@@ -43,7 +44,12 @@ export const ProductTableColumns: ColumnDef<ProductTable>[] = [
     accessorKey: 'title',
     header: __('Table title', 'yay-bulk-order'),
     cell: ({ row }) => (
-      <span className="font-medium">{row.original.title || __('Untitled table', 'yay-bulk-order')}</span>
+      <span className="flex items-center gap-2 font-medium">
+        {row.original.title}{' '}
+        {isShopApplied(row.original.id) && (
+          <Badge variant="primary-soft">{__('Using in Shop', 'yay-bulk-order')}</Badge>
+        )}
+      </span>
     ),
   },
   {

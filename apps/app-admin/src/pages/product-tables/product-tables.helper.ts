@@ -137,3 +137,8 @@ export const makeShortcodeWithTable = (table: ProductTableForm) => {
 
   return `[ybo-product-table ${queryStr} columns="${cols}" has_filter="${hasFilter}" has_search="${hasSearch}" has_pagination="${hasPagination}" ${hasPagination && pageSize > 0 ? 'page_size=' + pageSize : ''}]`;
 };
+
+export const isShopApplied = (tableId: number) => {
+  const { shopTableId } = window.yayBulkOrderAdminData;
+  return Number(shopTableId) === tableId;
+};

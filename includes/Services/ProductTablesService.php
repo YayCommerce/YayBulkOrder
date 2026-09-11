@@ -11,9 +11,10 @@ defined( 'ABSPATH' ) || exit;
 class ProductTablesService {
     use SingletonTrait;
 
-    public const POST_TYPE                  = 'ybo_product_table';
-    public const TABLE_CONFIG_META          = 'ybo_product_table_config';
-    public const TABLE_PRODUCT_DISPLAY_META = 'ybo_product_table_products';
+    public const POST_TYPE                    = 'ybo_product_table';
+    public const TABLE_CONFIG_META            = 'ybo_product_table_config';
+    public const PRODUCT_TABLE_DISPLAY_META   = 'ybo_product_table_products';
+    public const SHOP_PAGE_PRODUCT_TABLE_META = 'ybo_shop_page_product_table';
 
     public const QUERY_BY_OPTIONS   = [ 'all-products', 'by-categories', 'featured', 'on-sale', 'hand-picked' ];
     public const RESPONSIVE_OPTIONS = [ 'always-show', 'hide-on-mobile', 'hide-on-tablet' ];
@@ -39,7 +40,7 @@ class ProductTablesService {
 
         if ( 'all-tables' !== $display_type ) {
             $args['meta_query'][] = [
-                'key'     => self::TABLE_PRODUCT_DISPLAY_META,
+                'key'     => self::PRODUCT_TABLE_DISPLAY_META,
                 'value'   => $display_type,
                 'compare' => '=',
                 'type'    => 'CHAR',
@@ -67,6 +68,11 @@ class ProductTablesService {
         return $this->get_cleanned_data( $post );
     }
 
+    public function is_product_table( int $id ) {
+        $post = get_post( $id );
+        return ( ! $post instanceof \WP_Post || self::POST_TYPE !== $post->post_type );
+    }
+
     public function create_product_table( array $data ) {
         $title = ! empty( $data['title'] ) ? sanitize_text_field( $data['title'] ) : __( 'Untitled table', 'yay-bulk-order' );
 
@@ -85,7 +91,7 @@ class ProductTablesService {
         $display = $this->get_product_display( $data );
 
         update_post_meta( $id, self::TABLE_CONFIG_META, $this->sanitize_config( $data ) );
-        update_post_meta( $id, self::TABLE_PRODUCT_DISPLAY_META, $display );
+        update_post_meta( $id, self::PRODUCT_TABLE_DISPLAY_META, $display );
 
         return $this->get_product_table_by_id( $id );
     }
@@ -103,7 +109,7 @@ class ProductTablesService {
         $display = $this->get_product_display( $data );
 
         update_post_meta( $id, self::TABLE_CONFIG_META, $this->sanitize_config( $data ) );
-        update_post_meta( $id, self::TABLE_PRODUCT_DISPLAY_META, $display );
+        update_post_meta( $id, self::PRODUCT_TABLE_DISPLAY_META, $display );
 
         return $this->get_product_table_by_id( $id );
     }
@@ -135,6 +141,29 @@ class ProductTablesService {
         delete_transient( $key );
 
         return (string) $content;
+    }
+
+    public function save_shop_page_product_table( int $table_id ) {
+        update_option( self::SHOP_PAGE_PRODUCT_TABLE_META, $table_id );
+    }
+
+    public function get_shop_page_product_table() {
+        $id = (int) get_option( self::SHOP_PAGE_PRODUCT_TABLE_META, 0 );
+        return $id > 0 && $this->is_product_table( $id ) ? $id : 0;
+    }
+
+    public function is_product_archive() {
+        return is_shop() || is_product_taxonomy();
+    }
+
+    public function is_applied_table_to_shop() {
+        if ( ! $this->is_product_archive() ) {
+            return false;
+        }
+
+        $table_id = (int) $this->get_shop_page_product_table();
+
+        return $table_id > 0;
     }
 
     protected function get_product_display( array $data ) {

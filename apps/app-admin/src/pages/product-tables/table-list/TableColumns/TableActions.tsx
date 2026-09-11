@@ -5,7 +5,11 @@ import { useClipboard } from 'rooks';
 import { toast } from 'sonner';
 import { __ } from '@wordpress/i18n';
 
-import { useCacheProductTable, useDeleteProductTableMutation } from '@/lib/queries/product-table.queries';
+import {
+  useApplyToShopMutation,
+  useCacheProductTable,
+  useDeleteProductTableMutation,
+} from '@/lib/queries/product-table.queries';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -16,11 +20,25 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { makeBlockText, makeShortcodeWithId } from '@/pages/product-tables/product-tables.helper';
 
+const { isBlockTheme, shopPageUrl } = window.yayBulkOrderMeta.wpMeta;
+
 export function ProductTableActions({ table }: { table: ProductTable }) {
   const navigate = useNavigate();
   const { copy } = useClipboard();
   const deleteMutation = useDeleteProductTableMutation(table.id ?? 0);
+  const applyToShopMutation = useApplyToShopMutation();
   const { cacheTable } = useCacheProductTable();
+
+  const applyToShop = async () => {
+    try {
+      await applyToShopMutation.mutateAsync(table.id);
+      toast.success(__('Applied to Shop/Category page.', 'yay-bulk-order'));
+      window.open(shopPageUrl);
+    } catch (err) {
+      console.error(err);
+      toast.error(__('Could not apply the table to Shop/Category pages.', 'yay-bulk-order'));
+    }
+  };
 
   const copyAsBlock = async () => {
     try {
@@ -59,7 +77,7 @@ export function ProductTableActions({ table }: { table: ProductTable }) {
           <PencilIcon className="size-4" />
           {__('Edit', 'yay-bulk-order')}
         </DropdownMenuItem>
-        <DropdownMenuItem>
+        <DropdownMenuItem disabled={applyToShopMutation.isPending} onClick={applyToShop}>
           <PencilIcon className="size-4" />
           {__('Use in Shop / Category', 'yay-bulk-order')}
         </DropdownMenuItem>

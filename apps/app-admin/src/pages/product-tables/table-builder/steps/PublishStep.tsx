@@ -7,6 +7,7 @@ import { __ } from '@wordpress/i18n';
 import { newPageUrl, patternEditUrl } from '@/lib/helpers/wp.helper';
 import { useCreateProductTablePatternMutation, useIsMutatingPatterns } from '@/lib/queries/blocks.queries';
 import {
+  useApplyToShopMutation,
   useCreateProductTableMutation,
   useIsMutatingProductTables,
   useStashNewPageBlocksMutation,
@@ -38,6 +39,7 @@ export default function PublishStep({ tableId }: PublishStepProps) {
   const { isPending: isSaving } = useCreateProductTableMutation();
   const createPatternMutation = useCreateProductTablePatternMutation(tableId);
   const stashPageBlocksMutation = useStashNewPageBlocksMutation();
+  const applyToShopMutation = useApplyToShopMutation();
   const isMutatingPattern = useIsMutatingPatterns();
   const isMutatingProductTable = useIsMutatingProductTables();
 
@@ -97,6 +99,26 @@ export default function PublishStep({ tableId }: PublishStepProps) {
     }
   };
 
+  const applyToShop = async () => {
+    if (isMutatingProductTable) return;
+
+    if (!isBlockTheme) {
+      if (!isFormSaved) {
+        toast.error(__('Save the table before using it in Shop/Category pages.', 'yay-bulk-order'));
+        return;
+      }
+
+      try {
+        await applyToShopMutation.mutateAsync(tableId);
+        toast.success(__('Applied to Shop/Category page.', 'yay-bulk-order'));
+        window.open(shopPageUrl);
+      } catch (err) {
+        console.error(err);
+        toast.error(__('Could not apply the table to Shop/Category pages.', 'yay-bulk-order'));
+      }
+    }
+  };
+
   return (
     <Card className="w-2xl max-w-2xl">
       <CardHeader>
@@ -148,6 +170,8 @@ export default function PublishStep({ tableId }: PublishStepProps) {
                 'Use the table in shop or category pages. This will replace the default product table.',
                 'yay-bulk-order',
               )}
+              onClick={applyToShop}
+              disabled={applyToShopMutation.isPending}
             />
             <PublishOption
               title={__('Copy as Blocks', 'yay-bulk-order')}
@@ -194,4 +218,4 @@ function PublishOption({ title, description, onClick, disabled }: PublishOptionP
   );
 }
 
-const { isBlockTheme } = window.yayBulkOrderMeta.wpMeta;
+const { isBlockTheme, shopPageUrl } = window.yayBulkOrderMeta.wpMeta;
