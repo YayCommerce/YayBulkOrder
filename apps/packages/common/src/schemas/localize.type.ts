@@ -42,6 +42,8 @@ export type Meta = {
     shopPageUrl: string;
     /** Active theme stylesheet slug (`get_stylesheet()`), used to build Site Editor template ids. */
     themeSlug: string;
+    /** WooCommerce Site Editor template full slug for the Shop / Category archive (`theme_slug//archive-product`). */
+    archiveProductTemplateSlug: string;
     /** `wp_pattern_category` term id user-created patterns are filed under, 0 if unavailable. */
     patternCategoryId: number;
   };

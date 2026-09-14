@@ -12,7 +12,7 @@ const toProductQuery = (table: ProductTableForm): Record<string, unknown> => {
   }
 
   const queryType = query.queryBy;
-  if (queryType === 'by-categories') {
+  if (queryType === 'by-category') {
     const categoryIds = (query.categories ?? []).map(Number).filter((id) => Number.isFinite(id));
     return { queryType, categoryIds, ...pagination };
   }
@@ -127,7 +127,7 @@ export const makeShortcodeWithTable = (table: ProductTableForm) => {
   const pageSize = table.features.pageSize ? table.features.pageSize : 0;
   const queryBy = table.query.queryBy;
   let queryStr;
-  if (queryBy === 'by-categories') {
+  if (queryBy === 'by-category') {
     queryStr = `query_by="${queryBy}" categories="${table.query.categories?.join(',')}"`;
   } else if (queryBy === 'hand-picked') {
     queryStr = `query_by="${queryBy}" products="${table.query.products?.join(',')}"`;

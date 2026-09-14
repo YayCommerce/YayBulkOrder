@@ -19,11 +19,11 @@ export const productTableColumnSchema = z.object({
 
 const productTableQuerySchema = z
   .object({
-    queryBy: z.enum(['all-products', 'by-categories', 'featured', 'on-sale', 'hand-picked']),
+    queryBy: z.enum(['all-products', 'by-category', 'featured', 'on-sale', 'hand-picked']),
     categories: z.array(z.number()).optional(),
     products: z.array(z.number()).optional(),
   })
-  .refine((query) => query.queryBy !== 'by-categories' || (query.categories?.length ?? 0) > 0, {
+  .refine((query) => query.queryBy !== 'by-category' || (query.categories?.length ?? 0) > 0, {
     message: __('Select at least one category', 'yay-bulk-order'),
     path: ['categories'],
   })

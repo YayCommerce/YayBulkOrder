@@ -38,6 +38,13 @@ export type ProductQuery = (
   pageSize?: number;
 };
 
+export type TemplateQuery = {
+  cols: ('product' | 'sku' | 'description' | 'quantity' | 'subtotal' | 'add-to-cart')[];
+  hasPagination: boolean;
+  hasFilter: boolean;
+  hasSearch: boolean;
+};
+
 type ProductRowId = string;
 
 export type ProductTableAttributes = {

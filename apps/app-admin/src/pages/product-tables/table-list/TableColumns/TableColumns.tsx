@@ -10,7 +10,7 @@ import { ProductTableActions } from '@/pages/product-tables/table-list/TableColu
 
 const QUERY_BY_LABELS: Record<ProductTable['query']['queryBy'], string> = {
   'all-products': __('All products', 'yay-bulk-order'),
-  'by-categories': __('By categories', 'yay-bulk-order'),
+  'by-category': __('By categories', 'yay-bulk-order'),
   featured: __('Featured', 'yay-bulk-order'),
   'on-sale': __('On sale', 'yay-bulk-order'),
   'hand-picked': __('Hand-picked', 'yay-bulk-order'),
@@ -61,7 +61,7 @@ export const ProductTableColumns: ColumnDef<ProductTable>[] = [
       return (
         <div className="flex items-center gap-1.5">
           <Badge variant="secondary">{QUERY_BY_LABELS[queryBy]}</Badge>
-          {queryBy === 'by-categories' && categories?.length && (
+          {queryBy === 'by-category' && categories?.length && (
             <span className="text-muted-foreground text-xs">
               {/* translators: %d: number of categories */}
               {sprintf(__('%d categories', 'yay-bulk-order'), categories.length)}

@@ -1,14 +1,16 @@
-import { ProductQuery } from '@yay-bulk-order/product-table-store';
+import { ProductQuery, TemplateQuery } from '@yay-bulk-order/product-table-store';
 import { Icon } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
+import ProductTablePicker from './ProductTablePicker';
 import { ALL_PRODUCTS_OPTION, isProPlan, QUERY_TYPE_OPTIONS, UPGRADE_TO_PRO_URL } from './query-types';
 
 type ProductQueryPlaceholderProps = {
   onSelect: (query: ProductQuery) => void;
+  onSelectTemplate: (query: TemplateQuery | null) => void;
 };
 
-export default function ProductQueryPlaceholder({ onSelect }: ProductQueryPlaceholderProps) {
+export default function ProductQueryPlaceholder({ onSelect, onSelectTemplate }: ProductQueryPlaceholderProps) {
   const isPro = isProPlan();
 
   return (
@@ -26,7 +28,7 @@ export default function ProductQueryPlaceholder({ onSelect }: ProductQueryPlaceh
               key={option.queryType}
               type="button"
               className={`ybo-product-query-placeholder__option${
-                isLocked ? ' ybo-product-query-placeholder__option--locked' : ''
+                isLocked ? 'ybo-product-query-placeholder__option--locked' : ''
               }`}
               aria-disabled={isLocked}
               onClick={() => {
@@ -35,6 +37,7 @@ export default function ProductQueryPlaceholder({ onSelect }: ProductQueryPlaceh
                   return;
                 }
                 onSelect(option.defaultQuery);
+                onSelectTemplate(null);
               }}
             >
               {isLocked && (
@@ -45,6 +48,14 @@ export default function ProductQueryPlaceholder({ onSelect }: ProductQueryPlaceh
             </button>
           );
         })}
+      </div>
+
+      <p className="ybo-product-query-placeholder__title">
+        {__('Or, Pick from your saved product tables', 'yay-bulk-order')}
+      </p>
+
+      <div className="ybo-product-query-placeholder__product-table">
+        <ProductTablePicker onSelect={onSelect} onSelectTemplate={onSelectTemplate} />
       </div>
     </div>
   );

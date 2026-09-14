@@ -4,7 +4,7 @@ import { useClipboard } from 'rooks';
 import { toast } from 'sonner';
 import { __ } from '@wordpress/i18n';
 
-import { newPageUrl, patternEditUrl } from '@/lib/helpers/wp.helper';
+import { archiveProductTemplateUrl, newPageUrl, patternEditUrl } from '@/lib/helpers/wp.helper';
 import { useCreateProductTablePatternMutation, useIsMutatingPatterns } from '@/lib/queries/blocks.queries';
 import {
   useApplyToShopMutation,
@@ -99,6 +99,13 @@ export default function PublishStep({ tableId }: PublishStepProps) {
     }
   };
 
+  const openCatalogTemplateEditor = () => {
+    const url = archiveProductTemplateUrl();
+    if (url) {
+      window.open(url);
+    }
+  };
+
   const applyToShop = async () => {
     if (isMutatingProductTable) return;
 
@@ -164,15 +171,27 @@ export default function PublishStep({ tableId }: PublishStepProps) {
                 disabled={createPatternMutation.isPending}
               />
             )}
-            <PublishOption
-              title={__('Use in Shop/Category Page', 'yay-bulk-order')}
-              description={__(
-                'Use the table in shop or category pages. This will replace the default product table.',
-                'yay-bulk-order',
-              )}
-              onClick={applyToShop}
-              disabled={applyToShopMutation.isPending}
-            />
+            {isBlockTheme ? (
+              <PublishOption
+                title={__('Open in Catalog Template Editor', 'yay-bulk-order')}
+                description={__(
+                  'Go to Catalog Template Editor and manually custom the template for Shop / Category page.',
+                  'yay-bulk-order',
+                )}
+                onClick={openCatalogTemplateEditor}
+              />
+            ) : (
+              <PublishOption
+                title={__('Use in Shop/Category Page', 'yay-bulk-order')}
+                description={__(
+                  'Use the table in shop or category pages. This will replace the default product table.',
+                  'yay-bulk-order',
+                )}
+                onClick={applyToShop}
+                disabled={applyToShopMutation.isPending}
+              />
+            )}
+
             <PublishOption
               title={__('Copy as Blocks', 'yay-bulk-order')}
               description={__('Copy the table as blocks to use in the editor.', 'yay-bulk-order')}

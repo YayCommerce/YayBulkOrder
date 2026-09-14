@@ -68,15 +68,17 @@ class ProductQueryRestController extends BaseRestController {
     public function get_product_categories() {
         $terms = $this->product_query_service->get_filterable_categories();
 
-        return array_map(
-            function ( $term ) {
-                return [
-                    'id'    => $term->term_id,
-                    'name'  => $term->name,
-                    'count' => $term->count,
-                ];
-            },
-            $terms
+        return array_values(
+            array_map(
+                function ( $term ) {
+                    return [
+                        'id'    => $term->term_id,
+                        'name'  => $term->name,
+                        'count' => $term->count,
+                    ];
+                },
+                $terms
+            )
         );
     }
 
@@ -117,14 +119,16 @@ class ProductQueryRestController extends BaseRestController {
 
         $query = new \WP_Query( $query_args );
 
-        return array_map(
-            function ( $product_id ) {
-                return [
-                    'id'   => $product_id,
-                    'name' => get_the_title( $product_id ),
-                ];
-            },
-            $query->posts
+        return array_values(
+            array_map(
+                function ( $product_id ) {
+                    return [
+                        'id'   => $product_id,
+                        'name' => get_the_title( $product_id ),
+                    ];
+                },
+                $query->posts
+            )
         );
     }
 

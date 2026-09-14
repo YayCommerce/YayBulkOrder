@@ -58,8 +58,8 @@ export default function ProductsStep({ setSteps }: BuilderStepsProps) {
                 <Label htmlFor="query-all-products">{__('All products', 'yay-bulk-order')}</Label>
               </div>
               <div className="flex items-center gap-2">
-                <RadioGroupItem value="by-categories" id="query-by-categories" disabled={!isPro} />
-                <Label htmlFor="query-by-categories">
+                <RadioGroupItem value="by-category" id="query-by-category" disabled={!isPro} />
+                <Label htmlFor="query-by-category">
                   {__('By categories', 'yay-bulk-order')}{' '}
                   {!isPro && <span className="text-warning text-[11px]">PRO</span>}
                 </Label>
@@ -89,7 +89,7 @@ export default function ProductsStep({ setSteps }: BuilderStepsProps) {
           )}
         />
 
-        {queryBy === 'by-categories' && (
+        {queryBy === 'by-category' && (
           <Controller
             control={control}
             name="query.categories"

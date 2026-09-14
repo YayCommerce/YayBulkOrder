@@ -43,7 +43,7 @@ export default function TablePrebuild({ setSteps }: BuilderStepsProps) {
 
   const applyTemplate = (nextStep: BuilderSteps) => {
     if (nextStep !== 'products') {
-      if (selected.data.query.queryBy === 'by-categories' && selectedCatIds.length === 0) {
+      if (selected.data.query.queryBy === 'by-category' && selectedCatIds.length === 0) {
         setCatError(__('Select at least one category', 'yay-bulk-order'));
         return;
       }
@@ -51,7 +51,7 @@ export default function TablePrebuild({ setSteps }: BuilderStepsProps) {
     reset({
       ...selected.data,
       query:
-        selected.data.query.queryBy === 'by-categories'
+        selected.data.query.queryBy === 'by-category'
           ? { ...selected.data.query, categories: selectedCatIds }
           : selected.data.query,
     });

@@ -1,7 +1,4 @@
-const { isBlockTheme, adminUrl, themeSlug } = window.yayBulkOrderMeta.wpMeta;
-
-/** WooCommerce Site Editor template slug for the shop / product archive. */
-const ARCHIVE_PRODUCT_TEMPLATE = 'archive-product';
+const { isBlockTheme, adminUrl, archiveProductTemplateSlug } = window.yayBulkOrderMeta.wpMeta;
 
 /** Pattern category slug registered by the plugin (see PatternRegistry). */
 const PATTERN_CATEGORY = 'yay-bulk-order';
@@ -86,7 +83,7 @@ export function archiveProductTemplateUrl(): string | null {
 
   return wpAdminUrl('site-editor.php', {
     postType: 'wp_template',
-    postId: `${themeSlug}//${ARCHIVE_PRODUCT_TEMPLATE}`,
+    postId: archiveProductTemplateSlug,
     canvas: 'edit',
   });
 }

@@ -78,7 +78,7 @@ export const PREBUILD_TEMPLATES: TablePrebuildTemplate[] = [
     isProTemplate: true,
     data: {
       query: {
-        queryBy: 'by-categories',
+        queryBy: 'by-category',
         categories: [],
       },
       title: __('Some Categories Table', 'yay-bulk-order'),

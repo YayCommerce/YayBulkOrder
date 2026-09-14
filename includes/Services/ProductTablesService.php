@@ -16,7 +16,7 @@ class ProductTablesService {
     public const PRODUCT_TABLE_DISPLAY_META   = 'ybo_product_table_products';
     public const SHOP_PAGE_PRODUCT_TABLE_META = 'ybo_shop_page_product_table';
 
-    public const QUERY_BY_OPTIONS   = [ 'all-products', 'by-categories', 'featured', 'on-sale', 'hand-picked' ];
+    public const QUERY_BY_OPTIONS   = [ 'all-products', 'by-category', 'featured', 'on-sale', 'hand-picked' ];
     public const RESPONSIVE_OPTIONS = [ 'always-show', 'hide-on-mobile', 'hide-on-tablet' ];
 
     private const STASHED_NEW_PAGE_CONTENT_TRANSIENT = 'ybo_new_page_blocks_';

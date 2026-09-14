@@ -1,4 +1,5 @@
 import { Meta } from '@yay-bulk-order/common/src/schemas';
+import { PaginatedProductTables } from '@yay-bulk-order/common/src/schemas/product-tables.schema';
 
 declare global {
   interface Window {
@@ -50,4 +51,13 @@ export function fetchProductsByIds(ids: number[]): Promise<ProductSearchOption[]
 
   const query = ids.map((id) => `include[]=${id}`).join('&');
   return get(`/product-search?${query}`);
+}
+
+export function searchProductTables(
+  search: string,
+  page: number,
+  perPage: number = 10,
+): Promise<PaginatedProductTables> {
+  const query = new URLSearchParams({ search, page: String(page), perPage: String(perPage) });
+  return get(`/product-tables?${query.toString()}`);
 }

@@ -71,6 +71,12 @@
     line-height: 1.6;
     text-transform: uppercase;
   }
+
+  &__product-table {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 .ybo-inherit-notice {
@@ -195,5 +201,69 @@
     font-size: 12px;
     color: #757575;
     white-space: nowrap;
+  }
+}
+
+.ybo-product-table-picker {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  gap: 8px;
+  font-size: 12px;
+
+  &__loading {
+    display: flex;
+    justify-content: center;
+    padding: 24px 0;
+  }
+
+  &__table-wrapper {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  &__table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+
+    td {
+      padding: 12px 16px;
+      color: #1e1e1e;
+      vertical-align: middle;
+    }
+
+    tr:not(:last-child) td {
+      border-bottom: 1px solid #e0e0e0;
+    }
+  }
+
+  &__title {
+    font-weight: 500;
+    text-align: left;
+  }
+
+  &__action {
+    width: 1%;
+    white-space: nowrap;
+    text-align: right;
+  }
+
+  &__pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 12px;
+  }
+
+  &__pagination-info {
+    font-size: 12px;
+    color: #757575;
+  }
+
+  @media (max-width: 1024px) {
+    width: 100%;
   }
 }
