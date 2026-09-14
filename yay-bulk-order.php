@@ -44,8 +44,6 @@ if ( ! defined( 'YAYBULKORDER_VERSION' ) ) {
     define( 'YAYBULKORDER_MENU_PRIORITY', 95 );
 }
 
-define( 'YAYBULKORDER_IS_DEVELOPMENT', true );
-
 if ( ! function_exists( 'YayBulkOrder\\plugin_init' ) ) {
     require_once YAYBULKORDER_PLUGIN_PATH . 'vendor/autoload.php';
     function plugin_init() {
