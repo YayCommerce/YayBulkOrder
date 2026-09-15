@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { isShopApplied } from '@/pages/product-tables/product-tables.helper';
 import { ProductTableActions } from '@/pages/product-tables/table-list/TableColumns/TableActions';
+import TableTitle from '@/pages/product-tables/table-list/TableColumns/TableTitle';
 
 const QUERY_BY_LABELS: Record<ProductTable['query']['queryBy'], string> = {
   'all-products': __('All products', 'yay-bulk-order'),
@@ -43,14 +44,7 @@ export const ProductTableColumns: ColumnDef<ProductTable>[] = [
   {
     accessorKey: 'title',
     header: __('Table title', 'yay-bulk-order'),
-    cell: ({ row }) => (
-      <span className="flex items-center gap-2 font-medium">
-        {row.original.title}{' '}
-        {isShopApplied(row.original.id) && (
-          <Badge variant="primary-soft">{__('Using in Shop', 'yay-bulk-order')}</Badge>
-        )}
-      </span>
-    ),
+    cell: ({ row }) => <TableTitle table={row.original} />,
   },
   {
     id: 'products',

@@ -1,5 +1,19 @@
+import { HandbagIcon } from '@phosphor-icons/react';
 import { ProductTable } from '@yay-bulk-order/common/src/schemas';
-import { CirclePlus, Copy, MoreHorizontalIcon, PencilIcon, Trash2Icon } from 'lucide-react';
+import {
+  CirclePlus,
+  CodeXml,
+  Copy,
+  Edit,
+  FilePlus,
+  LayoutGrid,
+  Loader2Icon,
+  MoreHorizontalIcon,
+  PanelsTopLeft,
+  PencilIcon,
+  SquarePen,
+  Trash2Icon,
+} from 'lucide-react';
 import { useNavigate } from 'react-router';
 import { useClipboard } from 'rooks';
 import { toast } from 'sonner';
@@ -124,35 +138,47 @@ export function ProductTableActions({ table }: { table: ProductTable }) {
             navigate(`/product-tables/edit/${table.id}`);
           }}
         >
-          <PencilIcon className="size-4" />
+          <SquarePen className="size-4" />
           {__('Edit', 'yay-bulk-order')}
         </DropdownMenuItem>
         {isBlockTheme ? (
           <DropdownMenuItem onClick={openCatalogTemplateEditor}>
-            <PencilIcon className="size-4" />
+            <HandbagIcon className="size-4" />
             {__('Open Shop Template', 'yay-bulk-order')}
           </DropdownMenuItem>
         ) : (
           <DropdownMenuItem disabled={applyToShopMutation.isPending} onClick={applyToShop}>
-            <PencilIcon className="size-4" />
+            {applyToShopMutation.isPending ? (
+              <Loader2Icon className="size-4 animate-spin" />
+            ) : (
+              <HandbagIcon className="size-4" />
+            )}
             {__('Use in Shop / Category', 'yay-bulk-order')}
           </DropdownMenuItem>
         )}
         <DropdownMenuItem disabled={createPatternMutation.isPending} onClick={createTablePattern}>
-          <CirclePlus className="size-4" />
+          {createPatternMutation.isPending ? (
+            <Loader2Icon className="size-4 animate-spin" />
+          ) : (
+            <LayoutGrid className="size-4" />
+          )}
           {__('Create Pattern', 'yay-bulk-order')}
         </DropdownMenuItem>
         <DropdownMenuItem disabled={stashPageBlocksMutation.isPending} onClick={addNewPage}>
-          <CirclePlus className="size-4" />
+          {stashPageBlocksMutation.isPending ? (
+            <Loader2Icon className="size-4 animate-spin" />
+          ) : (
+            <FilePlus className="size-4" />
+          )}
           {__('Create with new page', 'yay-bulk-order')}
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={copyAsBlock}>
-          <Copy className="size-4" />
+          <PanelsTopLeft className="size-4" />
           {__('Copy as Blocks', 'yay-bulk-order')}
         </DropdownMenuItem>
         <DropdownMenuItem onClick={copyAsShortcode}>
-          <Copy className="size-4" />
+          <CodeXml className="size-4" />
           {__('Copy as Shortcode', 'yay-bulk-order')}
         </DropdownMenuItem>
         <DropdownMenuSeparator />
@@ -161,7 +187,11 @@ export function ProductTableActions({ table }: { table: ProductTable }) {
           disabled={deleteMutation.isPending}
           onSelect={() => deleteMutation.mutate()}
         >
-          <Trash2Icon className="size-4" />
+          {deleteMutation.isPending ? (
+            <Loader2Icon className="size-4 animate-spin" />
+          ) : (
+            <Trash2Icon className="size-4" />
+          )}
           {__('Delete', 'yay-bulk-order')}
         </DropdownMenuItem>
       </DropdownMenuContent>
