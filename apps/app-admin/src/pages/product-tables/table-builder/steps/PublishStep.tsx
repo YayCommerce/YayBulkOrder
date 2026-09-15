@@ -118,6 +118,7 @@ export default function PublishStep({ tableId }: PublishStepProps) {
       try {
         await applyToShopMutation.mutateAsync(tableId);
         toast.success(__('Applied to Shop/Category page.', 'yay-bulk-order'));
+        window.yayBulkOrderAdminData.shopTableId = tableId;
         window.open(shopPageUrl);
       } catch (err) {
         console.error(err);

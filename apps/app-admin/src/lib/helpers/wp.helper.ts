@@ -85,5 +85,6 @@ export function archiveProductTemplateUrl(): string | null {
     postType: 'wp_template',
     postId: archiveProductTemplateSlug,
     canvas: 'edit',
+    'ybo-catalog-notice': '1',
   });
 }

@@ -70,7 +70,7 @@ class ProductTablesService {
 
     public function is_product_table( int $id ) {
         $post = get_post( $id );
-        return ( ! $post instanceof \WP_Post || self::POST_TYPE !== $post->post_type );
+        return ( $post instanceof \WP_Post && self::POST_TYPE === $post->post_type );
     }
 
     public function create_product_table( array $data ) {

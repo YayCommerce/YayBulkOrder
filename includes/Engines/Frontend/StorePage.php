@@ -28,7 +28,7 @@ class StorePage {
      * Start buffering the default UI of shop.
      */
     public function maybe_start_shop_table_buffer(): void {
-        $is_prevent_apply = apply_filters( 'ybo_shop_page_prevent_apply_template', false );
+        $is_prevent_apply = apply_filters( 'yaybulkorder_shop_page_prevent_apply_template', false );
 
         if ( $is_prevent_apply ) {
             return;
@@ -46,7 +46,7 @@ class StorePage {
      * Render the product table to the shop page.
      */
     public function maybe_replace_shop_loop(): void {
-        $is_prevent_apply = apply_filters( 'ybo_shop_page_prevent_apply_template', false );
+        $is_prevent_apply = apply_filters( 'yaybulkorder_shop_page_prevent_apply_template', false );
 
         if ( $is_prevent_apply ) {
             return;
