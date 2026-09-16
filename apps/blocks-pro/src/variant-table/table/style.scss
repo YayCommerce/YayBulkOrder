@@ -273,6 +273,17 @@
   }
 }
 
+.editor-styles-wrapper .wp-block-yay-bulk-order-variant-table-root {
+  padding: 6px;
+  outline: 1px dashed transparent;
+  outline-offset: -1px;
+  transition: outline-color 0.1s ease;
+
+  &:hover {
+    outline-color: #949494;
+  }
+}
+
 .wp-block-yay-bulk-order-variant-table-root {
   min-width: 0;
   box-sizing: border-box;
