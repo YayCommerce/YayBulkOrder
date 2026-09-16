@@ -10,8 +10,8 @@ import { archiveProductTemplateUrl, newPageUrl, patternEditUrl } from '@/lib/hel
 import { useCreateProductTablePatternMutation, useIsMutatingPatterns } from '@/lib/queries/blocks.queries';
 import {
   useApplyToShopMutation,
-  useCreateProductTableMutation,
   useIsMutatingProductTables,
+  useIsSavingProductTable,
   useStashNewPageBlocksMutation,
 } from '@/lib/queries/product-table.queries';
 import { Button, LoadingButton } from '@/components/ui/button';
@@ -26,7 +26,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
-import { InputGroupButton } from '@/components/ui/input-group';
 import { Label } from '@/components/ui/label';
 import { HelpTip } from '@/components/ui/tooltip';
 import {
@@ -51,7 +50,7 @@ export default function PublishStep({ tableId, setSteps }: PublishStepProps) {
   const isFormSaved = !isDirty && tableId > 0;
   const navigate = useNavigate();
 
-  const { isPending: isSaving } = useCreateProductTableMutation();
+  const isSaving = useIsSavingProductTable(tableId);
   const createPatternMutation = useCreateProductTablePatternMutation(tableId);
   const stashPageBlocksMutation = useStashNewPageBlocksMutation();
   const applyToShopMutation = useApplyToShopMutation();
@@ -148,7 +147,7 @@ export default function PublishStep({ tableId, setSteps }: PublishStepProps) {
         <CardTitle className="text-base font-medium">{__('Publish table', 'yay-bulk-order')}</CardTitle>
         <CardDescription>{__('Give it a name and choose how to publish it.', 'yay-bulk-order')}</CardDescription>
       </CardHeader>
-      <div className="flex min-h-60 flex-col gap-8">
+      <div className="flex min-h-60 flex-col gap-6">
         <div className="flex flex-col gap-2">
           <div className="flex flex-col gap-1.5">
             <Label htmlFor="table-title">{__('Table Title', 'yay-bulk-order')}</Label>

@@ -127,6 +127,12 @@ export function useIsMutatingProductTables() {
   return useIsMutating({ mutationKey: PRODUCT_TABLE_MUTATION_KEYS.all }) > 0;
 }
 
+export function useIsSavingProductTable(id: number) {
+  const isAdding = useIsMutating({ mutationKey: PRODUCT_TABLE_MUTATION_KEYS.add }) > 0;
+  const isUpdating = useIsMutating({ mutationKey: PRODUCT_TABLE_MUTATION_KEYS.update(id) }) > 0;
+  return isAdding || isUpdating;
+}
+
 export function useIsMutatingBulkProductTables() {
   return useIsMutating({ mutationKey: PRODUCT_TABLE_MUTATION_KEYS.bulk }) > 0;
 }
