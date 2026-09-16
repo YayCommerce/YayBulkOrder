@@ -16,6 +16,8 @@ export default function TableTitle({ table }: TableTittleProps) {
   const { cacheTable } = useCacheProductTable();
   const navigate = useNavigate();
 
+  const isUsingShop = isShopApplied(table.id);
+
   return (
     <span
       className="flex cursor-pointer items-center gap-2 font-medium"
@@ -25,9 +27,7 @@ export default function TableTitle({ table }: TableTittleProps) {
       }}
     >
       {table.title}{' '}
-      {!isBlockTheme && isShopApplied(table.id) && (
-        <Badge variant="primary-soft">{__('Using in Shop', 'yay-bulk-order')}</Badge>
-      )}
+      {!isBlockTheme && isUsingShop && <Badge variant="primary-soft">{__('Using in Shop', 'yay-bulk-order')}</Badge>}
     </span>
   );
 }
