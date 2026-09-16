@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { ColorPicker } from '@/components/ui/color-picker';
 import { Field, FieldContent, FieldError, FieldLabel } from '@/components/ui/field';
 import { Separator } from '@/components/ui/separator';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { DesignPreviewTable } from './DesignPreviewTable';
 
 const { tableColors: DefaultColorsPreset } = window.yayBulkOrderAdminData.defaultPresets;
@@ -30,8 +31,44 @@ export function DesignTab() {
           {__('Reset to Default', 'yay-bulk-order')}
         </Button>
       </div>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <div className="flex flex-col gap-4">
+      <Tabs defaultValue="general" className="mb-5 gap-5">
+        <TabsList className="gap-2">
+          <TabsTrigger value="general">{__('General', 'yay-bulk-order')}</TabsTrigger>
+          <TabsTrigger value="typography">{__('Typography', 'yay-bulk-order')}</TabsTrigger>
+          <TabsTrigger value="button">{__('Button', 'yay-bulk-order')}</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="general" className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <Controller
+            control={control}
+            name="colors.headerBackground"
+            render={({ field, fieldState }) => (
+              <Field className="grid grid-cols-[200px_1fr]">
+                <FieldLabel className="text-xs font-medium">
+                  {__('Header Background Color', 'yay-bulk-order')}
+                </FieldLabel>
+                <FieldContent>
+                  <ColorPicker className="min-w-29" value={field.value} onValueChange={field.onChange} />
+                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                </FieldContent>
+              </Field>
+            )}
+          />
+
+          <Controller
+            control={control}
+            name="colors.background"
+            render={({ field, fieldState }) => (
+              <Field className="grid grid-cols-[200px_1fr]">
+                <FieldLabel className="text-xs font-medium">{__('Body Background Color', 'yay-bulk-order')}</FieldLabel>
+                <FieldContent>
+                  <ColorPicker className="min-w-29" value={field.value} onValueChange={field.onChange} />
+                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                </FieldContent>
+              </Field>
+            )}
+          />
+
           <Controller
             control={control}
             name="colors.primary"
@@ -39,49 +76,7 @@ export function DesignTab() {
               <Field className="grid grid-cols-[200px_1fr]">
                 <FieldLabel className="text-xs font-medium">{__('Primary Color', 'yay-bulk-order')}</FieldLabel>
                 <FieldContent>
-                  <ColorPicker value={field.value} onValueChange={field.onChange} />
-                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-                </FieldContent>
-              </Field>
-            )}
-          />
-
-          <Controller
-            control={control}
-            name="colors.text"
-            render={({ field, fieldState }) => (
-              <Field className="grid grid-cols-[200px_1fr]">
-                <FieldLabel className="text-xs font-medium">{__('Text Color', 'yay-bulk-order')}</FieldLabel>
-                <FieldContent>
-                  <ColorPicker value={field.value} onValueChange={field.onChange} />
-                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-                </FieldContent>
-              </Field>
-            )}
-          />
-
-          <Controller
-            control={control}
-            name="colors.textHover"
-            render={({ field, fieldState }) => (
-              <Field className="grid grid-cols-[200px_1fr]">
-                <FieldLabel className="text-xs font-medium">{__('Text Hover Color', 'yay-bulk-order')}</FieldLabel>
-                <FieldContent>
-                  <ColorPicker value={field.value} onValueChange={field.onChange} />
-                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-                </FieldContent>
-              </Field>
-            )}
-          />
-
-          <Controller
-            control={control}
-            name="colors.description"
-            render={({ field, fieldState }) => (
-              <Field className="grid grid-cols-[200px_1fr]">
-                <FieldLabel className="text-xs font-medium">{__('Description Color', 'yay-bulk-order')}</FieldLabel>
-                <FieldContent>
-                  <ColorPicker value={field.value} onValueChange={field.onChange} />
+                  <ColorPicker className="min-w-29" value={field.value} onValueChange={field.onChange} />
                   {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                 </FieldContent>
               </Field>
@@ -95,29 +90,73 @@ export function DesignTab() {
               <Field className="grid grid-cols-[200px_1fr]">
                 <FieldLabel className="text-xs font-medium">{__('Border Color', 'yay-bulk-order')}</FieldLabel>
                 <FieldContent>
-                  <ColorPicker value={field.value} onValueChange={field.onChange} />
+                  <ColorPicker className="min-w-29" value={field.value} onValueChange={field.onChange} />
                   {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                 </FieldContent>
               </Field>
             )}
           />
-        </div>
+        </TabsContent>
 
-        <div className="flex flex-col gap-4">
+        <TabsContent value="typography" className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <Controller
             control={control}
-            name="colors.background"
+            name="colors.headerText"
             render={({ field, fieldState }) => (
               <Field className="grid grid-cols-[200px_1fr]">
-                <FieldLabel className="text-xs font-medium">{__('Background Color', 'yay-bulk-order')}</FieldLabel>
+                <FieldLabel className="text-xs font-medium">{__('Header Text Color', 'yay-bulk-order')}</FieldLabel>
                 <FieldContent>
-                  <ColorPicker value={field.value} onValueChange={field.onChange} />
+                  <ColorPicker className="min-w-29" value={field.value} onValueChange={field.onChange} />
                   {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                 </FieldContent>
               </Field>
             )}
           />
 
+          <Controller
+            control={control}
+            name="colors.text"
+            render={({ field, fieldState }) => (
+              <Field className="grid grid-cols-[200px_1fr]">
+                <FieldLabel className="text-xs font-medium">{__('Text Color', 'yay-bulk-order')}</FieldLabel>
+                <FieldContent>
+                  <ColorPicker className="min-w-29" value={field.value} onValueChange={field.onChange} />
+                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                </FieldContent>
+              </Field>
+            )}
+          />
+
+          <Controller
+            control={control}
+            name="colors.textHover"
+            render={({ field, fieldState }) => (
+              <Field className="grid grid-cols-[200px_1fr]">
+                <FieldLabel className="text-xs font-medium">{__('Text Hover Color', 'yay-bulk-order')}</FieldLabel>
+                <FieldContent>
+                  <ColorPicker className="min-w-29" value={field.value} onValueChange={field.onChange} />
+                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                </FieldContent>
+              </Field>
+            )}
+          />
+
+          <Controller
+            control={control}
+            name="colors.description"
+            render={({ field, fieldState }) => (
+              <Field className="grid grid-cols-[200px_1fr]">
+                <FieldLabel className="text-xs font-medium">{__('Description Color', 'yay-bulk-order')}</FieldLabel>
+                <FieldContent>
+                  <ColorPicker className="min-w-29" value={field.value} onValueChange={field.onChange} />
+                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                </FieldContent>
+              </Field>
+            )}
+          />
+        </TabsContent>
+
+        <TabsContent value="button" className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <Controller
             control={control}
             name="colors.buttonBackground"
@@ -127,7 +166,7 @@ export function DesignTab() {
                   {__('Button Background Color', 'yay-bulk-order')}
                 </FieldLabel>
                 <FieldContent>
-                  <ColorPicker value={field.value} onValueChange={field.onChange} />
+                  <ColorPicker className="min-w-29" value={field.value} onValueChange={field.onChange} />
                   {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                 </FieldContent>
               </Field>
@@ -143,7 +182,7 @@ export function DesignTab() {
                   {__('Button Background Hover Color', 'yay-bulk-order')}
                 </FieldLabel>
                 <FieldContent>
-                  <ColorPicker value={field.value} onValueChange={field.onChange} />
+                  <ColorPicker className="min-w-29" value={field.value} onValueChange={field.onChange} />
                   {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                 </FieldContent>
               </Field>
@@ -157,7 +196,7 @@ export function DesignTab() {
               <Field className="grid grid-cols-[200px_1fr]">
                 <FieldLabel className="text-xs font-medium">{__('Button Text Color', 'yay-bulk-order')}</FieldLabel>
                 <FieldContent>
-                  <ColorPicker value={field.value} onValueChange={field.onChange} />
+                  <ColorPicker className="min-w-29" value={field.value} onValueChange={field.onChange} />
                   {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                 </FieldContent>
               </Field>
@@ -173,14 +212,14 @@ export function DesignTab() {
                   {__('Button Text Hover Color', 'yay-bulk-order')}
                 </FieldLabel>
                 <FieldContent>
-                  <ColorPicker value={field.value} onValueChange={field.onChange} />
+                  <ColorPicker className="min-w-29" value={field.value} onValueChange={field.onChange} />
                   {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                 </FieldContent>
               </Field>
             )}
           />
-        </div>
-      </div>
+        </TabsContent>
+      </Tabs>
 
       <Separator />
 

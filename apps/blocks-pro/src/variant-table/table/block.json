@@ -7,6 +7,12 @@
   "category": "woocommerce",
   "description": "Variant Table Wrapper.",
   "textdomain": "yay-bulk-order",
+  "attributes": {
+    "colors": {
+      "type": "object",
+      "default": {}
+    }
+  },
   "supports": {
     "interactivity": true,
     "inserter": false,

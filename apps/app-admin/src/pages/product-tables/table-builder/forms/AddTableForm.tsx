@@ -95,7 +95,7 @@ export default function AddTableForm() {
           {step === 'products' && <ProductsStep setSteps={setStep} />}
           {step === 'columns' && <ColumnsStep setSteps={setStep} />}
           {step === 'features' && <FeaturesStep setSteps={setStep} />}
-          {step === 'publish' && <PublishStep tableId={savedId} />}
+          {step === 'publish' && <PublishStep tableId={savedId} setSteps={setStep} />}
         </form>
       </div>
     </FormProvider>

@@ -135,7 +135,7 @@ export default function ProductsStep({ setSteps }: BuilderStepsProps) {
         )}
       </div>
       <div className="flex items-center justify-center gap-4 border-t pt-6">
-        <Button type="button" variant="primary" size="sm" onClick={handleNext}>
+        <Button type="button" variant="primary" onClick={handleNext}>
           {__('Next', 'yay-bulk-order')}
         </Button>
       </div>

@@ -61,7 +61,7 @@ export default function EditTableForm({ table }: EditTableFormProps) {
           {step === 'products' && <ProductsStep setSteps={setStep} />}
           {step === 'columns' && <ColumnsStep setSteps={setStep} />}
           {step === 'features' && <FeaturesStep setSteps={setStep} />}
-          {step === 'publish' && <PublishStep tableId={table.id} />}
+          {step === 'publish' && <PublishStep tableId={table.id} setSteps={setStep} />}
         </form>
       </div>
     </FormProvider>

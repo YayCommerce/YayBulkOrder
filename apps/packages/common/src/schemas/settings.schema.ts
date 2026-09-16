@@ -16,6 +16,8 @@ export const settingsSchema = z.object({
     buttonBackgroundHover: z.string(),
     buttonText: z.string(),
     buttonTextHover: z.string(),
+    headerBackground: z.string(),
+    headerText: z.string(),
   }),
   purchaseList: z.object({
     isAddToAccountPage: z.boolean(),

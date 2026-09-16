@@ -3,7 +3,7 @@ import { ProductTableForm } from '@yay-bulk-order/common/src/schemas/product-tab
 import { useFormContext } from 'react-hook-form';
 import { __ } from '@wordpress/i18n';
 
-import { cn } from '@/lib/utils';
+import { cn, isPro } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { HelpTip } from '@/components/ui/tooltip';
 import { MultiSelectCombobox, MultiSelectOption } from '@/components/custom/multi-select-combobox';
@@ -103,7 +103,7 @@ export default function TablePrebuild({ setSteps }: BuilderStepsProps) {
               </div>
             )}
             <div className="ml-auto flex gap-2">
-              {proTemplate.includes(selected.slug) ? (
+              {!isPro && proTemplate.includes(selected.slug) ? (
                 <UpgradeToProButton />
               ) : (
                 <>

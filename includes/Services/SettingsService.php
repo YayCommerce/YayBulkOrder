@@ -54,6 +54,8 @@ class SettingsService {
             '--ybo-button-background-hover-color' => $colors['buttonBackgroundHover'],
             '--ybo-button-text-color'             => $colors['buttonText'],
             '--ybo-button-text-hover-color'       => $colors['buttonTextHover'],
+            '--ybo-header-text-color'             => $colors['headerText'],
+            '--ybo-header-background-color'       => $colors['headerBackground'],
 
             '--ybo-text-default-color'            => $default_colors['text'],
             '--ybo-text-hover-default-color'      => $default_colors['textHover'],
@@ -83,6 +85,8 @@ class SettingsService {
                 'buttonBackgroundHover' => '#2d47ba',
                 'buttonText'            => '#ffffff',
                 'buttonTextHover'       => '#ffffff',
+                'headerBackground'      => '#ffffff',
+                'headerText'            => '#171719',
             ],
             'purchaseList' => [
                 'isAddToAccountPage'     => true,
