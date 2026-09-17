@@ -47,7 +47,7 @@ export function ProductTableActions({ table }: { table: ProductTable }) {
 
   const createPatternMutation = useCreateProductTablePatternMutation(table.id);
   const stashPageBlocksMutation = useStashNewPageBlocksMutation();
-  const applyToShopMutation = useApplyToShopMutation();
+  const applyToShopMutation = useApplyToShopMutation(table.id);
   const isMutatingPattern = useIsMutatingPatterns();
   const isMutatingProductTable = useIsMutatingProductTables();
   const deleteMutation = useDeleteProductTableMutation(table.id ?? 0);
@@ -113,9 +113,8 @@ export function ProductTableActions({ table }: { table: ProductTable }) {
 
     if (!isBlockTheme) {
       try {
-        await applyToShopMutation.mutateAsync(table.id);
+        await applyToShopMutation.mutateAsync();
         toast.success(__('Applied to Shop/Category page.', 'yay-bulk-order'));
-        window.yayBulkOrderAdminData.shopTableId = table.id;
         window.open(shopPageUrl);
       } catch (err) {
         console.error(err);

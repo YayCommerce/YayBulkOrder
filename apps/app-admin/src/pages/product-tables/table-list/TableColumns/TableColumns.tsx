@@ -5,7 +5,6 @@ import { __, sprintf } from '@wordpress/i18n';
 
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
-import { isShopApplied } from '@/pages/product-tables/product-tables.helper';
 import { ProductTableActions } from '@/pages/product-tables/table-list/TableColumns/TableActions';
 import TableTitle from '@/pages/product-tables/table-list/TableColumns/TableTitle';
 

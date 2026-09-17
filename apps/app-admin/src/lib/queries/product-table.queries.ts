@@ -36,6 +36,12 @@ export const PRODUCT_TABLE_QUERIES = {
       queryFn: () => getProductTable(id),
       enabled: id > 0,
     }),
+  shopTableId: () =>
+    queryOptions({
+      queryKey: ['shop-product-table'] as const,
+      queryFn: () => window.yayBulkOrderAdminData.shopTableId,
+      placeholderData: window.yayBulkOrderAdminData.shopTableId,
+    }),
 };
 
 /** ─── Mutation Keys ─────────────────────────────────── */
@@ -60,6 +66,10 @@ export function useProductTablesQuery(filter: ProductTableListParams) {
 
 export function useProductTableQuery(id: number) {
   return useQuery(PRODUCT_TABLE_QUERIES.single(id));
+}
+
+export function useShopProductTableIdQuery() {
+  return useQuery(PRODUCT_TABLE_QUERIES.shopTableId());
 }
 
 /** Mutations */
@@ -114,10 +124,17 @@ export function useStashNewPageBlocksMutation() {
   });
 }
 
-export function useApplyToShopMutation() {
+export function useApplyToShopMutation(tableId: number) {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationKey: PRODUCT_TABLE_MUTATION_KEYS.apply_to_shop,
-    mutationFn: (tableId: number) => applyToShopPage(tableId),
+    mutationFn: () => applyToShopPage(tableId),
+    onSuccess: (data) => {
+      if (data) {
+        window.yayBulkOrderAdminData.shopTableId = tableId;
+        queryClient.invalidateQueries(PRODUCT_TABLE_QUERIES.shopTableId());
+      }
+    },
   });
 }
 

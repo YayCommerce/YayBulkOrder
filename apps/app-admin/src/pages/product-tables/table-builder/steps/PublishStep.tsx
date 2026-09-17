@@ -53,7 +53,7 @@ export default function PublishStep({ tableId, setSteps }: PublishStepProps) {
   const isSaving = useIsSavingProductTable(tableId);
   const createPatternMutation = useCreateProductTablePatternMutation(tableId);
   const stashPageBlocksMutation = useStashNewPageBlocksMutation();
-  const applyToShopMutation = useApplyToShopMutation();
+  const applyToShopMutation = useApplyToShopMutation(tableId);
   const isMutatingPattern = useIsMutatingPatterns();
   const isMutatingProductTable = useIsMutatingProductTables();
 
@@ -130,9 +130,8 @@ export default function PublishStep({ tableId, setSteps }: PublishStepProps) {
       }
 
       try {
-        await applyToShopMutation.mutateAsync(tableId);
+        await applyToShopMutation.mutateAsync();
         toast.success(__('Applied to Shop/Category page.', 'yay-bulk-order'));
-        window.yayBulkOrderAdminData.shopTableId = tableId;
         window.open(shopPageUrl);
       } catch (err) {
         console.error(err);

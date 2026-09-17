@@ -1,10 +1,10 @@
+import { useMemo } from 'react';
 import { ProductTable } from '@yay-bulk-order/common/src/schemas';
 import { useNavigate } from 'react-router';
 import { __ } from '@wordpress/i18n';
 
-import { useCacheProductTable } from '@/lib/queries/product-table.queries';
+import { useCacheProductTable, useShopProductTableIdQuery } from '@/lib/queries/product-table.queries';
 import { Badge } from '@/components/ui/badge';
-import { isShopApplied } from '@/pages/product-tables/product-tables.helper';
 
 type TableTittleProps = {
   table: ProductTable;
@@ -15,8 +15,9 @@ const { isBlockTheme } = window.yayBulkOrderMeta.wpMeta;
 export default function TableTitle({ table }: TableTittleProps) {
   const { cacheTable } = useCacheProductTable();
   const navigate = useNavigate();
+  const { data: shopTableId } = useShopProductTableIdQuery();
 
-  const isUsingShop = isShopApplied(table.id);
+  const isUsingShop = useMemo(() => Number(shopTableId) === table.id, [shopTableId]);
 
   return (
     <span
