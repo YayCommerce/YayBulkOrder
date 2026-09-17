@@ -1,16 +1,13 @@
+import { useState } from 'react';
 import { HandbagIcon } from '@phosphor-icons/react';
 import { ProductTable } from '@yay-bulk-order/common/src/schemas';
 import {
-  CirclePlus,
   CodeXml,
-  Copy,
-  Edit,
   FilePlus,
   LayoutGrid,
   Loader2Icon,
   MoreHorizontalIcon,
   PanelsTopLeft,
-  PencilIcon,
   SquarePen,
   Trash2Icon,
 } from 'lucide-react';
@@ -26,6 +23,8 @@ import {
   useCacheProductTable,
   useDeleteProductTableMutation,
   useIsMutatingProductTables,
+  useRemoveFromShopMutation,
+  useShopProductTableIdQuery,
   useStashNewPageBlocksMutation,
 } from '@/lib/queries/product-table.queries';
 import { Button } from '@/components/ui/button';
@@ -36,18 +35,24 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { ConfirmDialog } from '@/components/custom/confirm-dialog';
 import { makeBlockText, makeShortcodeWithId } from '@/pages/product-tables/product-tables.helper';
 
 const { isBlockTheme, shopPageUrl } = window.yayBulkOrderMeta.wpMeta;
+
+type ConfirmAction = 'delete' | 'applyToShop' | 'removeFromShop' | null;
 
 export function ProductTableActions({ table }: { table: ProductTable }) {
   const navigate = useNavigate();
   const { copy } = useClipboard();
   const { cacheTable } = useCacheProductTable();
+  const { data: shopTableId } = useShopProductTableIdQuery();
+  const [confirmAction, setConfirmAction] = useState<ConfirmAction>(null);
 
   const createPatternMutation = useCreateProductTablePatternMutation(table.id);
   const stashPageBlocksMutation = useStashNewPageBlocksMutation();
   const applyToShopMutation = useApplyToShopMutation(table.id);
+  const removeFromShopMutation = useRemoveFromShopMutation();
   const isMutatingPattern = useIsMutatingPatterns();
   const isMutatingProductTable = useIsMutatingProductTables();
   const deleteMutation = useDeleteProductTableMutation(table.id ?? 0);
@@ -119,8 +124,33 @@ export function ProductTableActions({ table }: { table: ProductTable }) {
       } catch (err) {
         console.error(err);
         toast.error(__('Could not apply the table to Shop/Category pages.', 'yay-bulk-order'));
+      } finally {
+        setConfirmAction(null);
       }
     }
+  };
+
+  const removeFromShop = async () => {
+    if (isMutatingProductTable) return;
+
+    if (!isBlockTheme) {
+      try {
+        await removeFromShopMutation.mutateAsync();
+        toast.success(__('Removed from Shop/Category page.', 'yay-bulk-order'));
+        window.open(shopPageUrl);
+      } catch (err) {
+        console.error(err);
+        toast.error(__('Could not remove the table from Shop/Category pages.', 'yay-bulk-order'));
+      } finally {
+        setConfirmAction(null);
+      }
+    }
+  };
+
+  const confirmDelete = () => {
+    deleteMutation.mutate(undefined, {
+      onSettled: () => setConfirmAction(null),
+    });
   };
 
   return (
@@ -145,8 +175,20 @@ export function ProductTableActions({ table }: { table: ProductTable }) {
             <HandbagIcon className="size-4" />
             {__('Open Shop Template', 'yay-bulk-order')}
           </DropdownMenuItem>
+        ) : shopTableId && Number(shopTableId) === table.id ? (
+          <DropdownMenuItem
+            disabled={removeFromShopMutation.isPending}
+            onSelect={() => setConfirmAction('removeFromShop')}
+          >
+            {removeFromShopMutation.isPending ? (
+              <Loader2Icon className="size-4 animate-spin" />
+            ) : (
+              <HandbagIcon className="size-4" />
+            )}
+            {__('Remove from Shop / Category', 'yay-bulk-order')}
+          </DropdownMenuItem>
         ) : (
-          <DropdownMenuItem disabled={applyToShopMutation.isPending} onClick={applyToShop}>
+          <DropdownMenuItem disabled={applyToShopMutation.isPending} onSelect={() => setConfirmAction('applyToShop')}>
             {applyToShopMutation.isPending ? (
               <Loader2Icon className="size-4 animate-spin" />
             ) : (
@@ -184,7 +226,7 @@ export function ProductTableActions({ table }: { table: ProductTable }) {
         <DropdownMenuItem
           variant="destructive"
           disabled={deleteMutation.isPending}
-          onSelect={() => deleteMutation.mutate()}
+          onSelect={() => setConfirmAction('delete')}
         >
           {deleteMutation.isPending ? (
             <Loader2Icon className="size-4 animate-spin" />
@@ -194,6 +236,44 @@ export function ProductTableActions({ table }: { table: ProductTable }) {
           {__('Delete', 'yay-bulk-order')}
         </DropdownMenuItem>
       </DropdownMenuContent>
+
+      <ConfirmDialog
+        open={confirmAction === 'delete'}
+        onOpenChange={(open) => setConfirmAction(open ? 'delete' : null)}
+        title={__('Delete this table?', 'yay-bulk-order')}
+        description={__(
+          'This action cannot be undone. This will permanently delete the product table.',
+          'yay-bulk-order',
+        )}
+        confirmText={__('Delete', 'yay-bulk-order')}
+        confirmVariant="destructive"
+        isLoading={deleteMutation.isPending}
+        onConfirm={confirmDelete}
+      />
+
+      <ConfirmDialog
+        open={confirmAction === 'applyToShop'}
+        onOpenChange={(open) => setConfirmAction(open ? 'applyToShop' : null)}
+        title={__('Use this table in Shop / Category?', 'yay-bulk-order')}
+        description={__(
+          'This will replace the current table used on the Shop/Category pages with this one.',
+          'yay-bulk-order',
+        )}
+        confirmText={__('Use in Shop / Category', 'yay-bulk-order')}
+        isLoading={applyToShopMutation.isPending}
+        onConfirm={applyToShop}
+      />
+
+      <ConfirmDialog
+        open={confirmAction === 'removeFromShop'}
+        onOpenChange={(open) => setConfirmAction(open ? 'removeFromShop' : null)}
+        title={__('Remove this table from Shop / Category?', 'yay-bulk-order')}
+        description={__('The Shop/Category pages will no longer display this product table.', 'yay-bulk-order')}
+        confirmText={__('Remove', 'yay-bulk-order')}
+        confirmVariant="destructive"
+        isLoading={removeFromShopMutation.isPending}
+        onConfirm={removeFromShop}
+      />
     </DropdownMenu>
   );
 }

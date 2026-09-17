@@ -35,6 +35,7 @@ foreach ( $ybo_columns as $ybo_column ) {
 
     $ybo_header_cells .= '<th' . $ybo_th_class . '>' . esc_html( $ybo_heading ) . '</th>';
 }
+$ybo_header_cells .= '<th></th>';
 
 $ybo_header_columns = array_map(
     static function ( $ybo_slug ) use ( $ybo_column_responsive ) {
@@ -46,6 +47,10 @@ $ybo_header_columns = array_map(
     },
     $ybo_column_slugs
 );
+
+$ybo_header_columns[] = [
+    'name' => 'yay-bulk-order/product-table-column-select',
+];
 
 // Query
 $ybo_query_by = $attrs['query_by'] ?? $ybo_default_query_by;

@@ -12,6 +12,8 @@ import {
   useApplyToShopMutation,
   useIsMutatingProductTables,
   useIsSavingProductTable,
+  useRemoveFromShopMutation,
+  useShopProductTableIdQuery,
   useStashNewPageBlocksMutation,
 } from '@/lib/queries/product-table.queries';
 import { Button, LoadingButton } from '@/components/ui/button';
@@ -49,11 +51,13 @@ export default function PublishStep({ tableId, setSteps }: PublishStepProps) {
   const { copy } = useClipboard();
   const isFormSaved = !isDirty && tableId > 0;
   const navigate = useNavigate();
+  const { data: shopTableId } = useShopProductTableIdQuery();
 
   const isSaving = useIsSavingProductTable(tableId);
   const createPatternMutation = useCreateProductTablePatternMutation(tableId);
   const stashPageBlocksMutation = useStashNewPageBlocksMutation();
   const applyToShopMutation = useApplyToShopMutation(tableId);
+  const removeFromShopMutation = useRemoveFromShopMutation();
   const isMutatingPattern = useIsMutatingPatterns();
   const isMutatingProductTable = useIsMutatingProductTables();
 
@@ -136,6 +140,26 @@ export default function PublishStep({ tableId, setSteps }: PublishStepProps) {
       } catch (err) {
         console.error(err);
         toast.error(__('Could not apply the table to Shop/Category pages.', 'yay-bulk-order'));
+      }
+    }
+  };
+
+  const removeFromShop = async () => {
+    if (isMutatingProductTable) return;
+
+    if (!isBlockTheme) {
+      if (!isFormSaved) {
+        toast.error(__('Save the table before using it in Shop/Category pages.', 'yay-bulk-order'));
+        return;
+      }
+
+      try {
+        await removeFromShopMutation.mutateAsync();
+        toast.success(__('Removed from Shop/Category page.', 'yay-bulk-order'));
+        window.open(shopPageUrl);
+      } catch (err) {
+        console.error(err);
+        toast.error(__('Could not remove the table from Shop/Category pages.', 'yay-bulk-order'));
       }
     }
   };
@@ -227,6 +251,13 @@ export default function PublishStep({ tableId, setSteps }: PublishStepProps) {
                   'yay-bulk-order',
                 )}
                 onClick={openCatalogTemplateEditor}
+              />
+            ) : shopTableId && Number(shopTableId) === tableId ? (
+              <PublishOption
+                title={__('Remove from Shop/Category Page', 'yay-bulk-order')}
+                description={__('Remove this table from shop or category pages.', 'yay-bulk-order')}
+                onClick={removeFromShop}
+                disabled={removeFromShopMutation.isPending}
               />
             ) : (
               <PublishOption

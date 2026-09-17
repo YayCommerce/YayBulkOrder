@@ -191,7 +191,7 @@ class ProductTablesRestController extends BaseRestController {
         $data     = $request->get_json_params();
         $table_id = (int) ( $data['tableId'] ?? 0 );
 
-        if ( $table_id <= 0 || empty( $this->product_tables_service->get_product_table_by_id( $table_id ) ) ) {
+        if ( $table_id !== 0 && empty( $this->product_tables_service->get_product_table_by_id( $table_id ) ) ) {
             return $this->error_invalid_arguments( __( 'Invalid table.', 'yay-bulk-order' ) );
         }
 

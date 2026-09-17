@@ -275,6 +275,10 @@ class ProductQueryService {
     }
 
     private function is_inherit_query( $block ): bool {
+        if ( is_shop() || $this->is_product_taxonomy_archive() ) {
+            return true;
+        }
+
         $product_query = $block->context['productQuery'] ?? [];
         return ( $product_query['queryType'] ?? '' ) === 'inherit';
     }

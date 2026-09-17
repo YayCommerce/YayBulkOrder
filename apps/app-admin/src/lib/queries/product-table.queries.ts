@@ -53,6 +53,7 @@ const PRODUCT_TABLE_MUTATION_KEYS = {
   bulk_delete: ['product-tables', 'bulk', 'delete'] as const,
   stash: ['product-tables', 'stash'] as const,
   apply_to_shop: ['product-tables', 'apply_to_shop'] as const,
+  remove_from_shop: ['product-tables', 'remove_from_shop'] as const,
   // For isMutating
   bulk: ['product-tables', 'bulk'] as const,
   all: ['product-tables'] as const,
@@ -132,6 +133,20 @@ export function useApplyToShopMutation(tableId: number) {
     onSuccess: (data) => {
       if (data) {
         window.yayBulkOrderAdminData.shopTableId = tableId;
+        queryClient.invalidateQueries(PRODUCT_TABLE_QUERIES.shopTableId());
+      }
+    },
+  });
+}
+
+export function useRemoveFromShopMutation() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: PRODUCT_TABLE_MUTATION_KEYS.remove_from_shop,
+    mutationFn: () => applyToShopPage(0),
+    onSuccess: (data) => {
+      if (data) {
+        window.yayBulkOrderAdminData.shopTableId = 0;
         queryClient.invalidateQueries(PRODUCT_TABLE_QUERIES.shopTableId());
       }
     },
