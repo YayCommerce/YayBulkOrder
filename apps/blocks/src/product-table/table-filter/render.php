@@ -10,6 +10,10 @@
  * @var WP_Block $block      The block instance.
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use YayBulkOrder\Services\ProductQueryService;
 
 // Product taxonomy archives already scope the table — category filter is redundant.
@@ -19,7 +23,7 @@ if ( ProductQueryService::get_instance()->should_hide_filters() ) {
 ?>
 
 <button
-    <?php echo get_block_wrapper_attributes( array( 'class' => 'ybo-filter-toggle' ) ); ?>
+    <?php echo get_block_wrapper_attributes( array( 'class' => 'ybo-filter-toggle' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
     type="button"
     data-wp-on--click="actions.toggleFilterPanel"
     data-wp-bind--aria-expanded="state.isFilterOpen"

@@ -1,4 +1,8 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 if ( ! function_exists( 'WC' ) ) {
 	return;
 }
@@ -6,11 +10,11 @@ if ( ! function_exists( 'WC' ) ) {
 
 <!-- Hidden Woo Mini Cart (mount React + store) -->
 <div style="display:none">
-	<?php echo do_blocks( '<!-- wp:woocommerce/mini-cart /-->' ); ?>
+	<?php echo do_blocks( '<!-- wp:woocommerce/mini-cart /-->' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 </div>
 
 <div
-	<?php echo get_block_wrapper_attributes(); ?>
+	<?php echo get_block_wrapper_attributes(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 	data-wp-interactive="yay-bulk-order/cart-summary"
 	data-wp-init="callbacks.init"
 >

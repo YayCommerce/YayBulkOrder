@@ -9,6 +9,10 @@
  * @var WP_Block $block      The block instance.
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use YayBulkOrder\Services\ProductQueryService;
 use YayBulkOrder\Utils\BlockHelper;
 
@@ -21,7 +25,7 @@ $total_pages  = $pagination['totalPages'];
 
 if ( $total_pages <= 1 ) {
     ?>
-    <nav <?php echo get_block_wrapper_attributes( array( 'class' => 'ybo-pagination' ) ); ?>></nav>
+    <nav <?php echo get_block_wrapper_attributes( array( 'class' => 'ybo-pagination' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>></nav>
     <?php
     return;
 }
@@ -30,7 +34,7 @@ $page_range = BlockHelper::get_pagination_range( $current_page, $total_pages );
 ?>
 
 <nav
-    <?php echo get_block_wrapper_attributes( array( 'class' => 'ybo-pagination' ) ); ?>
+    <?php echo get_block_wrapper_attributes( array( 'class' => 'ybo-pagination' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
     aria-label="<?php echo esc_attr__( 'Products pagination', 'yay-bulk-order' ); ?>"
 >
     <ul class="ybo-pagination__list">

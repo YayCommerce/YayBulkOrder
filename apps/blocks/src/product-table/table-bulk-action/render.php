@@ -13,13 +13,17 @@
  * @var WP_Block $block      The block instance.
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use YayBulkOrder\Services\ProductQueryService;
 
 $product_query_service = ProductQueryService::get_instance();
 $has_products = $product_query_service->get_pagination_info( $block )['totalItems'] > 0;
 ?>
 
-<div <?php echo get_block_wrapper_attributes( array( 'class' => 'ybo-bulk-action-wrap' ) ); ?>>
+<div <?php echo get_block_wrapper_attributes( array( 'class' => 'ybo-bulk-action-wrap' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
     <span class="ybo-bulk-action-sentinel" aria-hidden="true" data-wp-init="callbacks.watchBulkActionVisibility"></span>
 
     <div class="ybo-bulk-action" data-wp-class--is-floating="state.showFloatingBulkAction">

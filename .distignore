@@ -21,6 +21,7 @@ pnpm-lock.yaml
 pnpm-workspace.yaml
 
 release.sh
+win-release.sh
 /apps
 /tools
 /release

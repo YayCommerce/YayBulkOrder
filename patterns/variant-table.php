@@ -10,6 +10,9 @@
  * @package yaycommerce/yay-bulk-order
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 ?>
 
 <!-- wp:yay-bulk-order/variant-table-root /-->

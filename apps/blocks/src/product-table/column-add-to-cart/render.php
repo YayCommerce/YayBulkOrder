@@ -7,11 +7,15 @@
  * @var WP_Block $block      The block instance.
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 $product_id = absint( $block->context['yay-bulk-order/productId'] ?? get_the_ID() );
 $product    = wc_get_product( $product_id );
 
 if ( ! $product instanceof WC_Product ) {
-	printf( '<td %s></td>', get_block_wrapper_attributes() );
+	printf( '<td %s></td>', get_block_wrapper_attributes() ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	return;
 }
 $product_type = $product->get_type();
@@ -33,10 +37,10 @@ if ( $product instanceof WC_Product_Variable ) {
 		)
 	);
 	?>
-	<td <?php echo get_block_wrapper_attributes( array( 'class' => 'wp-block-button wc-block-components-product-button' ) ); ?>>
+	<td <?php echo get_block_wrapper_attributes( array( 'class' => 'wp-block-button wc-block-components-product-button' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
 		<button
 			type="button"
-			<?php echo $toggle_attributes; ?>
+			<?php echo $toggle_attributes; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			data-wp-on--click="actions.toggleProductVariations"
 			data-wp-bind--aria-expanded="state.isProductExpanded"
 		>
@@ -67,9 +71,9 @@ $button_attributes = wc_implode_html_attributes(
 $button_text = $product->add_to_cart_text() ?: __( 'Add to cart', 'yay-bulk-order' );
 ?>
 
-<td <?php echo get_block_wrapper_attributes( array( 'class' => 'wp-block-button wc-block-components-product-button' ) ); ?>>
+<td <?php echo get_block_wrapper_attributes( array( 'class' => 'wp-block-button wc-block-components-product-button' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
 	<?php if ( $product->supports( 'ajax_add_to_cart' ) ) : ?>
-		<button type="button" <?php echo $button_attributes;?>
+		<button type="button" <?php echo $button_attributes; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			data-wp-on--click="actions.addToCart"
 			data-wp-bind--disabled="state.isAddToCartDisabled"
 			data-wp-class--loading="context.isAddingToCart"
@@ -77,7 +81,7 @@ $button_text = $product->add_to_cart_text() ?: __( 'Add to cart', 'yay-bulk-orde
 			<span data-wp-text="state.addToCartText"><?php echo esc_html( $button_text ); ?></span>
 		</button>
 	<?php elseif ( $product->is_purchasable() || in_array( $product_type, array( 'variable', 'grouped', 'external' ), true ) ) : ?>
-		<a href="<?php echo esc_url( $product->add_to_cart_url() ); ?>" <?php echo $button_attributes;?> <?php echo $product->is_type( 'external' ) ? 'target="_blank" rel="nofollow noopener noreferrer"' : 'rel="nofollow"';?>>
+		<a href="<?php echo esc_url( $product->add_to_cart_url() ); ?>" <?php echo $button_attributes; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> <?php echo $product->is_type( 'external' ) ? 'target="_blank" rel="nofollow noopener noreferrer"' : 'rel="nofollow"'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
 			<?php echo esc_html( $button_text ); ?>
 		</a>
 	<?php else : ?>

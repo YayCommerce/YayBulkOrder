@@ -10,6 +10,9 @@
  * @package yaycommerce/yay-bulk-order
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 ?>
 <!-- wp:yay-bulk-order/product-table-root {"queryId":709565,"productQuery":{"queryType":"all-products","hasPagination":true},"hasSelectedQuery":true} -->
 <!-- wp:group {"layout":{"type":"flex","justifyContent":"space-between","flexWrap":"nowrap"}} -->

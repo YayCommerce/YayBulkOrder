@@ -38,7 +38,13 @@ else
     esac
 fi
 
-DEST_PATH="$BUILD_PATH/${PLUGIN_SLUG}-${BUILD_VARIANT}"
+if [ "$BUILD_VARIANT" = "pro" ]; then
+    PACKAGE_SLUG="${PLUGIN_SLUG}-pro"
+else
+    PACKAGE_SLUG="${PLUGIN_SLUG}"
+fi
+
+DEST_PATH="$BUILD_PATH/${PACKAGE_SLUG}"
 
 echo "==> Building variant: $(echo "$BUILD_VARIANT" | tr '[:lower:]' '[:upper:]')"
 
@@ -88,6 +94,7 @@ if [ "$BUILD_VARIANT" = "lite" ]; then
     # would activate its Pro code path. `assets/dist/blocks-pro` is the
     # built counterpart of that same code and equally Pro-only.
     rm -rf "$DEST_PATH/includes/Pro"
+    rm -rf "$DEST_PATH/assets/pro"
     rm -rf "$DEST_PATH/assets/dist/blocks-pro"
     rm -rf "$DEST_PATH/assets/dist/variant-table-store"
     rm -rf "$DEST_PATH/assets/dist/purchase-list-store"
@@ -96,6 +103,10 @@ if [ "$BUILD_VARIANT" = "lite" ]; then
     [ -f "$PROJECT_PATH/composer.lock" ] && cp "$PROJECT_PATH/composer.lock" "$DEST_PATH/composer.lock"
     composer dump-autoload --optimize --no-dev --working-dir="$DEST_PATH"
     rm -f "$DEST_PATH/composer.json" "$DEST_PATH/composer.lock"
+else
+    cp "$DEST_PATH/assets/pro/yay-bulk-order-pro.php" "$DEST_PATH/"
+    rm "$DEST_PATH/assets/pro/yay-bulk-order-pro.php"
+    rm "$DEST_PATH/yay-bulk-order.php"
 fi
 
 echo "Generating zip file..."
@@ -105,9 +116,9 @@ cd "$BUILD_PATH" || exit
 # before a file got stripped or renamed) would keep carrying it forever.
 # Delete any previous zip first so this run's is a clean, exact reflection
 # of $DEST_PATH.
-#rm -f "${PLUGIN_SLUG}-${BUILD_VARIANT}.zip"
-zip -q -r "${PLUGIN_SLUG}-${BUILD_VARIANT}.zip" "${PLUGIN_SLUG}-${BUILD_VARIANT}/"
-rm -rf "${PLUGIN_SLUG}-${BUILD_VARIANT}"
-echo "${PLUGIN_SLUG}-${BUILD_VARIANT}.zip file generated!"
+rm -f "${PACKAGE_SLUG}.zip"
+zip -q -r "${PACKAGE_SLUG}.zip" "${PACKAGE_SLUG}/"
+rm -rf "${PACKAGE_SLUG}"
+echo "${PACKAGE_SLUG}.zip file generated!"
 
 echo "Build done!"
