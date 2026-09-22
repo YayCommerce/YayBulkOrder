@@ -18,8 +18,13 @@
     
     "release": "pnpm release:lite && pnpm release:pro",
     "release:lite": "bash ./release.sh IS_PRO=false",
-    "release:pro": "bash ./release.sh IS_PRO=true"
-    
+    "release:pro": "bash ./release.sh IS_PRO=true",
+
+    "test:e2e:install": "pnpm --filter @yay-bulk-order/tests-e2e exec playwright install chromium --with-deps",
+    "test:e2e:env:start": "pnpm --filter @yay-bulk-order/tests-e2e run env:start",
+    "test:e2e:env:stop": "pnpm --filter @yay-bulk-order/tests-e2e run env:stop",
+    "test:e2e": "pnpm --filter @yay-bulk-order/tests-e2e run test",
+    "test:e2e:ui": "pnpm --filter @yay-bulk-order/tests-e2e run test:ui"
   },
   "keywords": [],
   "author": "Yay Commerce",
