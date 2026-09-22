@@ -1,0 +1,25 @@
+{
+  "name": "@yay-bulk-order/tests-e2e",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Playwright + wp-env end-to-end tests for Yay Bulk Order for WooCommerce",
+  "type": "module",
+  "scripts": {
+    "env:start": "wp-env start",
+    "env:stop": "wp-env stop",
+    "test": "playwright test --project=e2e; e2e_status=$?; playwright test --project=hpos; hpos_status=$?; [ $e2e_status -eq 0 ] && [ $hpos_status -eq 0 ]",
+    "test:ui": "playwright test --project=e2e --project=hpos --ui",
+
+    "test:compat:only-bulk-order": "wp-env start --config .wp-env.only-bulk-order.json && WP_ENV_CONFIG=.wp-env.only-bulk-order.json playwright test --project=compatibility",
+    "test:compat:with-yaypricing": "wp-env start --config .wp-env.with-yaypricing.json && WP_ENV_CONFIG=.wp-env.with-yaypricing.json playwright test --project=compatibility",
+    "test:compat:with-yaycurrency": "wp-env start --config .wp-env.with-yaycurrency.json && WP_ENV_CONFIG=.wp-env.with-yaycurrency.json playwright test --project=compatibility",
+    "test:compat:with-yayextra": "wp-env start --config .wp-env.with-yayextra.json && WP_ENV_CONFIG=.wp-env.with-yayextra.json playwright test --project=compatibility",
+    "test:compat:with-yay-wholesale-b2b": "wp-env start --config .wp-env.with-yay-wholesale-b2b.json && WP_ENV_CONFIG=.wp-env.with-yay-wholesale-b2b.json playwright test --project=compatibility",
+    "test:compat:with-all-yay": "wp-env start --config .wp-env.with-all-yay.json && WP_ENV_CONFIG=.wp-env.with-all-yay.json playwright test --project=compatibility"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^10.6.0",
+    "@playwright/test": "^1.61.0",
+    "@wordpress/env": "^11.15.0"
+  }
+}

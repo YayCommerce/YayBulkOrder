@@ -1,0 +1,64 @@
+name: E2E compatibility
+
+# Runs the Phase 4 compatibility smoke suite (tests/e2e/tests/compatibility/)
+# against every Yay-plugin combo in a matrix — see
+# docs/e2e-testing-plan.md, section 4. Each combo is its own
+# `.wp-env.<combo>.json` in tests/e2e/, started fresh in this job via
+# Docker (wp-env), never against a shared/persistent environment.
+#
+# A job only fails on what TASK.md calls a real problem — a PHP fatal error,
+# or the checkout/price-calculation assertions actually being wrong. Light
+# PHP notices/deprecations are logged by the specs (console.warn) but never
+# fail them — see tests/compatibility/all-yay-plugins-smoke.spec.js. That
+# means a red job here already IS the "real failure" signal; whether it's
+# additionally configured as a required check that blocks merging is a
+# branch-protection setting in the repo, not something this workflow file
+# controls.
+on:
+  pull_request:
+  schedule:
+    # Mondays, 03:00 UTC — catches a Yay plugin update shipping between PRs.
+    - cron: '0 3 * * 1'
+  workflow_dispatch:
+
+jobs:
+  compatibility:
+    name: ${{ matrix.combo }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        combo:
+          - only-bulk-order
+          - with-yaypricing
+          - with-yaycurrency
+          - with-yayextra
+          - with-yay-wholesale-b2b
+          - with-all-yay
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright's Chromium
+        run: pnpm --filter @yay-bulk-order/tests-e2e exec playwright install --with-deps chromium
+
+      - name: Run compatibility suite — ${{ matrix.combo }}
+        run: pnpm --filter @yay-bulk-order/tests-e2e test:compat:${{ matrix.combo }}
+
+      - name: Upload Playwright report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-${{ matrix.combo }}
+          path: tests/e2e/playwright-report/
+          retention-days: 14

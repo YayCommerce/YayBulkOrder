@@ -97,8 +97,16 @@ class ProductTableShortcode {
                     }
                 );
 
+                // The admin Table Builder stores its category query mode as
+                // 'by-categories' (ProductTablesService::QUERY_BY_OPTIONS),
+                // but the query engine both this template and the block
+                // editor share (ProductQueryService::get_product_query_restriction(),
+                // query-types.ts) only recognizes the singular 'by-category'.
+                $ybo_query_by_map = [ 'by-categories' => 'by-category' ];
+                $ybo_table_query_by = $table['query']['queryBy'] ?? 'all';
+
                 return [
-                    'query_by'       => $table['query']['queryBy'] ?? 'all',
+                    'query_by'       => $ybo_query_by_map[ $ybo_table_query_by ] ?? $ybo_table_query_by,
                     'categories'     => array_values(
                         array_map( 'absint', (array) ( $table['query']['categories'] ?? [] ) )
                     ),

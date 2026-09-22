@@ -18,8 +18,20 @@
     
     "release": "pnpm release:lite && pnpm release:pro",
     "release:lite": "bash ./release.sh IS_PRO=false",
-    "release:pro": "bash ./release.sh IS_PRO=true"
-    
+    "release:pro": "bash ./release.sh IS_PRO=true",
+
+    "test:e2e": "pnpm --filter @yay-bulk-order/tests-e2e test",
+    "test:e2e:ui": "pnpm --filter @yay-bulk-order/tests-e2e test:ui",
+    "test:e2e:env:start": "pnpm --filter @yay-bulk-order/tests-e2e env:start",
+    "test:e2e:env:stop": "pnpm --filter @yay-bulk-order/tests-e2e env:stop",
+
+    "test:e2e:compat:only-bulk-order": "pnpm --filter @yay-bulk-order/tests-e2e test:compat:only-bulk-order",
+    "test:e2e:compat:with-yaypricing": "pnpm --filter @yay-bulk-order/tests-e2e test:compat:with-yaypricing",
+    "test:e2e:compat:with-yaycurrency": "pnpm --filter @yay-bulk-order/tests-e2e test:compat:with-yaycurrency",
+    "test:e2e:compat:with-yayextra": "pnpm --filter @yay-bulk-order/tests-e2e test:compat:with-yayextra",
+    "test:e2e:compat:with-yay-wholesale-b2b": "pnpm --filter @yay-bulk-order/tests-e2e test:compat:with-yay-wholesale-b2b",
+    "test:e2e:compat:with-all-yay": "pnpm --filter @yay-bulk-order/tests-e2e test:compat:with-all-yay"
+
   },
   "keywords": [],
   "author": "Yay Commerce",

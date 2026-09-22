@@ -19,7 +19,12 @@ class SettingsService {
     }
 
     public function save_settings( array $settings ) {
-        $settings = array_replace_recursive( $this->get_default_settings(), $settings );
+        // Merge onto the currently stored settings (which already fills any
+        // gaps from defaults via get_settings()), not onto the bare
+        // defaults — otherwise a partial payload (e.g. only `general`)
+        // silently resets every other group (`csvOrder`, `purchaseList`,
+        // `colors`, ...) back to its default value.
+        $settings = array_replace_recursive( $this->get_settings(), $settings );
         return update_option( 'yay_bulk_order_settings', $settings );
     }
 
