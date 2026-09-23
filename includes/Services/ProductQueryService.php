@@ -123,9 +123,21 @@ class ProductQueryService {
         $search_param   = $this->get_search_param( $block );
         $category_param = in_array( 'category', $exclude, true ) ? [] : $this->get_category_param( $block );
         $tags_param     = in_array( 'tag', $exclude, true ) ? [] : $this->get_tags_param( $block );
-        $min_price      = in_array( 'price', $exclude, true ) ? null : $this->get_min_price_param( $block );
-        $max_price      = in_array( 'price', $exclude, true ) ? null : $this->get_max_price_param( $block );
         $rating_params  = in_array( 'rating', $exclude, true ) ? [] : $this->get_rating_param( $block );
+
+        // The URL's min-price/max-price are whatever currency the shopper is
+        // currently viewing the store in (that's what the slider showed them
+        // — see get_price_bounds()) — but `_price` postmeta is always the
+        // store's base currency, so the bound has to travel back to base
+        // currency before it can be compared against it below.
+        $min_price = in_array( 'price', $exclude, true ) ? null : $this->get_min_price_param( $block );
+        $max_price = in_array( 'price', $exclude, true ) ? null : $this->get_max_price_param( $block );
+        if ( null !== $min_price ) {
+            $min_price = $this->convert_from_active_currency( $min_price );
+        }
+        if ( null !== $max_price ) {
+            $max_price = $this->convert_from_active_currency( $max_price );
+        }
 
         $query_vars = [];
 
@@ -168,12 +180,6 @@ class ProductQueryService {
             $post_in_sets[] = $product_query_restriction['post__in'];
         }
         if ( ! empty( $rating_params ) ) {
-            // Resolved via one direct SQL lookup (post__in) rather than a
-            // meta_query clause: WP_Meta_Query adds a JOIN per clause, and an
-            // OR'd multi-rating selection needs up to 2 clauses PER rating
-            // (bucket lower/upper bound) — 3 ratings alone means 5 self-joins
-            // on wp_postmeta, which explodes into a query that can take
-            // minutes (or never finish) even on a modest catalog.
             $post_in_sets[] = $this->get_product_ids_for_ratings( $rating_params );
         }
         if ( ! empty( $post_in_sets ) ) {
@@ -674,6 +680,12 @@ class ProductQueryService {
      * products matching every OTHER active filter — see
      * get_filterable_categories() for why.
      *
+     * Converted to the shopper's active currency (e.g. via YayCurrency) if
+     * one is active — `_price` is always stored in the store's base
+     * currency, but everywhere else on the storefront (product cards, cart)
+     * shows the converted amount, so the slider needs to match that instead
+     * of showing raw base-currency numbers.
+     *
      * @param WP_Block|null $block The table-filter(-sidebar) block instance, if available.
      * @return array{min: float, max: float}
      */
@@ -701,10 +713,45 @@ class ProductQueryService {
         $bounds = null !== $scope ? $wpdb->get_row( $wpdb->prepare( $sql, $scope['ids'] ) ) : $wpdb->get_row( $sql );
         // phpcs:enable
 
+        $min = null !== $bounds && null !== $bounds->min_price ? (float) $bounds->min_price : 0.0;
+        $max = null !== $bounds && null !== $bounds->max_price ? (float) $bounds->max_price : 0.0;
+
         return [
-            'min' => null !== $bounds && null !== $bounds->min_price ? (float) $bounds->min_price : 0.0,
-            'max' => null !== $bounds && null !== $bounds->max_price ? (float) $bounds->max_price : 0.0,
+            'min' => $this->convert_to_active_currency( $min ),
+            'max' => $this->convert_to_active_currency( $max ),
         ];
+    }
+
+    /**
+     * Converts a raw (store base-currency) price into whatever currency the
+     * shopper is currently viewing the store in. A no-op when no currency
+     * switcher plugin is active — `apply_filters()` on an unregistered
+     * filter just returns `$price` unchanged, so this needs no
+     * `class_exists`/`is_plugin_active` guard.
+     *
+     * @param float $price Raw price in the store's base currency.
+     * @return float
+     */
+    private function convert_to_active_currency( float $price ): float {
+        /**
+         * YayCurrency's own public integration filter (used by all of its
+         * first-party third-party-compatibility modules) — converts a raw
+         * base-currency amount to the shopper's currently selected currency.
+         */
+        return round( (float) apply_filters( 'yay_currency_convert_price', $price ), 2 );
+    }
+
+    /**
+     * Reverses convert_to_active_currency() — converts an amount the shopper
+     * entered/dragged in their currently-viewed currency back to the store's
+     * base currency, so it can be compared against the raw `_price` meta
+     * value in a query. No-op when no currency switcher plugin is active.
+     *
+     * @param float $price Price in the shopper's currently viewed currency.
+     * @return float
+     */
+    private function convert_from_active_currency( float $price ): float {
+        return round( (float) apply_filters( 'yay_currency_revert_price', $price ), 2 );
     }
 
     /**
@@ -742,7 +789,7 @@ class ProductQueryService {
         // phpcs:enable
 
         foreach ( $rows as $row ) {
-            $stars = (int) min( 5, max( 1, (int) $row->rounded_rating ) );
+            $stars             = (int) min( 5, max( 1, (int) $row->rounded_rating ) );
             $counts[ $stars ] += (int) $row->product_count;
         }
 
