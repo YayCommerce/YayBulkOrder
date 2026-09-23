@@ -71,8 +71,22 @@ export type ProductTableContext = {
     };
     filter: {
       categories: string[];
+      tags: string[];
       search: string;
       isOpen: boolean;
+      // Kept as strings (not `number | null`): `data-wp-bind--value` sets
+      // the input's DOM `.value` directly, and assigning JS `null` to that
+      // (a non-nullable DOMString IDL attribute) renders the literal text
+      // "null" in the field, not empty — empty string is the only value
+      // that reliably clears the input.
+      priceRange: {
+        min: string;
+        max: string;
+      };
+      // Minimum star rating ("N stars & up"), or null for no rating filter.
+      // Checkbox `checked` state is fine with `null` (boolean IDL attribute,
+      // not the DOMString `.value` gotcha above).
+      rating: number | null;
     };
     pagination: {
       pageIndex: number;
@@ -104,9 +118,19 @@ export type ProductRowContext = {
   variationSelections?: StoreApiVariationSelection[];
 };
 
-/** Context of a single checkbox rendered by table-filter/render.php. */
+/** Context of a single checkbox rendered by table-filter-sidebar/render.php. */
 export type FilterCategoryOptionContext = ProductTableContext & {
   categorySlug: string;
+};
+
+/** Context of a single rating checkbox rendered by table-filter-sidebar/render.php. */
+export type FilterRatingOptionContext = ProductTableContext & {
+  ratingValue: number;
+};
+
+/** Context of a single tag checkbox rendered by table-filter-sidebar/render.php. */
+export type FilterTagOptionContext = ProductTableContext & {
+  tagSlug: string;
 };
 
 export type ProductRowState = ProductRowContext & ProductTableContext;

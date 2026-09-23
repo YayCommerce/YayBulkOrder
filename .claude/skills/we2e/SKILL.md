@@ -63,7 +63,12 @@ Product Table / other Gutenberg-block specs have the same risk for `apps/blocks*
 pnpm test:e2e:env:start
 ```
 
-Idempotent — safe to call even if already running. On a fresh start it also seeds fixtures automatically via `tests/e2e/bin/seed.sh` (the `afterStart` lifecycle script): 3 WooCommerce products (SKUs `YBO-E2E-1/2/3`) and a Page (`/e2e-product-table/`) whose content is the real registered `yay-bulk-order/simple-product-table` block pattern. The script skips re-seeding if that page already exists, so restarting an existing environment won't duplicate fixtures.
+Idempotent — safe to call even if already running. On a fresh start it also seeds fixtures automatically via `tests/e2e/bin/seed.sh` (the `afterStart` lifecycle script):
+- 3 WooCommerce products (SKUs `YBO-E2E-1/2/3`, priced $10/$20/$30). One → category `e2e-cat-a` + tag `e2e-tag-a` + rating 5. Two → category `e2e-cat-b` + tag `e2e-tag-b` + rating 3 (ratings are `_wc_average_rating`/`_wc_review_count` postmeta set directly — no real reviews needed). Three has none of the above.
+- A Page (`/e2e-product-table/`) whose content is the real registered `yay-bulk-order/simple-product-table` block pattern.
+- A second Page (`/e2e-product-table-duplicate/`) with that *same* pattern inserted twice — for the `queryId`-collision regression spec.
+
+The script skips re-seeding if the first page already exists, so restarting an existing environment won't duplicate fixtures — **if you change what `seed.sh` seeds, destroy and restart the environment** (`pnpm --filter @yay-bulk-order/tests-e2e exec wp-env destroy --force && pnpm test:e2e:env:start`) rather than just restarting it, or the new fixtures won't exist.
 
 ---
 
@@ -89,7 +94,9 @@ pnpm test:e2e:ui
 
 | Spec | Result |
 |---|---|
-| product-table.spec.ts | Pass / Fail |
+| product-table.spec.ts (render, add-to-cart) | Pass / Fail |
+| product-table.spec.ts (category / tag / price / rating filters) | Pass / Fail |
+| product-table.spec.ts (queryId collision — two tables, one page) | Pass / Fail |
 | settings.admin.spec.ts (General) | Pass / Fail |
 | settings.admin.spec.ts (Design — Primary Color) | Pass / Fail |
 | settings.admin.spec.ts (Design — remaining colors) | Pass / Fail |
@@ -122,5 +129,5 @@ A Pro-only block (Variant Table, Purchase List, CSV Order) needs `apps/blocks-pr
 
 - **Slow on first run** — `wp-env start` pulls Docker images, ~2–3 minutes. Subsequent runs are fast.
 - **No CI yet** — `.github/workflows` doesn't exist in this repo. This skill is for local verification only.
-- **Thin coverage today** — `product-table.spec.ts` (render + add-to-cart) and `settings.admin.spec.ts` (General tab number field; all 12 Design tab colors across their 3 sub-tabs). The Advanced settings tab has no coverage yet. When a checkpoint adds meaningful new behavior with no matching spec, flag it to the user instead of silently skipping e2e coverage.
+- **Thin coverage today** — `product-table.spec.ts` (render, add-to-cart, category/tag/price/rating filters — including multi-select and clear-filter cases — and a two-instances-on-one-page regression for the `queryId` collision fix) and `settings.admin.spec.ts` (General tab number field; all 12 Design tab colors across their 3 sub-tabs). Product attribute filters (Color/Size), the Advanced settings tab, Purchase List, CSV Order, and Variant Table have no coverage yet. When a checkpoint adds meaningful new behavior with no matching spec, flag it to the user instead of silently skipping e2e coverage.
 - To tear down: `pnpm test:e2e:env:stop`. To fully wipe and start clean next time: `pnpm --filter @yay-bulk-order/tests-e2e exec wp-env destroy --force`.

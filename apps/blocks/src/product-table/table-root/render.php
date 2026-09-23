@@ -45,6 +45,10 @@ $has_select_column = BlockHelper::inner_blocks_contain(
 $page_param     = BlockHelper::get_page_param( $query_id );
 $search_param   = BlockHelper::get_search_param( $query_id );
 $category_param = BlockHelper::get_category_param( $query_id );
+$min_price_param = BlockHelper::get_min_price_param( $query_id );
+$max_price_param = BlockHelper::get_max_price_param( $query_id );
+$rating_param   = BlockHelper::get_rating_param( $query_id );
+$tags_param     = BlockHelper::get_tags_param( $query_id );
 
 $data_context = [
     'formAttributes' => [
@@ -65,8 +69,17 @@ $data_context = [
         // client-side (interactivity router) navigation alike.
         'filter' => [
             'categories' => $category_param,
+            'tags' => $tags_param,
             'search' => $search_param,
             'isOpen' => false,
+            // Kept as strings — see the matching note on ProductTableContext
+            // in productTable.type.ts (assigning `null` to an input's DOM
+            // `.value` renders the literal text "null", not empty).
+            'priceRange' => [
+                'min' => null !== $min_price_param ? (string) $min_price_param : '',
+                'max' => null !== $max_price_param ? (string) $max_price_param : '',
+            ],
+            'rating' => $rating_param,
         ],
         'pagination' => [
             'pageIndex' => max( 0, $page_param - 1 ),

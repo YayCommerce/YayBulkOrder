@@ -67,6 +67,12 @@ Other admin-area hooks (not separate pages):
 | Product Table Columns (Pro) | `blocks-pro/src/product-table-columns-pro/` | Pro-only extra column(s) for the Product Table block |
 | Checkout slot-fill (Pro) | `apps/packages/block-checkout-slotfill` | Injects a "Save as Purchase List" action into the WooCommerce Blocks checkout, enqueued by `Pro\Engines\Frontend\Frontend.php` |
 
+### Product Table filter sidebar — URL scheme
+
+`table-filter-sidebar` filters (category, tag, price range, rating) and `table-pagination`/`table-search` all read/write GET params named `query-{queryId}-{param}` (e.g. `?query-1-categories=dictionary,clothing&query-1-tags=aa&query-1-min-price=10&query-1-max-price=100&query-1-rating=4`), built by `BlockHelper::build_query_url()` / `BlockHelper::get_*_param()`. Category and tag are multi-select (comma-separated, OR within the same taxonomy, AND across categories vs tags). Rating is a single "N stars & up" threshold. `filter` (on-sale/in-stock) keeps the same `query-{id}-filter` scheme but is a separate, older param — not part of this filter set.
+
+**`queryId` collision fix**: a static pattern (e.g. "Simple Product Table") inserted twice on one page bakes the *same* `queryId` into both instances' saved attributes — the block editor renumbers this automatically when both blocks are visible together in the editor (`table-root/edit.tsx`), but that never runs for content assembled outside the editor (the `[ybo-product-table]` shortcode always bakes `queryId: 1`; programmatic content — stashed "apply to a new page", migrations, tests — can too). `Engines\Blocks\RegisterBlocks::disambiguate_query_id()` hooks WordPress's `render_block_data` filter to rewrite the 2nd+ occurrence's `queryId` before context resolution, so every descendant block and the table's own `data-wp-router-region` see a collision-free value with no other code needing to know about it.
+
 ## Frontend — PHP templates / shortcode
 
 | Item | Purpose |

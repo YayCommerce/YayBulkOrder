@@ -1,5 +1,3 @@
-import { getContext, getElement, store } from '@wordpress/interactivity';
-
 import { initCartSync } from '@yay-bulk-order/common/src/cartSync';
 import { getGlobalConfig } from '@yay-bulk-order/common/src/globalConfig';
 import {
@@ -10,9 +8,12 @@ import {
   type StoreApiCart,
 } from '@yay-bulk-order/common/src/storeApi';
 import { formatCartSubtotal, formatPrice } from '@yay-bulk-order/common/src/storeApi/currency';
+import { getContext, getElement, store } from '@wordpress/interactivity';
 
 import type {
   FilterCategoryOptionContext,
+  FilterRatingOptionContext,
+  FilterTagOptionContext,
   ProductRowContext,
   ProductRowState,
   ProductTableContext,
@@ -106,7 +107,8 @@ function fetchHtml(url: string): Promise<string> {
  */
 async function navigateWithHiddenParams(fetchUrl: string, context: ProductTableContext): Promise<void> {
   const { actions } = await import('@wordpress/interactivity-router');
-
+  // await actions.navigate(fetchUrl);
+  // return;
   context.tableState.isTableLoading = true;
   try {
     const html = await fetchHtml(fetchUrl);
@@ -122,12 +124,16 @@ async function navigateWithHiddenParams(fetchUrl: string, context: ProductTableC
 /** Applies the current filter/search state and resets to page 1. */
 async function navigateToFilterState(context: ProductTableContext): Promise<void> {
   const { queryId } = context.formAttributes;
-  const { categories, search } = context.tableState.filter;
+  const { categories, tags, search, priceRange, rating } = context.tableState.filter;
 
   const url = buildTableUrl(queryId, {
     page: null,
-    category: categories.length ? categories.join(',') : null,
+    categories: categories.length ? categories.join(',') : null,
+    tags: tags.length ? tags.join(',') : null,
     search: search || null,
+    'min-price': priceRange.min || null,
+    'max-price': priceRange.max || null,
+    rating: rating ?? null,
   });
 
   await navigateWithHiddenParams(url, context);
@@ -146,6 +152,25 @@ function scheduleSearchNavigation(context: ProductTableContext): void {
       searchDebounceTimers.delete(queryId);
       navigateToFilterState(context).catch(console.error);
     }, SEARCH_DEBOUNCE_MS),
+  );
+}
+
+// Same reasoning as search: min/max price each fire their own `change`
+// (blur/Enter), and tabbing quickly from one to the other would otherwise
+// fire two overlapping navigations that can race and drop one field's
+// value. One shared timer per table instance coalesces them into one.
+const PRICE_DEBOUNCE_MS = 400;
+const priceDebounceTimers = new Map<number, ReturnType<typeof setTimeout>>();
+
+function schedulePriceNavigation(context: ProductTableContext): void {
+  const { queryId } = context.formAttributes;
+  clearTimeout(priceDebounceTimers.get(queryId));
+  priceDebounceTimers.set(
+    queryId,
+    setTimeout(() => {
+      priceDebounceTimers.delete(queryId);
+      navigateToFilterState(context).catch(console.error);
+    }, PRICE_DEBOUNCE_MS),
   );
 }
 
@@ -402,18 +427,58 @@ const storeDef = {
       const context = getContext<ProductTableContext>();
       context.tableState.filter.isOpen = false;
     },
-    // Applies the selected category immediately.
-    *selectFilterCategory() {
+    // Toggles one category in/out of the multi-select and applies immediately.
+    *toggleFilterCategory() {
       const context = getContext<FilterCategoryOptionContext>();
       const { categorySlug } = context;
-      const [currentSlug] = context.tableState.filter.categories;
+      const { categories } = context.tableState.filter;
 
-      if ((currentSlug ?? '') === categorySlug) {
-        return;
-      }
+      context.tableState.filter.categories = categories.includes(categorySlug)
+        ? categories.filter((slug) => slug !== categorySlug)
+        : [...categories, categorySlug];
 
-      context.tableState.filter.categories = categorySlug ? [categorySlug] : [];
       yield navigateToFilterState(context);
+    },
+    // Toggles one tag in/out of the multi-select and applies immediately.
+    *toggleFilterTag() {
+      const context = getContext<FilterTagOptionContext>();
+      const { tagSlug } = context;
+      const { tags } = context.tableState.filter;
+
+      context.tableState.filter.tags = tags.includes(tagSlug)
+        ? tags.filter((slug) => slug !== tagSlug)
+        : [...tags, tagSlug];
+
+      yield navigateToFilterState(context);
+    },
+    // Single-select: picking a rating replaces whatever was selected;
+    // picking the already-selected one clears it back to "no filter".
+    *toggleFilterRating() {
+      const context = getContext<FilterRatingOptionContext>();
+      const { ratingValue } = context;
+
+      context.tableState.filter.rating = context.tableState.filter.rating === ratingValue ? null : ratingValue;
+
+      yield navigateToFilterState(context);
+    },
+    // Fires on change (blur/Enter), not per keystroke. Debounced (shared
+    // timer with the other price field) so tabbing straight from min to
+    // max coalesces into one navigation instead of two racing ones.
+    updateMinPrice(event: Event) {
+      const context = getContext<ProductTableContext>();
+      context.tableState.filter.priceRange = {
+        ...context.tableState.filter.priceRange,
+        min: (event.target as HTMLInputElement).value,
+      };
+      schedulePriceNavigation(context);
+    },
+    updateMaxPrice(event: Event) {
+      const context = getContext<ProductTableContext>();
+      context.tableState.filter.priceRange = {
+        ...context.tableState.filter.priceRange,
+        max: (event.target as HTMLInputElement).value,
+      };
+      schedulePriceNavigation(context);
     },
     updateSearchKeyword(event: Event) {
       const context = getContext<ProductTableContext>();
