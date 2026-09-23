@@ -83,10 +83,9 @@ export type ProductTableContext = {
         min: string;
         max: string;
       };
-      // Minimum star rating ("N stars & up"), or null for no rating filter.
-      // Checkbox `checked` state is fine with `null` (boolean IDL attribute,
-      // not the DOMString `.value` gotcha above).
-      rating: number | null;
+      // Selected star ratings (multi-select) — a product matches if its
+      // rounded average rating falls in ANY of these buckets.
+      ratings: number[];
     };
     pagination: {
       pageIndex: number;
@@ -131,6 +130,16 @@ export type FilterRatingOptionContext = ProductTableContext & {
 /** Context of a single tag checkbox rendered by table-filter-sidebar/render.php. */
 export type FilterTagOptionContext = ProductTableContext & {
   tagSlug: string;
+};
+
+/** Context of the price range slider wrapper rendered by table-filter-sidebar/render.php. */
+export type PriceSliderContext = ProductTableContext & {
+  priceBounds: { min: number; max: number };
+};
+
+/** Context of one draggable handle (min or max) within the price range slider. */
+export type PriceSliderHandleContext = PriceSliderContext & {
+  priceSliderHandle: 'min' | 'max';
 };
 
 export type ProductRowState = ProductRowContext & ProductTableContext;

@@ -7,6 +7,7 @@
   "category": "woocommerce",
   "description": "Product Table Filter by Categories.",
   "textdomain": "yay-bulk-order",
+  "usesContext": ["productQuery"],
   "supports": {
     "interactivity": true,
     "inserter": false,

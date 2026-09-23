@@ -7,7 +7,7 @@
   "category": "woocommerce",
   "description": "Product category list toggled by the Table Filter Button.",
   "textdomain": "yay-bulk-order",
-  "usesContext": ["queryId"],
+  "usesContext": ["queryId", "productQuery"],
   "supports": {
     "interactivity": true,
     "inserter": false,

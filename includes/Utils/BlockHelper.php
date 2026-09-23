@@ -73,16 +73,26 @@ class BlockHelper {
 
     /**
      * @param int $query_id The queryId.
-     * @return int|null The minimum star rating (1-5) filter, or null if not set / out of range.
+     * @return int[] The selected star ratings (1-5, multi-select), sorted ascending.
      */
     public static function get_rating_param( int $query_id = 0 ) {
         $rating_key = 'query-' . $query_id . '-rating';
         /* phpcs:disable WordPress.Security.NonceVerification.Recommended */
-        if ( ! isset( $_GET[ $rating_key ] ) || ! is_numeric( $_GET[ $rating_key ] ) ) {
-            return null;
+        if ( empty( $_GET[ $rating_key ] ) ) {
+            return [];
         }
-        $rating = (int) $_GET[ $rating_key ];
-        return ( $rating >= 1 && $rating <= 5 ) ? $rating : null;
+        $raw_value = sanitize_text_field( wp_unslash( $_GET[ $rating_key ] ) );
+        $ratings   = array_map( 'absint', explode( ',', $raw_value ) );
+        $ratings   = array_filter(
+            $ratings,
+            static function ( $rating ) {
+                return $rating >= 1 && $rating <= 5;
+            }
+        );
+        $ratings   = array_values( array_unique( $ratings ) );
+        sort( $ratings );
+
+        return $ratings;
     }
 
     /**

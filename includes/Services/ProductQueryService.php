@@ -80,10 +80,6 @@ class ProductQueryService {
      * @return array The extended query vars.
      */
     public function extend_product_table_query_vars( $query_vars, $block ) {
-        $filter_param      = $this->get_filter_param( $block );
-        $search_param      = $this->get_search_param( $block );
-        $category_param    = $this->get_category_param( $block );
-        $tags_param        = $this->get_tags_param( $block );
         $products_per_page = $this->get_products_per_page( $block );
 
         $query_vars['posts_per_page'] = $products_per_page;
@@ -94,6 +90,44 @@ class ProductQueryService {
         } else {
             unset( $query_vars['offset'] );
         }
+
+        $query_vars = array_merge( $query_vars, $this->build_filter_restrictions( $block ) );
+
+        // Collections like `top-rated` sort rather than restrict — apply
+        // any orderby override the collection asked for.
+        $product_query_restriction = $this->get_product_query_restriction( $block );
+        foreach ( [ 'orderby', 'meta_key', 'order' ] as $orderby_key ) {
+            if ( isset( $product_query_restriction[ $orderby_key ] ) ) {
+                $query_vars[ $orderby_key ] = $product_query_restriction[ $orderby_key ];
+            }
+        }
+
+        return $query_vars;
+    }
+
+    /**
+     * Builds the tax_query / meta_query / post__in / s restrictions for every
+     * active shopper filter (category, tag, price, rating, search, on-sale /
+     * in-stock) plus the block's own collection restriction.
+     *
+     * @param WP_Block $block   The block instance.
+     * @param string[] $exclude Facet(s) to leave out — 'category' | 'tag' | 'price' | 'rating'.
+     *                          Used to compute each sidebar facet's own options/counts
+     *                          against every OTHER active filter, without a facet
+     *                          silently filtering out its own options (e.g. picking a
+     *                          category shouldn't hide that category from the list).
+     * @return array<string,mixed>
+     */
+    private function build_filter_restrictions( $block, array $exclude = [] ): array {
+        $filter_param   = $this->get_filter_param( $block );
+        $search_param   = $this->get_search_param( $block );
+        $category_param = in_array( 'category', $exclude, true ) ? [] : $this->get_category_param( $block );
+        $tags_param     = in_array( 'tag', $exclude, true ) ? [] : $this->get_tags_param( $block );
+        $min_price      = in_array( 'price', $exclude, true ) ? null : $this->get_min_price_param( $block );
+        $max_price      = in_array( 'price', $exclude, true ) ? null : $this->get_max_price_param( $block );
+        $rating_params  = in_array( 'rating', $exclude, true ) ? [] : $this->get_rating_param( $block );
+
+        $query_vars = [];
 
         if ( '' !== $search_param ) {
             $query_vars['s'] = $search_param;
@@ -133,6 +167,15 @@ class ProductQueryService {
         if ( isset( $product_query_restriction['post__in'] ) ) {
             $post_in_sets[] = $product_query_restriction['post__in'];
         }
+        if ( ! empty( $rating_params ) ) {
+            // Resolved via one direct SQL lookup (post__in) rather than a
+            // meta_query clause: WP_Meta_Query adds a JOIN per clause, and an
+            // OR'd multi-rating selection needs up to 2 clauses PER rating
+            // (bucket lower/upper bound) — 3 ratings alone means 5 self-joins
+            // on wp_postmeta, which explodes into a query that can take
+            // minutes (or never finish) even on a modest catalog.
+            $post_in_sets[] = $this->get_product_ids_for_ratings( $rating_params );
+        }
         if ( ! empty( $post_in_sets ) ) {
             $query_vars['post__in'] = 1 === count( $post_in_sets )
                 ? $post_in_sets[0]
@@ -145,11 +188,12 @@ class ProductQueryService {
             }
         }
 
-        // Every meta_query-based filter (in-stock, price, rating — see
-        // BlockHelper) must merge into ONE set of AND'd clauses here, same
-        // as tax_query above: assigning $query_vars['meta_query'] outright
-        // for each filter would let the last one silently wipe out the
-        // others whenever more than one is active at once.
+        // Every meta_query-based filter (in-stock, price — see BlockHelper)
+        // must merge into ONE set of AND'd clauses here, same as tax_query
+        // above: assigning $query_vars['meta_query'] outright for each
+        // filter would let the last one silently wipe out the others
+        // whenever more than one is active at once. Rating is deliberately
+        // NOT here — see get_product_ids_for_ratings().
         $meta_query_clauses = [];
         if ( 'in-stock' === $filter_param ) {
             $meta_query_clauses[] = [
@@ -159,8 +203,6 @@ class ProductQueryService {
             ];
         }
 
-        $min_price = $this->get_min_price_param( $block );
-        $max_price = $this->get_max_price_param( $block );
         if ( null !== $min_price || null !== $max_price ) {
             $price_clause = [
                 'key'  => '_price',
@@ -179,16 +221,6 @@ class ProductQueryService {
             $meta_query_clauses[] = $price_clause;
         }
 
-        $rating_param = $this->get_rating_param( $block );
-        if ( null !== $rating_param ) {
-            $meta_query_clauses[] = [
-                'key'     => '_wc_average_rating',
-                'value'   => $rating_param,
-                'compare' => '>=',
-                'type'    => 'DECIMAL(10,2)',
-            ];
-        }
-
         if ( ! empty( $meta_query_clauses ) ) {
             /* phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_meta_query */
             $query_vars['meta_query'] = count( $meta_query_clauses ) > 1
@@ -196,15 +228,72 @@ class ProductQueryService {
                 : $meta_query_clauses;
         }
 
-        // Collections like `top-rated` sort rather than restrict — apply
-        // any orderby override the collection asked for.
-        foreach ( [ 'orderby', 'meta_key', 'order' ] as $orderby_key ) {
-            if ( isset( $product_query_restriction[ $orderby_key ] ) ) {
-                $query_vars[ $orderby_key ] = $product_query_restriction[ $orderby_key ];
-            }
+        return $query_vars;
+    }
+
+    /**
+     * Product IDs whose rounded average rating falls into ANY of the given
+     * star buckets — one direct query, matching the same ROUND()-based
+     * bucket used by get_rating_counts() (e.g. a 4.6 average rounds into the
+     * "5 stars" bucket). Used as a `post__in` restriction rather than a
+     * meta_query clause: WP_Meta_Query adds a JOIN per clause, and each
+     * bucket needs up to 2 (lower/upper bound), so 3 selected ratings would
+     * mean 5 self-joins on wp_postmeta — expensive enough to take minutes
+     * (or never finish) even on a modest catalog.
+     *
+     * @param int[] $ratings Star ratings (1-5).
+     * @return int[]
+     */
+    private function get_product_ids_for_ratings( array $ratings ): array {
+        if ( empty( $ratings ) ) {
+            return [];
         }
 
-        return $query_vars;
+        global $wpdb;
+        $placeholders = implode( ',', array_fill( 0, count( $ratings ), '%d' ) );
+
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
+        $ids = $wpdb->get_col(
+            $wpdb->prepare(
+                "SELECT pm.post_id
+                FROM {$wpdb->postmeta} pm
+                INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id
+                WHERE pm.meta_key = '_wc_average_rating'
+                    AND CAST(pm.meta_value AS DECIMAL(10,2)) > 0
+                    AND p.post_type = 'product'
+                    AND p.post_status = 'publish'
+                    AND ROUND(CAST(pm.meta_value AS DECIMAL(10,2))) IN ({$placeholders})",
+                $ratings
+            )
+        );
+        // phpcs:enable
+
+        return array_map( 'intval', $ids );
+    }
+
+    /**
+     * Product IDs matching every active shopper filter except the ones in
+     * `$exclude` (plus the block's collection restriction, always applied).
+     * Backs each sidebar facet's own recalculated options/counts — mirrors
+     * how the WooCommerce shop-page filter widgets narrow each other.
+     *
+     * @param WP_Block $block   The block instance.
+     * @param string[] $exclude Facet(s) to leave out — see build_filter_restrictions().
+     * @return int[]
+     */
+    private function get_matching_product_ids( $block, array $exclude = [] ): array {
+        $query_vars = array_merge(
+            [
+                'post_type'      => 'product',
+                'post_status'    => 'publish',
+                'posts_per_page' => -1,
+                'no_found_rows'  => true,
+                'fields'         => 'ids',
+            ],
+            $this->build_filter_restrictions( $block, $exclude )
+        );
+
+        return ( new \WP_Query( $query_vars ) )->posts;
     }
 
     /**
@@ -312,10 +401,24 @@ class ProductQueryService {
     /**
      * Whether the Product Table should hide its Filter UI (toggle + sidebar).
      * Product taxonomy archives already scope products to a term, so the
-     * category filter is redundant.
+     * category filter is redundant. A "Hand-Picked Products" collection is a
+     * fixed list too — there's nothing left to filter.
+     *
+     * @param WP_Block|null $block The table-filter(-sidebar) block instance, if available.
      */
-    public function should_hide_filters(): bool {
-        return $this->is_product_taxonomy_archive();
+    public function should_hide_filters( $block = null ): bool {
+        if ( $this->is_product_taxonomy_archive() ) {
+            return true;
+        }
+
+        if ( null !== $block ) {
+            $product_query = $block->context['productQuery'] ?? [];
+            if ( ( $product_query['queryType'] ?? '' ) === 'hand-picked' ) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function is_product_taxonomy_archive(): bool {
@@ -432,18 +535,18 @@ class ProductQueryService {
 
     /**
      * Product categories with products, for the table-filter block to list.
+     * When `$block` is given, both the term list and each term's `->count`
+     * are scoped to products matching every OTHER active filter (tag, price,
+     * rating, search) — mirroring how the WooCommerce shop-page filter
+     * widgets recalculate each other whenever one changes. Callers without a
+     * specific block instance (admin pickers, localized config) get the
+     * unscoped, catalog-wide list.
      *
+     * @param WP_Block|null $block The table-filter(-sidebar) block instance, if available.
      * @return WP_Term[] The product categories.
      */
-    public function get_filterable_categories() {
-        $terms = get_terms(
-            [
-                'taxonomy'   => 'product_cat',
-                'hide_empty' => true,
-            ]
-        );
-
-        return is_wp_error( $terms ) ? [] : $terms;
+    public function get_filterable_categories( $block = null ) {
+        return $this->get_filterable_terms( 'product_cat', $block, [ 'category' ] );
     }
 
     /**
@@ -458,19 +561,84 @@ class ProductQueryService {
     }
 
     /**
-     * Product tags with products, for the table-filter block to list.
+     * Product tags with products, for the table-filter block to list. When
+     * `$block` is given, scoped to products matching every OTHER active
+     * filter — see get_filterable_categories() for why.
      *
+     * @param WP_Block|null $block The table-filter(-sidebar) block instance, if available.
      * @return WP_Term[] The product tags.
      */
-    public function get_filterable_tags() {
-        $terms = get_terms(
-            [
-                'taxonomy'   => 'product_tag',
-                'hide_empty' => true,
-            ]
-        );
+    public function get_filterable_tags( $block = null ) {
+        return $this->get_filterable_terms( 'product_tag', $block, [ 'tag' ] );
+    }
 
-        return is_wp_error( $terms ) ? [] : $terms;
+    /**
+     * Shared by get_filterable_categories() / get_filterable_tags(): the
+     * term list, with each `->count` scoped to products matching every
+     * active filter except the ones in `$exclude`.
+     *
+     * `get_terms( [ 'object_ids' => $ids ] )` only decides WHICH terms come
+     * back (any term touching at least one of those IDs) — each returned
+     * term's `->count` is still WordPress's own site-wide cached count, not
+     * one scoped to `$ids`. So after that existence filter, this recomputes
+     * `->count` from the actual term_relationships rows among the matching
+     * IDs — otherwise every visible term would keep showing its catalog-wide
+     * total instead of "how many match the filters you've already picked."
+     *
+     * @param string        $taxonomy The taxonomy to list ('product_cat' | 'product_tag').
+     * @param WP_Block|null $block    The table-filter(-sidebar) block instance, if available.
+     * @param string[]      $exclude  Facet(s) to leave out — see build_filter_restrictions().
+     * @return WP_Term[]
+     */
+    private function get_filterable_terms( string $taxonomy, $block, array $exclude ) {
+        $args = [
+            'taxonomy'   => $taxonomy,
+            'hide_empty' => true,
+        ];
+
+        if ( null === $block ) {
+            $terms = get_terms( $args );
+            return is_wp_error( $terms ) ? [] : $terms;
+        }
+
+        $matching_ids = $this->get_matching_product_ids( $block, $exclude );
+        // get_terms() treats an empty `object_ids` as "no restriction" (i.e.
+        // every term) — that's the opposite of what a genuinely empty result
+        // set (no product matches the other filters) means here.
+        if ( empty( $matching_ids ) ) {
+            return [];
+        }
+
+        $args['object_ids'] = $matching_ids;
+        $terms              = get_terms( $args );
+        if ( is_wp_error( $terms ) ) {
+            return [];
+        }
+
+        global $wpdb;
+        $placeholders = implode( ',', array_fill( 0, count( $matching_ids ), '%d' ) );
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
+        $rows = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT term_taxonomy_id, COUNT(DISTINCT object_id) AS scoped_count
+                FROM {$wpdb->term_relationships}
+                WHERE object_id IN ({$placeholders})
+                GROUP BY term_taxonomy_id",
+                $matching_ids
+            )
+        );
+        // phpcs:enable
+
+        $scoped_counts = [];
+        foreach ( $rows as $row ) {
+            $scoped_counts[ (int) $row->term_taxonomy_id ] = (int) $row->scoped_count;
+        }
+
+        foreach ( $terms as $term ) {
+            $term->count = $scoped_counts[ (int) $term->term_taxonomy_id ] ?? 0;
+        }
+
+        return $terms;
     }
 
     /**
@@ -493,7 +661,7 @@ class ProductQueryService {
 
     /**
      * @param WP_Block $block The block instance.
-     * @return int|null The minimum star rating (1-5) filter from the URL, if set.
+     * @return int[] The selected star ratings (1-5, multi-select) from the URL.
      */
     public function get_rating_param( $block ) {
         $query_id = $block->context['queryId'] ?? 0;
@@ -502,28 +670,104 @@ class ProductQueryService {
 
     /**
      * Actual min/max `_price` across published products, for sizing the
-     * price filter's range inputs.
+     * price filter's range inputs. When `$block` is given, scoped to
+     * products matching every OTHER active filter — see
+     * get_filterable_categories() for why.
      *
+     * @param WP_Block|null $block The table-filter(-sidebar) block instance, if available.
      * @return array{min: float, max: float}
      */
-    public function get_price_bounds(): array {
+    public function get_price_bounds( $block = null ): array {
         global $wpdb;
 
-        // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-        $bounds = $wpdb->get_row(
-            "SELECT MIN(CAST(pm.meta_value AS DECIMAL(10,2))) AS min_price, MAX(CAST(pm.meta_value AS DECIMAL(10,2))) AS max_price
+        $scope = $this->build_matching_ids_sql_scope( $block, [ 'price' ] );
+        if ( null !== $scope && empty( $scope['ids'] ) ) {
+            return [
+                'min' => 0.0,
+                'max' => 0.0,
+            ];
+        }
+
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
+        $sql = "SELECT MIN(CAST(pm.meta_value AS DECIMAL(10,2))) AS min_price, MAX(CAST(pm.meta_value AS DECIMAL(10,2))) AS max_price
             FROM {$wpdb->postmeta} pm
             INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id
             WHERE pm.meta_key = '_price'
                 AND pm.meta_value != ''
                 AND p.post_type = 'product'
                 AND p.post_status = 'publish'"
-        );
+            . ( null !== $scope ? " AND p.ID IN ({$scope['placeholders']})" : '' );
+
+        $bounds = null !== $scope ? $wpdb->get_row( $wpdb->prepare( $sql, $scope['ids'] ) ) : $wpdb->get_row( $sql );
         // phpcs:enable
 
         return [
             'min' => null !== $bounds && null !== $bounds->min_price ? (float) $bounds->min_price : 0.0,
             'max' => null !== $bounds && null !== $bounds->max_price ? (float) $bounds->max_price : 0.0,
+        ];
+    }
+
+    /**
+     * Number of published products per star rating (1-5), rounded the same
+     * way WooCommerce's own rating filter widget buckets `_wc_average_rating`
+     * (e.g. 4.6 counts toward "5 stars"). Ratings of 0 (no reviews) are
+     * excluded. When `$block` is given, scoped to products matching every
+     * OTHER active filter — see get_filterable_categories() for why.
+     *
+     * @param WP_Block|null $block The table-filter(-sidebar) block instance, if available.
+     * @return array<int, int> Counts keyed by star rating 1-5.
+     */
+    public function get_rating_counts( $block = null ): array {
+        global $wpdb;
+
+        $counts = array_fill( 1, 5, 0 );
+
+        $scope = $this->build_matching_ids_sql_scope( $block, [ 'rating' ] );
+        if ( null !== $scope && empty( $scope['ids'] ) ) {
+            return $counts;
+        }
+
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
+        $sql = "SELECT ROUND(CAST(pm.meta_value AS DECIMAL(10,2))) AS rounded_rating, COUNT(*) AS product_count
+            FROM {$wpdb->postmeta} pm
+            INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id
+            WHERE pm.meta_key = '_wc_average_rating'
+                AND CAST(pm.meta_value AS DECIMAL(10,2)) > 0
+                AND p.post_type = 'product'
+                AND p.post_status = 'publish'"
+            . ( null !== $scope ? " AND p.ID IN ({$scope['placeholders']})" : '' )
+            . ' GROUP BY rounded_rating';
+
+        $rows = null !== $scope ? $wpdb->get_results( $wpdb->prepare( $sql, $scope['ids'] ) ) : $wpdb->get_results( $sql );
+        // phpcs:enable
+
+        foreach ( $rows as $row ) {
+            $stars = (int) min( 5, max( 1, (int) $row->rounded_rating ) );
+            $counts[ $stars ] += (int) $row->product_count;
+        }
+
+        return $counts;
+    }
+
+    /**
+     * Shared helper for get_price_bounds() / get_rating_counts(): resolves
+     * the matching-product-ID scope (and a ready-to-use placeholder string)
+     * once, or null when there's no block to scope to.
+     *
+     * @param WP_Block|null $block   The table-filter(-sidebar) block instance, if available.
+     * @param string[]      $exclude Facet(s) to leave out — see build_filter_restrictions().
+     * @return array{ids: int[], placeholders: string}|null
+     */
+    private function build_matching_ids_sql_scope( $block, array $exclude ): ?array {
+        if ( null === $block ) {
+            return null;
+        }
+
+        $ids = $this->get_matching_product_ids( $block, $exclude );
+
+        return [
+            'ids'          => $ids,
+            'placeholders' => implode( ',', array_fill( 0, count( $ids ), '%d' ) ),
         ];
     }
 

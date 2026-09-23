@@ -14,6 +14,8 @@ import type {
   FilterCategoryOptionContext,
   FilterRatingOptionContext,
   FilterTagOptionContext,
+  PriceSliderContext,
+  PriceSliderHandleContext,
   ProductRowContext,
   ProductRowState,
   ProductTableContext,
@@ -54,6 +56,20 @@ function setRowQuantity(context: ProductRowState, quantity: number): void {
 function buildCartNotice(cart: StoreApiCart, visible: boolean): TableState['cartNotice'] {
   return { visible, totalFormatted: formatCartSubtotal(cart.totals) };
 }
+
+// Must match the `::-webkit-slider-thumb` / `::-moz-range-thumb` width set on
+// `.ybo-filter-sidebar__price-slider-input` in table/style.scss.
+const PRICE_SLIDER_THUMB_SIZE = 16;
+
+// Smallest allowed gap between the min and max price fields — matches the
+// number inputs' own `step="0.01"`. Keeps them from ever being set equal
+// (or crossed), which would otherwise leave nothing for the price filter to
+// actually filter by.
+const MIN_PRICE_INPUT_GAP = 0.01;
+
+// Same idea for the drag handles, but matching the slider's own `step="1"` —
+// dragging moves in whole-number increments, so the gap should too.
+const MIN_PRICE_DRAG_GAP = 1;
 
 const tableQueryParams = new Map<number, Record<string, string | number | null>>();
 
@@ -124,7 +140,7 @@ async function navigateWithHiddenParams(fetchUrl: string, context: ProductTableC
 /** Applies the current filter/search state and resets to page 1. */
 async function navigateToFilterState(context: ProductTableContext): Promise<void> {
   const { queryId } = context.formAttributes;
-  const { categories, tags, search, priceRange, rating } = context.tableState.filter;
+  const { categories, tags, search, priceRange, ratings } = context.tableState.filter;
 
   const url = buildTableUrl(queryId, {
     page: null,
@@ -133,7 +149,7 @@ async function navigateToFilterState(context: ProductTableContext): Promise<void
     search: search || null,
     'min-price': priceRange.min || null,
     'max-price': priceRange.max || null,
-    rating: rating ?? null,
+    rating: ratings.length ? ratings.join(',') : null,
   });
 
   await navigateWithHiddenParams(url, context);
@@ -272,6 +288,74 @@ const storeDef = {
     get hasSearchKeyword(): boolean {
       const { tableState } = getContext<ProductTableContext>();
       return tableState.filter.search.length > 0;
+    },
+    // Drives the sidebar's "Clear filters" button — hidden until at least
+    // one sidebar-controlled filter (category, tag, rating, price, search) is active.
+    get hasActiveFilters(): boolean {
+      const { tableState } = getContext<ProductTableContext>();
+      const { categories, tags, ratings, priceRange, search } = tableState.filter;
+      return (
+        categories.length > 0 ||
+        tags.length > 0 ||
+        ratings.length > 0 ||
+        priceRange.min !== '' ||
+        priceRange.max !== '' ||
+        search.length > 0
+      );
+    },
+    // Slider handle position. Falls back to the catalog's actual price bounds
+    // (rather than 0) when the user hasn't set a bound yet, so an untouched
+    // slider starts at its full extremes instead of snapping to zero.
+    get priceRangeMinValue(): number {
+      const { tableState, priceBounds } = getContext<PriceSliderContext>();
+      const parsed = parseFloat(tableState.filter.priceRange.min);
+      return Number.isFinite(parsed) ? parsed : priceBounds.min;
+    },
+    get priceRangeMaxValue(): number {
+      const { tableState, priceBounds } = getContext<PriceSliderContext>();
+      const parsed = parseFloat(tableState.filter.priceRange.max);
+      return Number.isFinite(parsed) ? parsed : priceBounds.max;
+    },
+    // The real `<input type=range>` thumbs are rendered invisible (see
+    // style.scss) — a custom `__price-slider-thumb` span is drawn instead,
+    // positioned by this same formula, and the fill's edges use it too.
+    // That's deliberate: it guarantees the visible fill and the visible
+    // handle always meet exactly, with no gap or overhang, regardless of
+    // what pixel size the browser actually renders the (hidden) native
+    // thumb at. A plain `X%` position would overshoot at the ends — the
+    // handle's travel is inset by half its own width (it can't hang off
+    // the edge of the track) — so `calc()` reproduces that same inset.
+    get priceSliderFillLeft(): string {
+      const { priceBounds } = getContext<PriceSliderContext>();
+      // A recalculated bound (see get_price_bounds() in ProductQueryService)
+      // can legitimately collapse to a single price — e.g. only one product
+      // matches the other active filters. There's no real span to divide by
+      // then; show the whole (degenerate) track as filled instead of
+      // producing a 0/0-derived position.
+      if (priceBounds.max <= priceBounds.min) {
+        return `${PRICE_SLIDER_THUMB_SIZE / 2}px`;
+      }
+      const span = priceBounds.max - priceBounds.min;
+      const fraction = (this.priceRangeMinValue - priceBounds.min) / span;
+      return `calc(${PRICE_SLIDER_THUMB_SIZE / 2}px + (100% - ${PRICE_SLIDER_THUMB_SIZE}px) * ${fraction})`;
+    },
+    get priceSliderMaxThumbLeft(): string {
+      const { priceBounds } = getContext<PriceSliderContext>();
+      if (priceBounds.max <= priceBounds.min) {
+        return `calc(100% - ${PRICE_SLIDER_THUMB_SIZE / 2}px)`;
+      }
+      const span = priceBounds.max - priceBounds.min;
+      const fraction = (this.priceRangeMaxValue - priceBounds.min) / span;
+      return `calc(${PRICE_SLIDER_THUMB_SIZE / 2}px + (100% - ${PRICE_SLIDER_THUMB_SIZE}px) * ${fraction})`;
+    },
+    get priceSliderFillRight(): string {
+      const { priceBounds } = getContext<PriceSliderContext>();
+      if (priceBounds.max <= priceBounds.min) {
+        return `${PRICE_SLIDER_THUMB_SIZE / 2}px`;
+      }
+      const span = priceBounds.max - priceBounds.min;
+      const fraction = (priceBounds.max - this.priceRangeMaxValue) / span;
+      return `calc(${PRICE_SLIDER_THUMB_SIZE / 2}px + (100% - ${PRICE_SLIDER_THUMB_SIZE}px) * ${fraction})`;
     },
     get showBackToTop(): boolean {
       const { tableState } = getContext<ProductTableContext>();
@@ -451,13 +535,32 @@ const storeDef = {
 
       yield navigateToFilterState(context);
     },
-    // Single-select: picking a rating replaces whatever was selected;
-    // picking the already-selected one clears it back to "no filter".
+    // Toggles one star rating in/out of the multi-select and applies immediately.
     *toggleFilterRating() {
       const context = getContext<FilterRatingOptionContext>();
       const { ratingValue } = context;
+      const { ratings } = context.tableState.filter;
 
-      context.tableState.filter.rating = context.tableState.filter.rating === ratingValue ? null : ratingValue;
+      context.tableState.filter.ratings = ratings.includes(ratingValue)
+        ? ratings.filter((value) => value !== ratingValue)
+        : [...ratings, ratingValue];
+
+      yield navigateToFilterState(context);
+    },
+    // Resets every sidebar-controlled filter back to the table's initial
+    // (unfiltered) state in one action.
+    *clearAllFilters() {
+      const context = getContext<ProductTableContext>();
+      const { queryId } = context.formAttributes;
+
+      clearTimeout(searchDebounceTimers.get(queryId));
+      clearTimeout(priceDebounceTimers.get(queryId));
+
+      context.tableState.filter.categories = [];
+      context.tableState.filter.tags = [];
+      context.tableState.filter.ratings = [];
+      context.tableState.filter.priceRange = { min: '', max: '' };
+      context.tableState.filter.search = '';
 
       yield navigateToFilterState(context);
     },
@@ -466,19 +569,102 @@ const storeDef = {
     // max coalesces into one navigation instead of two racing ones.
     updateMinPrice(event: Event) {
       const context = getContext<ProductTableContext>();
-      context.tableState.filter.priceRange = {
-        ...context.tableState.filter.priceRange,
-        min: (event.target as HTMLInputElement).value,
-      };
+      const priceRange = context.tableState.filter.priceRange;
+      const rawValue = (event.target as HTMLInputElement).value;
+      const parsedValue = parseFloat(rawValue);
+      const currentMax = parseFloat(priceRange.max);
+      // A price can't be negative — blockPriceSignKey stops typing "-"/"e"
+      // directly, but a paste (or a spinner arrow past 0) can still land
+      // here, so it's clamped defensively too.
+      let value = rawValue;
+      if (Number.isFinite(parsedValue) && parsedValue < 0) {
+        value = '0';
+      } else if (Number.isFinite(parsedValue) && Number.isFinite(currentMax) && parsedValue >= currentMax) {
+        // Never let min reach or pass max — from the keyboard (arrow keys on
+        // the range input) or from typing straight into the number field.
+        value = String(currentMax - MIN_PRICE_INPUT_GAP);
+      }
+      context.tableState.filter.priceRange = { ...priceRange, min: value };
       schedulePriceNavigation(context);
     },
     updateMaxPrice(event: Event) {
       const context = getContext<ProductTableContext>();
-      context.tableState.filter.priceRange = {
-        ...context.tableState.filter.priceRange,
-        max: (event.target as HTMLInputElement).value,
-      };
+      const priceRange = context.tableState.filter.priceRange;
+      const rawValue = (event.target as HTMLInputElement).value;
+      const parsedValue = parseFloat(rawValue);
+      const currentMin = parseFloat(priceRange.min);
+      let value = rawValue;
+      if (Number.isFinite(parsedValue) && parsedValue < 0) {
+        value = '0';
+      } else if (Number.isFinite(parsedValue) && Number.isFinite(currentMin) && parsedValue <= currentMin) {
+        // Never let max reach or drop below min — same reasoning as updateMinPrice.
+        value = String(currentMin + MIN_PRICE_INPUT_GAP);
+      }
+      context.tableState.filter.priceRange = { ...priceRange, max: value };
       schedulePriceNavigation(context);
+    },
+    // Blocks the keys that would otherwise let a "number" input accept a
+    // negative or scientific-notation price ("-12", "1e5") — browsers allow
+    // typing these into <input type=number> even with min="0" set; that
+    // attribute only affects the spinner and :invalid styling, not typing.
+    blockPriceSignKey(event: KeyboardEvent) {
+      if (event.key === '-' || event.key === '+' || event.key === 'e' || event.key === 'E') {
+        event.preventDefault();
+      }
+    },
+    // Drags the visible slider handle directly, computing the value from the
+    // pointer's X position against the track's actual rendered rect. This is
+    // the interactive path for mouse/touch — the underlying `<input
+    // type=range>` is kept only for keyboard access (arrow keys still fire
+    // updateMinPrice/updateMaxPrice above) and is otherwise inert
+    // (`pointer-events: none`), because its real native thumb doesn't
+    // reliably line up pixel-for-pixel with the custom-drawn handle, and
+    // dragging must work by measuring the real DOM, not by assuming it.
+    startPriceDrag(event: PointerEvent) {
+      const context = getContext<PriceSliderHandleContext>();
+      const { priceSliderHandle, priceBounds } = context;
+      const { ref: handle } = getElement();
+      const track = handle?.parentElement?.querySelector<HTMLElement>('.ybo-filter-sidebar__price-slider-track');
+
+      // Nothing to drag when the recalculated bounds collapse to one price
+      // (e.g. only one product matches the other active filters).
+      if (!handle || !track || priceBounds.max <= priceBounds.min) {
+        return;
+      }
+
+      event.preventDefault();
+      handle.setPointerCapture(event.pointerId);
+
+      const applyClientX = (clientX: number) => {
+        const rect = track.getBoundingClientRect();
+        const inset = PRICE_SLIDER_THUMB_SIZE / 2;
+        const usableWidth = Math.max(1, rect.width - inset * 2);
+        const fraction = Math.min(1, Math.max(0, (clientX - rect.left - inset) / usableWidth));
+        const value = Math.round(priceBounds.min + fraction * (priceBounds.max - priceBounds.min));
+        const priceRange = context.tableState.filter.priceRange;
+
+        if (priceSliderHandle === 'min') {
+          const currentMax = parseFloat(priceRange.max);
+          const max = Number.isFinite(currentMax) ? currentMax : priceBounds.max;
+          context.tableState.filter.priceRange = { ...priceRange, min: String(Math.min(value, max - MIN_PRICE_DRAG_GAP)) };
+        } else {
+          const currentMin = parseFloat(priceRange.min);
+          const min = Number.isFinite(currentMin) ? currentMin : priceBounds.min;
+          context.tableState.filter.priceRange = { ...priceRange, max: String(Math.max(value, min + MIN_PRICE_DRAG_GAP)) };
+        }
+      };
+
+      applyClientX(event.clientX);
+
+      const handlePointerMove = (moveEvent: PointerEvent) => applyClientX(moveEvent.clientX);
+      const handlePointerUp = () => {
+        handle.removeEventListener('pointermove', handlePointerMove);
+        handle.removeEventListener('pointerup', handlePointerUp);
+        schedulePriceNavigation(context);
+      };
+
+      handle.addEventListener('pointermove', handlePointerMove);
+      handle.addEventListener('pointerup', handlePointerUp);
     },
     updateSearchKeyword(event: Event) {
       const context = getContext<ProductTableContext>();

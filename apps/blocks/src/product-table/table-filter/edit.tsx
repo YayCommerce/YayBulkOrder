@@ -1,12 +1,18 @@
+import type { ProductQuery } from '@yay-bulk-order/product-table-store';
 import { useBlockProps } from '@wordpress/block-editor';
 
 import { useIsProductTaxonomyArchiveTemplate } from '../table-root/useProductArchiveTemplate';
 
-export default function Edit() {
+type Props = {
+  context: { productQuery?: ProductQuery };
+};
+
+export default function Edit({ context }: Props) {
   const blockProps = useBlockProps();
   const isTaxonomyArchive = useIsProductTaxonomyArchiveTemplate();
 
-  if (isTaxonomyArchive) {
+  // A Hand-Picked collection is a fixed product list — there's nothing left to filter.
+  if (isTaxonomyArchive || context.productQuery?.queryType === 'hand-picked') {
     return null;
   }
 

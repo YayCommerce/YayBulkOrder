@@ -47,7 +47,7 @@ $search_param   = BlockHelper::get_search_param( $query_id );
 $category_param = BlockHelper::get_category_param( $query_id );
 $min_price_param = BlockHelper::get_min_price_param( $query_id );
 $max_price_param = BlockHelper::get_max_price_param( $query_id );
-$rating_param   = BlockHelper::get_rating_param( $query_id );
+$rating_params  = BlockHelper::get_rating_param( $query_id );
 $tags_param     = BlockHelper::get_tags_param( $query_id );
 
 $data_context = [
@@ -79,7 +79,7 @@ $data_context = [
                 'min' => null !== $min_price_param ? (string) $min_price_param : '',
                 'max' => null !== $max_price_param ? (string) $max_price_param : '',
             ],
-            'rating' => $rating_param,
+            'ratings' => $rating_params,
         ],
         'pagination' => [
             'pageIndex' => max( 0, $page_param - 1 ),

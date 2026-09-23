@@ -16,8 +16,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use YayBulkOrder\Services\ProductQueryService;
 
-// Product taxonomy archives already scope the table — category filter is redundant.
-if ( ProductQueryService::get_instance()->should_hide_filters() ) {
+// Product taxonomy archives already scope the table — category filter is
+// redundant, and a Hand-Picked collection has nothing left to filter.
+if ( ProductQueryService::get_instance()->should_hide_filters( $block ) ) {
 	return;
 }
 ?>
