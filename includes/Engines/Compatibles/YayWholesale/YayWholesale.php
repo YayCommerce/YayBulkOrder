@@ -40,7 +40,7 @@ class YayWholesale {
         add_filter( 'yaybulkorder_product_query_vars', [ $this, 'exclude_ids_product_query' ] );
     }
 
-    public function adjust_raw_price( \WC_Product $product, int $quantity = 1 ): void {
+    public function adjust_raw_price( \WC_Product $product, int $quantity = 1 ){
         $role = \YayWholesaleB2B\Helpers\CustomerHelper::get_current_user_wholesale_role();
         if ( ! $role ) {
             return;
@@ -56,7 +56,7 @@ class YayWholesale {
         $product->set_price( $wholesale_price );
     }
 
-    private function calculate_wholesale_raw_price( \WC_Product $product, array $role, int $quantity ): ?float {
+    private function calculate_wholesale_raw_price( \WC_Product $product, array $role, int $quantity ){
         $regular_price = (float) $product->get_regular_price( 'edit' );
         $current_price = (float) $product->get_price( 'edit' );
 
@@ -75,7 +75,7 @@ class YayWholesale {
         return (float) apply_filters( 'ywhs_calculate_wholesale_product_price', $wholesale_price, $before_discount_price, $product, $role, $quantity );
     }
 
-    public function fix_variation_purchasable( bool $purchasable, \WC_Product $product ): bool {
+    public function fix_variation_purchasable( bool $purchasable, \WC_Product $product ){
         if ( $purchasable || ! $product instanceof \WC_Product_Variation ) {
             return $purchasable;
         }
@@ -101,7 +101,7 @@ class YayWholesale {
             && '' !== $product->get_price();
     }
 
-    public function calculate_wholesale_price( float $price, \WC_Product $product ): float {
+    public function calculate_wholesale_price( float $price, \WC_Product $product ) {
         $role = \YayWholesaleB2B\Helpers\CustomerHelper::get_current_user_wholesale_role();
         if ( ! $role ) {
             return $price;
