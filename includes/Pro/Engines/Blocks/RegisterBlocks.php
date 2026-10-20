@@ -2,6 +2,7 @@
 namespace YayBulkOrder\Pro\Engines\Blocks;
 
 use YayBulkOrder\Services\PatternService;
+use YayBulkOrder\Utils\BlockHelper;
 use YayBulkOrder\Utils\SingletonTrait;
 
 /**
@@ -20,7 +21,7 @@ class RegisterBlocks {
     }
 
     public function register_blocks() {
-        $this->pattern_service->register_collection( YAYBULKORDER_PLUGIN_PATH . 'assets/dist/blocks-pro/' );
+        BlockHelper::register_block_collection( YAYBULKORDER_PLUGIN_PATH . 'assets/dist/blocks-pro/' );
     }
 
     public function pro_patterns( array $patterns ) {
@@ -38,6 +39,18 @@ class RegisterBlocks {
                     'title'       => __( 'Quick Order via CSV', 'yay-bulk-order' ),
                     'description' => __( 'Bulk Adding to cart quickly with just a csv file uploaded', 'yay-bulk-order' ),
                     'content'     => $this->pattern_service->render_pattern( 'csv-order' ),
+                ],
+                [
+                    'slug'        => 'yay-bulk-order/some-categories-product-table',
+                    'title'       => __( 'Some Categories Product Table', 'yay-bulk-order' ),
+                    'description' => __( 'Display products in a clean, scannable table so customers can browse and add items to cart in bulk. The foundation of every bulk order experience. (Show all products from some selected categories)', 'yay-bulk-order' ),
+                    'content'     => $this->pattern_service->render_pattern( 'product-table__some-categories' ),
+                ],
+                [
+                    'slug'        => 'yay-bulk-order/variant-table',
+                    'title'       => __( 'Variant Table', 'yay-bulk-order' ),
+                    'description' => __( 'Let customers select product variants directly in the table without navigating to individual product pages. Speeds up ordering for stores with many SKUs.', 'yay-bulk-order' ),
+                    'content'     => $this->pattern_service->render_pattern( 'variant-table' ),
                 ],
             ]
         );

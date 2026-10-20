@@ -1,4 +1,4 @@
-import type { StoreApiVariationSelection } from './storeApi/type';
+import type { StoreApiVariationSelection } from '@yay-bulk-order/common/src/storeApi/type';
 
 type AllProductQuery = {
   queryType: 'all-products';
@@ -72,6 +72,8 @@ export type ProductTableContext = {
       pageSize: number;
     };
     showBackToTop: boolean;
+    /** True while a pagination / filter / search click is refetching the table. */
+    isTableLoading: boolean;
     bulkActionOutOfView: boolean;
     hasSelectColumn: boolean;
     expandedProducts: Record<number, boolean>;
@@ -83,7 +85,11 @@ export type ProductRowContext = {
   variantId?: number;
   parentProductId?: number;
   unitPrice: number;
+  /** Mirrors `WC_Product::is_purchasable()` — a zero price (e.g. "0") is still purchasable. */
+  isPurchasable: boolean;
   quantity: number;
+  /** Increment used by the +/- stepper buttons — mirrors the quantity input's `step` attribute. */
+  quantityStep: number;
   isAddingToCart: boolean;
   addToCartText: string;
   cartQuantity: number;

@@ -1,9 +1,9 @@
-import { formatCartAmount } from '@yay-bulk-order/product-table-store/src/productTable/storeApi/currency';
+import { formatCartAmount } from '@yay-bulk-order/common/src/storeApi/currency';
 
 // Side effect only: declares `window.wp`/`window.jQuery` — no runtime code.
-import '@yay-bulk-order/product-table-store/src/productTable/storeApi/globals';
+import '@yay-bulk-order/common/src/storeApi/globals';
 
-import type { StoreApiCart } from '@yay-bulk-order/product-table-store/src/productTable/storeApi/type';
+import type { StoreApiCart } from '@yay-bulk-order/common/src/storeApi/type';
 import { store } from '@wordpress/interactivity';
 
 const WC_CART_STORE = 'wc/store/cart';

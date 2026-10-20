@@ -11,9 +11,7 @@
   },
   "dependencies": {
     "@wordpress/interactivity": "latest",
-    "@wordpress/interactivity-router": "latest"
-  },
-  "devDependencies": {
+    "@wordpress/interactivity-router": "latest",
     "@yay-bulk-order/common": "workspace:*"
   }
 }

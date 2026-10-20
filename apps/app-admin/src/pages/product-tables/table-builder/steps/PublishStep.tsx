@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import { ProductTableForm } from '@yay-bulk-order/common/src/schemas/product-tables.schema';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useClipboard } from 'rooks';
@@ -22,13 +21,14 @@ type PublishStepProps = {
 };
 
 export default function PublishStep({ tableId }: PublishStepProps) {
-  const { control, getValues, formState } = useFormContext<ProductTableForm>();
+  const {
+    control,
+    getValues,
+    formState: { isDirty },
+  } = useFormContext<ProductTableForm>();
   const { copy } = useClipboard();
   const isSaving = useIsMutatingProductTables();
-  const isFormSaved = useMemo(() => {
-    const { isDirty } = formState;
-    return !isDirty && tableId > 0;
-  }, [formState, tableId]);
+  const isFormSaved = !isDirty && tableId > 0;
 
   const copyAsBlock = async () => {
     const table = getValues();

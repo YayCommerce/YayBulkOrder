@@ -21,51 +21,28 @@ class YayPricing {
             return;
         }
 
-        add_filter( 'yaybulkorder_product_display_price', [ $this, 'adjust_price' ], 20, 3 );
+        add_action( 'yaybulkorder_adjust_raw_price', [ $this, 'adjust_raw_price' ], 20, 2 );
     }
 
-    public function adjust_price( float $price, \WC_Product $product, int $quantity = 1 ): float {
-        $quantity = max( 1, $quantity );
-
+    public function adjust_raw_price( \WC_Product $product, int $quantity = 1 ): void {
         try {
-            if ( $product instanceof \WC_Product_Variable ) {
-                $variation_prices = [];
-                foreach ( $product->get_children() as $variation_id ) {
-                    $variation = wc_get_product( $variation_id );
-                    if ( ! $variation instanceof \WC_Product ) {
-                        continue;
-                    }
+            $cart = new \YAYDP\Core\YAYDP_Cart( [] );
+            // Explicit [] keeps this isolated from the real WC()->cart.
+            $cart->add_item( $product, $quantity );
 
-                    $variation_prices[] = $this->calculate_price_for_quantity( $variation, $quantity, $price );
-                }
-                return empty( $variation_prices ) ? $price : (float) min( $variation_prices );
+            ( new \YAYDP\Core\Adjustments\YAYDP_Product_Pricing_Adjustments( $cart ) )->do_stuff();
+
+            foreach ( $cart->get_items() as $item ) {
+                $new_price = max( 0.0, (float) $item->get_price() );
+                $product->set_regular_price( $new_price );
+                $product->set_sale_price( $new_price );
+                $product->set_price( $new_price );
+                return;
             }
-
-            return $this->calculate_price_for_quantity( $product, $quantity, $price );
         } catch ( \Throwable $error ) {
-            // Never let a YayPricing internal error break the Product Table.
-            return $price;
-        }//end try
-    }
-
-    private function calculate_price_for_quantity( \WC_Product $product, int $quantity, float $base_price ): float {
-        $cart = new \YAYDP\Core\YAYDP_Cart( [] );
-        // Explicit [] keeps this isolated from the real WC()->cart.
-        $cart->add_item( $this->product_with_overridden_price( $product, $base_price ), $quantity );
-
-        ( new \YAYDP\Core\Adjustments\YAYDP_Product_Pricing_Adjustments( $cart ) )->do_stuff();
-
-        foreach ( $cart->get_items() as $item ) {
-            return (float) $item->get_price();
+            // Never let a YayPricing internal error break the Product Table — leave $product's
+            // price as whatever ran before this.
+            return;
         }
-
-        return $base_price;
-    }
-
-    private function product_with_overridden_price( \WC_Product $product, float $price ): \WC_Product {
-        $clone = clone $product;
-        $clone->set_regular_price( $price );
-        $clone->set_sale_price( '' );
-        return $clone;
     }
 }

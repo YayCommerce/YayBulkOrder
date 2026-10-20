@@ -1,4 +1,4 @@
-import type { GlobalConfig } from '../../utils';
+import type { GlobalConfig } from '../globalConfig';
 import type { StoreApiCartTotals } from './type';
 
 /** Shape both currency sources (Store API cart totals, plugin settings) get normalized into. */

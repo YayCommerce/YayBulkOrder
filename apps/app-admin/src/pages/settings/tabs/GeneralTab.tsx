@@ -31,7 +31,7 @@ export function GeneralTab() {
             <NumberInput
               value={field.value}
               onValueChange={field.onChange}
-              step={5}
+              step={1}
               className="w-20"
               aria-invalid={fieldState.invalid}
             />
@@ -59,7 +59,7 @@ export function GeneralTab() {
             <NumberInput
               value={field.value}
               onValueChange={field.onChange}
-              step={5}
+              step={1}
               className="w-20"
               aria-invalid={fieldState.invalid}
             />

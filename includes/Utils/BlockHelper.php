@@ -91,6 +91,70 @@ class BlockHelper {
         return false;
     }
 
+    /**
+     * Registers every block found in a `blocks-manifest.php` metadata
+     * collection. Shared by the free and Pro block registries so each one
+     * only has to point at its own `assets/dist/...` directory.
+     *
+     * Resolves each manifest entry's actual directory from disk instead of
+     * assuming it sits directly under `$blocks_path` (e.g. via
+     * `wp_register_block_types_from_metadata_collection()`), because some
+     * collections group related blocks a level deeper (like the Variant
+     * Table's blocks under `variant-table/`). Trusting the naive
+     * `$blocks_path/{$block_type}` path there leaves `WP_Block_Type::$file`
+     * null for those blocks, which trips a `dirname(): Passing null` notice
+     * in WordPress core for any of them with a `render` template.
+     *
+     * @param string $blocks_path Absolute path to the collection's directory.
+     */
+    public static function register_block_collection( string $blocks_path ): void {
+        $blocks_path   = untrailingslashit( $blocks_path );
+        $manifest_file = $blocks_path . '/blocks-manifest.php';
+
+        if ( ! file_exists( $manifest_file ) ) {
+            return;
+        }
+
+        if ( function_exists( 'wp_register_block_metadata_collection' ) ) {
+            wp_register_block_metadata_collection( $blocks_path, $manifest_file );
+        }
+
+        $manifest_data     = require $manifest_file;
+        $block_directories = self::find_block_directories( $blocks_path );
+
+        foreach ( array_keys( $manifest_data ) as $block_type ) {
+            if ( isset( $block_directories[ $block_type ] ) ) {
+                register_block_type( $block_directories[ $block_type ] );
+            }
+        }
+    }
+
+    /**
+     * Recursively maps each block folder's own name to its absolute path,
+     * so manifest entries resolve correctly no matter how many directory
+     * levels a block's `block.json` sits below the collection's root.
+     *
+     * @param string $blocks_path Absolute path to the collection's directory.
+     * @return array<string, string> Map of block folder name => absolute directory path.
+     */
+    private static function find_block_directories( string $blocks_path ): array {
+        $directories = [];
+
+        if ( ! is_dir( $blocks_path ) ) {
+            return $directories;
+        }
+
+        $iterator = new \RecursiveIteratorIterator( new \RecursiveDirectoryIterator( $blocks_path, \FilesystemIterator::SKIP_DOTS ) );
+        foreach ( $iterator as $file ) {
+            if ( 'block.json' === $file->getFilename() ) {
+                $dir                             = $file->getPath();
+                $directories[ basename( $dir ) ] = $dir;
+            }
+        }
+
+        return $directories;
+    }
+
     public static function get_pagination_range( int $current_page, int $total_pages ): array {
         $window = 1;
         $range  = [];

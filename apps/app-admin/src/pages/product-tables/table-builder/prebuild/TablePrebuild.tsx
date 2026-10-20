@@ -1,21 +1,13 @@
-import { useState } from 'react';
-import { Popover } from '@radix-ui/react-popover';
+import { useMemo, useState } from 'react';
 import { ProductTableForm } from '@yay-bulk-order/common/src/schemas/product-tables.schema';
 import { useFormContext } from 'react-hook-form';
 import { __ } from '@wordpress/i18n';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import {
-  ComboboxBadge,
-  ComboboxCheckbox,
-  ComboboxIcon,
-  ComboboxRemove,
-  ComboboxTrigger,
-} from '@/components/ui/combobox';
-import { Command, CommandItem, CommandList } from '@/components/ui/command';
-import { PopoverContent } from '@/components/ui/popover';
 import { HelpTip } from '@/components/ui/tooltip';
+import { MultiSelectCombobox, MultiSelectOption } from '@/components/custom/multi-select-combobox';
+import { UpgradeToProButton } from '@/components/custom/upgrate-to-pro';
 import { TablePreview } from '@/pages/product-tables/table-builder/prebuild/TablePreview';
 import {
   BuilderSteps,
@@ -29,15 +21,24 @@ export default function TablePrebuild({ setSteps }: BuilderStepsProps) {
     data: PREBUILD_TEMPLATES[0].data,
   });
 
-  const [comboOpen, setComboOpen] = useState(false);
   const [selectedCatIds, setSelectedCatIds] = useState<number[]>([]);
   const [catError, setCatError] = useState('');
 
+  const proTemplate = useMemo(
+    () => PREBUILD_TEMPLATES.filter((t) => t.isProTemplate).map((t) => t.slug),
+    [PREBUILD_TEMPLATES],
+  );
+
   const { reset } = useFormContext<ProductTableForm>();
 
-  const toggleCategory = (id: number) => {
+  const categoryOptions: MultiSelectOption[] = useMemo(
+    () => categories.map((cat) => ({ value: cat.id, label: cat.title })),
+    [],
+  );
+
+  const handleCategoryChange = (ids: number[]) => {
     setCatError('');
-    setSelectedCatIds((prev) => (prev.includes(id) ? prev.filter((catId) => catId !== id) : [...prev, id]));
+    setSelectedCatIds(ids);
   };
 
   const applyTemplate = (nextStep: BuilderSteps) => {
@@ -90,57 +91,40 @@ export default function TablePrebuild({ setSteps }: BuilderStepsProps) {
               <div className="flex flex-col gap-1.5">
                 <div className="flex items-center gap-2">
                   <span className="text-muted-foreground text-xs">{__('Categories:', 'yay-bulk-order')}</span>
-                  <Popover open={comboOpen} onOpenChange={setComboOpen}>
-                    <ComboboxTrigger className="min-w-45 max-w-70">
-                      {selectedCatIds.length === 0 ? (
-                        <span className="text-muted-foreground text-sm">{__('Select...', 'yay-bulk-order')}</span>
-                      ) : (
-                        <div className="flex flex-wrap gap-1 overflow-hidden">
-                          {selectedCatIds.map((id) => (
-                            <ComboboxBadge key={id}>
-                              {categories.find((cat) => cat.id === id)?.title ?? id}
-                              <ComboboxRemove onRemove={() => toggleCategory(id)} />
-                            </ComboboxBadge>
-                          ))}
-                        </div>
-                      )}
-                      <ComboboxIcon />
-                    </ComboboxTrigger>
-                    <PopoverContent className="w-52 p-0" align="start">
-                      <Command>
-                        <CommandList>
-                          {categories.map((cat) => (
-                            <CommandItem key={cat.id} value={cat.id.toString()} onSelect={() => toggleCategory(cat.id)}>
-                              <ComboboxCheckbox selected={selectedCatIds.includes(cat.id)} />
-                              {cat.title}
-                            </CommandItem>
-                          ))}
-                        </CommandList>
-                      </Command>
-                    </PopoverContent>
-                  </Popover>
+                  <MultiSelectCombobox
+                    options={categoryOptions}
+                    value={selectedCatIds}
+                    onChange={handleCategoryChange}
+                    searchPlaceholder={__('Search categories...', 'yay-bulk-order')}
+                    emptyText={__('No categories found', 'yay-bulk-order')}
+                  />
                 </div>
                 {catError && <p className="text-destructive text-xs">{catError}</p>}
               </div>
             )}
-
             <div className="ml-auto flex gap-2">
-              <HelpTip
-                trigger={
-                  <Button variant="outline" size="sm" onClick={() => applyTemplate('products')}>
-                    {__('Build from this template', 'yay-bulk-order')}
-                  </Button>
-                }
-                content={__('Continue to further edit steps', 'yay-bulk-order')}
-              />
-              <HelpTip
-                trigger={
-                  <Button size="sm" onClick={() => applyTemplate('publish')}>
-                    {__('Create from this template', 'yay-bulk-order')}
-                  </Button>
-                }
-                content={__('Skip editing and go straight to the last step', 'yay-bulk-order')}
-              />
+              {proTemplate.includes(selected.slug) ? (
+                <UpgradeToProButton />
+              ) : (
+                <>
+                  <HelpTip
+                    trigger={
+                      <Button variant="outline" size="sm" onClick={() => applyTemplate('products')}>
+                        {__('Build from this template', 'yay-bulk-order')}
+                      </Button>
+                    }
+                    content={__('Continue to further edit steps', 'yay-bulk-order')}
+                  />
+                  <HelpTip
+                    trigger={
+                      <Button size="sm" onClick={() => applyTemplate('publish')}>
+                        {__('Create from this template', 'yay-bulk-order')}
+                      </Button>
+                    }
+                    content={__('Skip editing and go straight to the last step', 'yay-bulk-order')}
+                  />
+                </>
+              )}
             </div>
           </div>
         </div>

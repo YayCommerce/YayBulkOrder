@@ -57,6 +57,7 @@ export const PREBUILD_TEMPLATES: TablePrebuildTemplate[] = [
     slug: 'full-featured',
     title: __('Full Featured Table', 'yay-bulk-order'),
     desc: __('All columns, with performant filters and pagination', 'yay-bulk-order'),
+    isProTemplate: false,
     data: {
       query: {
         queryBy: 'all-products',
@@ -74,6 +75,7 @@ export const PREBUILD_TEMPLATES: TablePrebuildTemplate[] = [
     slug: 'some-categories',
     title: __('Some Categories Table', 'yay-bulk-order'),
     desc: __('Show all products from some selected categories.', 'yay-bulk-order'),
+    isProTemplate: true,
     data: {
       query: {
         queryBy: 'by-categories',
@@ -92,6 +94,7 @@ export const PREBUILD_TEMPLATES: TablePrebuildTemplate[] = [
     slug: 'simple',
     title: __('Simple Table', 'yay-bulk-order'),
     desc: __('Only 4 essential columns, fit for small space', 'yay-bulk-order'),
+    isProTemplate: false,
     data: {
       query: {
         queryBy: 'all-products',

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "yay-bulk-order/variant-table-column-quantity",
+  "version": "0.1.0",
+  "title": "Column Quantity",
+  "category": "woocommerce",
+  "description": "Quantity input, defaults to 1",
+  "textdomain": "yay-bulk-order",
+  "usesContext": ["yay-bulk-order/productId"],
+  "supports": {
+    "html": false
+  },
+  "parent": ["yay-bulk-order/variant-table-columns"],
+  "editorScript": "file:./editor.js",
+  "render": "file:./render.php"
+}

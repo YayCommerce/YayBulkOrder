@@ -1,0 +1,52 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "yay-bulk-order/variant-table-header",
+  "version": "0.1.0",
+  "title": "Table Header",
+  "category": "woocommerce",
+  "description": "Variant Table Header.",
+  "textdomain": "yay-bulk-order",
+  "attributes": {
+    "columns": {
+      "type": "array",
+      "default": [
+        "yay-bulk-order/variant-table-column-product",
+        "yay-bulk-order/variant-table-column-quantity",
+        "yay-bulk-order/variant-table-column-select"
+      ]
+    }
+  },
+  "supports": {
+    "interactivity": true,
+    "inserter": false,
+    "reusable": false,
+    "html": false,
+    "align": ["wide", "full"],
+    "anchor": true,
+    "color": {
+      "gradients": true,
+      "link": true,
+      "__experimentalDefaultControls": {
+        "background": true,
+        "text": true
+      }
+    },
+    "typography": {
+      "fontSize": true,
+      "lineHeight": true,
+      "__experimentalFontFamily": true,
+      "__experimentalFontWeight": true,
+      "__experimentalFontStyle": true,
+      "__experimentalTextTransform": true,
+      "__experimentalTextDecoration": true,
+      "__experimentalLetterSpacing": true,
+      "__experimentalDefaultControls": {
+        "fontSize": true
+      }
+    }
+  },
+  "ancestor": ["yay-bulk-order/variant-table-root"],
+  "parent": ["yay-bulk-order/variant-table"],
+  "editorScript": "file:./editor.js"
+}

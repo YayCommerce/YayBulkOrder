@@ -7,6 +7,7 @@
     "src"
   ],
   "dependencies": {
+    "@wordpress/interactivity": "latest",
     "zod": "^3.22.4",
     "@wordpress/i18n": "^6.6.0"
   },

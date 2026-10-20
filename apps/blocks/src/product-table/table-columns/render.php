@@ -54,7 +54,13 @@ $render_row = function ( $block, $product_id, $product, $default_cart_quantity, 
         'productId'      => $product_id,
         'variantId'      => $parent_product_id ? $product_id : 0,
         'quantity'       => $default_cart_quantity,
+        // Also used as the +/- stepper's increment (matches the input's own `step` attribute).
+        'quantityStep'   => (int) $default_cart_quantity,
         'unitPrice'      => $unit_price,
+        // A price of 0 is still a valid, purchasable price — only an
+        // unpurchasable product (no price set, unpublished, ...) should
+        // disable add-to-cart / the select checkbox.
+        'isPurchasable'  => $product->is_purchasable(),
         'productType'    => $product_type,
         'isAddingToCart' => false,
         'addToCartText'  => $add_to_cart_text,

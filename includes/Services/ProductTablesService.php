@@ -1,5 +1,5 @@
 <?php
-namespace YayBulkOrder\Pro\Services;
+namespace YayBulkOrder\Services;
 
 use YayBulkOrder\Utils\SingletonTrait;
 
@@ -15,7 +15,7 @@ class ProductTablesService {
     public const PREBUILD_CONFIG_META          = 'ybo_product_table_config';
     public const PREBUILD_PRODUCT_DISPLAY_META = 'ybo_product_table_products';
 
-    public const QUERY_BY_OPTIONS   = [ 'all-products', 'by-categories', 'featured', 'on-sale', 'top-rated', 'hand-picked' ];
+    public const QUERY_BY_OPTIONS   = [ 'all-products', 'by-categories', 'featured', 'on-sale', 'hand-picked' ];
     public const RESPONSIVE_OPTIONS = [ 'always-show', 'hide-on-mobile', 'hide-on-tablet' ];
 
     public function get_paginated_product_tables( string $search, int $page, int $per_page, $display_type = 'all-type' ) {
@@ -131,7 +131,7 @@ class ProductTablesService {
                 'hasFilter'     => false,
                 'hasSearch'     => false,
                 'hasPagination' => false,
-                'pageSize'      => 10,
+                'pageSize'      => 0,
             ],
         ];
     }
@@ -158,7 +158,7 @@ class ProductTablesService {
             : $defaults['query']['queryBy'];
 
         $categories = isset( $data['query']['categories'] )
-            ? array_values( array_map( 'sanitize_text_field', (array) $data['query']['categories'] ) )
+            ? array_values( array_filter( array_map( 'absint', (array) $data['query']['categories'] ) ) )
             : [];
 
         $products = isset( $data['query']['products'] )

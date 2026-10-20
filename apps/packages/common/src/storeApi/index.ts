@@ -2,8 +2,8 @@ import './globals';
 
 import { getConfig } from '@wordpress/interactivity';
 
-import type { SelectedRow } from '../productTable.type';
 import type {
+  BatchCartItem,
   BatchRequestItem,
   BatchResponse,
   StoreApiCart,
@@ -115,7 +115,7 @@ function chunk<T>(items: readonly T[], size: number): T[][] {
   return chunks;
 }
 
-export async function addProductsToCartBatch(items: readonly SelectedRow[]): Promise<StoreApiCart> {
+export async function addProductsToCartBatch(items: readonly BatchCartItem[]): Promise<StoreApiCart> {
   let cart = await storeApiRequest<StoreApiCart>(STORE_API.cart.fetch);
 
   if (!items.length) {
@@ -177,7 +177,13 @@ export async function addProductsToCartBatch(items: readonly SelectedRow[]): Pro
     cart = succeeded[succeeded.length - 1].body;
   }
 
-  return cart;
+  // A batch sub-response's embedded cart reflects totals recalculated for
+  // that single add/update — third-party hooks that depend on the cart as a
+  // whole (e.g. a wholesale tier unlocked only once every item is in, or a
+  // multi-currency conversion re-applied on the next full cart load) can
+  // still be stale on it. Re-fetch once everything has been added so the
+  // totals we hand back match what WooCommerce's own cart/mini-cart show.
+  return storeApiRequest<StoreApiCart>(STORE_API.cart.fetch);
 }
 
 // Prevent reacting to cart updates triggered by this module.

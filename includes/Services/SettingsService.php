@@ -15,23 +15,12 @@ class SettingsService {
 
     public function get_settings() {
         $settings = get_option( 'yay_bulk_order_settings', [] );
-        return $this->strip_legacy_currency( array_replace_recursive( $this->get_default_settings(), $settings ) );
+        return array_replace_recursive( $this->get_default_settings(), $settings );
     }
 
     public function save_settings( array $settings ) {
-        $settings = $this->strip_legacy_currency( array_replace_recursive( $this->get_default_settings(), $settings ) );
+        $settings = array_replace_recursive( $this->get_default_settings(), $settings );
         return update_option( 'yay_bulk_order_settings', $settings );
-    }
-
-    /**
-     * Currency used to be persisted under `general.currency`, which baked a stale
-     * value into the saved option on every save. It now lives in LocalizeService::get_global_config()
-     * so it always reflects the live WooCommerce settings. Strip any leftover key
-     * from options saved before this change.
-     */
-    private function strip_legacy_currency( array $settings ) {
-        unset( $settings['general']['currency'] );
-        return $settings;
     }
 
     public function get_config() {
@@ -50,8 +39,9 @@ class SettingsService {
     }
 
     public function get_styles() {
-        $settings = $this->get_settings();
-        $colors   = $settings['colors'];
+        $settings       = $this->get_settings();
+        $default_colors = $this->get_default_color_preset();
+        $colors         = $settings['colors'];
 
         return [
             '--ybo-primary-color'                 => $colors['primary'],
@@ -65,8 +55,13 @@ class SettingsService {
             '--ybo-button-text-color'             => $colors['buttonText'],
             '--ybo-button-text-hover-color'       => $colors['buttonTextHover'],
 
+            '--ybo-text-default-color'            => $default_colors['text'],
+            '--ybo-text-hover-default-color'      => $default_colors['textHover'],
+            '--ybo-description-default-color'     => $default_colors['description'],
+            '--ybo-border-default-color'          => $default_colors['border'],
+            '--ybo-background-default-color'      => $default_colors['background'],
+
             'color'                               => 'var(--ybo-text-color)',
-            'background-color'                    => 'var(--ybo-background-color)',
             'border-color'                        => 'var(--ybo-border-color)',
         ];
     }

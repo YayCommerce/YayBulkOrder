@@ -7,9 +7,15 @@
   border-spacing: 0;
   border: 1px solid var(--ybo-border-color);
   border-radius: var(--ybo-border-radius, 8px);
-  overflow: hidden;
+  overflow: hidden !important;
   margin: 10px 0 !important;
   table-layout: auto;
+  background-color: var(--ybo-background-color, #fff) !important;
+
+  th,
+  td {
+    background-color: var(--ybo-background-color, #fff) !important;
+  }
 
   thead th {
     padding: 14px 16px;
@@ -106,7 +112,7 @@
       }
 
       &.is-expanded td {
-        background-color: var(--ybo-variation-row-color, #fafafa) !important;
+        background-color: var(--ybo-background-color, #fff) !important;
       }
     }
   }
@@ -318,9 +324,8 @@
     }
   }
   .ybo-view-options-button {
-    background-color: var(--ybo-background-color, #fff) !important;
-    border: 1px solid var(--ybo-border-color, #e4e4e7) !important;
-    color: var(--ybo-text-color, #171719) !important;
+    background-color: var(--ybo-button-background-color, var(--ybo-primary-color, #3858e9)) !important;
+    color: var(--ybo-button-text-color, #fff) !important;
     box-shadow: none !important;
 
     &:hover {
@@ -334,21 +339,88 @@
     cursor: pointer;
   }
 
-  .ybo-quantity-input {
-    width: 72px;
+  // Pill-shaped +/- stepper, independent of the active theme's own quantity
+  // input styling (WooCommerce themes vary widely here).
+  .ybo-quantity-stepper {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    width: fit-content;
+    padding: 4px;
     box-sizing: border-box;
-    padding: 8px 10px;
-    border: 1px solid var(--ybo-border-color);
+    background-color: var(--ybo-quantity-background, #f9f9f9);
     border-radius: var(--ybo-border-radius, 8px) !important;
-    background-color: var(--ybo-background-color, #fff);
-    color: inherit;
-    font-size: 0.95rem;
-    text-align: center;
-    transition: border-color 0.15s ease-in-out;
-    margin: 0;
+    border: 1px solid var(--ybo-border-color, #e4e4e7) !important;
+    &[hidden] {
+      display: none !important;
+    }
+  }
+
+  .ybo-quantity-stepper__button {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    min-height: 28px;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    color: #6b6b6f !important;
+    font-size: 16px;
+    font-weight: 550;
+    line-height: 1;
+    box-shadow: none;
+    cursor: pointer;
+    transition:
+      background-color 0.15s ease-in-out,
+      color 0.15s ease-in-out;
+
+    &:hover:not(:disabled) {
+      background: transparent !important;
+      color: #171719 !important;
+    }
     &:focus {
-      outline: none;
-      border-color: var(--ybo-primary-color, #3c434a);
+      outline: none !important;
+      background: unset;
+      border: unset;
+    }
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  }
+
+  .ybo-quantity-input {
+    flex: 1 1 auto;
+    width: 25px;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--ybo-text-default-color, #171719);
+    font-weight: 600;
+    font-size: 14px !important;
+    text-align: center;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    height: auto;
+    // Hide the native number-input spinner — the +/- buttons replace it.
+    -moz-appearance: textfield;
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    &:focus {
+      outline: none !important;
+      background: unset;
+      border: unset;
     }
     &[hidden] {
       display: none !important;
@@ -364,6 +436,9 @@
     cursor: pointer;
     &[hidden] {
       display: none !important;
+    }
+    &:focus {
+      outline: none !important;
     }
   }
 
@@ -450,16 +525,18 @@
     width: 40px;
     height: 40px;
     cursor: pointer;
-    border: 1px solid var(--ybo-border-color);
+    border: 1px solid var(--ybo-border-default-color, #e2e2e2);
     border-radius: 50%;
-    background-color: var(--ybo-background-color, #fff);
-    color: inherit;
+    background-color: var(--ybo-background-default-color, #fff) !important;
+    color: #6b6b6f !important;
     line-height: 1;
     text-decoration: none !important;
     transition: all 0.15s ease-in-out;
 
     &:hover {
-      background-color: rgba(0, 0, 0, 0.04);
+      border: 1px solid var(--ybo-border-default-hover-color, #171719);
+      background: transparent !important;
+      color: #171719 !important;
     }
 
     &[hidden] {
@@ -474,8 +551,8 @@
     cursor: pointer;
     border: none !important;
     border-radius: var(--ybo-border-radius, 8px) !important;
-    background-color: #4caf6f !important;
-    color: #fff !important;
+    background-color: var(--ybo-button-background-color, #4caf6f) !important;
+    color: var(--ybo-button-text-color, #fff) !important;
     padding: 10px;
     font-weight: 550;
     font-size: 16px;
@@ -484,8 +561,8 @@
     min-height: 40px;
     margin: 0 !important;
     &:hover:not(:disabled) {
-      background-color: #429f62;
-      color: #fff;
+      background-color: var(--ybo-button-background-hover-color, #429f62) !important;
+      color: var(--ybo-button-text-hover-color, #fff) !important;
       box-shadow: 0 3px 16px 0 rgba(0, 0, 0, 0.15);
     }
 
@@ -561,8 +638,8 @@
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    background-color: #4caf6f;
-    color: #fff;
+    background-color: var(--ybo-button-background-color, #4caf6f) !important;
+    color: var(--ybo-button-text-color, #fff) !important;
     text-decoration: none !important;
     font-weight: 550;
     padding: 10px;
@@ -571,8 +648,8 @@
     transition: all 0.2s ease-in-out;
 
     &:hover {
-      background-color: #429f62;
-      color: #fff;
+      background-color: var(--ybo-button-background-hover-color, #429f62) !important;
+      color: var(--ybo-button-text-hover-color, #fff) !important;
     }
   }
 
@@ -632,9 +709,9 @@
     box-sizing: border-box !important;
     // Room on the right for the search icon / clear button overlaid on top.
     padding: 0 48px 0 20px !important;
-    border: 1px solid var(--ybo-border-color);
+    border: 1px solid var(--ybo-border-default-color, #e4e4e7) !important;
     border-radius: var(--ybo-border-radius, 8px) !important;
-    background-color: var(--ybo-background-color, #fff);
+    background-color: #fff !important;
     color: inherit;
     font-size: 1rem;
     line-height: 40px;
@@ -650,7 +727,10 @@
     }
 
     &:focus {
-      border-color: var(--ybo-primary-color, #3c434a);
+      outline-color: var(--ybo-border-default-color, #e4e4e7) !important;
+      border-color: transparent !important;
+      outline-width: 2px;
+      outline-style: solid;
     }
   }
 
@@ -702,10 +782,12 @@
   align-items: center;
   gap: 8px;
   cursor: pointer;
-  border: 1px solid var(--ybo-border-color) !important;
+  // border: 1px solid var(--ybo-border-color) !important;
+  border: 1px solid var(--ybo-border-default-color) !important;
   border-radius: var(--ybo-border-radius, 8px) !important;
-  background: var(--ybo-background-color, transparent);
-  color: inherit !important;
+
+  background: var(--ybo-background-default-color, #fff) !important;
+  color: var(--ybo-text-default-color, #000) !important;
   height: 42px !important;
   min-height: 42px !important;
   max-height: 42px !important;
@@ -770,12 +852,14 @@
 .ybo-filter-sidebar {
   flex: 0 0 auto;
   width: 220px;
-  border: 1px solid var(--ybo-border-color);
+  border: 1px solid var(--ybo-border-default-color);
   border-radius: var(--ybo-border-radius, 8px);
   padding: 16px;
   margin-top: 10px !important;
+  background-color: var(--ybo-background-default-color, #fff);
+  color: var(--ybo-text-default-color, inherit) !important;
   &__title {
-    margin: 0 0 12px;
+    margin: 0 0 12px !important;
     font-size: 1rem;
     font-weight: 600;
   }
@@ -783,7 +867,7 @@
   &__divider {
     margin: 0 0 12px;
     border: none;
-    border-top: 1px solid var(--ybo-border-color);
+    border-top: 1px solid var(--ybo-border-default-color);
   }
 
   &__list {
@@ -801,7 +885,6 @@
     background-color: unset !important;
     box-shadow: none !important;
     padding: 0 !important;
-    color: inherit !important;
     text-align: left !important;
     font-size: 0.95rem;
     transition: color 0.15s ease-in-out !important;
@@ -812,7 +895,7 @@
 
     &.is-active {
       font-weight: 600;
-      color: var(--ybo-primary-color, inherit);
+      color: var(--ybo-primary-color, inherit) !important;
       text-decoration: underline !important;
     }
   }

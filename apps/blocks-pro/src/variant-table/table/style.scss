@@ -1,0 +1,498 @@
+.wp-block-yay-bulk-order-variant-table {
+  font-size: 1rem;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--ybo-border-color);
+  border-radius: var(--ybo-border-radius, 8px);
+  overflow: hidden !important;
+  margin: 10px 0 !important;
+  table-layout: auto;
+
+  th,
+  td {
+    background-color: var(--ybo-background-color, #fff) !important;
+  }
+
+  thead th {
+    padding: 14px 16px;
+    text-align: left;
+    vertical-align: middle;
+    border: none;
+    border-bottom: 1px solid var(--ybo-border-color);
+    font-weight: 600;
+    color: var(--ybo-text-color, #171719);
+    * {
+      margin: 0;
+    }
+  }
+
+  .wp-block-yay-bulk-order-variant-table-header,
+  .wp-block-yay-bulk-order-variant-table-columns {
+    min-width: 0 !important;
+    margin: 0;
+  }
+
+  .wp-block-yay-bulk-order-variant-table-header .ybo-table-cell {
+    display: flex;
+    align-items: center;
+    width: 100% !important;
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--ybo-border-color);
+    font-weight: 600;
+    min-width: 0;
+    box-sizing: border-box;
+    * {
+      margin: 0;
+    }
+  }
+
+  .wp-block-yay-bulk-order-variant-table-columns .ybo-table-cell {
+    display: flex;
+    align-items: center;
+    width: 100% !important;
+    padding: 14px 16px;
+    text-align: left;
+    min-width: 0;
+    margin: 0;
+    box-sizing: border-box;
+    overflow-wrap: anywhere;
+  }
+
+  tbody {
+    tr {
+      transition: background-color 0.15s ease-in-out;
+
+      td {
+        padding: 14px 16px;
+        text-align: left;
+        vertical-align: middle;
+        border: none;
+        border-bottom: 1px solid var(--ybo-border-color);
+        overflow-wrap: anywhere;
+        display: table-cell !important;
+      }
+
+      &:last-child td {
+        border-bottom: none;
+      }
+
+      &:hover td {
+        background-color: rgba(0, 0, 0, 0.025);
+      }
+    }
+  }
+
+  .wp-block-yay-bulk-order-variant-table-column-select {
+    width: 1%;
+    text-align: center;
+  }
+
+  .wp-block-yay-bulk-order-variant-table-column-quantity {
+    width: 1%;
+  }
+
+  .ybo-product-cell {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    text-decoration: none !important;
+    color: inherit;
+
+    &:hover .ybo-product-title {
+      color: var(--ybo-text-hover-color, var(--ybo-primary-color, #3858e9));
+    }
+  }
+
+  .ybo-product-thumbnail {
+    position: relative;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    background-color: var(--ybo-thumbnail-background, rgba(0, 0, 0, 0.04));
+    border-radius: 10px;
+    line-height: 0;
+  }
+
+  .ybo-product-thumbnail__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--ybo-border-radius, 8px);
+  }
+
+  // Marks the quantity already sitting in the cart for this variation.
+  .ybo-product-thumbnail__badge {
+    position: absolute;
+    top: -8px;
+    left: -8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid var(--ybo-background-color, #fff);
+    background-color: var(--ybo-primary-color, #3c434a);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1;
+
+    &[hidden] {
+      display: none;
+    }
+  }
+
+  .ybo-product-title {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    text-align: left;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  // Pill-shaped +/- stepper, independent of the active theme's own quantity
+  // input styling (WooCommerce themes vary widely here). Kept identical to
+  // the Product Table block's own stepper (see product-table/table/style.scss).
+  .ybo-quantity-stepper {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    width: fit-content;
+    padding: 4px;
+    box-sizing: border-box;
+    background-color: var(--ybo-quantity-background, #F9F9F9);
+    border-radius: var(--ybo-border-radius, 8px) !important;
+    border: 1px solid var(--ybo-border-color, #e4e4e7) !important;
+    &[hidden] {
+      display: none !important;
+    }
+  }
+
+  .ybo-quantity-stepper__button {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    min-height: 28px;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    color: #6b6b6f !important;
+    font-size: 16px;
+    font-weight: 550;
+    line-height: 1;
+    box-shadow: none;
+    cursor: pointer;
+    transition:
+      background-color 0.15s ease-in-out,
+      color 0.15s ease-in-out;
+
+    &:hover:not(:disabled) {
+      background: transparent !important;
+      color: #171719 !important;
+    }
+    &:focus {
+      outline: none !important;
+      background: unset;
+      border: unset;
+    }
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  }
+
+  .ybo-quantity-input {
+    flex: 1 1 auto;
+    width: 25px;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--ybo-text-color, #171719);
+    font-weight: 600;
+    font-size: 14px !important;
+    text-align: center;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    height: auto;
+    // Hide the native number-input spinner — the +/- buttons replace it.
+    -moz-appearance: textfield;
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    &:focus {
+      outline: none !important;
+      background: unset;
+      border: unset;
+    }
+    &[hidden] {
+      display: none !important;
+    }
+  }
+
+  input[type='checkbox'] {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    vertical-align: middle;
+    accent-color: var(--ybo-primary-color, #3c434a);
+    cursor: pointer;
+    &:focus {
+      outline: none !important;
+    }
+    &[hidden] {
+      display: none !important;
+    }
+  }
+}
+
+.editor-styles-wrapper .wp-block-yay-bulk-order-variant-table-root {
+  padding: 6px;
+  outline: 1px dashed transparent;
+  outline-offset: -1px;
+  transition: outline-color 0.1s ease;
+
+  &:hover {
+    outline-color: #949494;
+  }
+}
+
+.wp-block-yay-bulk-order-variant-table-root {
+  min-width: 0;
+  box-sizing: border-box;
+  border: none !important;
+  > * {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+}
+
+.wp-block-yay-bulk-order-variant-table-footer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 12px 0 0;
+}
+
+.ybo-variant-table-total {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border: 1px dashed var(--ybo-border-color, #d0d0d5);
+  border-radius: var(--ybo-border-radius, 8px);
+  color: var(--ybo-text-color, #171719);
+  font-size: 0.95rem;
+
+  &__label {
+    color: var(--ybo-description-color, #7b7c80);
+  }
+
+  &__amount {
+    font-weight: 600;
+  }
+}
+
+.ybo-variant-table-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+
+  // Floats to the bottom center once the footer has scrolled out of view
+  // (toggled by `watchBulkActionVisibility`), so a selection is always
+  // actionable regardless of how long the variation list is.
+  &.is-floating {
+    position: fixed;
+    left: 50%;
+    bottom: 20px;
+    translate: -50% 0;
+    z-index: 9999999;
+    animation: ybo-variant-table-pulse 2s infinite;
+
+    .ybo-variant-table-clear {
+      display: none !important;
+    }
+
+    .ybo-variant-table-add-to-cart {
+      box-shadow: 0 3px 20px 0 rgba(0, 0, 0, 0.15);
+    }
+  }
+}
+
+// Marks where `.ybo-variant-table-actions` normally sits, so its visibility
+// can be watched independently of the control itself switching to `position: fixed`.
+.ybo-variant-bulk-action-sentinel {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+@keyframes ybo-variant-table-pulse {
+  0%,
+  100% {
+    scale: 1;
+  }
+
+  50% {
+    scale: 1.05;
+  }
+}
+
+.ybo-variant-table-cart-notice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  position: fixed;
+  left: 50%;
+  bottom: 20px;
+  translate: -50% 0;
+  z-index: 9999999;
+  animation: ybo-variant-table-pulse 2s infinite;
+
+  &[hidden] {
+    display: none;
+  }
+
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background-color: var(--ybo-button-background-color, #4caf6f) !important;
+    color: var(--ybo-button-text-color, #fff) !important;
+    text-decoration: none !important;
+    font-weight: 550;
+    padding: 10px;
+    border-radius: var(--ybo-border-radius, 8px) !important;
+    box-shadow: 0 3px 20px 0 rgba(0, 0, 0, 0.15);
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      background-color: var(--ybo-button-background-hover-color, #429f62) !important;
+      color: var(--ybo-button-text-hover-color, #fff) !important;
+    }
+  }
+
+  &__icon {
+    font-size: 1rem;
+    line-height: 1;
+  }
+
+  &__close {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 28px !important;
+    height: 28px !important;
+    border-radius: 50% !important;
+    border: none !important;
+    background-color: #6d6d6d !important;
+    color: #fff !important;
+    cursor: pointer !important;
+    padding: 0 !important;
+    transition: background-color 0.15s ease-in-out !important;
+
+    &:hover {
+      background-color: #43454b !important;
+    }
+  }
+}
+
+.ybo-variant-table-add-to-cart {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  border: none !important;
+  border-radius: var(--ybo-border-radius, 8px) !important;
+  background-color: var(--ybo-button-background-color, #4caf6f) !important;
+  color: var(--ybo-button-text-color, #fff) !important;
+  padding: 10px;
+  font-weight: 550;
+  font-size: 16px;
+  white-space: nowrap;
+  transition: all 0.2s ease-in-out;
+  min-height: 40px;
+  margin:  0 !important;
+  .ybo-icon-cart{
+    display: inline-flex;
+    align-items: center;
+    line-height: 0;
+    font-size: 20px;
+  }
+  &:hover:not(:disabled) {
+    background-color: var(--ybo-button-background-hover-color, #429f62) !important;
+    color: var(--ybo-button-text-hover-color, #fff) !important;
+    box-shadow: 0 3px 16px 0 rgba(0, 0, 0, 0.15);
+  }
+
+  &:disabled {
+    background-color: #b7bcc2 !important;
+    opacity: 1;
+    cursor: not-allowed !important;
+  }
+
+  &.is-loading {
+    opacity: 0.7;
+    cursor: wait;
+  }
+}
+
+.ybo-variant-table-clear {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 40px !important;
+  height: 40px !important;
+  cursor: pointer !important;
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--ybo-description-color, #7b7c80) !important;
+  padding: 0 !important;
+  transition: opacity 0.15s ease-in-out !important;
+
+  &:hover {
+    opacity: 0.7;
+  }
+
+  &[hidden] {
+    display: none !important;
+  }
+}

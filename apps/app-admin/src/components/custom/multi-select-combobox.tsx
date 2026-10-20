@@ -75,7 +75,7 @@ export function MultiSelectCombobox({
                 {options.map((option) => (
                   <CommandItem
                     key={option.value}
-                    value={option.label}
+                    value={option.value.toString()}
                     keywords={[String(option.value)]}
                     onSelect={() => toggle(option.value)}
                   >

@@ -85,6 +85,13 @@ class ProductQueryService {
 
         $query_vars['posts_per_page'] = $products_per_page;
 
+        if ( $products_per_page > 0 ) {
+            $page                 = $this->get_page_param( $block );
+            $query_vars['offset'] = $products_per_page * max( 0, $page - 1 );
+        } else {
+            unset( $query_vars['offset'] );
+        }
+
         if ( '' !== $search_param ) {
             $query_vars['s'] = $search_param;
         }

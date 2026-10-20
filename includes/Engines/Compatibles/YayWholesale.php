@@ -14,32 +14,50 @@ class YayWholesale {
     use SingletonTrait;
 
     protected function __construct() {
-        if (
-            ! class_exists( '\YayWholesaleB2B\Helpers\CustomerHelper' ) ||
-            ! class_exists( '\YayWholesaleB2B\Helpers\PricingHelpers\ShopPricingHelper' )
-        ) {
+        if ( ! class_exists( '\YayWholesaleB2B\Helpers\CustomerHelper' ) ) {
             return;
         }
 
-        add_filter( 'yaybulkorder_product_display_price', [ $this, 'adjust_price' ], 10, 2 );
+        add_action( 'yaybulkorder_adjust_raw_price', [ $this, 'adjust_raw_price' ], 10, 2 );
 
         add_filter( 'woocommerce_is_purchasable', [ $this, 'fix_variation_purchasable' ], 20, 2 );
 
         add_filter( 'yaybulkorder_purchase_list_product_price', [ $this, 'calculate_wholesale_price' ], 100, 2 );
     }
 
-    public function adjust_price( float $price, \WC_Product $product ): float {
+    public function adjust_raw_price( \WC_Product $product, int $quantity = 1 ): void {
         $role = \YayWholesaleB2B\Helpers\CustomerHelper::get_current_user_wholesale_role();
         if ( ! $role ) {
-            return $price;
+            return;
         }
 
-        if ( $product instanceof \WC_Product_Variable ) {
-            $discounted = \YayWholesaleB2B\Helpers\PricingHelpers\ShopPricingHelper::get_wholesale_prices_display_from_variants( $product, $role );
-            return empty( $discounted ) ? $price : (float) min( $discounted );
+        $wholesale_price = $this->calculate_wholesale_raw_price( $product, $role, $quantity );
+        if ( null === $wholesale_price ) {
+            return;
         }
 
-        return (float) \YayWholesaleB2B\Helpers\PricingHelpers\ShopPricingHelper::get_wholesale_price_for_display( $product, $role );
+        $product->set_regular_price( $wholesale_price );
+        $product->set_sale_price( $wholesale_price );
+        $product->set_price( $wholesale_price );
+    }
+
+    private function calculate_wholesale_raw_price( \WC_Product $product, array $role, int $quantity ): ?float {
+        $regular_price = (float) $product->get_regular_price( 'edit' );
+        $current_price = (float) $product->get_price( 'edit' );
+
+        $before_discount_price = ( ! empty( $role['applyToSalePrice'] ) && $current_price > 0.0 && $current_price < $regular_price )
+            ? $current_price
+            : $regular_price;
+
+        if ( $before_discount_price <= 0.0 ) {
+            return null;
+        }
+
+        $discount        = isset( $role['discount'] ) ? ( (float) $role['discount'] / 100 ) : 0.0;
+        $wholesale_price = $discount > 0 ? max( 0.0, $before_discount_price * ( 1 - $discount ) ) : $before_discount_price;
+
+        // Keep any site-specific customization of the wholesale price formula in sync.
+        return (float) apply_filters( 'ywhs_calculate_wholesale_product_price', $wholesale_price, $before_discount_price, $product, $role, $quantity );
     }
 
     public function fix_variation_purchasable( bool $purchasable, \WC_Product $product ): bool {
@@ -68,12 +86,26 @@ class YayWholesale {
             && '' !== $product->get_price();
     }
 
-    public function calculate_wholesale_price( $price, \WC_Product $product ) {
-        $wholesale_role = \YayWholesaleB2B\Helpers\CustomerHelper::get_current_user_wholesale_role();
-        if ( empty( $wholesale_role ) ) {
+    public function calculate_wholesale_price( float $price, \WC_Product $product ): float {
+        $role = \YayWholesaleB2B\Helpers\CustomerHelper::get_current_user_wholesale_role();
+        if ( ! $role ) {
             return $price;
         }
 
-        return \YayWholesaleB2B\Helpers\PricingHelpers\ShopPricingHelper::get_wholesale_price_for_display( $product, $wholesale_role );
+        $regular_price = (float) $product->get_regular_price( 'edit' );
+        $current_price = (float) $product->get_price( 'edit' );
+        if ( $current_price <= 0.0 ) {
+            return $price;
+        }
+
+        $wholesale_price = $this->calculate_wholesale_raw_price( $product, $role, 1 );
+        if ( null === $wholesale_price ) {
+            return $price;
+        }
+
+        // $price is already display-currency; scale it by the wholesale discount ratio
+        // (computed in raw currency, so the ratio itself is currency-agnostic) instead of
+        // substituting Wholesale's raw amount directly.
+        return $price * ( $wholesale_price / $current_price );
     }
 }

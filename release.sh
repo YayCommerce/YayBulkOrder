@@ -70,13 +70,42 @@ pnpm run "build:admin:${BUILD_VARIANT}"
 echo "Running Block JS Build..."
 pnpm run build
 
+if [ "$BUILD_VARIANT" = "pro" ]; then
+    echo "Running Block JS Build (Pro)..."
+    pnpm run build:pro
+fi
+
 echo "Syncing files..."
 rsync -rc --exclude-from="$PROJECT_PATH/.distignore" "$PROJECT_PATH/" "$DEST_PATH/" --delete --delete-excluded
 
 rm -rf "$DEST_PATH/includes/Engines/Register/RegisterDev.php"
 
+if [ "$BUILD_VARIANT" = "lite" ]; then
+    echo "Stripping Pro-only files from Lite build..."
+    # `YayBulkOrder::is_pro()` gates the plugin on whether `includes/Pro/`
+    # (PSR-4 autoloaded as `YayBulkOrder\Pro\`) is present at all, not on a
+    # license check — a Lite build must not ship it, or a Lite install
+    # would activate its Pro code path. `assets/dist/blocks-pro` is the
+    # built counterpart of that same code and equally Pro-only.
+    rm -rf "$DEST_PATH/includes/Pro"
+    rm -rf "$DEST_PATH/assets/dist/blocks-pro"
+    rm -rf "$DEST_PATH/assets/dist/variant-table-store"
+    rm -rf "$DEST_PATH/assets/dist/purchase-list-store"
+
+    cp "$PROJECT_PATH/composer.json" "$DEST_PATH/composer.json"
+    [ -f "$PROJECT_PATH/composer.lock" ] && cp "$PROJECT_PATH/composer.lock" "$DEST_PATH/composer.lock"
+    composer dump-autoload --optimize --no-dev --working-dir="$DEST_PATH"
+    rm -f "$DEST_PATH/composer.json" "$DEST_PATH/composer.lock"
+fi
+
 echo "Generating zip file..."
 cd "$BUILD_PATH" || exit
+# `zip -r` updates an existing archive in place — it never removes an entry
+# whose file is no longer on disk — so a stale zip from a previous run (e.g.
+# before a file got stripped or renamed) would keep carrying it forever.
+# Delete any previous zip first so this run's is a clean, exact reflection
+# of $DEST_PATH.
+#rm -f "${PLUGIN_SLUG}-${BUILD_VARIANT}.zip"
 zip -q -r "${PLUGIN_SLUG}-${BUILD_VARIANT}.zip" "${PLUGIN_SLUG}-${BUILD_VARIANT}/"
 rm -rf "${PLUGIN_SLUG}-${BUILD_VARIANT}"
 echo "${PLUGIN_SLUG}-${BUILD_VARIANT}.zip file generated!"

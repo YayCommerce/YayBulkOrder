@@ -29,7 +29,6 @@ export function useFormStyle() {
       '--ybo-button-text-hover-color': colors['buttonTextHover'],
 
       color: 'var(--ybo-text-color)',
-      'background-color': 'var(--ybo-background-color)',
       'border-color': 'var(--ybo-border-color)',
     } as React.CSSProperties;
   }, []);

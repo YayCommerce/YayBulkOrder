@@ -1,0 +1,34 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "yay-bulk-order/variant-table-root",
+  "version": "0.1.0",
+  "title": "Variant Table",
+  "category": "woocommerce",
+  "description": "Lists a variable product's variations as a table optimized for bulk ordering. On a Single Product page it automatically shows that product's variations.",
+  "textdomain": "yay-bulk-order",
+  "attributes": {
+    "productId": {
+      "type": "number",
+      "default": 0
+    },
+    "hasSelectedProduct": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "providesContext": {
+    "yay-bulk-order/variantProductId": "productId"
+  },
+  "usesContext": ["postId", "postType"],
+  "supports": {
+    "interactivity": true,
+    "html": false,
+    "align": ["wide", "full"],
+    "anchor": true
+  },
+  "editorScript": "file:./editor.js",
+  "style": "file:./style-editor.css",
+  "render": "file:./render.php",
+  "viewScriptModule": "file:./frontend-module.js"
+}

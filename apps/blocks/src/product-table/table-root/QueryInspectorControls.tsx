@@ -5,7 +5,7 @@ import { __ } from '@wordpress/i18n';
 
 import CategoryPicker from './CategoryPicker';
 import HandPickedPicker from './HandPickedPicker';
-import { ALL_PRODUCTS_OPTION, INHERIT_OPTION, QUERY_TYPE_OPTIONS } from './query-types';
+import { ALL_PRODUCTS_OPTION, INHERIT_OPTION, isProPlan, QUERY_TYPE_OPTIONS } from './query-types';
 
 type QueryInspectorControlsProps = {
   attributes: ProductTableAttributes;
@@ -22,12 +22,13 @@ export default function QueryInspectorControls({
 }: QueryInspectorControlsProps) {
   const { productQuery } = attributes;
   const isInherit = productQuery.queryType === 'inherit';
+  const isPro = isProPlan();
 
   const options = isCatalogOrArchiveTemplate || isInherit ? [INHERIT_OPTION, ...BASE_OPTIONS] : BASE_OPTIONS;
 
   const changeQueryType = (queryType: string) => {
     const option = options.find((candidate) => candidate.queryType === queryType);
-    if (option) {
+    if (option && !(option.requiresPro && !isPro)) {
       setAttributes({ productQuery: option.defaultQuery });
     }
   };
@@ -53,7 +54,11 @@ export default function QueryInspectorControls({
           __nextHasNoMarginBottom
           label={__('Collection', 'yay-bulk-order')}
           value={productQuery.queryType}
-          options={options.map((option) => ({ label: option.label, value: option.queryType }))}
+          options={options.map((option) => ({
+            label: option.requiresPro && !isPro ? `${option.label} (${__('Pro', 'yay-bulk-order')})` : option.label,
+            value: option.queryType,
+            disabled: option.requiresPro && !isPro,
+          }))}
           onChange={changeQueryType}
         />
 

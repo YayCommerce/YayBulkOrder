@@ -18,6 +18,7 @@ class YayBulkOrder {
         \YayBulkOrder\Engines\Blocks\RegisterBlocks::get_instance();
         \YayBulkOrder\Engines\Shortcodes\ProductTableShortcode::get_instance();
         \YayBulkOrder\Engines\Admin\AdminPage::get_instance();
+        \YayBulkOrder\Engines\Admin\ProductTable::get_instance();
         \YayBulkOrder\Engines\RestAPI::get_instance();
 
         \YayBulkOrder\Engines\Blocks\Patterns\PatternRegistry::get_instance();

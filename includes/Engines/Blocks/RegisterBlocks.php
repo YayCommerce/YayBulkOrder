@@ -3,6 +3,7 @@ namespace YayBulkOrder\Engines\Blocks;
 
 use WP_Block_Patterns_Registry;
 use YayBulkOrder\Services\LocalizeService;
+use YayBulkOrder\Utils\BlockHelper;
 use YayBulkOrder\Services\PatternService;
 use YayBulkOrder\Utils\SingletonTrait;
 
@@ -25,8 +26,8 @@ class RegisterBlocks {
     }
 
     public function register_blocks() {
-        $this->pattern_service->register_collection( YAYBULKORDER_PLUGIN_PATH . 'assets/dist/blocks/product-table' );
-        $this->pattern_service->register_collection( YAYBULKORDER_PLUGIN_PATH . 'assets/dist/blocks/common' );
+        BlockHelper::register_block_collection( YAYBULKORDER_PLUGIN_PATH . 'assets/dist/blocks/product-table' );
+        BlockHelper::register_block_collection( YAYBULKORDER_PLUGIN_PATH . 'assets/dist/blocks/common' );
     }
 
     public function enqueue_block_assets() {

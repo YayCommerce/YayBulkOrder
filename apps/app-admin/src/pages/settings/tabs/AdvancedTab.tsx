@@ -2,10 +2,12 @@ import { Settings } from '@yay-bulk-order/common/src/schemas';
 import { Controller, useFormContext } from 'react-hook-form';
 import { __ } from '@wordpress/i18n';
 
+import { isPro } from '@/lib/utils';
 import { Field, FieldSet } from '@/components/ui/field';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
+import { UpgradeToProBadge } from '@/components/custom/upgrate-to-pro';
 
 export function AdvancedTab() {
   const { control } = useFormContext<Settings>();
@@ -14,7 +16,10 @@ export function AdvancedTab() {
     <div className="flex flex-col gap-5">
       <FieldSet className="gap-4">
         <div className="mb-1">
-          <h2 className="font-semibold">{__('My Account Page', 'yay-bulk-order')}</h2>
+          <div className="flex items-center gap-2">
+            <h2 className="font-semibold">{__('My Account Page', 'yay-bulk-order')}</h2>
+            {!isPro && <UpgradeToProBadge />}
+          </div>
           <p className="text-muted-foreground">{__('Add new menu options to the My Account Page')}</p>
         </div>
         <Controller
@@ -38,6 +43,7 @@ export function AdvancedTab() {
                 id="purchase-list-is-add-to-account-page"
                 checked={field.value}
                 onCheckedChange={field.onChange}
+                disabled={!isPro}
               />
             </Field>
           )}
@@ -63,6 +69,7 @@ export function AdvancedTab() {
                 id="csv-order-is-add-to-account-page"
                 checked={field.value}
                 onCheckedChange={field.onChange}
+                disabled={!isPro}
               />
             </Field>
           )}
@@ -73,7 +80,10 @@ export function AdvancedTab() {
 
       <FieldSet className="gap-4">
         <div className="mb-1">
-          <h2 className="font-semibold">{__('"Save as Purchase List" Button', 'yay-bulk-order')}</h2>
+          <div className="flex items-center gap-2">
+            <h2 className="font-semibold">{__('"Save as Purchase List" Button', 'yay-bulk-order')}</h2>
+            {!isPro && <UpgradeToProBadge />}
+          </div>
           <p className="text-muted-foreground">
             {__('Enable customers to save purchase lists from their cart and orders history')}
           </p>
@@ -100,6 +110,7 @@ export function AdvancedTab() {
                 id="save-purchase-list-button-is-add-to-cart-page"
                 checked={field.value}
                 onCheckedChange={field.onChange}
+                disabled={!isPro}
               />
             </Field>
           )}
@@ -126,6 +137,7 @@ export function AdvancedTab() {
                 id="save-purchase-list-button-is-add-to-checkout-page"
                 checked={field.value}
                 onCheckedChange={field.onChange}
+                disabled={!isPro}
               />
             </Field>
           )}
@@ -152,6 +164,7 @@ export function AdvancedTab() {
                 id="save-purchase-list-button-is-add-to-mini-cart"
                 checked={field.value}
                 onCheckedChange={field.onChange}
+                disabled={!isPro}
               />
             </Field>
           )}
@@ -181,6 +194,7 @@ export function AdvancedTab() {
                 id="save-purchase-list-button-is-add-to-my-order-page"
                 checked={field.value}
                 onCheckedChange={field.onChange}
+                disabled={!isPro}
               />
             </Field>
           )}
