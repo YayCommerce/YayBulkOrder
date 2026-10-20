@@ -3,8 +3,10 @@ import { getGlobalConfig } from '@yay-bulk-order/common/src/globalConfig';
 import {
   addProductsToCartBatch,
   addProductToCart,
+  getStoreApiErrorMessage,
   STORE_NAMESPACE,
   syncWooCommerceCart,
+  type BatchAddResult,
   type StoreApiCart,
 } from '@yay-bulk-order/common/src/storeApi';
 import { formatCartSubtotal, formatPrice } from '@yay-bulk-order/common/src/storeApi/currency';
@@ -258,6 +260,14 @@ const storeDef = {
       const { tableState } = getContext<ProductTableContext>();
       return `View cart | ${tableState.cartNotice.totalFormatted}`;
     },
+    get showCartError(): boolean {
+      const { tableState } = getContext<ProductTableContext>();
+      return tableState.cartError.messages.length > 0;
+    },
+    get cartErrorText(): string {
+      const { tableState } = getContext<ProductTableContext>();
+      return tableState.cartError.messages.join('\n');
+    },
     get cartUrl(): string {
       return window.wc_add_to_cart_params?.cart_url ?? '#';
     },
@@ -373,6 +383,10 @@ const storeDef = {
       const { tableState } = getContext<ProductTableContext>();
       tableState.cartNotice.visible = false;
     },
+    clearCartError() {
+      const { tableState } = getContext<ProductTableContext>();
+      tableState.cartError.messages = [];
+    },
     *addSelectedToCart() {
       const { tableState } = getContext<ProductTableContext>();
       const selectedRows = getSelectedRows(tableState);
@@ -382,15 +396,20 @@ const storeDef = {
       }
 
       tableState.bulkAdding = true;
+      tableState.cartError.messages = [];
       try {
-        const cart: StoreApiCart = yield addProductsToCartBatch(selectedRows);
+        const { cart, errors, addedCount }: BatchAddResult = yield addProductsToCartBatch(selectedRows);
         syncWooCommerceCart(cart);
-        tableState.select = {};
-        tableState.cartNotice = buildCartNotice(cart, true);
+        if (addedCount > 0) {
+          tableState.select = {};
+        }
+        tableState.cartNotice = buildCartNotice(cart, addedCount > 0);
+        tableState.cartError.messages = errors;
         // Update row state after a bulk add.
         applyCartQuantities(cart);
       } catch (error) {
         console.error(error);
+        tableState.cartError.messages = [getStoreApiErrorMessage(error)];
       } finally {
         tableState.bulkAdding = false;
       }
@@ -403,18 +422,20 @@ const storeDef = {
         return;
       }
       context.isAddingToCart = true;
+      const { tableState } = getContext<ProductTableContext>();
+      tableState.cartError.messages = [];
       try {
         const cart: StoreApiCart = yield addProductToCart(productId, quantity, variationSelections);
         const item = cart.items?.find((item) => item.id === productId);
         context.cartQuantity = item?.quantity ?? 0;
         syncWooCommerceCart(cart);
-        const { tableState } = getContext<ProductTableContext>();
         // Only refresh the total; leave the notice's current visibility as-is.
         tableState.cartNotice = buildCartNotice(cart, tableState.cartNotice.visible);
         // Sync external state to prevent stale total overwrite.
         applyCartQuantities(cart);
       } catch (error) {
         console.error(error);
+        tableState.cartError.messages = [getStoreApiErrorMessage(error)];
       } finally {
         context.isAddingToCart = false;
       }

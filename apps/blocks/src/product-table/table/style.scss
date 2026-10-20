@@ -997,3 +997,50 @@
     }
   }
 }
+
+.ybo-cart-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  position: fixed;
+  left: 50%;
+  bottom: 80px;
+  translate: -50% 0;
+  z-index: 9999999;
+  width: max-content;
+  max-width: calc(100vw - 32px);
+  padding: 10px 10px 10px 14px;
+  background-color: #fff;
+  color: #b32d2e;
+  border-left: 4px solid #d63638;
+  border-radius: var(--ybo-border-radius, 8px);
+  box-shadow: 0 3px 20px 0 rgba(0, 0, 0, 0.15);
+
+  &[hidden] {
+    display: none;
+  }
+
+  &__text {
+    white-space: pre-line;
+    line-height: 1.5;
+  }
+
+  &__close {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 24px !important;
+    height: 24px !important;
+    border-radius: 50% !important;
+    border: none !important;
+    background-color: transparent !important;
+    color: #6d6d6d !important;
+    cursor: pointer !important;
+    padding: 0 !important;
+
+    &:hover {
+      color: #43454b !important;
+    }
+  }
+}

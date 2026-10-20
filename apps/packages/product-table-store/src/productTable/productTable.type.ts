@@ -69,6 +69,9 @@ export type ProductTableContext = {
       visible: boolean;
       totalFormatted: string;
     };
+    cartError: {
+      messages: string[];
+    };
     filter: {
       categories: string[];
       tags: string[];

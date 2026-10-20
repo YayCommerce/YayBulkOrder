@@ -11,6 +11,7 @@
 
     "build": "pnpm --filter @yay-bulk-order/blocks... build",
     "build:pro":"pnpm --filter @yay-bulk-order/blocks-pro... build",
+    "build:checkout-slotfill":"pnpm --filter @yay-bulk-order/block-checkout-slotfill build",
     "build:admin:pro": "pnpm --filter @yay-bulk-order/app-admin... build:pro",
     "build:admin:lite": "pnpm --filter @yay-bulk-order/app-admin... build:lite",
     

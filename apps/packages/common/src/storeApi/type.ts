@@ -30,9 +30,15 @@ export type StoreApiCart = Readonly<{
   totals?: StoreApiCartTotals;
 }>;
 
+export type StoreApiMessages = {
+  addToCartFailed?: string;
+  rateLimited?: string;
+};
+
 export type StoreConfig = {
   restUrl: string;
   nonce: string;
+  messages: StoreApiMessages;
 };
 
 export type StoreApiRequestOptions = {
@@ -64,4 +70,10 @@ export type BatchCartItem = {
   productId: number;
   quantity: number;
   variationSelections?: StoreApiVariationSelection[];
+};
+
+export type BatchAddResult = {
+  cart: StoreApiCart;
+  errors: string[];
+  addedCount: number;
 };

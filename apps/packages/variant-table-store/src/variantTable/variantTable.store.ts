@@ -1,5 +1,3 @@
-import { getContext, getElement, store } from '@wordpress/interactivity';
-
 import { initCartSync } from '@yay-bulk-order/common/src/cartSync';
 import { getGlobalConfig } from '@yay-bulk-order/common/src/globalConfig';
 // `addProductsToCartBatch`/`syncWooCommerceCart` read their Store API
@@ -9,12 +7,20 @@ import { getGlobalConfig } from '@yay-bulk-order/common/src/globalConfig';
 // this reused code needs no changes.
 import {
   addProductsToCartBatch,
+  getStoreApiErrorMessage,
   syncWooCommerceCart,
-  type StoreApiCart,
+  type BatchAddResult,
 } from '@yay-bulk-order/common/src/storeApi';
 import { formatCartSubtotal, formatPrice } from '@yay-bulk-order/common/src/storeApi/currency';
+import { getContext, getElement, store } from '@wordpress/interactivity';
 
-import type { SelectedVariantRow, TableState, VariantRowContext, VariantRowState, VariantTableContext } from './variantTable.type';
+import type {
+  SelectedVariantRow,
+  TableState,
+  VariantRowContext,
+  VariantRowState,
+  VariantTableContext,
+} from './variantTable.type';
 
 export const STORE_NAMESPACE = 'yay-bulk-order/variant-table';
 
@@ -103,6 +109,14 @@ const storeDef = {
       const { tableState } = getContext<VariantTableContext>();
       return `View cart | ${tableState.cartNotice.totalFormatted}`;
     },
+    get showCartError(): boolean {
+      const { tableState } = getContext<VariantTableContext>();
+      return tableState.cartError.messages.length > 0;
+    },
+    get cartErrorText(): string {
+      const { tableState } = getContext<VariantTableContext>();
+      return tableState.cartError.messages.join('\n');
+    },
     get cartUrl(): string {
       return window.wc_add_to_cart_params?.cart_url ?? '#';
     },
@@ -140,6 +154,10 @@ const storeDef = {
       const context = getContext<VariantTableContext>();
       context.tableState.cartNotice.visible = false;
     },
+    clearCartError() {
+      const context = getContext<VariantTableContext>();
+      context.tableState.cartError.messages = [];
+    },
     *addSelectedToCart() {
       const { tableState } = getContext<VariantTableContext>();
       const selectedRows = getSelectedRows(tableState);
@@ -149,19 +167,24 @@ const storeDef = {
       }
 
       tableState.bulkAdding = true;
+      tableState.cartError.messages = [];
       try {
         const items = selectedRows.map(({ variationId, quantity, variationSelections }) => ({
           productId: variationId,
           quantity,
           variationSelections,
         }));
-        const cart: StoreApiCart = yield addProductsToCartBatch(items);
+        const { cart, errors, addedCount }: BatchAddResult = yield addProductsToCartBatch(items);
         syncWooCommerceCart(cart);
-        tableState.select = {};
-        tableState.cartNotice = { visible: true, totalFormatted: formatCartSubtotal(cart.totals) };
+        if (addedCount > 0) {
+          tableState.select = {};
+        }
+        tableState.cartNotice = { visible: addedCount > 0, totalFormatted: formatCartSubtotal(cart.totals) };
+        tableState.cartError.messages = errors;
         applyCartQuantities(cart);
       } catch (error) {
         console.error(error);
+        tableState.cartError.messages = [getStoreApiErrorMessage(error)];
       } finally {
         tableState.bulkAdding = false;
       }
