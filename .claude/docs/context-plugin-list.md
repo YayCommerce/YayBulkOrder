@@ -84,4 +84,4 @@ Always shipped, in `includes/` root.
 
 - Plugin header: "Yay Bulk Order for WooCommerce", current version `0.2.1.5` — a 4-segment scheme, not the `X.Y.Z` / `X.Y.Z-rcN` scheme used by sister plugins. There is no established pre-release suffix convention here yet; `/wdist-staging` asks before assuming one.
 - Version is defined in **two places per file, two files total**: the `Version:` header comment and the `define( 'YAYBULKORDER_VERSION', ... )` constant, in both `yay-bulk-order.php` (Lite) and `assets/pro/yay-bulk-order-pro.php` (Pro) — all four must stay in sync.
-- No `readme.txt` exists yet in this repo (unlike YayWholesale/YayBookster) — nothing else to update on a version bump.
+- `readme.txt` (shipped in both zips): bump `Stable tag:` and add a `== Changelog ==` entry on each version bump. Keep `WC tested up to:` in sync with the plugin headers.

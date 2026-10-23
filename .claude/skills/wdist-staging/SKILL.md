@@ -78,4 +78,4 @@ This builds the admin SPA + block packages, strips dev-only files per `.distigno
 - Always keep the lite and pro header + constant versions in sync — they ship from the same tag/commit.
 - Do not commit the version bump unless the user asks.
 - `pnpm install` runs as part of `release.sh` — no need to run it separately first.
-- There is no `readme.txt` in this repo yet — nothing else to update on a version bump.
+- Also bump `Stable tag:` in `readme.txt` and add a `== Changelog ==` entry.

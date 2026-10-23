@@ -25,11 +25,11 @@ win-release.sh
 /apps
 /tools
 /release
+/tests
 README.md
 
 /vendor/bin
 /vendor/yaycommerce
 scoper.inc.php
 
-composer.json
 composer.lock
