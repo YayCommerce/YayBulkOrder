@@ -3,6 +3,7 @@ import './globals';
 import { getConfig } from '@wordpress/interactivity';
 
 import type {
+  BatchAddResult,
   BatchCartItem,
   BatchRequestItem,
   BatchResponse,
@@ -12,7 +13,7 @@ import type {
   StoreConfig,
 } from './type';
 
-export type { StoreApiCart, StoreApiCartItem, StoreApiCartTotals } from './type';
+export type { BatchAddResult, StoreApiCart, StoreApiCartItem, StoreApiCartTotals } from './type';
 
 export const STORE_NAMESPACE = 'yay-bulk-order/product-table';
 
@@ -37,7 +38,38 @@ function getStoreConfig(): StoreConfig {
   return {
     restUrl: config.restUrl ?? '',
     nonce: config.nonce ?? '',
+    messages: config.messages ?? {},
   };
+}
+
+export class StoreApiError extends Error {
+  constructor(
+    message: string,
+    readonly status: number,
+    readonly code?: string,
+  ) {
+    super(message);
+    this.name = 'StoreApiError';
+  }
+}
+
+function toPlainText(html: string): string {
+  return new DOMParser().parseFromString(html, 'text/html').body.textContent?.trim() ?? '';
+}
+
+function toStoreApiError(status: number, body: unknown): StoreApiError {
+  const { code, message } = (body ?? {}) as { code?: string; message?: string };
+  const { messages } = getStoreConfig();
+  const fallback = status === 429 ? messages.rateLimited : messages.addToCartFailed;
+
+  return new StoreApiError(toPlainText(message ?? '') || fallback || 'Store API request failed', status, code);
+}
+
+export function getStoreApiErrorMessage(error: unknown): string {
+  if (error instanceof StoreApiError) {
+    return error.message;
+  }
+  return getStoreConfig().messages.addToCartFailed || 'Store API request failed';
 }
 
 async function storeApiRequest<T>(endpoint: string, { method = 'GET', body }: StoreApiRequestOptions = {}): Promise<T> {
@@ -63,9 +95,7 @@ async function storeApiRequest<T>(endpoint: string, { method = 'GET', body }: St
   const data: unknown = await response.json().catch(() => undefined);
 
   if (!response.ok) {
-    throw new Error(
-      (data as { message?: string } | undefined)?.message ?? response.statusText ?? 'Store API request failed',
-    );
+    throw toStoreApiError(response.status, data);
   }
 
   return data as T;
@@ -115,11 +145,13 @@ function chunk<T>(items: readonly T[], size: number): T[][] {
   return chunks;
 }
 
-export async function addProductsToCartBatch(items: readonly BatchCartItem[]): Promise<StoreApiCart> {
+export async function addProductsToCartBatch(items: readonly BatchCartItem[]): Promise<BatchAddResult> {
   let cart = await storeApiRequest<StoreApiCart>(STORE_API.cart.fetch);
+  const errors: string[] = [];
+  let addedCount = 0;
 
   if (!items.length) {
-    return cart;
+    return { cart, errors, addedCount };
   }
 
   for (const group of chunk(items, BATCH_REQUEST_LIMIT)) {
@@ -147,7 +179,11 @@ export async function addProductsToCartBatch(items: readonly BatchCartItem[]): P
               path: `/${STORE_API.cart.addItem}`,
               method: 'POST',
               headers,
-              body: { id: productId, quantity, ...(variationSelections?.length ? { variation: variationSelections } : {}) },
+              body: {
+                id: productId,
+                quantity,
+                ...(variationSelections?.length ? { variation: variationSelections } : {}),
+              },
             },
       );
     }
@@ -156,25 +192,25 @@ export async function addProductsToCartBatch(items: readonly BatchCartItem[]): P
       continue;
     }
 
-    const batchResponse = await storeApiRequest<BatchResponse<StoreApiCart>>(STORE_API.cart.batch, {
-      method: 'POST',
-      body: { requests },
-    });
-
-    const succeeded = batchResponse.responses.filter((response) => response.status < 400);
-    const failed = batchResponse.responses.filter((response) => response.status >= 400);
-
-    if (failed.length) {
-      console.error('Some items could not be added to the cart', failed);
+    let batchResponse: BatchResponse<StoreApiCart>;
+    try {
+      batchResponse = await storeApiRequest<BatchResponse<StoreApiCart>>(STORE_API.cart.batch, {
+        method: 'POST',
+        body: { requests },
+      });
+    } catch (error) {
+      errors.push(getStoreApiErrorMessage(error));
+      break;
     }
 
-    // Only bail out if literally nothing in this batch went through;
-    // partial success should still sync whatever did get added.
-    if (!succeeded.length) {
-      throw new Error('Bulk add to cart failed');
+    for (const response of batchResponse.responses) {
+      if (response.status < 400) {
+        addedCount++;
+        cart = response.body;
+      } else {
+        errors.push(toStoreApiError(response.status, response.body).message);
+      }
     }
-
-    cart = succeeded[succeeded.length - 1].body;
   }
 
   // A batch sub-response's embedded cart reflects totals recalculated for
@@ -183,7 +219,13 @@ export async function addProductsToCartBatch(items: readonly BatchCartItem[]): P
   // multi-currency conversion re-applied on the next full cart load) can
   // still be stale on it. Re-fetch once everything has been added so the
   // totals we hand back match what WooCommerce's own cart/mini-cart show.
-  return storeApiRequest<StoreApiCart>(STORE_API.cart.fetch);
+  try {
+    cart = await storeApiRequest<StoreApiCart>(STORE_API.cart.fetch);
+  } catch (error) {
+    errors.push(getStoreApiErrorMessage(error));
+  }
+
+  return { cart, errors: Array.from(new Set(errors)), addedCount };
 }
 
 // Prevent reacting to cart updates triggered by this module.

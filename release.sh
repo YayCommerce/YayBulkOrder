@@ -102,7 +102,7 @@ if [ "$BUILD_VARIANT" = "lite" ]; then
     cp "$PROJECT_PATH/composer.json" "$DEST_PATH/composer.json"
     [ -f "$PROJECT_PATH/composer.lock" ] && cp "$PROJECT_PATH/composer.lock" "$DEST_PATH/composer.lock"
     composer dump-autoload --optimize --no-dev --working-dir="$DEST_PATH"
-    rm -f "$DEST_PATH/composer.json" "$DEST_PATH/composer.lock"
+    rm -f "$DEST_PATH/composer.lock"
 else
     cp "$DEST_PATH/assets/pro/yay-bulk-order-pro.php" "$DEST_PATH/"
     rm "$DEST_PATH/assets/pro/yay-bulk-order-pro.php"

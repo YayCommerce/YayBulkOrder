@@ -40,6 +40,10 @@ wp_interactivity_config(
 	array(
 		'restUrl' => esc_url_raw( rest_url() ),
 		'nonce'   => wp_create_nonce( 'wc_store_api' ),
+		'messages' => array(
+			'addToCartFailed' => __( 'Could not add the items to the cart. Please try again.', 'yay-bulk-order' ),
+			'rateLimited'     => __( 'Too many requests. Please wait and try again.', 'yay-bulk-order' ),
+		),
 	)
 );
 
@@ -60,6 +64,9 @@ $data_context = [
         'cartNotice' => [
             'visible' => false,
             'totalFormatted' => '',
+        ],
+        'cartError' => [
+            'messages' => [],
         ],
         'bulkActionOutOfView' => false,
     ],

@@ -887,30 +887,60 @@
     display: flex;
     flex-direction: column;
     gap: 14px;
+    margin-bottom: 20px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 
-  &__link {
-    display: block !important;
+  &__checkbox {
+    display: flex !important;
+    align-items: center;
+    gap: 8px;
     width: 100% !important;
     cursor: pointer;
-    border: none !important;
-    background: none;
-    background-color: unset !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-    text-align: left !important;
     font-size: 0.95rem;
-    transition: color 0.15s ease-in-out !important;
     margin: 0 !important;
-    &:hover {
-      text-decoration: underline !important;
+
+    input[type='checkbox'] {
+      cursor: pointer;
     }
 
-    &.is-active {
-      font-weight: 600;
-      color: var(--ybo-primary-color, inherit) !important;
-      text-decoration: underline !important;
+    &:hover {
+      color: var(--ybo-primary-color, inherit);
     }
+  }
+
+  &__price-range {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  &__price-input {
+    width: 0;
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 6px 8px !important;
+    border: 1px solid var(--ybo-border-default-color) !important;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    color: inherit;
+    background-color: transparent;
+    // Hide the native number spinner — plain min/max fields, not a stepper.
+    -moz-appearance: textfield;
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
+
+  &__price-separator {
+    flex: 0 0 auto;
+    color: var(--ybo-description-color, #7b7c80);
   }
 }
 
@@ -964,6 +994,53 @@
     &.is-disabled {
       opacity: 0.35;
       cursor: not-allowed;
+    }
+  }
+}
+
+.ybo-cart-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  position: fixed;
+  left: 50%;
+  bottom: 80px;
+  translate: -50% 0;
+  z-index: 9999999;
+  width: max-content;
+  max-width: calc(100vw - 32px);
+  padding: 10px 10px 10px 14px;
+  background-color: #fff;
+  color: #b32d2e;
+  border-left: 4px solid #d63638;
+  border-radius: var(--ybo-border-radius, 8px);
+  box-shadow: 0 3px 20px 0 rgba(0, 0, 0, 0.15);
+
+  &[hidden] {
+    display: none;
+  }
+
+  &__text {
+    white-space: pre-line;
+    line-height: 1.5;
+  }
+
+  &__close {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 24px !important;
+    height: 24px !important;
+    border-radius: 50% !important;
+    border: none !important;
+    background-color: transparent !important;
+    color: #6d6d6d !important;
+    cursor: pointer !important;
+    padding: 0 !important;
+
+    &:hover {
+      color: #43454b !important;
     }
   }
 }

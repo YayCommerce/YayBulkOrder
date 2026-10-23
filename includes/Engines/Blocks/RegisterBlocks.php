@@ -16,6 +16,18 @@ class RegisterBlocks {
     private LocalizeService $localize_service;
     private PatternService $pattern_service;
 
+    /**
+     * Per-request count of how many times each baked-in `queryId` has been
+     * seen so far, keyed by that original queryId. Used by
+     * disambiguate_query_id() to keep two Product Table instances that
+     * happen to share the same queryId (e.g. the same static pattern
+     * inserted twice on one page) from reading/writing each other's
+     * query-{id}-* URL filter params.
+     *
+     * @var array<int|string, int>
+     */
+    private array $seen_query_ids = [];
+
     protected function __construct() {
         $this->localize_service = LocalizeService::get_instance();
         $this->pattern_service  = PatternService::get_instance();
@@ -23,6 +35,51 @@ class RegisterBlocks {
         add_action( 'init', [ $this, 'register_blocks' ] );
         add_action( 'enqueue_block_assets', [ $this, 'enqueue_block_assets' ] );
         add_action( 'enqueue_block_editor_assets', [ $this, 'enqueue_block_editor_assets' ] );
+        add_filter( 'render_block_data', [ $this, 'disambiguate_query_id' ] );
+    }
+
+    /**
+     * Rewrites a Product Table root block's `queryId` attribute the 2nd+
+     * time that same queryId is seen while rendering the current request.
+     *
+     * `providesContext` resolves a block's context from its *attributes*
+     * before render.php ever runs, so render.php itself can't fix this up
+     * for its children after the fact — this filter is the one hook that
+     * runs early enough (`render_block_data`, before the block is turned
+     * into a WP_Block) to change what every descendant (filter sidebar,
+     * pagination, search) — and this block's own
+     * `data-wp-router-region` — end up seeing.
+     *
+     * The editor already assigns a fresh queryId when it detects a
+     * collision between sibling blocks in the *same* post (see
+     * table-root/edit.tsx), but that never runs for content assembled
+     * outside the block editor: the `[ybo-product-table]` shortcode (which
+     * always bakes `queryId: 1`), or any post content built programmatically
+     * (stashed "apply to a new page" content, migrations, tests). This is
+     * the catch-all for those paths.
+     *
+     * Offsets rather than string-suffixes the id (`base + occurrence *
+     * 100_000_000`) so `queryId` stays a plain int everywhere downstream —
+     * no type changes needed in BlockHelper or the JS store.
+     *
+     * @param array $parsed_block The parsed block, as WordPress is about to render it.
+     * @return array
+     */
+    public function disambiguate_query_id( array $parsed_block ): array {
+        if ( 'yay-bulk-order/product-table-root' !== ( $parsed_block['blockName'] ?? null ) ) {
+            return $parsed_block;
+        }
+
+        $base_query_id = $parsed_block['attrs']['queryId'] ?? 0;
+        $occurrence    = $this->seen_query_ids[ $base_query_id ] ?? 0;
+
+        $this->seen_query_ids[ $base_query_id ] = $occurrence + 1;
+
+        if ( $occurrence > 0 ) {
+            $parsed_block['attrs']['queryId'] = $base_query_id + ( $occurrence * 100000000 );
+        }
+
+        return $parsed_block;
     }
 
     public function register_blocks() {

@@ -14,7 +14,7 @@
     }
   },
   "require-dev": {
-    "humbug/php-scoper": "^0.18.18",
+    "humbug/php-scoper": "^0.18.20",
     "thecodingmachine/safe": "^3.4"
   },
   "config": {},
