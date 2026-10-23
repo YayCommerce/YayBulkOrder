@@ -18,6 +18,17 @@ class ProductTable {
         $this->product_tables_service = ProductTablesService::get_instance();
 
         add_action( 'init', [ $this, 'register_post_type' ] );
+        add_filter( 'default_content', [ $this, 'replace_the_stashed_to_the_content' ], 10, 2 );
+    }
+
+    public function replace_the_stashed_to_the_content( string $content, \WP_Post $post ) {
+        if ( ! $post instanceof \WP_Post || 'page' !== $post->post_type || 'auto-draft' !== $post->post_status ) {
+            return $content;
+        }
+
+        $blocks = $this->product_tables_service->pop_new_page_block_content();
+
+        return '' !== $blocks ? $blocks : $content;
     }
 
     public function register_post_type() {

@@ -21,6 +21,8 @@ class YayBulkOrder {
         \YayBulkOrder\Engines\Admin\ProductTable::get_instance();
         \YayBulkOrder\Engines\RestAPI::get_instance();
 
+        \YayBulkOrder\Engines\Frontend\StorePage::get_instance();
+
         \YayBulkOrder\Engines\Blocks\Patterns\PatternRegistry::get_instance();
         \YayBulkOrder\Engines\Compatibles\Compatibles::get_instance();
 

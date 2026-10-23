@@ -1,6 +1,7 @@
 <?php
 namespace YayBulkOrder\Engines\Compatibles;
 
+use YayBulkOrder\Engines\Compatibles\YayWholesale\YayWholesale;
 use YayBulkOrder\Utils\SingletonTrait;
 
 defined( 'ABSPATH' ) || exit;

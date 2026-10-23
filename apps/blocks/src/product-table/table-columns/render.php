@@ -5,6 +5,10 @@
  * @var WP_Block $block The block instance.
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use YayBulkOrder\Services\ProductQueryService;
 use YayBulkOrder\Services\LocalizeService;
 use YayBulkOrder\Services\PricingService;
@@ -96,7 +100,7 @@ $render_row = function ( $block, $product_id, $product, $default_cart_quantity, 
 ?>
 
 <tbody
-    <?php echo get_block_wrapper_attributes(); ?>
+    <?php echo get_block_wrapper_attributes(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 >
 <?php
 
@@ -130,7 +134,7 @@ if ( $query->have_posts() ) {
 
     // end row loop
     wp_reset_postdata();
-    echo $table_body_content;
+    echo $table_body_content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
 ?>

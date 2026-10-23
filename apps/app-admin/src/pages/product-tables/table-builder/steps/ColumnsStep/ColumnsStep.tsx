@@ -103,10 +103,10 @@ export default function ColumnsStep({ setSteps }: BuilderStepsProps) {
       </div>
 
       <div className="flex items-center justify-center gap-4 border-t pt-6">
-        <Button variant="outline" size="sm" onClick={() => setSteps('products')}>
+        <Button variant="outline" onClick={() => setSteps('products')}>
           {__('Back', 'yay-bulk-order')}
         </Button>
-        <Button variant="primary" size="sm" onClick={handleNext}>
+        <Button variant="primary" onClick={handleNext}>
           {__('Next', 'yay-bulk-order')}
         </Button>
       </div>

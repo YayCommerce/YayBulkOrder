@@ -29,11 +29,8 @@ export function DesignPreviewTable() {
 
   return (
     <div className="w-217 overflow-auto rounded-md border" style={cellStyle}>
-      <table
-        className="w-full table-auto border-collapse overflow-hidden text-left text-sm"
-        style={{ background: watch('colors.background'), color: watch('colors.text') }}
-      >
-        <thead>
+      <table className="w-full table-auto border-collapse overflow-hidden text-left text-sm">
+        <thead style={{ background: watch('colors.headerBackground'), color: watch('colors.headerText') }}>
           <tr className="border-b" style={cellStyle}>
             <PreviewTableHeader style={cellStyle}>{__('Product', 'yay-bulk-order')}</PreviewTableHeader>
             <PreviewTableHeader style={cellStyle}>{__('Description', 'yay-bulk-order')}</PreviewTableHeader>
@@ -44,7 +41,7 @@ export function DesignPreviewTable() {
             <PreviewTableHeader style={cellStyle} />
           </tr>
         </thead>
-        <tbody>
+        <tbody style={{ background: watch('colors.background'), color: watch('colors.text') }}>
           {products.map((product) => (
             <tr key={product.sku} className="border-b" style={cellStyle}>
               <PreviewTableCell className="flex items-center gap-2 border-0" style={cellStyle}>

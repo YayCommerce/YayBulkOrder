@@ -10,11 +10,13 @@ import { ProductTable } from '@yay-bulk-order/common/src/schemas';
 import { ProductTableForm, ProductTableListParams } from '@yay-bulk-order/common/src/schemas/product-tables.schema';
 
 import {
+  applyToShopPage,
   bulkDeleteProductTable,
   createProductTable,
   deleteProductTable,
   getProductTable,
   getProductTables,
+  stashNewPageBlocks,
   updateProductTable,
 } from '@/lib/api/product-tables.api';
 
@@ -34,6 +36,12 @@ export const PRODUCT_TABLE_QUERIES = {
       queryFn: () => getProductTable(id),
       enabled: id > 0,
     }),
+  shopTableId: () =>
+    queryOptions({
+      queryKey: ['shop-product-table'] as const,
+      queryFn: () => window.yayBulkOrderAdminData.shopTableId,
+      placeholderData: window.yayBulkOrderAdminData.shopTableId,
+    }),
 };
 
 /** ─── Mutation Keys ─────────────────────────────────── */
@@ -43,6 +51,9 @@ const PRODUCT_TABLE_MUTATION_KEYS = {
   update: (id: number) => ['product-tables', id, 'update'] as const,
   delete: (id: number) => ['product-tables', id, 'delete'] as const,
   bulk_delete: ['product-tables', 'bulk', 'delete'] as const,
+  stash: ['product-tables', 'stash'] as const,
+  apply_to_shop: ['product-tables', 'apply_to_shop'] as const,
+  remove_from_shop: ['product-tables', 'remove_from_shop'] as const,
   // For isMutating
   bulk: ['product-tables', 'bulk'] as const,
   all: ['product-tables'] as const,
@@ -56,6 +67,10 @@ export function useProductTablesQuery(filter: ProductTableListParams) {
 
 export function useProductTableQuery(id: number) {
   return useQuery(PRODUCT_TABLE_QUERIES.single(id));
+}
+
+export function useShopProductTableIdQuery() {
+  return useQuery(PRODUCT_TABLE_QUERIES.shopTableId());
 }
 
 /** Mutations */
@@ -103,10 +118,51 @@ export function useBulkDeleteProductTablesMutation() {
   });
 }
 
+export function useStashNewPageBlocksMutation() {
+  return useMutation({
+    mutationKey: PRODUCT_TABLE_MUTATION_KEYS.stash,
+    mutationFn: (content: string) => stashNewPageBlocks(content),
+  });
+}
+
+export function useApplyToShopMutation(tableId: number) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: PRODUCT_TABLE_MUTATION_KEYS.apply_to_shop,
+    mutationFn: () => applyToShopPage(tableId),
+    onSuccess: (data) => {
+      if (data) {
+        window.yayBulkOrderAdminData.shopTableId = tableId;
+        queryClient.invalidateQueries(PRODUCT_TABLE_QUERIES.shopTableId());
+      }
+    },
+  });
+}
+
+export function useRemoveFromShopMutation() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: PRODUCT_TABLE_MUTATION_KEYS.remove_from_shop,
+    mutationFn: () => applyToShopPage(0),
+    onSuccess: (data) => {
+      if (data) {
+        window.yayBulkOrderAdminData.shopTableId = 0;
+        queryClient.invalidateQueries(PRODUCT_TABLE_QUERIES.shopTableId());
+      }
+    },
+  });
+}
+
 /** Utils */
 
 export function useIsMutatingProductTables() {
   return useIsMutating({ mutationKey: PRODUCT_TABLE_MUTATION_KEYS.all }) > 0;
+}
+
+export function useIsSavingProductTable(id: number) {
+  const isAdding = useIsMutating({ mutationKey: PRODUCT_TABLE_MUTATION_KEYS.add }) > 0;
+  const isUpdating = useIsMutating({ mutationKey: PRODUCT_TABLE_MUTATION_KEYS.update(id) }) > 0;
+  return isAdding || isUpdating;
 }
 
 export function useIsMutatingBulkProductTables() {

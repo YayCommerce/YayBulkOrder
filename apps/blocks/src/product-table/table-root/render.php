@@ -4,6 +4,11 @@
  * @var string $content The block default content.
  * @var WP_Block $block The block instance.
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use YayBulkOrder\Services\LocalizeService;
 use YayBulkOrder\Services\SettingsService;
 use YayBulkOrder\Utils\BlockHelper;
@@ -78,16 +83,16 @@ $data_context = [
 ?>
 
 <div
-    <?php echo get_block_wrapper_attributes(); ?>
+    <?php echo get_block_wrapper_attributes(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
     data-wp-interactive="yay-bulk-order/product-table"
     data-wp-router-region="yay-bulk-order/product-table-<?php echo esc_attr( $query_id ); ?>"
-    <?php echo wp_interactivity_data_wp_context( $data_context ); ?>
+    <?php echo wp_interactivity_data_wp_context( $data_context ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
     data-wp-init="callbacks.onRender"
     data-wp-watch="callbacks.syncCartNoticeFromExternalChange"
-    style="<?php echo $style_attr; ?>"
+    style="<?php echo $style_attr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>"
 >
 
-    <?php echo do_blocks( $content ); ?>
+    <?php echo do_blocks( $content ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 
     <div
         class="ybo-table-loading-overlay"

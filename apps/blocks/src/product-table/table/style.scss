@@ -12,9 +12,14 @@
   table-layout: auto;
   background-color: var(--ybo-background-color, #fff) !important;
 
-  th,
+  th {
+    background-color: var(--ybo-header-background-color, #fff) !important;
+    color: var(--ybo-header-text-color, inherit);
+  }
+
   td {
     background-color: var(--ybo-background-color, #fff) !important;
+    color: var(--ybo-text-color, inherit);
   }
 
   thead th {
@@ -46,6 +51,8 @@
     border-bottom: 1px solid var(--ybo-border-color);
     font-weight: 600;
     min-width: 0;
+    background-color: var(--ybo-header-background-color, inherit);
+    color: var(--ybo-header-text-color, inherit);
     box-sizing: border-box;
     * {
       margin: 0;
@@ -62,6 +69,12 @@
     margin: 0;
     box-sizing: border-box;
     overflow-wrap: anywhere;
+    background-color: var(--ybo-background-color, inherit);
+    color: var(--ybo-text-color, inherit);
+
+    &__description {
+      color: var(--ybo-description-color, inherit);
+    }
   }
 
   tbody {
@@ -87,7 +100,7 @@
       }
 
       &.yay-bulk-order-table-template-row--variation td {
-        background-color: var(--ybo-variation-row-color, #fafafa) !important;
+        background-color: var(--ybo-background-color, #fafafa) !important;
       }
 
       &.yay-bulk-order-table-template-row--variation td:first-child {

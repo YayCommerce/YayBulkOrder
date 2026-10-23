@@ -8,11 +8,15 @@
  * @var WP_Block $block      The block instance.
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 $product_id = absint( $block->context['yay-bulk-order/productId'] ?? get_the_ID() );
 $product    = wc_get_product( $product_id );
 
 if ( ! $product instanceof WC_Product ) {
-	printf( '<td %1$s>%2$s</td>', get_block_wrapper_attributes(), esc_html__( 'No Product', 'yay-bulk-order' ) );
+	printf( '<td %1$s>%2$s</td>', get_block_wrapper_attributes(), esc_html__( 'No Product', 'yay-bulk-order' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	return;
 }
 
@@ -23,7 +27,7 @@ $title        = $is_variation ? wc_get_formatted_variation( $product, true, fals
 $permalink    = $product->get_permalink();
 ?>
 
-<td <?php echo get_block_wrapper_attributes(); ?>>
+<td <?php echo get_block_wrapper_attributes(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
 	<a href="<?php echo esc_url( $permalink ); ?>" target="_blank" class="ybo-product-cell<?php echo $is_variation ? ' ybo-product-cell--variation' : ''; ?>" title="<?php echo esc_attr( $title ? $title : $product->get_title() ); ?>">
 		<span class="ybo-product-thumbnail">
 			<?php echo $thumbnail; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- WC_Product::get_image() output is already escaped. ?>

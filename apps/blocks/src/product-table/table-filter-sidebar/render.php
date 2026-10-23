@@ -8,6 +8,10 @@
  * @var WP_Block $block      The block instance.
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use YayBulkOrder\Services\ProductQueryService;
 use YayBulkOrder\Utils\BlockHelper;
 
@@ -26,7 +30,7 @@ $selected_slug  = $selected_slugs[0] ?? '';
 ?>
 
 <div
-    <?php echo get_block_wrapper_attributes( array( 'class' => 'ybo-filter-sidebar' ) ); ?>
+    <?php echo get_block_wrapper_attributes( array( 'class' => 'ybo-filter-sidebar' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
     data-wp-bind--hidden="!state.isFilterOpen"
 >
     <p class="ybo-filter-sidebar__title"><?php esc_html_e( 'Categories', 'yay-bulk-order' ); ?></p>
@@ -36,7 +40,7 @@ $selected_slug  = $selected_slugs[0] ?? '';
         <button
             type="button"
             class="ybo-filter-sidebar__link<?php echo '' === $selected_slug ? ' is-active' : ''; ?>"
-            <?php echo wp_interactivity_data_wp_context( array( 'categorySlug' => '' ) ); ?>
+            <?php echo wp_interactivity_data_wp_context( array( 'categorySlug' => '' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
             data-wp-on--click="actions.selectFilterCategory"
         ><?php esc_html_e( 'All Products', 'yay-bulk-order' ); ?></button>
 
@@ -44,7 +48,7 @@ $selected_slug  = $selected_slugs[0] ?? '';
             <button
                 type="button"
                 class="ybo-filter-sidebar__link<?php echo $category->slug === $selected_slug ? ' is-active' : ''; ?>"
-                <?php echo wp_interactivity_data_wp_context( array( 'categorySlug' => $category->slug ) ); ?>
+                <?php echo wp_interactivity_data_wp_context( array( 'categorySlug' => $category->slug ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                 data-wp-on--click="actions.selectFilterCategory"
             ><?php echo esc_html( $category->name ); ?></button>
         <?php endforeach; ?>

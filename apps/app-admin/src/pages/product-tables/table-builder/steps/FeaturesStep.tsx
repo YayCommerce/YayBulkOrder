@@ -73,10 +73,10 @@ export default function FeaturesStep({ setSteps }: BuilderStepsProps) {
         </div>
       </div>
       <div className="flex items-center justify-center gap-4 border-t pt-6">
-        <Button variant="outline" size="sm" onClick={() => setSteps('columns')}>
+        <Button variant="outline" onClick={() => setSteps('columns')}>
           {__('Back', 'yay-bulk-order')}
         </Button>
-        <Button variant="primary" size="sm" onClick={() => setSteps('publish')}>
+        <Button variant="primary" onClick={() => setSteps('publish')}>
           {__('Next', 'yay-bulk-order')}
         </Button>
       </div>

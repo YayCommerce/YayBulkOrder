@@ -5,6 +5,10 @@
  * @var WP_Block $block The block instance.
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 $product_id = absint( $block->context['yay-bulk-order/productId'] ?? get_the_ID() );
 $product    = wc_get_product( $product_id );
 
@@ -12,7 +16,7 @@ $is_selectable = $product instanceof WC_Product && $product->supports( 'ajax_add
 ?>
 
 <td
-    <?php echo get_block_wrapper_attributes(); ?>
+    <?php echo get_block_wrapper_attributes(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 >
     <?php if ( $is_selectable ) : ?>
         <input

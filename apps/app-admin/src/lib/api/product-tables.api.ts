@@ -40,3 +40,11 @@ export function deleteProductTable(id: number) {
 export function bulkDeleteProductTable(ids: number[]) {
   return api.delete('product-tables/bulk-delete', { json: { tableIds: ids } }).json<number>();
 }
+
+export function stashNewPageBlocks(content: string) {
+  return api.post('product-tables/stash', { json: { content } }).json<boolean>();
+}
+
+export function applyToShopPage(tableId: number) {
+  return api.post('product-tables/apply_to_shop', { json: { tableId } }).json<boolean>();
+}

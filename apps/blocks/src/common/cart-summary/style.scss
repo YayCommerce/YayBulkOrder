@@ -6,6 +6,7 @@
  */
 div.wp-block-yay-bulk-order-cart-summary {
   flex: 0 0 auto;
+  color: var(--ybo-text-default-color, inherit);
 
   > button {
     display: inline-flex;
@@ -21,7 +22,6 @@ div.wp-block-yay-bulk-order-cart-summary {
     border: 1px solid var(--ybo-border-default-color, #e2e2e2);
     border-radius: var(--ybo-border-radius, 8px) !important;
     background-color: var(--ybo-background-default-color, #fff) !important;
-    color: var(--ybo-text-default-color, inherit);
     cursor: pointer;
     white-space: nowrap;
     margin: 0;

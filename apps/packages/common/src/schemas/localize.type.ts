@@ -5,6 +5,12 @@ export type AdminData = {
   defaultPresets: {
     tableColors: Settings['colors'];
   };
+  /**
+   * `wp_localize_script()` stringifies every top-level scalar, so this is
+   * actually a numeric string (e.g. `"123"`) at runtime — `Number(...)` it
+   * before comparing against a real number.
+   */
+  shopTableId: number;
 };
 
 /**
@@ -32,8 +38,14 @@ export type Meta = {
     isBlockTheme: boolean;
     /** WooCommerce Shop page ID (`wc_get_page_id( 'shop' )`), 0 if unset. */
     shopPageId: number;
+    /** WooCommerce Shop page URL (`wc_get_page_permalink( 'shop' )`), empty string if unset. */
+    shopPageUrl: string;
     /** Active theme stylesheet slug (`get_stylesheet()`), used to build Site Editor template ids. */
     themeSlug: string;
+    /** WooCommerce Site Editor template full slug for the Shop / Category archive (`theme_slug//archive-product`). */
+    archiveProductTemplateSlug: string;
+    /** `wp_pattern_category` term id user-created patterns are filed under, 0 if unavailable. */
+    patternCategoryId: number;
   };
   bulkOrderMeta: {
     pluginUrl: string;

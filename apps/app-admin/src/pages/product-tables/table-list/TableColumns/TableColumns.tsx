@@ -6,10 +6,11 @@ import { __, sprintf } from '@wordpress/i18n';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ProductTableActions } from '@/pages/product-tables/table-list/TableColumns/TableActions';
+import TableTitle from '@/pages/product-tables/table-list/TableColumns/TableTitle';
 
 const QUERY_BY_LABELS: Record<ProductTable['query']['queryBy'], string> = {
   'all-products': __('All products', 'yay-bulk-order'),
-  'by-categories': __('By categories', 'yay-bulk-order'),
+  'by-category': __('By categories', 'yay-bulk-order'),
   featured: __('Featured', 'yay-bulk-order'),
   'on-sale': __('On sale', 'yay-bulk-order'),
   'hand-picked': __('Hand-picked', 'yay-bulk-order'),
@@ -42,9 +43,7 @@ export const ProductTableColumns: ColumnDef<ProductTable>[] = [
   {
     accessorKey: 'title',
     header: __('Table title', 'yay-bulk-order'),
-    cell: ({ row }) => (
-      <span className="font-medium">{row.original.title || __('Untitled table', 'yay-bulk-order')}</span>
-    ),
+    cell: ({ row }) => <TableTitle table={row.original} />,
   },
   {
     id: 'products',
@@ -55,7 +54,7 @@ export const ProductTableColumns: ColumnDef<ProductTable>[] = [
       return (
         <div className="flex items-center gap-1.5">
           <Badge variant="secondary">{QUERY_BY_LABELS[queryBy]}</Badge>
-          {queryBy === 'by-categories' && categories?.length && (
+          {queryBy === 'by-category' && categories?.length && (
             <span className="text-muted-foreground text-xs">
               {/* translators: %d: number of categories */}
               {sprintf(__('%d categories', 'yay-bulk-order'), categories.length)}

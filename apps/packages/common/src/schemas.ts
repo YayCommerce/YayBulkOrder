@@ -8,3 +8,4 @@ export {
   type ProductTable,
 } from './schemas/product-tables.schema';
 export { type AdminData, type Currency, type Meta } from './schemas/localize.type';
+export { type WpPattern, type WooProduct } from './schemas/wp.type';

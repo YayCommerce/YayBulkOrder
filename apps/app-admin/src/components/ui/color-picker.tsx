@@ -26,6 +26,7 @@ export type ColorPickerProps = {
   defaultValue?: string;
   onValueChange?: (value: string) => void;
   children?: React.ReactNode;
+  className?: string;
 };
 
 export function ColorPicker({
@@ -33,6 +34,7 @@ export function ColorPicker({
   defaultValue = '#000000',
   onValueChange,
   children,
+  className = '',
 }: ColorPickerProps) {
   const [value, setValue] = useUncontrolled({
     value: controlledValue === null ? undefined : controlledValue,
@@ -57,7 +59,7 @@ export function ColorPicker({
           children
         ) : (
           <>
-            <ColorPickerTrigger />
+            <ColorPickerTrigger className={className} />
             <ColorPickerContent>
               <ColorPickerPanel />
               <ColorPickerInput />
@@ -78,7 +80,7 @@ export const ColorPickerTrigger = forwardRef<
   return (
     <ComboboxTrigger
       ref={ref}
-      className={cn('min-h-0 min-w-0 justify-start gap-2 py-1 pr-4 pl-1', className)}
+      className={cn('min-h-0 min-w-0 justify-start gap-2 py-1 pl-1 pr-4', className)}
       {...props}
     >
       {children ? (
@@ -86,7 +88,7 @@ export const ColorPickerTrigger = forwardRef<
       ) : (
         <>
           <span className="border-accent size-6.5 rounded-xs border" style={{ backgroundColor: value }} />
-          <span className="overflow-hidden">{value}</span>
+          <span className="overflow-hidden">{value.toUpperCase()}</span>
         </>
       )}
     </ComboboxTrigger>
@@ -98,7 +100,7 @@ export const ColorPickerContent = forwardRef<ElementRef<typeof PopoverContent>, 
     return (
       <PopoverContent
         ref={ref}
-        className={cn('yayui-color-picker flex max-h-160 min-w-0 flex-col gap-3 rounded-sm p-3', className)}
+        className={cn('yayui-color-picker max-h-160 flex min-w-0 flex-col gap-3 rounded-sm p-3', className)}
         side="bottom"
         align="start"
         sideOffset={5}
@@ -135,7 +137,7 @@ export function ColorPickerInput({ className, variant = 'input', alpha = false, 
         alpha={alpha}
         className={cn(
           inputVariants({ variant: variant }),
-          'mx-2 w-30 flex-1 rounded-none border-0 bg-transparent shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 dark:bg-transparent',
+          'w-30 mx-2 flex-1 rounded-none border-0 bg-transparent shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 dark:bg-transparent',
           className,
         )}
         {...props}
@@ -161,7 +163,7 @@ export function ColorPickerSwatch({
   return (
     <span
       className={cn(
-        'relative inline-flex size-5.5 shrink-0 items-center justify-center overflow-hidden rounded-full border border-black/10',
+        'size-5.5 relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full border border-black/10',
         className,
       )}
       style={{ ...style, backgroundColor: swatchValue }}

@@ -4,6 +4,11 @@
  * @var string $content The block default content.
  * @var WP_Block $block The block instance.
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use YayBulkOrder\Services\LocalizeService;
 
 $localize_service = LocalizeService::get_instance();
@@ -13,7 +18,7 @@ $default_cart_quantity = $global_config['settings']['general']['defaultCartQuant
 ?>
 
 <td
-    <?php echo get_block_wrapper_attributes(); ?>
+    <?php echo get_block_wrapper_attributes(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
     data-wp-class--ybo-quantity-placeholder="state.isNotSimpleProduct"
 >
     <div class="ybo-quantity-stepper" data-wp-bind--hidden="state.isNotSimpleProduct">

@@ -5,10 +5,16 @@
  * @var WP_Block $block The block instance.
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 ?>
 
 <td
-    <?php echo get_block_wrapper_attributes(); ?>
+    <?php
+    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+    echo get_block_wrapper_attributes();
+    ?>
     data-wp-text="state.subtotalFormatted"
 >
 </td>

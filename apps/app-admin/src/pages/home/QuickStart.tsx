@@ -46,7 +46,7 @@ export default function QuickStart() {
           ) : (
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button className="w-fit" onClick={openPatterns}>
+                <Button className="w-fit cursor-default">
                   {__('Browse Patterns', 'yay-bulk-order')}
                   <ArrowRight className="size-4" />
                 </Button>

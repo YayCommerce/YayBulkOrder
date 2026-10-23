@@ -78,4 +78,21 @@ class PatternService {
             'yay-bulk-order/column-add-to-cart',
         ];
     }
+
+    public function get_pattern_category_id(): int {
+        if ( ! taxonomy_exists( 'wp_pattern_category' ) ) {
+            return 0;
+        }
+
+        $slug = 'yay-bulk-order';
+        $term = get_term_by( 'slug', $slug, 'wp_pattern_category' );
+
+        if ( $term instanceof \WP_Term ) {
+            return (int) $term->term_id;
+        }
+
+        $created = wp_insert_term( __( 'Bulk Order', 'yay-bulk-order' ), 'wp_pattern_category', [ 'slug' => $slug ] );
+
+        return is_wp_error( $created ) ? 0 : (int) $created['term_id'];
+    }
 }

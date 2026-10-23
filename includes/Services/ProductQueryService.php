@@ -42,6 +42,8 @@ class ProductQueryService {
 
         $query_vars = build_query_vars_from_query_block( $block, $page_param );
 
+        $query_vars = apply_filters( 'yaybulkorder_product_query_vars', $query_vars );
+
         remove_filter(
             'query_loop_block_query_vars',
             [ $this, 'extend_product_table_query_vars' ],
@@ -256,7 +258,7 @@ class ProductQueryService {
             $query_vars['meta_query'] = $meta_query;
         }
 
-        return $query_vars;
+        return apply_filters( 'yaybulkorder_product_query_vars', $query_vars );
     }
 
     /**
@@ -273,6 +275,10 @@ class ProductQueryService {
     }
 
     private function is_inherit_query( $block ): bool {
+        if ( is_shop() || $this->is_product_taxonomy_archive() ) {
+            return true;
+        }
+
         $product_query = $block->context['productQuery'] ?? [];
         return ( $product_query['queryType'] ?? '' ) === 'inherit';
     }

@@ -17,10 +17,17 @@ class LocalizeService {
     public const VAR_ADMIN_DATA = 'yayBulkOrderAdminData';
     public const VAR_META       = 'yayBulkOrderMeta';
 
+    /** WooCommerce Site Editor template slug for the Shop / Category archive. */
+    private const ARCHIVE_PRODUCT_TEMPLATE_SLUG = 'archive-product';
+
     private SettingsService $settings_service;
+    private PatternService $pattern_service;
+    private ProductTablesService $product_tables_service;
 
     protected function __construct() {
-        $this->settings_service = SettingsService::get_instance();
+        $this->settings_service       = SettingsService::get_instance();
+        $this->pattern_service        = PatternService::get_instance();
+        $this->product_tables_service = ProductTablesService::get_instance();
     }
 
     public function get_admin_data() {
@@ -29,23 +36,27 @@ class LocalizeService {
             'defaultPresets' => [
                 'tableColors' => $this->settings_service->get_default_color_preset(),
             ],
+            'shopTableId'    => $this->product_tables_service->get_shop_page_product_table(),
         ];
     }
 
     public function get_meta() {
         $meta = [
             'wpMeta'        => [
-                'siteUrl'      => esc_url_raw( site_url() ),
-                'adminUrl'     => esc_url_raw( admin_url() ),
-                'ajaxUrl'      => esc_url_raw( admin_url( 'admin-ajax.php' ) ),
+                'siteUrl'                    => esc_url_raw( site_url() ),
+                'adminUrl'                   => esc_url_raw( admin_url() ),
+                'ajaxUrl'                    => esc_url_raw( admin_url( 'admin-ajax.php' ) ),
 
-                'restRoot'     => esc_url_raw( rest_url() ),
-                'restBase'     => BaseRestController::REST_NAMESPACE,
-                'restNonce'    => wp_create_nonce( 'wp_rest' ),
+                'restRoot'                   => esc_url_raw( rest_url() ),
+                'restBase'                   => BaseRestController::REST_NAMESPACE,
+                'restNonce'                  => wp_create_nonce( 'wp_rest' ),
 
-                'isBlockTheme' => wp_is_block_theme(),
-                'shopPageId'   => function_exists( 'wc_get_page_id' ) ? (int) wc_get_page_id( 'shop' ) : 0,
-                'themeSlug'    => get_stylesheet(),
+                'isBlockTheme'               => wp_is_block_theme(),
+                'shopPageId'                 => function_exists( 'wc_get_page_id' ) ? (int) wc_get_page_id( 'shop' ) : 0,
+                'shopPageUrl'                => function_exists( 'wc_get_page_permalink' ) ? esc_url_raw( wc_get_page_permalink( 'shop' ) ) : '',
+                'themeSlug'                  => get_stylesheet(),
+                'archiveProductTemplateSlug' => apply_filters( 'ybo_main_catalog_template', get_stylesheet() . '//' . self::ARCHIVE_PRODUCT_TEMPLATE_SLUG ),
+                'patternCategoryId'          => $this->pattern_service->get_pattern_category_id(),
             ],
             'bulkOrderMeta' => [
                 'pluginUrl' => YAYBULKORDER_PLUGIN_URL,

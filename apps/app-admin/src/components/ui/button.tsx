@@ -88,33 +88,27 @@ function getButtonFocusVariant(variant: ButtonProps['variant']): VariantProps<ty
   }
 }
 
-function LoadingButton({
-  loading,
-  className,
-  size = 'default',
-  children,
-  ...props
-}: ButtonProps & {
-  loading: boolean;
-}) {
-  return (
-    <Button className={clsx('relative', className)} size={size} {...props}>
-      <Loader2
-        data-slot="loading-indicator"
-        data-size={size}
-        data-loading={loading ? 'true' : 'false'}
-        className="absolute animate-spin transition-opacity data-[size=default]:size-4 data-[size=icon-lg]:size-5 data-[size=icon-sm]:size-3.5 data-[size=icon]:size-4 data-[size=lg]:size-5 data-[size=sm]:size-3.5 data-[loading=false]:opacity-0"
-      />
-      <span
-        data-slot="loading-text"
-        data-size={size}
-        data-loading={loading ? 'true' : 'false'}
-        className="transition-opacity data-[loading=true]:opacity-0"
-      >
-        {children}
-      </span>
-    </Button>
-  );
-}
+const LoadingButton = React.forwardRef<HTMLButtonElement, ButtonProps & { loading: boolean }>(
+  ({ loading, className, size = 'default', children, ...props }, ref) => {
+    return (
+      <Button ref={ref} className={clsx('relative', className)} size={size} {...props}>
+        <Loader2
+          data-slot="loading-indicator"
+          data-size={size}
+          data-loading={loading ? 'true' : 'false'}
+          className="absolute animate-spin transition-opacity data-[size=default]:size-4 data-[size=icon-lg]:size-5 data-[size=icon-sm]:size-3.5 data-[size=icon]:size-4 data-[size=lg]:size-5 data-[size=sm]:size-3.5 data-[loading=false]:opacity-0"
+        />
+        <span
+          data-slot="loading-text"
+          data-size={size}
+          data-loading={loading ? 'true' : 'false'}
+          className="transition-opacity data-[loading=true]:opacity-0"
+        >
+          {children}
+        </span>
+      </Button>
+    );
+  },
+);
 
 export { Button, buttonVariants, LoadingButton, type ButtonProps };
