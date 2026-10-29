@@ -59,7 +59,7 @@ if ( ! function_exists( 'YayBulkOrder\\plugin_init' ) ) {
         }
 
         YayBulkOrder::initialize();
-        I18n::load_plugin_textdomain();
+        add_action( 'init', [ I18n::class, 'load_plugin_textdomain' ] );
     }
 }//end if
 

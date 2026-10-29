@@ -138,9 +138,14 @@ class ProductTableShortcode {
                 [ $slug, $heading, $responsive ] = array_pad( explode( '|', (string) $column, 3 ), 3, '' );
             }
 
+            $slug = sanitize_key( $slug );
+            if ( '' === $slug ) {
+                continue;
+            }
+
             $normalized[] = [
                 'slug'       => $slug,
-                'heading'    => $heading,
+                'heading'    => sanitize_text_field( $heading ),
                 'responsive' => in_array( $responsive, $this->product_tables_service::RESPONSIVE_OPTIONS, true ) ? $responsive : 'always-show',
             ];
         }

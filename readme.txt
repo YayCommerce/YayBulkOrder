@@ -54,6 +54,23 @@ Yay Bulk Order shows your WooCommerce products in an order table. Shoppers set q
 * YayWholesale B2B and YayPricing: wholesale prices and quantity rules show in the table.
 * Uses the WooCommerce Store API for add to cart.
 
+= Source code =
+
+The JavaScript and CSS files in `assets/dist/` are compiled. The source code is public at [https://github.com/YayCommerce/YayBulkOrder](https://github.com/YayCommerce/YayBulkOrder).
+
+Compiled files and their source folders in the repository:
+
+* `assets/dist/blocks/` (block editor and frontend scripts): `apps/blocks/src/`
+* `assets/dist/page-admin/` (admin app): `apps/app-admin/src/`
+* `assets/dist/product-table-store/`: `apps/packages/product-table-store/`
+* `assets/dist/block-checkout-slotfill/`: `apps/packages/block-checkout-slotfill/`
+
+To build the files from source (Node.js and PNPM required):
+
+1. `pnpm install`
+2. `pnpm build` (Gutenberg blocks)
+3. `pnpm build:admin:lite` (admin app)
+
 == Installation ==
 
 1. Install and activate WooCommerce.

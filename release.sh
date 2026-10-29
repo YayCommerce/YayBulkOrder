@@ -99,6 +99,9 @@ if [ "$BUILD_VARIANT" = "lite" ]; then
     rm -rf "$DEST_PATH/assets/dist/variant-table-store"
     rm -rf "$DEST_PATH/assets/dist/purchase-list-store"
 
+    # Remove the License folder (updater)
+    find "$DEST_PATH/vendor-prefixed/src/License" -maxdepth 1 -type f -name '*.php' -delete
+
     cp "$PROJECT_PATH/composer.json" "$DEST_PATH/composer.json"
     [ -f "$PROJECT_PATH/composer.lock" ] && cp "$PROJECT_PATH/composer.lock" "$DEST_PATH/composer.lock"
     composer dump-autoload --optimize --no-dev --working-dir="$DEST_PATH"
