@@ -79,7 +79,14 @@ pnpm run build
 if [ "$BUILD_VARIANT" = "pro" ]; then
     echo "Running Block JS Build (Pro)..."
     pnpm run build:pro
+
+    echo "Running Checkout Slotfill Build (Pro)..."
+    pnpm run build:checkout-slotfill
 fi
+
+# After all JS builds — make-pot reads strings from assets/dist.
+echo "Running Make pot file..."
+pnpm run makepot
 
 echo "Syncing files..."
 rsync -rc --exclude-from="$PROJECT_PATH/.distignore" "$PROJECT_PATH/" "$DEST_PATH/" --delete --delete-excluded
@@ -98,9 +105,11 @@ if [ "$BUILD_VARIANT" = "lite" ]; then
     rm -rf "$DEST_PATH/assets/dist/blocks-pro"
     rm -rf "$DEST_PATH/assets/dist/variant-table-store"
     rm -rf "$DEST_PATH/assets/dist/purchase-list-store"
+    rm -rf "$DEST_PATH/assets/dist/block-checkout-slotfill"
 
-    # Remove the License folder (updater)
-    find "$DEST_PATH/vendor-prefixed/src/License" -maxdepth 1 -type f -name '*.php' -delete
+    # Remove the License folder (license client + updater). Lite's adapter is
+    # not a LicenseConfigAdapter, so the admin-shell never loads it.
+    rm -rf "$DEST_PATH/vendor-prefixed/src/License"
 
     cp "$PROJECT_PATH/composer.json" "$DEST_PATH/composer.json"
     [ -f "$PROJECT_PATH/composer.lock" ] && cp "$PROJECT_PATH/composer.lock" "$DEST_PATH/composer.lock"

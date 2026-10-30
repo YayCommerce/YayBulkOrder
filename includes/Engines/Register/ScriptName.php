@@ -1,6 +1,8 @@
 <?php
 namespace YayBulkOrder\Engines\Register;
 
+defined( 'ABSPATH' ) || exit;
+
 /** Script name constants */
 class ScriptName {
 

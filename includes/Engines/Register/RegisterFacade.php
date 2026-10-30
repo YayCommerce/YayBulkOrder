@@ -4,6 +4,8 @@ namespace YayBulkOrder\Engines\Register;
 use YayBulkOrder\Utils\SingletonTrait;
 use YayBulkOrder\Engines\Register\ScriptName;
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Register Facade.
  *

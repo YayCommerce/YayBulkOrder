@@ -4,7 +4,7 @@ Tags: woocommerce, bulk order, product table, quick order, wholesale
 Requires at least: 6.8
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.2.1.7
+Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 WC requires at least: 10.0.0
@@ -106,15 +106,16 @@ No. The Product Table is free. Pro adds the Variant Table, Purchase List and Qui
 
 == Changelog ==
 
-= 0.2.1.7 =
-* Added: Compatibility with WooCommerce 11.2 Store API changes.
-* Added: Error notice when WooCommerce rejects an item during add to cart (quantity rules, stock, rate limits).
-* Added: Product Table filter sidebar with category multi-select, tag, price and rating filters.
-* Fixed: Category picker showed 2 checkboxes per row in the block editor.
-
-= Earlier =
-* Added: Variant Table block (Pro).
-* Added: Gutenberg block color editor.
-* Added: Use a table on the shop page (classic themes) and link to the shop catalog template.
-* Added: Create pattern and create new page actions.
-* Added: Compatibility with YayWholesale.
+= 1.0.0 =
+* Initial public release.
+* Product Table block, block patterns and `[ybo-product-table]` shortcode.
+* Table builder in the admin: Products, Columns, Features, Publish.
+* Filter sidebar (categories, tags, price range, rating), search and pagination.
+* Single and bulk add to cart, with clear error messages when WooCommerce rejects an item.
+* Shop page table for classic themes, and a link to the shop catalog template for block themes.
+* Design presets with live preview and block color controls.
+* Compatibility with WooCommerce 11.2, YayWholesale B2B and YayPricing.
+* Variant Table block: order many variations of one product from the product page (Pro).
+* Purchase List: save a cart as a named list and reorder it in one click; save from the cart, mini-cart, checkout or a past order; download as CSV (Pro).
+* Quick CSV Order: upload a CSV file to add many products to the cart at once (Pro).
+* More table patterns and extra Product Table columns (Pro).

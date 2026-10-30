@@ -1,6 +1,8 @@
 <?php
 namespace YayBulkOrder\Utils;
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Helper functions for blocks rendering.
  */

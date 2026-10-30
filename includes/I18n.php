@@ -16,6 +16,5 @@ class I18n {
         }
         unload_textdomain( 'yay-bulk-order' );
         load_textdomain( 'yay-bulk-order', YAYBULKORDER_PLUGIN_PATH . '/languages/yay-bulk-order-' . $locale . '.mo' );
-        load_plugin_textdomain( 'yay-bulk-order', false, YAYBULKORDER_PLUGIN_PATH . '/languages/' );
     }
 }

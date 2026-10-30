@@ -4,6 +4,8 @@ namespace YayBulkOrder\Engines\Register;
 use YayBulkOrder\Engines\Register\ScriptName;
 use YayBulkOrder\Utils\SingletonTrait;
 
+defined( 'ABSPATH' ) || exit;
+
 /** Register in Production Mode */
 class RegisterProd {
     use SingletonTrait;
