@@ -1,6 +1,7 @@
 import { ChevronRight } from 'lucide-react';
 import { __ } from '@wordpress/i18n';
 
+import { assetUrl } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/components/ui/empty';
@@ -49,11 +50,7 @@ export function UpgradeToProOverlay() {
     <Empty className="my-5">
       <EmptyHeader>
         <EmptyMedia variant="icon" className="size-15 bg-[#FFF5DB]">
-          <img
-            src={`${window.yayBulkOrderMeta.bulkOrderMeta.assetsUrl}/images/YayBulkOrder.svg`}
-            alt="YayBulkOrder"
-            className="size-13"
-          />
+          <img src={assetUrl('images/YayBulkOrder.svg')} alt="YayBulkOrder" className="size-13" />
         </EmptyMedia>
         <EmptyTitle className="flex items-center gap-1.5 font-bold">
           {__('Yay Bulk Order', 'yay-bulk-order')}

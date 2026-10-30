@@ -6,6 +6,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 if ( ! function_exists( 'WC' ) ) {
 	return;
 }
+
+wp_interactivity_config(
+	'yay-bulk-order/cart-summary',
+	array(
+		/* translators: %d: number of items in the cart. */
+		'itemLabel'  => _n( '%d item', '%d items', 1, 'yay-bulk-order' ),
+		/* translators: %d: number of items in the cart. */
+		'itemsLabel' => _n( '%d item', '%d items', 2, 'yay-bulk-order' ),
+	)
+);
 ?>
 
 <!-- Hidden Woo Mini Cart (mount React + store) -->

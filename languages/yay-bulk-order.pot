@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-30T04:10:50+00:00\n"
+"POT-Creation-Date: 2026-10-30T10:37:46+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: yay-bulk-order\n"
@@ -253,12 +253,22 @@ msgstr ""
 msgid "Too many requests. Please wait and try again."
 msgstr ""
 
-#: assets/dist/blocks/common/cart-summary/render.php:24
-#: assets/dist/blocks/common/cart-summary/render.php:25
+#. translators: %d: number of items in the cart.
+#: assets/dist/blocks/common/cart-summary/render.php:14
+#: assets/dist/blocks/common/cart-summary/render.php:16
+#, php-format
+msgid "%d item"
+msgid_plural "%d items"
+msgstr[0] ""
+msgstr[1] ""
+
+#: assets/dist/blocks/common/cart-summary/render.php:34
+#: assets/dist/blocks/common/cart-summary/render.php:35
 msgid "Open cart"
 msgstr ""
 
 #: assets/dist/blocks/product-table/column-add-to-cart/render.php:47
+#: assets/dist/blocks/product-table/table-root/render.php:41
 msgid "View options"
 msgstr ""
 
@@ -280,6 +290,7 @@ msgid "Go Back to Top"
 msgstr ""
 
 #: assets/dist/blocks/product-table/table-bulk-action/render.php:61
+#: assets/dist/blocks/product-table/table-root/render.php:34
 msgid "Add selected items to cart"
 msgstr ""
 
@@ -338,6 +349,36 @@ msgstr ""
 msgid "Next page"
 msgstr ""
 
+#: assets/dist/blocks/product-table/table-root/render.php:32
+msgid "Add more"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-root/render.php:33
+msgid "Adding..."
+msgstr ""
+
+#. translators: %d: total quantity of the selected items.
+#: assets/dist/blocks/product-table/table-root/render.php:36
+#, php-format
+msgid "Add selected items to cart (%d)"
+msgstr ""
+
+#. translators: %s: formatted cart total.
+#: assets/dist/blocks/product-table/table-root/render.php:38
+#, php-format
+msgid "View cart | %s"
+msgstr ""
+
+#. translators: %s: formatted lowest price of a variable product.
+#: assets/dist/blocks/product-table/table-root/render.php:40
+#, php-format
+msgid "From %s"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-root/render.php:42
+msgid "Hide options"
+msgstr ""
+
 #. translators: %s: Woocommerce link
 #: assets/pro/yay-bulk-order-pro.php:55
 #: yay-bulk-order.php:57
@@ -376,24 +417,24 @@ msgstr ""
 msgid "Reusable Product Table configurations"
 msgstr ""
 
-#: includes/Engines/Blocks/Patterns/PatternRegistry.php:38
+#: includes/Engines/Blocks/Patterns/PatternRegistry.php:40
 #: includes/Services/PatternService.php:94
 msgid "Bulk Order"
 msgstr ""
 
-#: includes/Engines/Blocks/Patterns/PatternRegistry.php:64
+#: includes/Engines/Blocks/Patterns/PatternRegistry.php:66
 msgid "Full Featured Product Table"
 msgstr ""
 
-#: includes/Engines/Blocks/Patterns/PatternRegistry.php:65
+#: includes/Engines/Blocks/Patterns/PatternRegistry.php:67
 msgid "Display products in a clean, scannable table so customers can browse and add items to cart in bulk. The foundation of every bulk order experience. (All columns, with performant filters, search and pagination)"
 msgstr ""
 
-#: includes/Engines/Blocks/Patterns/PatternRegistry.php:70
+#: includes/Engines/Blocks/Patterns/PatternRegistry.php:72
 msgid "Simple Product Table"
 msgstr ""
 
-#: includes/Engines/Blocks/Patterns/PatternRegistry.php:71
+#: includes/Engines/Blocks/Patterns/PatternRegistry.php:73
 msgid "Display products in a clean, scannable table so customers can browse and add items to cart in bulk. The foundation of every bulk order experience. (Only 4 essential columns, fit for small space)"
 msgstr ""
 

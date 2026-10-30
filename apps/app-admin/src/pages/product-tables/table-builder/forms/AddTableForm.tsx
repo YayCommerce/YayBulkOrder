@@ -10,6 +10,7 @@ import { __ } from '@wordpress/i18n';
 
 import { getErrorMsg } from '@/lib/helpers/response.helper';
 import { useCreateProductTableMutation, useIsMutatingProductTables } from '@/lib/queries/product-table.queries';
+import { assetUrl } from '@/lib/utils';
 import TablePrebuild from '@/pages/product-tables/table-builder/prebuild/TablePrebuild';
 import ColumnsStep from '@/pages/product-tables/table-builder/steps/ColumnsStep/ColumnsStep';
 import FeaturesStep from '@/pages/product-tables/table-builder/steps/FeaturesStep';
@@ -75,12 +76,8 @@ export default function AddTableForm() {
       {step === 'prebuild' ? (
         <div className="flex items-center gap-4 border-b p-4">
           {/* Logo */}
-          <div className="border-border px-0.75 pt-0.75 h-fit w-fit bg-[#FFF5DB]">
-            <img
-              src={`${window.yayBulkOrderMeta.bulkOrderMeta.assetsUrl}/images/YayBulkOrder.svg`}
-              alt="YayBulkOrder"
-              className="size-8.5"
-            />
+          <div className="border-border px-0.75 pt-0.75 size-fit bg-[#FFF5DB]">
+            <img src={assetUrl('images/YayBulkOrder.svg')} alt="YayBulkOrder" className="size-8.5" />
           </div>
           <div className="text-lg font-semibold">Yay Bulk Order</div>
         </div>

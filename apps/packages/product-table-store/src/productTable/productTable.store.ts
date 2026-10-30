@@ -10,7 +10,7 @@ import {
   type StoreApiCart,
 } from '@yay-bulk-order/common/src/storeApi';
 import { formatCartSubtotal, formatPrice } from '@yay-bulk-order/common/src/storeApi/currency';
-import { getContext, getElement, store } from '@wordpress/interactivity';
+import { getConfig, getContext, getElement, store } from '@wordpress/interactivity';
 
 import type {
   FilterCategoryOptionContext,
@@ -22,6 +22,25 @@ import type {
   SelectedRow,
   TableState,
 } from './productTable.type';
+
+const DEFAULT_LABELS = {
+  addMore: 'Add more',
+  adding: 'Adding...',
+  addSelected: 'Add selected items to cart',
+  addSelectedCount: 'Add selected items to cart (%d)',
+  viewCart: 'View cart | %s',
+  priceFrom: 'From %s',
+  viewOptions: 'View options',
+  hideOptions: 'Hide options',
+};
+
+/**
+ * Translated UI text from table-root/render.php. Script modules get no JS
+ * translations, so PHP passes the strings through the interactivity config.
+ */
+function getLabels(): typeof DEFAULT_LABELS {
+  return { ...DEFAULT_LABELS, ...(getConfig(STORE_NAMESPACE)?.labels ?? {}) };
+}
 
 /** All currently selected rows, derived from the keyed `select` map. */
 function getSelectedRows(tableState: TableState): SelectedRow[] {
@@ -204,7 +223,9 @@ const storeDef = {
         case 'simple':
           return formatPrice(unitPrice * quantity, currency);
         case 'variable':
-          return !variantId ? `From ${formatPrice(unitPrice, currency)}` : formatPrice(unitPrice * quantity, currency);
+          return !variantId
+            ? getLabels().priceFrom.replace('%s', formatPrice(unitPrice, currency))
+            : formatPrice(unitPrice * quantity, currency);
         case 'external':
           return unitPrice > 0 ? formatPrice(unitPrice, currency) : '—';
         default:
@@ -216,7 +237,7 @@ const storeDef = {
       if (isAddingToCart) {
         return '';
       }
-      return cartQuantity > 0 ? 'Add more' : addToCartText;
+      return cartQuantity > 0 ? getLabels().addMore : addToCartText;
     },
 
     get isAddToCartDisabled(): boolean {
@@ -241,11 +262,12 @@ const storeDef = {
     },
     get bulkAddToCartText(): string {
       const { tableState } = getContext<ProductTableContext>();
+      const labels = getLabels();
       if (tableState.bulkAdding) {
-        return 'Adding...';
+        return labels.adding;
       }
       const total = getSelectedQuantityTotal(tableState);
-      return total > 0 ? `Add selected items to cart (${total})` : 'Add selected items to cart';
+      return total > 0 ? labels.addSelectedCount.replace('%d', String(total)) : labels.addSelected;
     },
     get isBulkAddDisabled(): boolean {
       const { tableState } = getContext<ProductTableContext>();
@@ -258,7 +280,7 @@ const storeDef = {
     },
     get cartNoticeText(): string {
       const { tableState } = getContext<ProductTableContext>();
-      return `View cart | ${tableState.cartNotice.totalFormatted}`;
+      return getLabels().viewCart.replace('%s', tableState.cartNotice.totalFormatted);
     },
     get showCartError(): boolean {
       const { tableState } = getContext<ProductTableContext>();
@@ -301,7 +323,8 @@ const storeDef = {
       return Boolean(tableState.expandedProducts[productId]);
     },
     get viewOptionsText(): string {
-      return this.isProductExpanded ? 'Hide options' : 'View options';
+      const labels = getLabels();
+      return this.isProductExpanded ? labels.hideOptions : labels.viewOptions;
     },
     get isVariationRowHidden(): boolean {
       const { tableState, parentProductId } = getContext<ProductRowState>();

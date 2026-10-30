@@ -28,6 +28,19 @@ wp_interactivity_config(
 			'addToCartFailed' => __( 'Could not add the items to the cart. Please try again.', 'yay-bulk-order' ),
 			'rateLimited'     => __( 'Too many requests. Please wait and try again.', 'yay-bulk-order' ),
 		),
+		'labels' => array(
+			'addMore'          => __( 'Add more', 'yay-bulk-order' ),
+			'adding'           => __( 'Adding...', 'yay-bulk-order' ),
+			'addSelected'      => __( 'Add selected items to cart', 'yay-bulk-order' ),
+			/* translators: %d: total quantity of the selected items. */
+			'addSelectedCount' => __( 'Add selected items to cart (%d)', 'yay-bulk-order' ),
+			/* translators: %s: formatted cart total. */
+			'viewCart'         => __( 'View cart | %s', 'yay-bulk-order' ),
+			/* translators: %s: formatted lowest price of a variable product. */
+			'priceFrom'        => __( 'From %s', 'yay-bulk-order' ),
+			'viewOptions'      => __( 'View options', 'yay-bulk-order' ),
+			'hideOptions'      => __( 'Hide options', 'yay-bulk-order' ),
+		),
 	)
 );
 $styles = $settings_service->get_styles();
