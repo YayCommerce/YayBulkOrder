@@ -23,6 +23,7 @@ $ybo_default_query_by = $ybo_default_query_by ?? 'all-products';
 $ybo_columns           = (array) ( $attrs['columns'] ?? [] );
 $ybo_column_slugs      = [];
 $ybo_column_responsive = [];
+$ybo_column_headings   = [];
 $ybo_header_cells      = '';
 foreach ( $ybo_columns as $ybo_column ) {
     $ybo_slug = sanitize_key( $ybo_column['slug'] ?? '' );
@@ -31,7 +32,8 @@ foreach ( $ybo_columns as $ybo_column ) {
     }
     $ybo_column_slugs[] = $ybo_slug;
 
-    $ybo_heading    = $ybo_column['heading'] ?? '';
+    $ybo_heading                       = $ybo_column['heading'] ?? '';
+    $ybo_column_headings[ $ybo_slug ] = $ybo_heading;
     $ybo_responsive = $ybo_column['responsive'] ?? 'always-show';
     if ( ! in_array( $ybo_responsive, ProductTablesService::RESPONSIVE_OPTIONS, true ) ) {
         $ybo_responsive = 'always-show';
@@ -46,8 +48,11 @@ foreach ( $ybo_columns as $ybo_column ) {
 $ybo_header_cells .= '<th></th>';
 
 $ybo_header_columns = array_map(
-    static function ( $ybo_slug ) use ( $ybo_column_responsive ) {
-        $ybo_column = [ 'name' => 'yay-bulk-order/product-table-column-' . $ybo_slug ];
+    static function ( $ybo_slug ) use ( $ybo_column_responsive, $ybo_column_headings ) {
+        $ybo_column = [
+            'name'  => 'yay-bulk-order/product-table-column-' . $ybo_slug,
+            'label' => $ybo_column_headings[ $ybo_slug ] ?? '',
+        ];
         if ( ! empty( $ybo_column_responsive[ $ybo_slug ] ) ) {
             $ybo_column['className'] = $ybo_column_responsive[ $ybo_slug ];
         }
