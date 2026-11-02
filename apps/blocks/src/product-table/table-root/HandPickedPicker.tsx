@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { FormTokenField } from '@wordpress/components';
 import { useDebounce } from '@wordpress/compose';
 import { __ } from '@wordpress/i18n';
@@ -37,15 +37,16 @@ export default function HandPickedPicker({ productIds, onChange }: HandPickedPic
     };
   }, []);
 
-  const search = useDebounce((input: string) => {
+  const runSearch = useCallback((input: string) => {
     if (!input) {
       return;
     }
     searchProducts(input).then((products) => {
-      registerProducts(products);
+      products.forEach((product) => knownProducts.current.set(tokenFor(product), product.id));
       setSuggestions(products.map(tokenFor));
     });
-  }, 300);
+  }, []);
+  const search = useDebounce(runSearch, 300);
 
   const handleChange = (tokens: (string | { value: string })[]) => {
     const nextTokens = tokens.map((token) => (typeof token === 'string' ? token : token.value));

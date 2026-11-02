@@ -27,7 +27,7 @@ export default function ProductQueryPlaceholder({ onSelect, onSelectTemplate }: 
             <button
               key={option.queryType}
               type="button"
-              className={`ybo-product-query-placeholder__option${
+              className={`ybo-product-query-placeholder__option ${
                 isLocked ? 'ybo-product-query-placeholder__option--locked' : ''
               }`}
               aria-disabled={isLocked}

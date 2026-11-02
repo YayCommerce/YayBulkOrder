@@ -9,8 +9,8 @@ export function NotFoundPage() {
   return (
     <div className="flex h-[80vh] flex-col items-center justify-center">
       <div className="mb-8 text-center">
-        <h2 className="text-foreground mb-2 text-xl font-semibold">Page Not Found</h2>
-        <p className="text-muted-foreground text-sm">Looks like this page has gone missing</p>
+        <h2 className="text-foreground mb-2 text-xl font-semibold">{__('Page Not Found', 'yay-bulk-order')}</h2>
+        <p className="text-muted-foreground text-sm">{__('Looks like this page has gone missing', 'yay-bulk-order')}</p>
       </div>
 
       <Button variant="primary" onClick={() => navigate('/home')}>

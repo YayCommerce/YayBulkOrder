@@ -24,7 +24,7 @@ export const ProductTableColumns: ColumnDef<ProductTable>[] = [
         id="select-all"
         checked={table.getIsAllPageRowsSelected()}
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
+        aria-label={__('Select all', 'yay-bulk-order')}
       />
     ),
     cell: ({ row }) => (
@@ -32,7 +32,7 @@ export const ProductTableColumns: ColumnDef<ProductTable>[] = [
         id={`select-${row.original.id}`}
         checked={row.getIsSelected()}
         onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
+        aria-label={__('Select row', 'yay-bulk-order')}
       />
     ),
     meta: { align: 'center', isCheckbox: true },

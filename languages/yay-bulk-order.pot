@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-30T10:37:46+00:00\n"
+"POT-Creation-Date: 2026-11-02T02:58:45+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: yay-bulk-order\n"
@@ -104,7 +104,9 @@ msgid "Purchase List Name"
 msgstr ""
 
 #: assets/dist/blocks-pro/purchase-list/render.php:142
+#: assets/dist/blocks/product-table/table-header/render.php:18
 #: assets/dist/blocks-pro/variant-table/table-root/editor.js:1
+#: assets/dist/blocks/product-table/table-header/editor.js:1
 #: assets/dist/page-admin/js/app-admin.main.js:1
 msgid "Product"
 msgstr ""
@@ -114,6 +116,8 @@ msgid "Qty"
 msgstr ""
 
 #: assets/dist/blocks-pro/purchase-list/render.php:145
+#: assets/dist/blocks/product-table/table-header/render.php:22
+#: assets/dist/blocks/product-table/table-header/editor.js:1
 #: assets/dist/page-admin/js/app-admin.main.js:1
 msgid "Subtotal"
 msgstr ""
@@ -137,7 +141,9 @@ msgstr ""
 #: assets/dist/blocks-pro/purchase-list/render.php:212
 #: assets/dist/blocks-pro/purchase-list/render.php:231
 #: assets/dist/blocks-pro/quick-csv-order/render.php:68
+#: assets/dist/blocks/product-table/table-header/render.php:23
 #: assets/dist/blocks-pro/quick-csv-order/editor.js:1
+#: assets/dist/blocks/product-table/table-header/editor.js:1
 #: assets/dist/page-admin/js/app-admin.main.js:1
 msgid "Add to Cart"
 msgstr ""
@@ -177,6 +183,10 @@ msgstr ""
 msgid "Upload .csv files with SKU on first column and quantity on second column."
 msgstr ""
 
+#: assets/dist/blocks-pro/quick-csv-order/render.php:65
+msgid "Error"
+msgstr ""
+
 #: assets/dist/blocks-pro/quick-csv-order/render.php:74
 msgid "Results"
 msgstr ""
@@ -198,7 +208,11 @@ msgstr ""
 
 #: assets/dist/blocks-pro/variant-table/column-quantity/render.php:26
 #: assets/dist/blocks/product-table/column-quantity/render.php:38
+#: assets/dist/blocks/product-table/table-header/render.php:21
 #: includes/Pro/Services/PurchaseListService.php:230
+#: assets/dist/blocks-pro/variant-table/column-quantity/editor.js:1
+#: assets/dist/blocks/product-table/column-quantity/editor.js:1
+#: assets/dist/blocks/product-table/table-header/editor.js:1
 #: assets/dist/page-admin/js/app-admin.main.js:1
 msgid "Quantity"
 msgstr ""
@@ -209,6 +223,7 @@ msgid "Increase quantity"
 msgstr ""
 
 #: assets/dist/blocks-pro/variant-table/column-select/render.php:22
+#: assets/dist/blocks-pro/variant-table/column-select/editor.js:1
 msgid "Select variation"
 msgstr ""
 
@@ -221,6 +236,7 @@ msgstr ""
 #: assets/dist/blocks/product-table/column-add-to-cart/render.php:71
 #: assets/dist/blocks/product-table/table-columns/render.php:44
 #: assets/dist/blocks-pro/variant-table/table-footer/editor.js:1
+#: assets/dist/blocks/product-table/column-add-to-cart/editor.js:1
 #: assets/dist/page-admin/js/app-admin.main.js:1
 msgid "Add to cart"
 msgstr ""
@@ -281,17 +297,25 @@ msgid "No Product"
 msgstr ""
 
 #: assets/dist/blocks/product-table/column-select/render.php:27
+#: assets/dist/blocks/product-table/column-select/editor.js:1
 msgid "Select product"
 msgstr ""
 
 #: assets/dist/blocks/product-table/table-bulk-action/render.php:33
 #: assets/dist/blocks/product-table/table-bulk-action/render.php:34
+#: assets/dist/blocks/product-table/table-bulk-action/editor.js:1
 msgid "Go Back to Top"
 msgstr ""
 
 #: assets/dist/blocks/product-table/table-bulk-action/render.php:61
 #: assets/dist/blocks/product-table/table-root/render.php:34
+#: assets/dist/blocks/product-table/table-bulk-action/editor.js:1
 msgid "Add selected items to cart"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-columns/render.php:108
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "No products found"
 msgstr ""
 
 #: assets/dist/blocks/product-table/table-filter-sidebar/render.php:40
@@ -328,7 +352,20 @@ msgid "Tags"
 msgstr ""
 
 #: assets/dist/blocks/product-table/table-filter/render.php:32
+#: assets/dist/blocks/product-table/table-filter/editor.js:1
 msgid "Filters"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-header/render.php:19
+#: assets/dist/blocks/product-table/table-header/editor.js:1
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "SKU"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-header/render.php:20
+#: assets/dist/blocks/product-table/table-header/editor.js:1
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Description"
 msgstr ""
 
 #: assets/dist/blocks/product-table/table-pagination/render.php:38
@@ -377,6 +414,20 @@ msgstr ""
 
 #: assets/dist/blocks/product-table/table-root/render.php:42
 msgid "Hide options"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-search/render.php:20
+#: assets/dist/blocks/product-table/table-search/editor.js:1
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Search products..."
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-search/render.php:21
+msgid "Search products"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-search/render.php:37
+msgid "Clear search"
 msgstr ""
 
 #. translators: %s: Woocommerce link
@@ -764,6 +815,14 @@ msgstr ""
 msgid "Button Colors"
 msgstr ""
 
+#: assets/dist/blocks/common/cart-summary/editor.js:1
+msgid "10 items"
+msgstr ""
+
+#: assets/dist/blocks/product-table/column-product/editor.js:1
+msgid "Product name"
+msgstr ""
+
 #: assets/dist/blocks/product-table/table-root/editor.js:1
 msgid "Search by title…"
 msgstr ""
@@ -891,7 +950,23 @@ msgid "Product Tables"
 msgstr ""
 
 #: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Page Not Found"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Looks like this page has gone missing"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
 msgid "Back to home"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Something Went Wrong"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "We hit an unexpected error on our end"
 msgstr ""
 
 #: assets/dist/page-admin/js/app-admin.main.js:1
@@ -987,6 +1062,18 @@ msgid "Open Builder"
 msgstr ""
 
 #: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Loading"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Fill in the field label"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Heading can only contain letters, numbers, spaces, and common symbols (-, _, &, :, /.)."
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
 msgid "Select at least one category"
 msgstr ""
 
@@ -1004,14 +1091,6 @@ msgstr ""
 
 #: assets/dist/page-admin/js/app-admin.main.js:1
 msgid "No results found"
-msgstr ""
-
-#: assets/dist/page-admin/js/app-admin.main.js:1
-msgid "SKU"
-msgstr ""
-
-#: assets/dist/page-admin/js/app-admin.main.js:1
-msgid "Description"
 msgstr ""
 
 #: assets/dist/page-admin/js/app-admin.main.js:1
@@ -1191,14 +1270,6 @@ msgid "Products:"
 msgstr ""
 
 #: assets/dist/page-admin/js/app-admin.main.js:1
-msgid "Search products..."
-msgstr ""
-
-#: assets/dist/page-admin/js/app-admin.main.js:1
-msgid "No products found"
-msgstr ""
-
-#: assets/dist/page-admin/js/app-admin.main.js:1
 msgid "Copied"
 msgstr ""
 
@@ -1228,6 +1299,18 @@ msgstr ""
 
 #: assets/dist/page-admin/js/app-admin.main.js:1
 msgid "Save this table so you can easily access and reuse it later"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Copy Table"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Copy as Block"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Copy as Shortcode"
 msgstr ""
 
 #: assets/dist/page-admin/js/app-admin.main.js:1
@@ -1319,7 +1402,19 @@ msgid "Done"
 msgstr ""
 
 #: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Columns"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Publish"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
 msgid "My Product Table"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Product Table Saved!"
 msgstr ""
 
 #: assets/dist/page-admin/js/app-admin.main.js:1
@@ -1348,10 +1443,6 @@ msgstr ""
 
 #: assets/dist/page-admin/js/app-admin.main.js:1
 msgid "Copy as Blocks"
-msgstr ""
-
-#: assets/dist/page-admin/js/app-admin.main.js:1
-msgid "Copy as Shortcode"
 msgstr ""
 
 #: assets/dist/page-admin/js/app-admin.main.js:1
@@ -1403,6 +1494,14 @@ msgid "Hand-picked"
 msgstr ""
 
 #: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Select all"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Select row"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
 msgid "Table title"
 msgstr ""
 
@@ -1414,10 +1513,6 @@ msgstr ""
 #: assets/dist/page-admin/js/app-admin.main.js:1
 #, js-format
 msgid "%d products"
-msgstr ""
-
-#: assets/dist/page-admin/js/app-admin.main.js:1
-msgid "Columns"
 msgstr ""
 
 #: assets/dist/page-admin/js/app-admin.main.js:1
@@ -1464,6 +1559,10 @@ msgid "My Account Page"
 msgstr ""
 
 #: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Add new menu options to the My Account Page"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
 msgid "Add the \"Purchase List\" menu to My Account."
 msgstr ""
 
@@ -1473,6 +1572,10 @@ msgstr ""
 
 #: assets/dist/page-admin/js/app-admin.main.js:1
 msgid "\"Save as Purchase List\" Button"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Enable customers to save purchase lists from their cart and orders history"
 msgstr ""
 
 #: assets/dist/page-admin/js/app-admin.main.js:1
@@ -1501,6 +1604,10 @@ msgstr ""
 
 #: assets/dist/page-admin/js/app-admin.main.js:1
 msgid "Add to Order Table"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Allow customers save their new purchase list from [My Account > Orders page] or after placing an order."
 msgstr ""
 
 #: assets/dist/page-admin/js/app-admin.main.js:1

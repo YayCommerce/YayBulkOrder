@@ -52,7 +52,7 @@ export default function AddTableForm() {
     try {
       const res = await createMutation.mutateAsync(data);
       form.reset(data);
-      toast.success(__('Product Table Saved!', 'yay-wholesale-b2b'));
+      toast.success(__('Product Table Saved!', 'yay-bulk-order'));
       setSavedId(res.id);
     } catch (error) {
       toast.error(await getErrorMsg(error));
