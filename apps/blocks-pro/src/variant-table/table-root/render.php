@@ -40,6 +40,24 @@ wp_interactivity_config(
 	array(
 		'restUrl' => esc_url_raw( rest_url() ),
 		'nonce'   => wp_create_nonce( 'wc_store_api' ),
+		'messages' => array(
+			'addToCartFailed' => __( 'Could not add the items to the cart. Please try again.', 'yay-bulk-order' ),
+			'rateLimited'     => __( 'Too many requests. Please wait and try again.', 'yay-bulk-order' ),
+		),
+	)
+);
+
+wp_interactivity_config(
+	'yay-bulk-order/variant-table',
+	array(
+		'labels' => array(
+			'adding'         => __( 'Adding...', 'yay-bulk-order' ),
+			'addToCart'      => __( 'Add to cart', 'yay-bulk-order' ),
+			/* translators: %d: total quantity of the selected variations. */
+			'addToCartCount' => __( 'Add to cart (%d)', 'yay-bulk-order' ),
+			/* translators: %s: formatted cart total. */
+			'viewCart'       => __( 'View cart | %s', 'yay-bulk-order' ),
+		),
 	)
 );
 
@@ -60,6 +78,9 @@ $data_context = [
         'cartNotice' => [
             'visible' => false,
             'totalFormatted' => '',
+        ],
+        'cartError' => [
+            'messages' => [],
         ],
         'bulkActionOutOfView' => false,
     ],

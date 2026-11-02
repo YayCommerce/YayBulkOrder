@@ -83,6 +83,7 @@ class ProductQueryService {
         $filter_param      = $this->get_filter_param( $block );
         $search_param      = $this->get_search_param( $block );
         $category_param    = $this->get_category_param( $block );
+        $tags_param        = $this->get_tags_param( $block );
         $products_per_page = $this->get_products_per_page( $block );
 
         $query_vars['posts_per_page'] = $products_per_page;
@@ -106,6 +107,13 @@ class ProductQueryService {
                 'taxonomy' => 'product_cat',
                 'field'    => 'slug',
                 'terms'    => $category_param,
+            ];
+        }
+        if ( ! empty( $tags_param ) ) {
+            $tax_query_clauses[] = [
+                'taxonomy' => 'product_tag',
+                'field'    => 'slug',
+                'terms'    => $tags_param,
             ];
         }
         if ( ! empty( $product_query_restriction['tax_query'] ) ) {
@@ -137,15 +145,55 @@ class ProductQueryService {
             }
         }
 
+        // Every meta_query-based filter (in-stock, price, rating — see
+        // BlockHelper) must merge into ONE set of AND'd clauses here, same
+        // as tax_query above: assigning $query_vars['meta_query'] outright
+        // for each filter would let the last one silently wipe out the
+        // others whenever more than one is active at once.
+        $meta_query_clauses = [];
         if ( 'in-stock' === $filter_param ) {
-            /* phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_meta_query */
-            $query_vars['meta_query'] = [
-                [
-                    'key'     => '_stock_status',
-                    'value'   => [ 'instock' ],
-                    'compare' => 'IN',
-                ],
+            $meta_query_clauses[] = [
+                'key'     => '_stock_status',
+                'value'   => [ 'instock' ],
+                'compare' => 'IN',
             ];
+        }
+
+        $min_price = $this->get_min_price_param( $block );
+        $max_price = $this->get_max_price_param( $block );
+        if ( null !== $min_price || null !== $max_price ) {
+            $price_clause = [
+                'key'  => '_price',
+                'type' => 'DECIMAL(10,2)',
+            ];
+            if ( null !== $min_price && null !== $max_price ) {
+                $price_clause['value']   = [ $min_price, $max_price ];
+                $price_clause['compare'] = 'BETWEEN';
+            } elseif ( null !== $min_price ) {
+                $price_clause['value']   = $min_price;
+                $price_clause['compare'] = '>=';
+            } else {
+                $price_clause['value']   = $max_price;
+                $price_clause['compare'] = '<=';
+            }
+            $meta_query_clauses[] = $price_clause;
+        }
+
+        $rating_param = $this->get_rating_param( $block );
+        if ( null !== $rating_param ) {
+            $meta_query_clauses[] = [
+                'key'     => '_wc_average_rating',
+                'value'   => $rating_param,
+                'compare' => '>=',
+                'type'    => 'DECIMAL(10,2)',
+            ];
+        }
+
+        if ( ! empty( $meta_query_clauses ) ) {
+            /* phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_meta_query */
+            $query_vars['meta_query'] = count( $meta_query_clauses ) > 1
+                ? array_merge( [ 'relation' => 'AND' ], $meta_query_clauses )
+                : $meta_query_clauses;
         }
 
         // Collections like `top-rated` sort rather than restrict — apply
@@ -396,6 +444,87 @@ class ProductQueryService {
         );
 
         return is_wp_error( $terms ) ? [] : $terms;
+    }
+
+    /**
+     * Get the selected product tag slugs from URL. With the queryId from Bulk Order Form.
+     *
+     * @param WP_Block $block The block instance.
+     * @return string[] The selected tag slugs.
+     */
+    public function get_tags_param( $block ) {
+        $query_id = $block->context['queryId'] ?? 0;
+        return BlockHelper::get_tags_param( $query_id );
+    }
+
+    /**
+     * Product tags with products, for the table-filter block to list.
+     *
+     * @return WP_Term[] The product tags.
+     */
+    public function get_filterable_tags() {
+        $terms = get_terms(
+            [
+                'taxonomy'   => 'product_tag',
+                'hide_empty' => true,
+            ]
+        );
+
+        return is_wp_error( $terms ) ? [] : $terms;
+    }
+
+    /**
+     * @param WP_Block $block The block instance.
+     * @return float|null The minimum price filter from the URL, if set.
+     */
+    public function get_min_price_param( $block ) {
+        $query_id = $block->context['queryId'] ?? 0;
+        return BlockHelper::get_min_price_param( $query_id );
+    }
+
+    /**
+     * @param WP_Block $block The block instance.
+     * @return float|null The maximum price filter from the URL, if set.
+     */
+    public function get_max_price_param( $block ) {
+        $query_id = $block->context['queryId'] ?? 0;
+        return BlockHelper::get_max_price_param( $query_id );
+    }
+
+    /**
+     * @param WP_Block $block The block instance.
+     * @return int|null The minimum star rating (1-5) filter from the URL, if set.
+     */
+    public function get_rating_param( $block ) {
+        $query_id = $block->context['queryId'] ?? 0;
+        return BlockHelper::get_rating_param( $query_id );
+    }
+
+    /**
+     * Actual min/max `_price` across published products, for sizing the
+     * price filter's range inputs.
+     *
+     * @return array{min: float, max: float}
+     */
+    public function get_price_bounds(): array {
+        global $wpdb;
+
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+        $bounds = $wpdb->get_row(
+            "SELECT MIN(CAST(pm.meta_value AS DECIMAL(10,2))) AS min_price, MAX(CAST(pm.meta_value AS DECIMAL(10,2))) AS max_price
+            FROM {$wpdb->postmeta} pm
+            INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id
+            WHERE pm.meta_key = '_price'
+                AND pm.meta_value != ''
+                AND p.post_type = 'product'
+                AND p.post_status = 'publish'"
+        );
+        // phpcs:enable
+
+        return [
+            'min' => null !== $bounds && null !== $bounds->min_price ? (float) $bounds->min_price : 0.0,
+            'max' => null !== $bounds && null !== $bounds->max_price ? (float) $bounds->max_price : 0.0,
+        ];
     }
 
     /**

@@ -47,7 +47,7 @@ class YayBulkOrderProLicenseAdapter implements \YayBulkOrderScoped\YayCommerce\A
     public function get_plugin_version(): string {
         return defined( 'YAYBULKORDER_VERSION' ) ? YAYBULKORDER_VERSION : '0.0.0'; }
     public function get_plugin_file(): string {
-        return YAYBULKORDER_PLUGIN_PATH . 'yay-bulk-order.php'; }
+        return YAYBULKORDER_FILE; }
     public function get_item_id(): int {
         return 1; } // TODO: EDD setup
     public function get_store_url(): string {

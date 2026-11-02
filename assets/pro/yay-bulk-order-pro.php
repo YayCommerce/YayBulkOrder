@@ -3,7 +3,7 @@
  * Plugin Name:       Yay Bulk Order Pro for WooCommerce
  * Plugin URI:        https://yaycommerce.com/
  * Description:       WooCommerce plugin for quick bulk ordering.
- * Version:           0.2.1.5
+ * Version:           1.0.0
  * Author:            YayCommerce
  * Author URI:        https://yaycommerce.com
  * Text Domain:       yay-bulk-order
@@ -12,7 +12,7 @@
  * Requires PHP: 7.4
  * Requires Plugins: woocommerce
  * WC requires at least: 10.0.0
- * WC tested up to: 10.7.0
+ * WC tested up to: 11.2
  *
  * @package yaycommerce/yay-bulk-order
  */
@@ -32,7 +32,7 @@ if ( function_exists( 'YayBulkOrder\\plugin_init' ) ) {
 }
 
 if ( ! defined( 'YAYBULKORDER_VERSION' ) ) {
-    define( 'YAYBULKORDER_VERSION', '0.2.1.5' );
+    define( 'YAYBULKORDER_VERSION', '1.0.0' );
     define( 'YAYBULKORDER_FILE', __FILE__ );
     define( 'YAYBULKORDER_PLUGIN_URL', plugin_dir_url( YAYBULKORDER_FILE ) );
     define( 'YAYBULKORDER_PLUGIN_PATH', plugin_dir_path( YAYBULKORDER_FILE ) );

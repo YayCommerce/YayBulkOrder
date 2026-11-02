@@ -25,6 +25,9 @@ export type VariantTableContext = {
       visible: boolean;
       totalFormatted: string;
     };
+    cartError: {
+      messages: string[];
+    };
     bulkActionOutOfView: boolean;
   };
 };

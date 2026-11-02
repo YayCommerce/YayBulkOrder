@@ -1,4 +1,5 @@
 import { useBlockProps } from '@wordpress/block-editor';
+import { __ } from '@wordpress/i18n';
 
 export default function Edit() {
   const blockProps = useBlockProps();
@@ -9,8 +10,8 @@ export default function Edit() {
         <a
           href="#top"
           className="ybo-bulk-action__back-to-top"
-          aria-label="Go Back to Top"
-          title="Go Back to Top"
+          aria-label={__('Go Back to Top', 'yay-bulk-order')}
+          title={__('Go Back to Top', 'yay-bulk-order')}
           onClick={(e) => e.preventDefault()}
         >
           <svg
@@ -60,7 +61,7 @@ export default function Edit() {
               />
             </svg>
           </span>{' '}
-          Add selected items to cart
+          {__('Add selected items to cart', 'yay-bulk-order')}
         </button>
       </div>
     </div>

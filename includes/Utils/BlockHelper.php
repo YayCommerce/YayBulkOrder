@@ -1,6 +1,8 @@
 <?php
 namespace YayBulkOrder\Utils;
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Helper functions for blocks rendering.
  */
@@ -46,13 +48,74 @@ class BlockHelper {
         return empty( $_GET[ $search_key ] ) ? '' : sanitize_text_field( wp_unslash( $_GET[ $search_key ] ) );
     }
 
+    /**
+     * @param int $query_id The queryId.
+     * @return float|null The minimum price, or null if not set / not numeric.
+     */
+    public static function get_min_price_param( int $query_id = 0 ) {
+        return self::get_price_bound_param( $query_id, 'min-price' );
+    }
+
+    /**
+     * @param int $query_id The queryId.
+     * @return float|null The maximum price, or null if not set / not numeric.
+     */
+    public static function get_max_price_param( int $query_id = 0 ) {
+        return self::get_price_bound_param( $query_id, 'max-price' );
+    }
+
+    private static function get_price_bound_param( int $query_id, string $suffix ) {
+        $key = 'query-' . $query_id . '-' . $suffix;
+        /* phpcs:disable WordPress.Security.NonceVerification.Recommended */
+        if ( ! isset( $_GET[ $key ] ) || ! is_numeric( $_GET[ $key ] ) ) {
+            return null;
+        }
+        return max( 0.0, (float) $_GET[ $key ] );
+    }
+
+    /**
+     * @param int $query_id The queryId.
+     * @return int|null The minimum star rating (1-5) filter, or null if not set / out of range.
+     */
+    public static function get_rating_param( int $query_id = 0 ) {
+        $rating_key = 'query-' . $query_id . '-rating';
+        /* phpcs:disable WordPress.Security.NonceVerification.Recommended */
+        if ( ! isset( $_GET[ $rating_key ] ) || ! is_numeric( $_GET[ $rating_key ] ) ) {
+            return null;
+        }
+        $rating = (int) $_GET[ $rating_key ];
+        return ( $rating >= 1 && $rating <= 5 ) ? $rating : null;
+    }
+
+    /**
+     * @param int $query_id The queryId, disambiguated for duplicate-pattern
+     *                       instances — see RegisterBlocks::disambiguate_query_id().
+     * @return string[] The selected category slugs (multi-select).
+     */
     public static function get_category_param( int $query_id = 0 ) {
-        $category_key = 'query-' . $query_id . '-category';
+        $category_key = 'query-' . $query_id . '-categories';
         /* phpcs:disable WordPress.Security.NonceVerification.Recommended */
         if ( empty( $_GET[ $category_key ] ) ) {
             return [];
         }
         $raw_value = sanitize_text_field( wp_unslash( $_GET[ $category_key ] ) );
+        $slugs     = array_map( 'sanitize_title', explode( ',', $raw_value ) );
+
+        return array_values( array_filter( $slugs ) );
+    }
+
+    /**
+     * @param int $query_id The queryId, disambiguated for duplicate-pattern
+     *                       instances — see RegisterBlocks::disambiguate_query_id().
+     * @return string[] The selected product tag slugs (multi-select).
+     */
+    public static function get_tags_param( int $query_id = 0 ) {
+        $tags_key = 'query-' . $query_id . '-tags';
+        /* phpcs:disable WordPress.Security.NonceVerification.Recommended */
+        if ( empty( $_GET[ $tags_key ] ) ) {
+            return [];
+        }
+        $raw_value = sanitize_text_field( wp_unslash( $_GET[ $tags_key ] ) );
         $slugs     = array_map( 'sanitize_title', explode( ',', $raw_value ) );
 
         return array_values( array_filter( $slugs ) );

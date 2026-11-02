@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { ComboboxControl } from '@wordpress/components';
 import { useDebounce } from '@wordpress/compose';
 import { __ } from '@wordpress/i18n';
@@ -58,9 +58,10 @@ export default function SingleProductPicker({ productId, onSelect, compact = fal
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [productId]);
 
-  const search = useDebounce((input: string) => {
+  const runSearch = useCallback((input: string) => {
     searchVariableProducts(input).then(setOptions);
-  }, 300);
+  }, []);
+  const search = useDebounce(runSearch, 300);
 
   const visibleOptions =
     selectedOption && !options.some((option) => option.id === selectedOption.id)
@@ -97,10 +98,7 @@ export default function SingleProductPicker({ productId, onSelect, compact = fal
         {__('Which variable product should this table show?', 'yay-bulk-order')}
       </p>
       <p className="ybo-variant-table-placeholder__hint">
-        {__(
-          'On a Single Product page this is automatic — this picker only shows up elsewhere.',
-          'yay-bulk-order',
-        )}
+        {__('On a Single Product page this is automatic — this picker only shows up elsewhere.', 'yay-bulk-order')}
       </p>
       {combobox}
     </div>

@@ -38,18 +38,10 @@ class AdminPage {
             return;
         }
 
-        // use dummy script to handle localize / dependency in js module
-        $dummy_handler = ScriptName::ADMIN_PAGE . '-extra';
-        $deps          = [ 'react', 'react-dom', 'wp-hooks', 'wp-i18n', 'wp-date' ];
-        $admin_data    = $this->localize_service->get_admin_data();
-        $meta          = $this->localize_service->get_meta();
-        wp_register_script( $dummy_handler, '', $deps, YAYBULKORDER_VERSION, false );
-        wp_localize_script( $dummy_handler, LocalizeService::VAR_ADMIN_DATA, $admin_data );
-        wp_localize_script( $dummy_handler, LocalizeService::VAR_META, $meta );
-        wp_enqueue_script( $dummy_handler );
+        wp_localize_script( ScriptName::ADMIN_PAGE, LocalizeService::VAR_ADMIN_DATA, $this->localize_service->get_admin_data() );
+        wp_localize_script( ScriptName::ADMIN_PAGE, LocalizeService::VAR_META, $this->localize_service->get_meta() );
 
-        // enqueue the js module
-        wp_enqueue_script_module( ScriptName::ADMIN_PAGE );
+        wp_enqueue_script( ScriptName::ADMIN_PAGE );
         wp_enqueue_style( ScriptName::STYLE_ADMIN_PAGE );
     }
 

@@ -37,7 +37,7 @@ export default function EditTableForm({ table }: EditTableFormProps) {
     try {
       await updateMutation.mutateAsync(data);
       form.reset(data);
-      toast.success(__('Product Table Saved!', 'yay-wholesale-b2b'));
+      toast.success(__('Product Table Saved!', 'yay-bulk-order'));
     } catch (error) {
       toast.error(await getErrorMsg(error));
     }

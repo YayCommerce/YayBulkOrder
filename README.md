@@ -28,14 +28,13 @@ pnpm dev
 
 ## Testing
 
-### E2E Tests (Playwright)
+### E2E Tests (Playwright + @wordpress/env)
+
+Requires Docker running. Coverage is thin today — see `tests/e2e/tests/`.
 
 ```bash
-# Install Playwright browsers
-pnpm test:e2e:install
-
-# Start test environment (single site)
-pnpm env:start:single
+# Start the WordPress + WooCommerce test environment (Docker)
+pnpm test:e2e:env:start
 
 # Run all e2e tests
 pnpm test:e2e
@@ -43,9 +42,11 @@ pnpm test:e2e
 # Run with UI
 pnpm test:e2e:ui
 
-# Stop test environment
-pnpm env:stop:single
+# Stop the test environment
+pnpm test:e2e:env:stop
 ```
+
+`pnpm test:e2e:install` (downloads Playwright's bundled Chromium) is only needed in CI — local runs use the system-installed Google Chrome instead (see `tests/e2e/playwright.config.ts`).
 
 ## Release
 

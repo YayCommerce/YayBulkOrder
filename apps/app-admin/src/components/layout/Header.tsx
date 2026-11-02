@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { cn } from '@/lib/utils';
+import { assetUrl, cn } from '@/lib/utils';
 import { HeaderMenu } from './HeaderMenu';
 
 export default function Header() {
@@ -17,11 +17,7 @@ export default function Header() {
     >
       {/* Logo */}
       <div className="border-border px-0.75 pt-0.75 flex h-full bg-[#FFF5DB]">
-        <img
-          src={`${window.yayBulkOrderMeta.bulkOrderMeta.assetsUrl}/images/YayBulkOrder.svg`}
-          alt="YayWholesale"
-          className="size-12.5"
-        />
+        <img src={assetUrl('images/YayBulkOrder.svg')} alt="YayBulkOrder" className="size-12.5" />
       </div>
 
       <HeaderMenu />

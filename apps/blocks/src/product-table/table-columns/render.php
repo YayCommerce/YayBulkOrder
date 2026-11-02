@@ -105,7 +105,7 @@ $render_row = function ( $block, $product_id, $product, $default_cart_quantity, 
 <?php
 
 if ( ! $query->have_posts() ) {
-    echo '<tr><td colspan="999">No products found</td></tr>';
+    echo '<tr><td colspan="999">' . esc_html__( 'No products found', 'yay-bulk-order' ) . '</td></tr>';
 }
 
 if ( $query->have_posts() ) {

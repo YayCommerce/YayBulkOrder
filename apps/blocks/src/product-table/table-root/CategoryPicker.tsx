@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Icon, Spinner } from '@wordpress/components';
+import { Spinner } from '@wordpress/components';
 import { __, _n, sprintf } from '@wordpress/i18n';
-import { check } from '@wordpress/icons';
 
 import { fetchProductCategories, ProductCategoryOption } from './api';
 
@@ -59,13 +58,10 @@ export default function CategoryPicker({ categoryIds, onChange }: CategoryPicker
           <label key={category.id} className="ybo-category-picker__row">
             <input
               type="checkbox"
-              className="ybo-category-picker__native-checkbox"
+              className="ybo-category-picker__checkbox"
               checked={isChecked}
               onChange={(event) => toggleCategory(category.id, event.target.checked)}
             />
-            <span className={`ybo-category-picker__box${isChecked ? ' is-checked' : ''}`} aria-hidden="true">
-              {isChecked && <Icon icon={check} size={14} />}
-            </span>
             <span className="ybo-category-picker__name">{category.name}</span>
             <span className="ybo-category-picker__badge">
               {sprintf(

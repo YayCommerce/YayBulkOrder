@@ -1,24 +1,46 @@
-import { getContext, getElement, store } from '@wordpress/interactivity';
-
 import { initCartSync } from '@yay-bulk-order/common/src/cartSync';
 import { getGlobalConfig } from '@yay-bulk-order/common/src/globalConfig';
 import {
   addProductsToCartBatch,
   addProductToCart,
+  getStoreApiErrorMessage,
   STORE_NAMESPACE,
   syncWooCommerceCart,
+  type BatchAddResult,
   type StoreApiCart,
 } from '@yay-bulk-order/common/src/storeApi';
 import { formatCartSubtotal, formatPrice } from '@yay-bulk-order/common/src/storeApi/currency';
+import { getConfig, getContext, getElement, store } from '@wordpress/interactivity';
 
 import type {
   FilterCategoryOptionContext,
+  FilterRatingOptionContext,
+  FilterTagOptionContext,
   ProductRowContext,
   ProductRowState,
   ProductTableContext,
   SelectedRow,
   TableState,
 } from './productTable.type';
+
+const DEFAULT_LABELS = {
+  addMore: 'Add more',
+  adding: 'Adding...',
+  addSelected: 'Add selected items to cart',
+  addSelectedCount: 'Add selected items to cart (%d)',
+  viewCart: 'View cart | %s',
+  priceFrom: 'From %s',
+  viewOptions: 'View options',
+  hideOptions: 'Hide options',
+};
+
+/**
+ * Translated UI text from table-root/render.php. Script modules get no JS
+ * translations, so PHP passes the strings through the interactivity config.
+ */
+function getLabels(): typeof DEFAULT_LABELS {
+  return { ...DEFAULT_LABELS, ...(getConfig(STORE_NAMESPACE)?.labels ?? {}) };
+}
 
 /** All currently selected rows, derived from the keyed `select` map. */
 function getSelectedRows(tableState: TableState): SelectedRow[] {
@@ -106,7 +128,8 @@ function fetchHtml(url: string): Promise<string> {
  */
 async function navigateWithHiddenParams(fetchUrl: string, context: ProductTableContext): Promise<void> {
   const { actions } = await import('@wordpress/interactivity-router');
-
+  // await actions.navigate(fetchUrl);
+  // return;
   context.tableState.isTableLoading = true;
   try {
     const html = await fetchHtml(fetchUrl);
@@ -122,12 +145,16 @@ async function navigateWithHiddenParams(fetchUrl: string, context: ProductTableC
 /** Applies the current filter/search state and resets to page 1. */
 async function navigateToFilterState(context: ProductTableContext): Promise<void> {
   const { queryId } = context.formAttributes;
-  const { categories, search } = context.tableState.filter;
+  const { categories, tags, search, priceRange, rating } = context.tableState.filter;
 
   const url = buildTableUrl(queryId, {
     page: null,
-    category: categories.length ? categories.join(',') : null,
+    categories: categories.length ? categories.join(',') : null,
+    tags: tags.length ? tags.join(',') : null,
     search: search || null,
+    'min-price': priceRange.min || null,
+    'max-price': priceRange.max || null,
+    rating: rating ?? null,
   });
 
   await navigateWithHiddenParams(url, context);
@@ -146,6 +173,25 @@ function scheduleSearchNavigation(context: ProductTableContext): void {
       searchDebounceTimers.delete(queryId);
       navigateToFilterState(context).catch(console.error);
     }, SEARCH_DEBOUNCE_MS),
+  );
+}
+
+// Same reasoning as search: min/max price each fire their own `change`
+// (blur/Enter), and tabbing quickly from one to the other would otherwise
+// fire two overlapping navigations that can race and drop one field's
+// value. One shared timer per table instance coalesces them into one.
+const PRICE_DEBOUNCE_MS = 400;
+const priceDebounceTimers = new Map<number, ReturnType<typeof setTimeout>>();
+
+function schedulePriceNavigation(context: ProductTableContext): void {
+  const { queryId } = context.formAttributes;
+  clearTimeout(priceDebounceTimers.get(queryId));
+  priceDebounceTimers.set(
+    queryId,
+    setTimeout(() => {
+      priceDebounceTimers.delete(queryId);
+      navigateToFilterState(context).catch(console.error);
+    }, PRICE_DEBOUNCE_MS),
   );
 }
 
@@ -177,7 +223,9 @@ const storeDef = {
         case 'simple':
           return formatPrice(unitPrice * quantity, currency);
         case 'variable':
-          return !variantId ? `From ${formatPrice(unitPrice, currency)}` : formatPrice(unitPrice * quantity, currency);
+          return !variantId
+            ? getLabels().priceFrom.replace('%s', formatPrice(unitPrice, currency))
+            : formatPrice(unitPrice * quantity, currency);
         case 'external':
           return unitPrice > 0 ? formatPrice(unitPrice, currency) : '—';
         default:
@@ -189,7 +237,7 @@ const storeDef = {
       if (isAddingToCart) {
         return '';
       }
-      return cartQuantity > 0 ? 'Add more' : addToCartText;
+      return cartQuantity > 0 ? getLabels().addMore : addToCartText;
     },
 
     get isAddToCartDisabled(): boolean {
@@ -214,11 +262,12 @@ const storeDef = {
     },
     get bulkAddToCartText(): string {
       const { tableState } = getContext<ProductTableContext>();
+      const labels = getLabels();
       if (tableState.bulkAdding) {
-        return 'Adding...';
+        return labels.adding;
       }
       const total = getSelectedQuantityTotal(tableState);
-      return total > 0 ? `Add selected items to cart (${total})` : 'Add selected items to cart';
+      return total > 0 ? labels.addSelectedCount.replace('%d', String(total)) : labels.addSelected;
     },
     get isBulkAddDisabled(): boolean {
       const { tableState } = getContext<ProductTableContext>();
@@ -231,7 +280,15 @@ const storeDef = {
     },
     get cartNoticeText(): string {
       const { tableState } = getContext<ProductTableContext>();
-      return `View cart | ${tableState.cartNotice.totalFormatted}`;
+      return getLabels().viewCart.replace('%s', tableState.cartNotice.totalFormatted);
+    },
+    get showCartError(): boolean {
+      const { tableState } = getContext<ProductTableContext>();
+      return tableState.cartError.messages.length > 0;
+    },
+    get cartErrorText(): string {
+      const { tableState } = getContext<ProductTableContext>();
+      return tableState.cartError.messages.join('\n');
     },
     get cartUrl(): string {
       return window.wc_add_to_cart_params?.cart_url ?? '#';
@@ -266,7 +323,8 @@ const storeDef = {
       return Boolean(tableState.expandedProducts[productId]);
     },
     get viewOptionsText(): string {
-      return this.isProductExpanded ? 'Hide options' : 'View options';
+      const labels = getLabels();
+      return this.isProductExpanded ? labels.hideOptions : labels.viewOptions;
     },
     get isVariationRowHidden(): boolean {
       const { tableState, parentProductId } = getContext<ProductRowState>();
@@ -348,6 +406,10 @@ const storeDef = {
       const { tableState } = getContext<ProductTableContext>();
       tableState.cartNotice.visible = false;
     },
+    clearCartError() {
+      const { tableState } = getContext<ProductTableContext>();
+      tableState.cartError.messages = [];
+    },
     *addSelectedToCart() {
       const { tableState } = getContext<ProductTableContext>();
       const selectedRows = getSelectedRows(tableState);
@@ -357,15 +419,20 @@ const storeDef = {
       }
 
       tableState.bulkAdding = true;
+      tableState.cartError.messages = [];
       try {
-        const cart: StoreApiCart = yield addProductsToCartBatch(selectedRows);
+        const { cart, errors, addedCount }: BatchAddResult = yield addProductsToCartBatch(selectedRows);
         syncWooCommerceCart(cart);
-        tableState.select = {};
-        tableState.cartNotice = buildCartNotice(cart, true);
+        if (addedCount > 0) {
+          tableState.select = {};
+        }
+        tableState.cartNotice = buildCartNotice(cart, addedCount > 0);
+        tableState.cartError.messages = errors;
         // Update row state after a bulk add.
         applyCartQuantities(cart);
       } catch (error) {
         console.error(error);
+        tableState.cartError.messages = [getStoreApiErrorMessage(error)];
       } finally {
         tableState.bulkAdding = false;
       }
@@ -378,18 +445,20 @@ const storeDef = {
         return;
       }
       context.isAddingToCart = true;
+      const { tableState } = getContext<ProductTableContext>();
+      tableState.cartError.messages = [];
       try {
         const cart: StoreApiCart = yield addProductToCart(productId, quantity, variationSelections);
         const item = cart.items?.find((item) => item.id === productId);
         context.cartQuantity = item?.quantity ?? 0;
         syncWooCommerceCart(cart);
-        const { tableState } = getContext<ProductTableContext>();
         // Only refresh the total; leave the notice's current visibility as-is.
         tableState.cartNotice = buildCartNotice(cart, tableState.cartNotice.visible);
         // Sync external state to prevent stale total overwrite.
         applyCartQuantities(cart);
       } catch (error) {
         console.error(error);
+        tableState.cartError.messages = [getStoreApiErrorMessage(error)];
       } finally {
         context.isAddingToCart = false;
       }
@@ -402,18 +471,58 @@ const storeDef = {
       const context = getContext<ProductTableContext>();
       context.tableState.filter.isOpen = false;
     },
-    // Applies the selected category immediately.
-    *selectFilterCategory() {
+    // Toggles one category in/out of the multi-select and applies immediately.
+    *toggleFilterCategory() {
       const context = getContext<FilterCategoryOptionContext>();
       const { categorySlug } = context;
-      const [currentSlug] = context.tableState.filter.categories;
+      const { categories } = context.tableState.filter;
 
-      if ((currentSlug ?? '') === categorySlug) {
-        return;
-      }
+      context.tableState.filter.categories = categories.includes(categorySlug)
+        ? categories.filter((slug) => slug !== categorySlug)
+        : [...categories, categorySlug];
 
-      context.tableState.filter.categories = categorySlug ? [categorySlug] : [];
       yield navigateToFilterState(context);
+    },
+    // Toggles one tag in/out of the multi-select and applies immediately.
+    *toggleFilterTag() {
+      const context = getContext<FilterTagOptionContext>();
+      const { tagSlug } = context;
+      const { tags } = context.tableState.filter;
+
+      context.tableState.filter.tags = tags.includes(tagSlug)
+        ? tags.filter((slug) => slug !== tagSlug)
+        : [...tags, tagSlug];
+
+      yield navigateToFilterState(context);
+    },
+    // Single-select: picking a rating replaces whatever was selected;
+    // picking the already-selected one clears it back to "no filter".
+    *toggleFilterRating() {
+      const context = getContext<FilterRatingOptionContext>();
+      const { ratingValue } = context;
+
+      context.tableState.filter.rating = context.tableState.filter.rating === ratingValue ? null : ratingValue;
+
+      yield navigateToFilterState(context);
+    },
+    // Fires on change (blur/Enter), not per keystroke. Debounced (shared
+    // timer with the other price field) so tabbing straight from min to
+    // max coalesces into one navigation instead of two racing ones.
+    updateMinPrice(event: Event) {
+      const context = getContext<ProductTableContext>();
+      context.tableState.filter.priceRange = {
+        ...context.tableState.filter.priceRange,
+        min: (event.target as HTMLInputElement).value,
+      };
+      schedulePriceNavigation(context);
+    },
+    updateMaxPrice(event: Event) {
+      const context = getContext<ProductTableContext>();
+      context.tableState.filter.priceRange = {
+        ...context.tableState.filter.priceRange,
+        max: (event.target as HTMLInputElement).value,
+      };
+      schedulePriceNavigation(context);
     },
     updateSearchKeyword(event: Event) {
       const context = getContext<ProductTableContext>();

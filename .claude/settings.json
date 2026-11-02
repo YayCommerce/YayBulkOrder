@@ -1,0 +1,34 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "root=$(git rev-parse --show-toplevel) && bash \"$root/.claude/hooks/check-admin-build.sh\"",
+            "timeout": 120,
+            "statusMessage": "Checking admin SPA build (if changed)..."
+          },
+          {
+            "type": "command",
+            "command": "root=$(git rev-parse --show-toplevel) && bash \"$root/.claude/hooks/check-blocks-build.sh\"",
+            "timeout": 120,
+            "statusMessage": "Checking lite blocks build (if changed)..."
+          },
+          {
+            "type": "command",
+            "command": "root=$(git rev-parse --show-toplevel) && bash \"$root/.claude/hooks/check-blocks-pro-build.sh\"",
+            "timeout": 120,
+            "statusMessage": "Checking pro blocks build (if changed)..."
+          },
+          {
+            "type": "command",
+            "command": "root=$(git rev-parse --show-toplevel) && bash \"$root/.claude/hooks/check-checkout-slotfill-build.sh\"",
+            "timeout": 60,
+            "statusMessage": "Checking checkout slotfill build (if changed)..."
+          }
+        ]
+      }
+    ]
+  }
+}

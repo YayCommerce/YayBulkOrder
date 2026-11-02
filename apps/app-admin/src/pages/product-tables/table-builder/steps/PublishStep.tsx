@@ -199,7 +199,7 @@ export default function PublishStep({ tableId, setSteps }: PublishStepProps) {
               />
               <ButtonGroup>
                 <Button variant="outline" className="h-9 w-fit" onClick={copyAsBlock}>
-                  {__('Copy Table', 'yay-wholesale-b2b')}
+                  {__('Copy Table', 'yay-bulk-order')}
                 </Button>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -212,11 +212,11 @@ export default function PublishStep({ tableId, setSteps }: PublishStepProps) {
                       <DropdownMenuGroup>
                         <DropdownMenuItem onClick={copyAsBlock}>
                           <LayoutGrid className="size-4" />
-                          {__('Copy as Block', 'yay-wholesale-b2b')}
+                          {__('Copy as Block', 'yay-bulk-order')}
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={copyAsShortcode}>
                           <CodeXml className="size-4" />
-                          {__('Copy as Shortcode', 'yay-wholesale-b2b')}
+                          {__('Copy as Shortcode', 'yay-bulk-order')}
                         </DropdownMenuItem>
                       </DropdownMenuGroup>
                     </DropdownMenuContent>
@@ -289,7 +289,7 @@ export default function PublishStep({ tableId, setSteps }: PublishStepProps) {
             /> */}
             <div className="col-span-2 flex min-h-20 items-center justify-between rounded-md border p-2.5">
               <div>
-                <p className="flex items-center gap-2 text-sm font-medium leading-3">
+                <p className="flex items-center gap-2 text-sm/3 font-medium">
                   {__('Create with new page', 'yay-bulk-order')}
                 </p>
                 <p className="text-muted-foreground mt-2 text-xs font-normal">

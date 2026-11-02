@@ -4,9 +4,10 @@ import { formatCartAmount } from '@yay-bulk-order/common/src/storeApi/currency';
 import '@yay-bulk-order/common/src/storeApi/globals';
 
 import type { StoreApiCart } from '@yay-bulk-order/common/src/storeApi/type';
-import { store } from '@wordpress/interactivity';
+import { getConfig, store } from '@wordpress/interactivity';
 
 const WC_CART_STORE = 'wc/store/cart';
+const { itemLabel = '%d item', itemsLabel = '%d items' } = getConfig('yay-bulk-order/cart-summary') ?? {};
 
 const { state } = store(
   'yay-bulk-order/cart-summary',
@@ -16,7 +17,7 @@ const { state } = store(
       subtotal: '',
 
       get itemCountLabel(): string {
-        return `${state.itemCount} ${state.itemCount === 1 ? 'item' : 'items'}`;
+        return (state.itemCount === 1 ? itemLabel : itemsLabel).replace('%d', String(state.itemCount));
       },
       get isEmpty(): boolean {
         return state.itemCount === 0;

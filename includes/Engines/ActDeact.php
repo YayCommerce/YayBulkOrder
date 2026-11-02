@@ -1,6 +1,8 @@
 <?php
 namespace YayBulkOrder\Engines;
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Activate and deactive method of the plugin and relates.
  */

@@ -62,7 +62,7 @@ $nonce = wp_create_nonce('ybo_csv_order_nonce');
 					accept=".csv" />
 			</label>
 			<span class="ybo_csv_order_help_text"><?php esc_html_e('Upload .csv files with SKU on first column and quantity on second column.', 'yay-bulk-order'); ?></span>
-			<span class="ybo_csv_order_file_error">Error</span>
+			<span class="ybo_csv_order_file_error"><?php esc_html_e( 'Error', 'yay-bulk-order' ); ?></span>
 			<div class="ybo_csv_order_actions">
 				<button class="wp-element-button" type="submit">
 					<?php esc_html_e('Add to Cart', 'yay-bulk-order'); ?>

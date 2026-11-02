@@ -4,6 +4,8 @@ namespace YayBulkOrder\Engines\Blocks\Patterns;
 use YayBulkOrder\Services\PatternService;
 use YayBulkOrder\Utils\SingletonTrait;
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Registers block patterns and pattern categories with WordPress.
  */

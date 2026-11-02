@@ -11,15 +11,22 @@
 
     "build": "pnpm --filter @yay-bulk-order/blocks... build",
     "build:pro":"pnpm --filter @yay-bulk-order/blocks-pro... build",
+    "build:checkout-slotfill":"pnpm --filter @yay-bulk-order/block-checkout-slotfill build",
+    "build:all-blocks": "pnpm --filter \"@yay-bulk-order/blocks...\" --filter \"@yay-bulk-order/blocks-pro...\" --filter @yay-bulk-order/block-checkout-slotfill build",
     "build:admin:pro": "pnpm --filter @yay-bulk-order/app-admin... build:pro",
     "build:admin:lite": "pnpm --filter @yay-bulk-order/app-admin... build:lite",
     
-    "makepot": "wp i18n make-pot . languages/yay-bulk-order.pot --exclude=vendor,node_modules,apps,tests --domain=yay-bulk-order",
+    "makepot": "wp i18n make-pot . languages/yay-bulk-order.pot --exclude=vendor,node_modules,apps,tests,release --domain=yay-bulk-order",
     
     "release": "pnpm release:lite && pnpm release:pro",
     "release:lite": "bash ./release.sh IS_PRO=false",
-    "release:pro": "bash ./release.sh IS_PRO=true"
-    
+    "release:pro": "bash ./release.sh IS_PRO=true",
+
+    "test:e2e:install": "pnpm --filter @yay-bulk-order/tests-e2e exec playwright install chromium --with-deps",
+    "test:e2e:env:start": "pnpm --filter @yay-bulk-order/tests-e2e run env:start",
+    "test:e2e:env:stop": "pnpm --filter @yay-bulk-order/tests-e2e run env:stop",
+    "test:e2e": "pnpm --filter @yay-bulk-order/tests-e2e run test",
+    "test:e2e:ui": "pnpm --filter @yay-bulk-order/tests-e2e run test:ui"
   },
   "keywords": [],
   "author": "Yay Commerce",

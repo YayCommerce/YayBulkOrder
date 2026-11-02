@@ -46,6 +46,21 @@
         </button>
     </div>
 
+    <div class="ybo-variant-table-cart-error" role="alert" hidden data-wp-bind--hidden="!state.showCartError">
+        <span class="ybo-variant-table-cart-error__text" data-wp-text="state.cartErrorText"></span>
+
+        <button
+            type="button"
+            class="ybo-variant-table-cart-error__close"
+            aria-label="<?php esc_attr_e( 'Dismiss', 'yay-bulk-order' ); ?>"
+            data-wp-on--click="actions.clearCartError"
+        >
+            <svg width="16px" height="16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
+    </div>
+
     <div class="ybo-variant-table-cart-notice" data-wp-bind--hidden="!state.showCartNotice">
         <a class="ybo-variant-table-cart-notice__link" data-wp-bind--href="state.cartUrl">
             <span class="ybo-variant-table-cart-notice__icon" aria-hidden="true">

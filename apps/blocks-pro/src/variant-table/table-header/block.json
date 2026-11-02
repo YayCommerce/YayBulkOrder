@@ -48,5 +48,6 @@
   },
   "ancestor": ["yay-bulk-order/variant-table-root"],
   "parent": ["yay-bulk-order/variant-table"],
-  "editorScript": "file:./editor.js"
+  "editorScript": "file:./editor.js",
+  "render": "file:./render.php"
 }

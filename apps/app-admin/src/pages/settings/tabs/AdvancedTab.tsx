@@ -20,7 +20,7 @@ export function AdvancedTab() {
             <h2 className="font-semibold">{__('My Account Page', 'yay-bulk-order')}</h2>
             {!isPro && <UpgradeToProBadge />}
           </div>
-          <p className="text-muted-foreground">{__('Add new menu options to the My Account Page')}</p>
+          <p className="text-muted-foreground">{__('Add new menu options to the My Account Page', 'yay-bulk-order')}</p>
         </div>
         <Controller
           control={control}
@@ -85,7 +85,7 @@ export function AdvancedTab() {
             {!isPro && <UpgradeToProBadge />}
           </div>
           <p className="text-muted-foreground">
-            {__('Enable customers to save purchase lists from their cart and orders history')}
+            {__('Enable customers to save purchase lists from their cart and orders history', 'yay-bulk-order')}
           </p>
         </div>
 
@@ -185,7 +185,7 @@ export function AdvancedTab() {
                 <p className="text-muted-foreground mt-2 text-xs font-normal">
                   {__(
                     'Allow customers save their new purchase list from [My Account > Orders page] or after placing an order.',
-                    '',
+                    'yay-bulk-order',
                   )}
                 </p>
               </div>

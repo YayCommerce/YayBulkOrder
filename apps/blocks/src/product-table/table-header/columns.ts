@@ -1,3 +1,10 @@
+import { __ } from '@wordpress/i18n';
+
+/**
+ * English labels written by save.tsx. Keep them unchanged: existing blocks
+ * validate against this markup. The frontend renders translated labels from
+ * render.php instead.
+ */
 export const COLUMN_LABELS: Record<string, string> = {
   'yay-bulk-order/product-table-column-product': 'Product',
   'yay-bulk-order/product-table-column-sku': 'SKU',
@@ -7,6 +14,26 @@ export const COLUMN_LABELS: Record<string, string> = {
   'yay-bulk-order/product-table-column-add-to-cart': 'Add to Cart',
   'yay-bulk-order/product-table-column-select': '',
 };
+
+/** Translated column label for the editor. Matches the labels in render.php. */
+export function getColumnLabel(name: string): string {
+  switch (name) {
+    case 'yay-bulk-order/product-table-column-product':
+      return __('Product', 'yay-bulk-order');
+    case 'yay-bulk-order/product-table-column-sku':
+      return __('SKU', 'yay-bulk-order');
+    case 'yay-bulk-order/product-table-column-description':
+      return __('Description', 'yay-bulk-order');
+    case 'yay-bulk-order/product-table-column-quantity':
+      return __('Quantity', 'yay-bulk-order');
+    case 'yay-bulk-order/product-table-column-subtotal':
+      return __('Subtotal', 'yay-bulk-order');
+    case 'yay-bulk-order/product-table-column-add-to-cart':
+      return __('Add to Cart', 'yay-bulk-order');
+    default:
+      return '';
+  }
+}
 
 export const TABLE_COLUMNS_BLOCK_NAME = 'yay-bulk-order/product-table-columns';
 
@@ -26,4 +53,5 @@ export function getGridTemplateColumns(columns: string[]): string {
   return columns.map((name) => FIXED_COLUMN_TRACKS[name] ?? `minmax(${FLEXIBLE_COLUMN_MIN_WIDTH}, 1fr)`).join(' ');
 }
 
-export type HeaderColumn = { name: string; className?: string };
+// `label` is set only by the shortcode (its own headings); render.php prefers it.
+export type HeaderColumn = { name: string; className?: string; label?: string };
