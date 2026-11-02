@@ -12,7 +12,7 @@ import {
   type BatchAddResult,
 } from '@yay-bulk-order/common/src/storeApi';
 import { formatCartSubtotal, formatPrice } from '@yay-bulk-order/common/src/storeApi/currency';
-import { getContext, getElement, store } from '@wordpress/interactivity';
+import { getConfig, getContext, getElement, store } from '@wordpress/interactivity';
 
 import type {
   SelectedVariantRow,
@@ -23,6 +23,21 @@ import type {
 } from './variantTable.type';
 
 export const STORE_NAMESPACE = 'yay-bulk-order/variant-table';
+
+const DEFAULT_LABELS = {
+  adding: 'Adding...',
+  addToCart: 'Add to cart',
+  addToCartCount: 'Add to cart (%d)',
+  viewCart: 'View cart | %s',
+};
+
+/**
+ * Translated UI text from table-root/render.php. Script modules get no JS
+ * translations, so PHP passes the strings through the interactivity config.
+ */
+function getLabels(): typeof DEFAULT_LABELS {
+  return { ...DEFAULT_LABELS, ...(getConfig(STORE_NAMESPACE)?.labels ?? {}) };
+}
 
 /** All currently selected variation rows, derived from the keyed `select` map. */
 function getSelectedRows(tableState: TableState): SelectedVariantRow[] {
@@ -87,10 +102,10 @@ const storeDef = {
     get addToCartText(): string {
       const { tableState } = getContext<VariantTableContext>();
       if (tableState.bulkAdding) {
-        return 'Adding...';
+        return getLabels().adding;
       }
       const count = getSelectedQuantityTotal(tableState);
-      return count > 0 ? `Add to cart (${count})` : 'Add to cart';
+      return count > 0 ? getLabels().addToCartCount.replace('%d', String(count)) : getLabels().addToCart;
     },
     get isAddToCartDisabled(): boolean {
       const { tableState } = getContext<VariantTableContext>();
@@ -107,7 +122,7 @@ const storeDef = {
     },
     get cartNoticeText(): string {
       const { tableState } = getContext<VariantTableContext>();
-      return `View cart | ${tableState.cartNotice.totalFormatted}`;
+      return getLabels().viewCart.replace('%s', tableState.cartNotice.totalFormatted);
     },
     get showCartError(): boolean {
       const { tableState } = getContext<VariantTableContext>();

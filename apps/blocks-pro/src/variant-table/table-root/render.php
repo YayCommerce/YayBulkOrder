@@ -47,6 +47,20 @@ wp_interactivity_config(
 	)
 );
 
+wp_interactivity_config(
+	'yay-bulk-order/variant-table',
+	array(
+		'labels' => array(
+			'adding'         => __( 'Adding...', 'yay-bulk-order' ),
+			'addToCart'      => __( 'Add to cart', 'yay-bulk-order' ),
+			/* translators: %d: total quantity of the selected variations. */
+			'addToCartCount' => __( 'Add to cart (%d)', 'yay-bulk-order' ),
+			/* translators: %s: formatted cart total. */
+			'viewCart'       => __( 'View cart | %s', 'yay-bulk-order' ),
+		),
+	)
+);
+
 $styles = $settings_service->get_styles();
 $style_attr = '';
 foreach ( $styles as $property => $value ) {
