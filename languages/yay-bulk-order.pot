@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-02T02:58:45+00:00\n"
+"POT-Creation-Date: 2026-11-02T03:15:11+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: yay-bulk-order\n"
@@ -819,6 +819,10 @@ msgstr ""
 msgid "10 items"
 msgstr ""
 
+#: assets/dist/blocks/product-table/column-description/editor.js:1
+msgid "Short product description goes here…"
+msgstr ""
+
 #: assets/dist/blocks/product-table/column-product/editor.js:1
 msgid "Product name"
 msgstr ""
@@ -885,6 +889,7 @@ msgstr ""
 
 #: assets/dist/blocks/product-table/table-root/editor.js:2
 #: assets/dist/blocks/product-table/table-root/editor.js:3
+#: assets/dist/page-admin/js/app-admin.main.js:1
 msgid "Pro"
 msgstr ""
 
@@ -970,7 +975,11 @@ msgid "We hit an unexpected error on our end"
 msgstr ""
 
 #: assets/dist/page-admin/js/app-admin.main.js:1
-msgid "Enabled"
+msgid "Unlock this feature"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Upgrade To Pro"
 msgstr ""
 
 #: assets/dist/page-admin/js/app-admin.main.js:1
