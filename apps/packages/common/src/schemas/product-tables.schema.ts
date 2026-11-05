@@ -6,13 +6,10 @@ export const productTableColumnSchema = z.object({
   enabled: z.boolean(),
   heading: z
     .string()
-    .min(1, __('Fill in the field label', 'yay-wholesale-b2b'))
+    .min(1, __('Fill in the field label', 'yay-bulk-order'))
     .regex(
       /^[\p{L}0-9 _\-&:/]+$/u,
-      __(
-        'Heading can only contain letters, numbers, spaces, and common symbols (-, _, &, :, /.).',
-        'yay-wholesale-b2b',
-      ),
+      __('Heading can only contain letters, numbers, spaces, and common symbols (-, _, &, :, /.).', 'yay-bulk-order'),
     ),
   responsive: z.enum(['always-show', 'hide-on-mobile', 'hide-on-tablet']),
 });

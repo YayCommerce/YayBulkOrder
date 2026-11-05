@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { ProductTable } from '@yay-bulk-order/common/src/schemas';
 import { ProductQuery, TemplateQuery } from '@yay-bulk-order/product-table-store';
 import { Button, Spinner, TextControl } from '@wordpress/components';
@@ -75,10 +75,11 @@ export default function ProductTablePicker({ onSelect, onSelectTemplate }: Produ
     };
   }, [search, page]);
 
-  const debouncedSearch = useDebounce((value: string) => {
+  const applySearch = useCallback((value: string) => {
     setPage(1);
     setSearch(value);
-  }, 300);
+  }, []);
+  const debouncedSearch = useDebounce(applySearch, 300);
 
   return (
     <div className="ybo-product-table-picker">

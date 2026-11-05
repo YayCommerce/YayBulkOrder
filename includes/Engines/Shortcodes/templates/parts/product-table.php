@@ -15,19 +15,29 @@
 
 defined( 'ABSPATH' ) || exit;
 
+use YayBulkOrder\Services\ProductTablesService;
+
 $ybo_default_query_by = $ybo_default_query_by ?? 'all-products';
 
 // Columns — normalized by ProductTableShortcode into [ slug, heading, responsive ] configs.
 $ybo_columns           = (array) ( $attrs['columns'] ?? [] );
 $ybo_column_slugs      = [];
 $ybo_column_responsive = [];
+$ybo_column_headings   = [];
 $ybo_header_cells      = '';
 foreach ( $ybo_columns as $ybo_column ) {
-    $ybo_slug           = $ybo_column['slug'] ?? '';
+    $ybo_slug = sanitize_key( $ybo_column['slug'] ?? '' );
+    if ( '' === $ybo_slug ) {
+        continue;
+    }
     $ybo_column_slugs[] = $ybo_slug;
 
-    $ybo_heading    = $ybo_column['heading'] ?? '';
+    $ybo_heading                       = $ybo_column['heading'] ?? '';
+    $ybo_column_headings[ $ybo_slug ] = $ybo_heading;
     $ybo_responsive = $ybo_column['responsive'] ?? 'always-show';
+    if ( ! in_array( $ybo_responsive, ProductTablesService::RESPONSIVE_OPTIONS, true ) ) {
+        $ybo_responsive = 'always-show';
+    }
 
     $ybo_responsive_class               = ( 'always-show' !== $ybo_responsive ) ? 'ybo-' . $ybo_responsive : '';
     $ybo_column_responsive[ $ybo_slug ] = $ybo_responsive_class;
@@ -38,8 +48,11 @@ foreach ( $ybo_columns as $ybo_column ) {
 $ybo_header_cells .= '<th></th>';
 
 $ybo_header_columns = array_map(
-    static function ( $ybo_slug ) use ( $ybo_column_responsive ) {
-        $ybo_column = [ 'name' => 'yay-bulk-order/product-table-column-' . $ybo_slug ];
+    static function ( $ybo_slug ) use ( $ybo_column_responsive, $ybo_column_headings ) {
+        $ybo_column = [
+            'name'  => 'yay-bulk-order/product-table-column-' . $ybo_slug,
+            'label' => $ybo_column_headings[ $ybo_slug ] ?? '',
+        ];
         if ( ! empty( $ybo_column_responsive[ $ybo_slug ] ) ) {
             $ybo_column['className'] = $ybo_column_responsive[ $ybo_slug ];
         }
@@ -54,6 +67,9 @@ $ybo_header_columns[] = [
 
 // Query
 $ybo_query_by = $attrs['query_by'] ?? $ybo_default_query_by;
+if ( ! in_array( $ybo_query_by, array_merge( ProductTablesService::QUERY_BY_OPTIONS, [ 'inherit', 'top-rated' ] ), true ) ) {
+    $ybo_query_by = 'all-products';
+}
 
 $ybo_product_query = [ 'queryType' => $ybo_query_by ];
 if ( 'by-category' === $ybo_query_by ) {
@@ -96,7 +112,7 @@ $ybo_has_search = filter_var( $attrs['has_search'], FILTER_VALIDATE_BOOLEAN );
 // Render
 // phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped -- static block markup / values escaped above.
 ?>
-<!-- wp:yay-bulk-order/product-table-root <?php echo wp_json_encode( $ybo_root_attrs, JSON_HEX_TAG | JSON_HEX_AMP | JSON_UNESCAPED_SLASHES ); ?> -->
+<!-- wp:yay-bulk-order/product-table-root <?php echo wp_json_encode( $ybo_root_attrs ); ?> -->
 <!-- wp:group {"layout":{"type":"flex","justifyContent":"space-between","flexWrap":"nowrap"}} -->
 <div class="wp-block-group">
 <?php if ( $ybo_has_filter ) : ?>
@@ -117,19 +133,13 @@ $ybo_has_search = filter_var( $attrs['has_search'], FILTER_VALIDATE_BOOLEAN );
 <?php endif ?>
 <!-- wp:group {"className":"ybo-table-column"} -->
 <div class="wp-block-group ybo-table-column"><!-- wp:yay-bulk-order/product-table -->
-<table class="wp-block-yay-bulk-order-product-table"><!-- wp:yay-bulk-order/product-table-header <?php echo wp_json_encode( [ 'columns' => $ybo_header_columns ], JSON_HEX_TAG | JSON_HEX_AMP | JSON_UNESCAPED_SLASHES ); ?> -->
+<table class="wp-block-yay-bulk-order-product-table"><!-- wp:yay-bulk-order/product-table-header <?php echo wp_json_encode( [ 'columns' => $ybo_header_columns ] ); ?> -->
 <thead class="wp-block-yay-bulk-order-product-table-header" data-wp-init="callbacks.watchBackToTopVisibility"><tr><?php echo $ybo_header_cells; ?></tr></thead>
 <!-- /wp:yay-bulk-order/product-table-header -->
 
 <!-- wp:yay-bulk-order/product-table-columns -->
-<?php
-foreach ( $ybo_column_slugs as $ybo_slug ) :
-    $ybo_column_attrs = ! empty( $ybo_column_responsive[ $ybo_slug ] )
-        ? ' ' . wp_json_encode( [ 'className' => $ybo_column_responsive[ $ybo_slug ] ], JSON_HEX_TAG | JSON_HEX_AMP | JSON_UNESCAPED_SLASHES )
-        : '';
-    ?>
-
-    <!-- wp:yay-bulk-order/product-table-column-<?php echo ( $ybo_slug ); ?> <?php echo ( $ybo_column_attrs ); ?> /-->
+<?php foreach ( $ybo_column_slugs as $ybo_slug ) : ?>
+    <!-- wp:yay-bulk-order/product-table-column-<?php echo esc_attr( $ybo_slug ); ?> <?php echo ! empty( $ybo_column_responsive[ $ybo_slug ] ) ? wp_json_encode( [ 'className' => $ybo_column_responsive[ $ybo_slug ] ] ) : ''; ?> /-->
 <?php endforeach ?>
 <!-- wp:yay-bulk-order/product-table-column-select /-->
 <!-- /wp:yay-bulk-order/product-table-columns --></table>

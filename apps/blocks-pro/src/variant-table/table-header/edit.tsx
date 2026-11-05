@@ -3,7 +3,7 @@ import { store as blockEditorStore, useBlockProps } from '@wordpress/block-edito
 import { BlockEditProps } from '@wordpress/blocks';
 import { useSelect } from '@wordpress/data';
 
-import { COLUMN_LABELS, getGridTemplateColumns, TABLE_COLUMNS_BLOCK_NAME } from './columns';
+import { getColumnLabel, getGridTemplateColumns, TABLE_COLUMNS_BLOCK_NAME } from './columns';
 
 type TableHeaderAttributes = { columns: string[] };
 
@@ -42,7 +42,7 @@ export default function Edit({ clientId, attributes, setAttributes }: BlockEditP
     >
       {columns.map((name, index) => (
         <div key={`${name}-${index}`} className="ybo-table-cell">
-          {COLUMN_LABELS[name] ?? ''}
+          {getColumnLabel(name)}
         </div>
       ))}
     </div>

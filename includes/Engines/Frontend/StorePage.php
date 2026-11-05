@@ -46,18 +46,17 @@ class StorePage {
      * Render the product table to the shop page.
      */
     public function maybe_replace_shop_loop(): void {
-        $is_prevent_apply = apply_filters( 'yaybulkorder_shop_page_prevent_apply_template', false );
-
-        if ( $is_prevent_apply ) {
-            return;
-        }
-
         if ( ! $this->is_buffering_shop_loop ) {
             return;
         }
 
         $this->is_buffering_shop_loop = false;
-        ob_end_clean();
+        $default_loop                 = ob_get_clean();
+
+        if ( apply_filters( 'yaybulkorder_shop_page_prevent_apply_template', false ) ) {
+            echo $default_loop; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- WooCommerce's own shop loop markup.
+            return;
+        }
 
         $table_id = (int) $this->product_tables_service->get_shop_page_product_table();
         echo do_shortcode( '[ybo-product-table id="' . $table_id . '"]' );

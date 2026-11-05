@@ -15,3 +15,9 @@ const twMerge = extendTailwindMerge({
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
+
+/** Plugin asset URL with ?ver= so browsers refetch it after each plugin update. */
+export function assetUrl(path: string) {
+  const { assetsUrl, version } = window.yayBulkOrderMeta.bulkOrderMeta;
+  return `${assetsUrl}/${path.replace(/^\//, '')}?ver=${version}`;
+}

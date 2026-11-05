@@ -44,5 +44,6 @@
   },
   "ancestor": ["yay-bulk-order/product-table-root"],
   "parent": ["yay-bulk-order/product-table"],
-  "editorScript": "file:./editor.js"
+  "editorScript": "file:./editor.js",
+  "render": "file:./render.php"
 }

@@ -1,6 +1,8 @@
 <?php
 namespace YayBulkOrder\Utils;
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Provides singleton pattern implementation for classes.
  */

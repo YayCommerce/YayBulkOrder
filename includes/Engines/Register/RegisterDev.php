@@ -29,7 +29,7 @@ class RegisterDev {
     }
 
     public function register_all_scripts() {
-        wp_register_script_module( ScriptName::ADMIN_PAGE, 'http://localhost:3000/app-admin.main.tsx', [], null ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+        wp_register_script( ScriptName::ADMIN_PAGE, 'http://localhost:3000/app-admin.main.tsx', ScriptName::ADMIN_PAGE_DEPS, null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
         wp_set_script_translations( ScriptName::ADMIN_PAGE, 'yay-bulk-order', YAYBULKORDER_PLUGIN_PATH . 'languages' );
     }
 }

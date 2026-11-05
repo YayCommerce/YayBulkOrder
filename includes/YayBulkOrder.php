@@ -43,6 +43,14 @@ class YayBulkOrder {
         return class_exists( 'YayBulkOrder\Pro\YayBulkOrderPro', true );
     }
 
+    /**
+     * Pro code is present and its license is active. Use this to show Pro
+     * UI; is_pro() only says the Pro code is shipped.
+     */
+    public static function is_pro_active(): bool {
+        return self::is_pro() && \YayBulkOrder\Pro\YayBulkOrderProLicenseAdapter::is_licensed();
+    }
+
     public function before_woocommerce_init() {
         if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
             \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', YAYBULKORDER_FILE, true );

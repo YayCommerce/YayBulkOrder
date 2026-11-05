@@ -7,6 +7,8 @@ use YayBulkOrder\Utils\BlockHelper;
 use YayBulkOrder\Services\PatternService;
 use YayBulkOrder\Utils\SingletonTrait;
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Register Blocks
  */

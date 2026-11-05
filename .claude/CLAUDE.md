@@ -51,6 +51,7 @@ Before starting any non-trivial task, scan this index. If the task or files matc
 | `.claude/docs/context-dev-convention.md` | workflow, convention | branch naming, dev workflow, format, lint, prettier, eslint, checkpoint, /wplan, /wdev, plan, skill, lifecycle, verify, verification |
 | `.claude/docs/context-page-map.md` | context, reference, pages, features | page map, feature map, admin pages, frontend pages, what pages exist, blocks, patterns, shortcode, REST API endpoints, planning |
 | `.claude/docs/context-project-structure.md` | context, reference, backend, frontend, workflow | project structure, directory structure, bootstrap, hook order, plugins_loaded, rest_api_init, singleton, register_rest_route, new controller, new engine class |
+| `.claude/docs/context-wporg-release-checklist.md` | workflow, release, security | wordpress.org, wp.org review, plugin review, submit plugin, release checklist, plugin check, escaping, nonce, sanitize, readme.txt |
 
 ## Skills
 
@@ -63,6 +64,7 @@ Before starting any non-trivial task, scan this index. If the task or files matc
 | `/wplan-done`    | Close out a finished plan                                                  |
 | `/wsetup`        | One-time check: verify all dev tools on a new machine                      |
 | `/wdist-staging` | Bump the plugin version and build a release zip for staging                |
+| `/wpreview`      | Review the Lite zip against the WordPress.org checklist before submitting   |
 
 ## UI Components
 

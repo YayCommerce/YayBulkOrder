@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { ProductTableForm } from '@yay-bulk-order/common/src/schemas/product-tables.schema';
 import { ChevronRightIcon } from 'lucide-react';
 import { FieldPath, useFormContext } from 'react-hook-form';
+import { __ } from '@wordpress/i18n';
 
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
@@ -16,14 +17,14 @@ type StepsNavBarProps = {
 type StepValidation = FieldPath<ProductTableForm>[] | ((table: ProductTableForm) => FieldPath<ProductTableForm>[]);
 
 const STEPS: { slug: BuilderSteps; label: string; validation?: StepValidation }[] = [
-  { slug: 'products', label: 'Products', validation: ['query.categories', 'query.products'] },
+  { slug: 'products', label: __('Products', 'yay-bulk-order'), validation: ['query.categories', 'query.products'] },
   {
     slug: 'columns',
-    label: 'Columns',
+    label: __('Columns', 'yay-bulk-order'),
     validation: (table) => table.columns.map((_, index) => `columns.${index}.heading` as FieldPath<ProductTableForm>),
   },
-  { slug: 'features', label: 'Features' },
-  { slug: 'publish', label: 'Publish' },
+  { slug: 'features', label: __('Features', 'yay-bulk-order') },
+  { slug: 'publish', label: __('Publish', 'yay-bulk-order') },
 ];
 
 export default function StepsNavBar({ step, setStep }: StepsNavBarProps) {

@@ -33,3 +33,4 @@ README.md
 scoper.inc.php
 
 composer.lock
+*.map

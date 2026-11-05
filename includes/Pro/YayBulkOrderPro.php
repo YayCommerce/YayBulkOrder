@@ -6,7 +6,6 @@ use YayBulkOrder\Pro\Engines\Frontend\Frontend;
 use YayBulkOrder\Pro\Engines\Blocks\PurchaseList;
 use YayBulkOrder\Pro\Engines\Blocks\RegisterBlocks;
 use YayBulkOrder\Pro\Engines\RestAPI;
-use YayBulkOrder\YayBulkOrderLicenseAdapter;
 use YayBulkOrder\Pro\YayBulkOrderProLicenseAdapter;
 use YayBulkOrder\Utils\SingletonTrait;
 
@@ -19,10 +18,14 @@ class YayBulkOrderPro {
     use SingletonTrait;
 
     protected function __construct() {
-        // TODO: EDD setup
-        // if ( ! YayBulkOrderProLicenseAdapter::is_licensed() ) {
-        // return;
-        // }
+        // Always register the menu: the Pro adapter adds the Licenses page,
+        // where an unlicensed site enters its key.
+        $this->register_admin_menu();
+
+        // Unlicensed: run as Lite until a license is active.
+        if ( ! YayBulkOrderProLicenseAdapter::is_licensed() ) {
+            return;
+        }
 
         // Pro Engine here
         PurchaseList::get_instance();
@@ -32,8 +35,6 @@ class YayBulkOrderPro {
         RestAPI::get_instance();
 
         RegisterBlocks::get_instance();
-
-        $this->register_admin_menu();
     }
 
     public static function initialize() {
@@ -43,8 +44,8 @@ class YayBulkOrderPro {
     private function register_admin_menu() {
         \YayBulkOrderScoped\YayCommerce\AdminShell\AdminShell::boot();
         \YayBulkOrderScoped\YayCommerce\AdminShell\AdminShell::register_plugin(
-            new YayBulkOrderLicenseAdapter()
-            // new YayBulkOrderProLicenseAdapter()
+            // new YayBulkOrderLicenseAdapter()
+            new YayBulkOrderProLicenseAdapter()
         );
     }
 }

@@ -2,117 +2,451 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Yay Bulk Order for WooCommerce 0.2.0\n"
+"Project-Id-Version: Yay Bulk Order for WooCommerce 1.0.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/YayBulkOrder\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-03T04:54:44+00:00\n"
+"POT-Creation-Date: 2026-11-02T03:15:11+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.8.1\n"
+"X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: yay-bulk-order\n"
 
 #. Plugin Name of the plugin
+#: yay-bulk-order.php
 msgid "Yay Bulk Order for WooCommerce"
 msgstr ""
 
 #. Plugin URI of the plugin
+#: yay-bulk-order.php
 msgid "https://yaycommerce.com/"
 msgstr ""
 
 #. Description of the plugin
+#: yay-bulk-order.php
 msgid "WooCommerce plugin for quick bulk ordering."
 msgstr ""
 
 #. Author of the plugin
+#: yay-bulk-order.php
 msgid "YayCommerce"
 msgstr ""
 
 #. Author URI of the plugin
+#: yay-bulk-order.php
 msgid "https://yaycommerce.com"
 msgstr ""
 
-#: assets/dist/blocks/common/cart-summary/render.php:20
-#: assets/dist/blocks/common/cart-summary/render.php:21
-msgid "Open cart"
+#: assets/dist/blocks-pro/purchase-list/render.php:46
+msgid "You currently not logged in. To manage the purchase list, please log in first. "
 msgstr ""
 
-#: assets/dist/blocks/product-table/column-add-to-cart/render.php:43
-msgid "View options"
+#: assets/dist/blocks-pro/purchase-list/render.php:47
+#: assets/dist/blocks-pro/quick-csv-order/render.php:27
+msgid "Click here to login"
 msgstr ""
 
-#: assets/dist/blocks/product-table/column-add-to-cart/render.php:67
-#: assets/dist/blocks/product-table/table-columns/render.php:40
-msgid "Add to cart"
+#: assets/dist/blocks-pro/purchase-list/render.php:58
+#: assets/dist/blocks-pro/purchase-list/editor.js:1
+msgid "Purchase lists"
 msgstr ""
 
-#: assets/dist/blocks/product-table/column-add-to-cart/render.php:84
-msgid "Not Available"
+#: assets/dist/blocks-pro/purchase-list/render.php:60
+msgid "Search purchase list..."
 msgstr ""
 
-#: assets/dist/blocks/product-table/column-product/render.php:15
-msgid "No Product"
+#: assets/dist/blocks-pro/purchase-list/render.php:65
+#: assets/dist/blocks-pro/purchase-list/editor.js:1
+msgid "New List"
 msgstr ""
 
-#: assets/dist/blocks/product-table/column-quantity/render.php:27
+#: assets/dist/blocks-pro/purchase-list/render.php:73
+#: assets/dist/blocks-pro/purchase-list/editor.js:1
+msgid "List name"
+msgstr ""
+
+#: assets/dist/blocks-pro/purchase-list/render.php:74
+#: assets/dist/blocks-pro/purchase-list/editor.js:1
+msgid "Number of items"
+msgstr ""
+
+#: assets/dist/blocks-pro/purchase-list/render.php:75
+#: assets/dist/blocks-pro/purchase-list/editor.js:1
+msgid "Actions"
+msgstr ""
+
+#: assets/dist/blocks-pro/purchase-list/render.php:81
+msgid "No Purchase List"
+msgstr ""
+
+#: assets/dist/blocks-pro/purchase-list/render.php:90
+#: assets/dist/blocks-pro/purchase-list/editor.js:2
+msgid "View"
+msgstr ""
+
+#: assets/dist/blocks-pro/purchase-list/render.php:98
+#: assets/dist/blocks-pro/purchase-list/editor.js:2
+msgid "Download"
+msgstr ""
+
+#: assets/dist/blocks-pro/purchase-list/render.php:128
+msgid "Back to purchase lists"
+msgstr ""
+
+#: assets/dist/blocks-pro/purchase-list/render.php:133
+msgid "Add New Purchase List"
+msgstr ""
+
+#: assets/dist/blocks-pro/purchase-list/render.php:137
+msgid "Purchase List Name"
+msgstr ""
+
+#: assets/dist/blocks-pro/purchase-list/render.php:142
+#: assets/dist/blocks/product-table/table-header/render.php:18
+#: assets/dist/blocks-pro/variant-table/table-root/editor.js:1
+#: assets/dist/blocks/product-table/table-header/editor.js:1
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Product"
+msgstr ""
+
+#: assets/dist/blocks-pro/purchase-list/render.php:144
+msgid "Qty"
+msgstr ""
+
+#: assets/dist/blocks-pro/purchase-list/render.php:145
+#: assets/dist/blocks/product-table/table-header/render.php:22
+#: assets/dist/blocks/product-table/table-header/editor.js:1
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Subtotal"
+msgstr ""
+
+#: assets/dist/blocks-pro/purchase-list/render.php:151
+msgid "Search for a product..."
+msgstr ""
+
+#: assets/dist/blocks-pro/purchase-list/render.php:162
+msgid "Remove product"
+msgstr ""
+
+#: assets/dist/blocks-pro/purchase-list/render.php:163
+msgid "Clear"
+msgstr ""
+
+#: assets/dist/blocks-pro/purchase-list/render.php:201
+msgid "New line"
+msgstr ""
+
+#: assets/dist/blocks-pro/purchase-list/render.php:212
+#: assets/dist/blocks-pro/purchase-list/render.php:231
+#: assets/dist/blocks-pro/quick-csv-order/render.php:68
+#: assets/dist/blocks/product-table/table-header/render.php:23
+#: assets/dist/blocks-pro/quick-csv-order/editor.js:1
+#: assets/dist/blocks/product-table/table-header/editor.js:1
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Add to Cart"
+msgstr ""
+
+#: assets/dist/blocks-pro/purchase-list/render.php:215
+#: assets/dist/blocks-pro/purchase-list/render.php:234
+msgid "Save list"
+msgstr ""
+
+#: assets/dist/blocks-pro/purchase-list/render.php:219
+#: assets/dist/blocks-pro/purchase-list/render.php:241
+#: assets/dist/blocks-pro/variant-table/table-footer/render.php:13
+#: assets/dist/blocks-pro/variant-table/table-footer/editor.js:1
+msgid "Total:"
+msgstr ""
+
+#: assets/dist/blocks-pro/purchase-list/render.php:237
+msgid "Delete list"
+msgstr ""
+
+#: assets/dist/blocks-pro/quick-csv-order/render.php:26
+msgid "You currently not logged in. To make a quick order, please log in first. "
+msgstr ""
+
+#: assets/dist/blocks-pro/quick-csv-order/render.php:35
+#: assets/dist/blocks-pro/quick-csv-order/editor.js:1
+msgid "Quick Order via CSV Upload"
+msgstr ""
+
+#: assets/dist/blocks-pro/quick-csv-order/render.php:44
+#: assets/dist/blocks-pro/quick-csv-order/editor.js:1
+msgid "Drop csv file here, or click to upload"
+msgstr ""
+
+#: assets/dist/blocks-pro/quick-csv-order/render.php:64
+#: assets/dist/blocks-pro/quick-csv-order/editor.js:1
+msgid "Upload .csv files with SKU on first column and quantity on second column."
+msgstr ""
+
+#: assets/dist/blocks-pro/quick-csv-order/render.php:65
+msgid "Error"
+msgstr ""
+
+#: assets/dist/blocks-pro/quick-csv-order/render.php:74
+msgid "Results"
+msgstr ""
+
+#. translators: %d: the success rows added to cart
+#: assets/dist/blocks-pro/quick-csv-order/render.php:79
+#, php-format
+msgid "Added %d product(s) to cart."
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/column-product/render.php:15
+msgid "No variation"
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/column-quantity/render.php:17
+#: assets/dist/blocks/product-table/column-quantity/render.php:29
+msgid "Decrease quantity"
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/column-quantity/render.php:26
+#: assets/dist/blocks/product-table/column-quantity/render.php:38
+#: assets/dist/blocks/product-table/table-header/render.php:21
+#: includes/Pro/Services/PurchaseListService.php:230
+#: assets/dist/blocks-pro/variant-table/column-quantity/editor.js:1
+#: assets/dist/blocks/product-table/column-quantity/editor.js:1
+#: assets/dist/blocks/product-table/table-header/editor.js:1
+#: assets/dist/page-admin/js/app-admin.main.js:1
 msgid "Quantity"
 msgstr ""
 
-#: assets/dist/blocks/product-table/column-select/render.php:22
-msgid "Select product"
+#: assets/dist/blocks-pro/variant-table/column-quantity/render.php:32
+#: assets/dist/blocks/product-table/column-quantity/render.php:44
+msgid "Increase quantity"
 msgstr ""
 
-#: assets/dist/blocks/product-table/table-bulk-action/render.php:29
-#: assets/dist/blocks/product-table/table-bulk-action/render.php:30
-msgid "Go Back to Top"
+#: assets/dist/blocks-pro/variant-table/column-select/render.php:22
+#: assets/dist/blocks-pro/variant-table/column-select/editor.js:1
+msgid "Select variation"
 msgstr ""
 
-#: assets/dist/blocks/product-table/table-bulk-action/render.php:57
-msgid "Add selected items to cart"
+#: assets/dist/blocks-pro/variant-table/table-columns/render.php:75
+#: assets/dist/blocks-pro/variant-table/table-columns/render.php:86
+msgid "No variations found"
 msgstr ""
 
-#: assets/dist/blocks/product-table/table-bulk-action/render.php:64
+#: assets/dist/blocks-pro/variant-table/table-footer/render.php:33
+#: assets/dist/blocks/product-table/column-add-to-cart/render.php:71
+#: assets/dist/blocks/product-table/table-columns/render.php:44
+#: assets/dist/blocks-pro/variant-table/table-footer/editor.js:1
+#: assets/dist/blocks/product-table/column-add-to-cart/editor.js:1
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Add to cart"
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/table-footer/render.php:39
+#: assets/dist/blocks/product-table/table-bulk-action/render.php:68
+#: assets/dist/blocks-pro/variant-table/table-footer/editor.js:1
 msgid "Clear selection"
 msgstr ""
 
+#: assets/dist/blocks-pro/variant-table/table-footer/render.php:55
+#: assets/dist/blocks-pro/variant-table/table-footer/render.php:80
 #: assets/dist/blocks/product-table/table-bulk-action/render.php:84
-msgid "View cart"
-msgstr ""
-
-#: assets/dist/blocks/product-table/table-bulk-action/render.php:90
+#: assets/dist/blocks/product-table/table-bulk-action/render.php:109
 msgid "Dismiss"
 msgstr ""
 
-#: assets/dist/blocks/product-table/table-filter-sidebar/render.php:32
+#: assets/dist/blocks-pro/variant-table/table-footer/render.php:74
+#: assets/dist/blocks/product-table/table-bulk-action/render.php:103
+msgid "View cart"
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/table-root/render.php:44
+#: assets/dist/blocks/product-table/table-root/render.php:28
+msgid "Could not add the items to the cart. Please try again."
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/table-root/render.php:45
+#: assets/dist/blocks/product-table/table-root/render.php:29
+msgid "Too many requests. Please wait and try again."
+msgstr ""
+
+#. translators: %d: number of items in the cart.
+#: assets/dist/blocks/common/cart-summary/render.php:14
+#: assets/dist/blocks/common/cart-summary/render.php:16
+#, php-format
+msgid "%d item"
+msgid_plural "%d items"
+msgstr[0] ""
+msgstr[1] ""
+
+#: assets/dist/blocks/common/cart-summary/render.php:34
+#: assets/dist/blocks/common/cart-summary/render.php:35
+msgid "Open cart"
+msgstr ""
+
+#: assets/dist/blocks/product-table/column-add-to-cart/render.php:47
+#: assets/dist/blocks/product-table/table-root/render.php:41
+msgid "View options"
+msgstr ""
+
+#: assets/dist/blocks/product-table/column-add-to-cart/render.php:88
+msgid "Not Available"
+msgstr ""
+
+#: assets/dist/blocks/product-table/column-product/render.php:19
+msgid "No Product"
+msgstr ""
+
+#: assets/dist/blocks/product-table/column-select/render.php:27
+#: assets/dist/blocks/product-table/column-select/editor.js:1
+msgid "Select product"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-bulk-action/render.php:33
+#: assets/dist/blocks/product-table/table-bulk-action/render.php:34
+#: assets/dist/blocks/product-table/table-bulk-action/editor.js:1
+msgid "Go Back to Top"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-bulk-action/render.php:61
+#: assets/dist/blocks/product-table/table-root/render.php:34
+#: assets/dist/blocks/product-table/table-bulk-action/editor.js:1
+msgid "Add selected items to cart"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-columns/render.php:108
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "No products found"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-filter-sidebar/render.php:40
+msgid "Price"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-filter-sidebar/render.php:53
+msgid "Minimum price"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-filter-sidebar/render.php:65
+msgid "Maximum price"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-filter-sidebar/render.php:69
+msgid "Rating"
+msgstr ""
+
+#. translators: %d: minimum star rating (1-5).
+#: assets/dist/blocks/product-table/table-filter-sidebar/render.php:85
+#, php-format
+msgid "%d star & up"
+msgid_plural "%d stars & up"
+msgstr[0] ""
+msgstr[1] ""
+
+#: assets/dist/blocks/product-table/table-filter-sidebar/render.php:94
+#: assets/dist/page-admin/js/app-admin.main.js:1
 msgid "Categories"
 msgstr ""
 
-#: assets/dist/blocks/product-table/table-filter-sidebar/render.php:41
-#: assets/dist/blocks/product-table/table-root/editor.js:1
-msgid "All Products"
+#: assets/dist/blocks/product-table/table-filter-sidebar/render.php:112
+msgid "Tags"
 msgstr ""
 
-#: assets/dist/blocks/product-table/table-filter/render.php:28
+#: assets/dist/blocks/product-table/table-filter/render.php:32
+#: assets/dist/blocks/product-table/table-filter/editor.js:1
 msgid "Filters"
 msgstr ""
 
-#: assets/dist/blocks/product-table/table-pagination/render.php:34
+#: assets/dist/blocks/product-table/table-header/render.php:19
+#: assets/dist/blocks/product-table/table-header/editor.js:1
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "SKU"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-header/render.php:20
+#: assets/dist/blocks/product-table/table-header/editor.js:1
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Description"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-pagination/render.php:38
 msgid "Products pagination"
 msgstr ""
 
-#: assets/dist/blocks/product-table/table-pagination/render.php:42
+#: assets/dist/blocks/product-table/table-pagination/render.php:46
 msgid "Previous page"
 msgstr ""
 
 #. translators: %d: page number.
-#: assets/dist/blocks/product-table/table-pagination/render.php:59
+#: assets/dist/blocks/product-table/table-pagination/render.php:63
+#, php-format
 msgid "Page %d"
 msgstr ""
 
-#: assets/dist/blocks/product-table/table-pagination/render.php:72
+#: assets/dist/blocks/product-table/table-pagination/render.php:76
 msgid "Next page"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-root/render.php:32
+msgid "Add more"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-root/render.php:33
+msgid "Adding..."
+msgstr ""
+
+#. translators: %d: total quantity of the selected items.
+#: assets/dist/blocks/product-table/table-root/render.php:36
+#, php-format
+msgid "Add selected items to cart (%d)"
+msgstr ""
+
+#. translators: %s: formatted cart total.
+#: assets/dist/blocks/product-table/table-root/render.php:38
+#, php-format
+msgid "View cart | %s"
+msgstr ""
+
+#. translators: %s: formatted lowest price of a variable product.
+#: assets/dist/blocks/product-table/table-root/render.php:40
+#, php-format
+msgid "From %s"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-root/render.php:42
+msgid "Hide options"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-search/render.php:20
+#: assets/dist/blocks/product-table/table-search/editor.js:1
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Search products..."
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-search/render.php:21
+msgid "Search products"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-search/render.php:37
+msgid "Clear search"
+msgstr ""
+
+#. translators: %s: Woocommerce link
+#: assets/pro/yay-bulk-order-pro.php:55
+#: yay-bulk-order.php:57
+#, php-format
+msgid "YayBulkOrder is enabled but not effective. It requires %s in order to work"
+msgstr ""
+
+#: includes/Controllers/ProductTablesRestController.php:122
+msgid "Could not create the prebuilt table."
+msgstr ""
+
+#: includes/Controllers/ProductTablesRestController.php:182
+msgid "Missing block content."
+msgstr ""
+
+#: includes/Controllers/ProductTablesRestController.php:195
+msgid "Invalid table."
 msgstr ""
 
 #: includes/Engines/Admin/AdminPage.php:31
@@ -124,24 +458,35 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: includes/Engines/Blocks/Patterns/PatternRegistry.php:38
+#: includes/Engines/Admin/ProductTable.php:37
+#: includes/Engines/Admin/ProductTable.php:38
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Product Table"
+msgstr ""
+
+#: includes/Engines/Admin/ProductTable.php:43
+msgid "Reusable Product Table configurations"
+msgstr ""
+
+#: includes/Engines/Blocks/Patterns/PatternRegistry.php:40
+#: includes/Services/PatternService.php:94
 msgid "Bulk Order"
 msgstr ""
 
-#: includes/Engines/Blocks/Patterns/PatternRegistry.php:50
-msgid "Simple Bulk Order"
+#: includes/Engines/Blocks/Patterns/PatternRegistry.php:66
+msgid "Full Featured Product Table"
 msgstr ""
 
-#: includes/Engines/Blocks/Patterns/PatternRegistry.php:51
-msgid "Simple bulk order table."
+#: includes/Engines/Blocks/Patterns/PatternRegistry.php:67
+msgid "Display products in a clean, scannable table so customers can browse and add items to cart in bulk. The foundation of every bulk order experience. (All columns, with performant filters, search and pagination)"
 msgstr ""
 
-#: includes/Engines/Blocks/Patterns/PatternRegistry.php:57
-msgid "Filterable Bulk Order"
+#: includes/Engines/Blocks/Patterns/PatternRegistry.php:72
+msgid "Simple Product Table"
 msgstr ""
 
-#: includes/Engines/Blocks/Patterns/PatternRegistry.php:58
-msgid "Bulk order table with filters."
+#: includes/Engines/Blocks/Patterns/PatternRegistry.php:73
+msgid "Display products in a clean, scannable table so customers can browse and add items to cart in bulk. The foundation of every bulk order experience. (Only 4 essential columns, fit for small space)"
 msgstr ""
 
 #: includes/Fallback.php:11
@@ -153,84 +498,444 @@ msgstr ""
 msgid "Read more details."
 msgstr ""
 
-#. translators: %s: Woocommerce link
-#: yay-bulk-order.php:58
-msgid "YayBulkOrder is enabled but not effective. It requires %s in order to work"
+#: includes/Pro/Controllers/PurchaseListRestController.php:79
+msgid "An Unexpected error occured"
 msgstr ""
 
+#: includes/Pro/Controllers/PurchaseListRestController.php:97
+#: includes/Pro/Controllers/PurchaseListRestController.php:111
+#: includes/Pro/Controllers/PurchaseListRestController.php:128
+msgid "This purchase list is not found or not belong to the current user"
+msgstr ""
+
+#: includes/Pro/Engines/Blocks/CSVOrder.php:95
+msgid "Quick Order"
+msgstr ""
+
+#: includes/Pro/Engines/Blocks/PurchaseList.php:55
+msgid "Purchase Lists"
+msgstr ""
+
+#: includes/Pro/Engines/Blocks/PurchaseList.php:56
+#: includes/Pro/Engines/Blocks/PurchaseList.php:393
+#: includes/Pro/Engines/Blocks/RegisterBlocks.php:33
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Purchase List"
+msgstr ""
+
+#: includes/Pro/Engines/Blocks/PurchaseList.php:60
+msgid "Customer purchase lists"
+msgstr ""
+
+#: includes/Pro/Engines/Blocks/PurchaseList.php:103
+#: includes/Pro/Engines/Blocks/PurchaseList.php:182
+#: includes/Pro/Engines/Blocks/PurchaseList.php:228
+msgid "Invalid nonce"
+msgstr ""
+
+#: includes/Pro/Engines/Blocks/PurchaseList.php:111
+msgid "Missing purchase list"
+msgstr ""
+
+#: includes/Pro/Engines/Blocks/PurchaseList.php:123
+msgid "Purchase list not found or empty"
+msgstr ""
+
+#: includes/Pro/Engines/Blocks/PurchaseList.php:160
+msgid "No items could be added to the cart"
+msgstr ""
+
+#: includes/Pro/Engines/Blocks/PurchaseList.php:187
+#: includes/Pro/Engines/Blocks/PurchaseList.php:233
+msgid "Please log in to save a purchase list"
+msgstr ""
+
+#: includes/Pro/Engines/Blocks/PurchaseList.php:190
+#: includes/Pro/Engines/Blocks/PurchaseList.php:240
+msgid "New Purchase List"
+msgstr ""
+
+#: includes/Pro/Engines/Blocks/PurchaseList.php:206
+msgid "Your cart is empty"
+msgstr ""
+
+#: includes/Pro/Engines/Blocks/PurchaseList.php:212
+#: includes/Pro/Engines/Blocks/PurchaseList.php:268
+msgid "Unexpected Error Occured"
+msgstr ""
+
+#: includes/Pro/Engines/Blocks/PurchaseList.php:237
+#: includes/Pro/Engines/Blocks/PurchaseList.php:245
+msgid "Missing Order to save"
+msgstr ""
+
+#: includes/Pro/Engines/Blocks/PurchaseList.php:262
+msgid "This order has no items"
+msgstr ""
+
+#: includes/Pro/Engines/Blocks/PurchaseList.php:292
+#: includes/Pro/Engines/Blocks/PurchaseList.php:310
+#: includes/Pro/Engines/Blocks/PurchaseList.php:336
+#: includes/Pro/Engines/Blocks/PurchaseList.php:357
+#: assets/dist/block-checkout-slotfill/block-checkout-slotfill.js:1
+msgid "Save as Purchase list"
+msgstr ""
+
+#: includes/Pro/Engines/Blocks/RegisterBlocks.php:34
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Save frequently ordered items into named lists for one-click re-ordering. Perfect for B2B customers with recurring orders."
+msgstr ""
+
+#: includes/Pro/Engines/Blocks/RegisterBlocks.php:39
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Quick Order via CSV"
+msgstr ""
+
+#: includes/Pro/Engines/Blocks/RegisterBlocks.php:40
+msgid "Bulk Adding to cart quickly with just a csv file uploaded"
+msgstr ""
+
+#: includes/Pro/Engines/Blocks/RegisterBlocks.php:45
+msgid "Some Categories Product Table"
+msgstr ""
+
+#: includes/Pro/Engines/Blocks/RegisterBlocks.php:46
+msgid "Display products in a clean, scannable table so customers can browse and add items to cart in bulk. The foundation of every bulk order experience. (Show all products from some selected categories)"
+msgstr ""
+
+#: includes/Pro/Engines/Blocks/RegisterBlocks.php:51
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Variant Table"
+msgstr ""
+
+#: includes/Pro/Engines/Blocks/RegisterBlocks.php:52
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Let customers select product variants directly in the table without navigating to individual product pages. Speeds up ordering for stores with many SKUs."
+msgstr ""
+
+#: includes/Pro/Services/CSVOrderService.php:25
+msgid "The CSV file could not be found."
+msgstr ""
+
+#: includes/Pro/Services/CSVOrderService.php:39
+msgid "The CSV file could not be read."
+msgstr ""
+
+#. translators: %d: the row number
+#: includes/Pro/Services/CSVOrderService.php:49
+#, php-format
+msgid "Row %d: This row is empty and was skipped."
+msgstr ""
+
+#. translators: %1$d: the row number, %2$s: the sku
+#: includes/Pro/Services/CSVOrderService.php:57
+#: includes/Pro/Services/CSVOrderService.php:64
+#, php-format
+msgid "Row %1$d: No matching product was found with the SKU: %2$s."
+msgstr ""
+
+#. translators: %d: the row number
+#: includes/Pro/Services/CSVOrderService.php:72
+#: includes/Pro/Services/CSVOrderService.php:104
+#, php-format
+msgid "Row %d: this product is not purchasable."
+msgstr ""
+
+#. translators: %d: the row number
+#: includes/Pro/Services/CSVOrderService.php:78
+#, php-format
+msgid "Row %d: No quantity is found for this product."
+msgstr ""
+
+#. translators: %d: number of items in the list
+#: includes/Pro/Services/PurchaseListService.php:138
+#: includes/Pro/Services/PurchaseListService.php:205
+#: assets/dist/blocks-pro/purchase-list/editor.js:2
+#, php-format,js-format
+msgid "%d items"
+msgstr ""
+
+#: includes/Pro/Services/PurchaseListService.php:227
+msgid "Product ID"
+msgstr ""
+
+#: includes/Pro/Services/PurchaseListService.php:228
+msgid "Product Name"
+msgstr ""
+
+#: includes/Pro/Services/PurchaseListService.php:229
+msgid "Product SKU"
+msgstr ""
+
+#: includes/Pro/Services/PurchaseListService.php:231
+msgid "Total"
+msgstr ""
+
+#: includes/Services/ProductTablesService.php:77
+msgid "Untitled table"
+msgstr ""
+
+#: assets/dist/blocks-pro/purchase-list/editor.js:1
+msgid "Weekly Order"
+msgstr ""
+
+#: assets/dist/blocks-pro/purchase-list/editor.js:1
+msgid "Monthly Restock"
+msgstr ""
+
+#: assets/dist/blocks-pro/purchase-list/editor.js:1
+msgid "Favorite Items"
+msgstr ""
+
+#. translators: %1$d: number of paginated items, %2$d: number of all items
+#: assets/dist/blocks-pro/purchase-list/view.js:2
+#: assets/dist/purchase-list-store/purchase-list-store.js:2
+#, js-format
+msgid "Showing %1$d of %2$d purchase lists"
+msgstr ""
+
+#: assets/dist/blocks-pro/purchase-list/view.js:2
+#: assets/dist/purchase-list-store/purchase-list-store.js:2
+msgid "This product is not found."
+msgstr ""
+
+#: assets/dist/blocks-pro/quick-csv-order/view.js:1
+msgid "Error: This csv file is too large"
+msgstr ""
+
+#: assets/dist/blocks-pro/quick-csv-order/view.js:1
+msgid "Error: Please upload a csv file."
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/table-columns/editor.js:1
 #: assets/dist/blocks/product-table/table-columns/editor.js:1
 msgid "Add column"
 msgstr ""
 
+#: assets/dist/blocks-pro/variant-table/table-root/editor.js:1
+msgid "Variable product"
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/table-root/editor.js:1
+msgid "No variable products found. Create one first."
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/table-root/editor.js:1
+msgid "Which variable product should this table show?"
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/table-root/editor.js:1
+msgid "On a Single Product page this is automatic — this picker only shows up elsewhere."
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/table/editor.js:1
+#: assets/dist/blocks/product-table/table/editor.js:1
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Primary Color"
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/table/editor.js:1
+#: assets/dist/blocks/product-table/table/editor.js:1
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Header Background Color"
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/table/editor.js:1
+#: assets/dist/blocks/product-table/table/editor.js:1
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Header Text Color"
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/table/editor.js:1
+#: assets/dist/blocks/product-table/table/editor.js:1
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Body Background Color"
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/table/editor.js:1
+#: assets/dist/blocks/product-table/table/editor.js:1
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Border Color"
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/table/editor.js:1
+#: assets/dist/blocks/product-table/table/editor.js:1
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Text Color"
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/table/editor.js:1
+#: assets/dist/blocks/product-table/table/editor.js:1
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Text Hover Color"
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/table/editor.js:1
+#: assets/dist/blocks/product-table/table/editor.js:1
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Description Color"
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/table/editor.js:1
+#: assets/dist/blocks/product-table/table/editor.js:1
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Button Background Color"
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/table/editor.js:1
+#: assets/dist/blocks/product-table/table/editor.js:1
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Button Background Hover Color"
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/table/editor.js:1
+#: assets/dist/blocks/product-table/table/editor.js:1
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Button Text Color"
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/table/editor.js:1
+#: assets/dist/blocks/product-table/table/editor.js:1
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Button Text Hover Color"
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/table/editor.js:1
+#: assets/dist/blocks/product-table/table/editor.js:1
+msgid "General Colors"
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/table/editor.js:1
+#: assets/dist/blocks/product-table/table/editor.js:1
+msgid "Typography Colors"
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/table/editor.js:1
+#: assets/dist/blocks/product-table/table/editor.js:1
+msgid "Button Colors"
+msgstr ""
+
+#: assets/dist/blocks/common/cart-summary/editor.js:1
+msgid "10 items"
+msgstr ""
+
+#: assets/dist/blocks/product-table/column-description/editor.js:1
+msgid "Short product description goes here…"
+msgstr ""
+
+#: assets/dist/blocks/product-table/column-product/editor.js:1
+msgid "Product name"
+msgstr ""
+
 #: assets/dist/blocks/product-table/table-root/editor.js:1
+msgid "Search by title…"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-root/editor.js:1
+msgid "Could not load product tables."
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-root/editor.js:1
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "No product tables found."
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-root/editor.js:1
+msgid "Select"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-root/editor.js:1
+msgid "Previous"
+msgstr ""
+
+#. translators: 1: current page, 2: total pages
+#: assets/dist/blocks/product-table/table-root/editor.js:2
+#, js-format
+msgid "Page %1$d of %2$d"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-root/editor.js:2
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Next"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-root/editor.js:2
 msgid "Inherit from archive"
 msgstr ""
 
-#: assets/dist/blocks/product-table/table-root/editor.js:1
+#: assets/dist/blocks/product-table/table-root/editor.js:2
 msgid "Featured Products"
 msgstr ""
 
-#: assets/dist/blocks/product-table/table-root/editor.js:1
+#: assets/dist/blocks/product-table/table-root/editor.js:2
 msgid "On Sale Products"
 msgstr ""
 
-#: assets/dist/blocks/product-table/table-root/editor.js:1
-msgid "Top Rated Products"
-msgstr ""
-
-#: assets/dist/blocks/product-table/table-root/editor.js:1
+#: assets/dist/blocks/product-table/table-root/editor.js:2
 msgid "Hand-Picked Products"
 msgstr ""
 
-#: assets/dist/blocks/product-table/table-root/editor.js:1
+#: assets/dist/blocks/product-table/table-root/editor.js:2
 msgid "Products by Category"
 msgstr ""
 
-#: assets/dist/blocks/product-table/table-root/editor.js:1
+#: assets/dist/blocks/product-table/table-root/editor.js:2
+msgid "All Products"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-root/editor.js:2
 msgid "What products do you want to show?"
 msgstr ""
 
-#: assets/dist/blocks/product-table/table-root/editor.js:1
-msgid "or"
+#: assets/dist/blocks/product-table/table-root/editor.js:2
+#: assets/dist/blocks/product-table/table-root/editor.js:3
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Pro"
 msgstr ""
 
-#: assets/dist/blocks/product-table/table-root/editor.js:1
-msgid "create your own"
+#: assets/dist/blocks/product-table/table-root/editor.js:2
+msgid "Or, Pick from your saved product tables"
 msgstr ""
 
-#: assets/dist/blocks/product-table/table-root/editor.js:1
+#: assets/dist/blocks/product-table/table-root/editor.js:2
 msgid "Could not load categories."
 msgstr ""
 
-#: assets/dist/blocks/product-table/table-root/editor.js:1
+#: assets/dist/blocks/product-table/table-root/editor.js:2
 msgid "No product categories found."
 msgstr ""
 
 #. translators: %d: number of products in the category
-#: assets/dist/blocks/product-table/table-root/editor.js:2
+#: assets/dist/blocks/product-table/table-root/editor.js:3
+#, js-format
 msgid "%d product"
 msgid_plural "%d products"
 msgstr[0] ""
 msgstr[1] ""
 
-#: assets/dist/blocks/product-table/table-root/editor.js:2
+#: assets/dist/blocks/product-table/table-root/editor.js:3
+#: assets/dist/page-admin/js/app-admin.main.js:1
 msgid "Products"
 msgstr ""
 
-#: assets/dist/blocks/product-table/table-root/editor.js:2
+#: assets/dist/blocks/product-table/table-root/editor.js:3
 msgid "Products to Show"
 msgstr ""
 
-#: assets/dist/blocks/product-table/table-root/editor.js:2
+#: assets/dist/blocks/product-table/table-root/editor.js:3
 msgid "This table shows products from the current Shop or product archive. Change the collection below to override."
 msgstr ""
 
-#: assets/dist/blocks/product-table/table-root/editor.js:2
+#: assets/dist/blocks/product-table/table-root/editor.js:3
 msgid "Collection"
 msgstr ""
 
-#: assets/dist/blocks/product-table/table-root/editor.js:2
+#: assets/dist/blocks/product-table/table-root/editor.js:3
 msgid "A Product Table block cannot be placed inside another Product Table block."
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-root/editor.js:3
+msgid "Now you're in the catalog template. Add the product table here using a Pattern, a copied block, a copied shortcode, or by inserting the \"Product Table\" block manually."
 msgstr ""
 
 #: assets/dist/page-admin/js/app-admin.main.js:1
@@ -250,35 +955,728 @@ msgid "Product Tables"
 msgstr ""
 
 #: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Page Not Found"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Looks like this page has gone missing"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
 msgid "Back to home"
 msgstr ""
 
 #: assets/dist/page-admin/js/app-admin.main.js:1
-msgid "Default cart quantity"
+msgid "Something Went Wrong"
 msgstr ""
 
 #: assets/dist/page-admin/js/app-admin.main.js:1
-msgid "Default page size"
+msgid "We hit an unexpected error on our end"
 msgstr ""
 
 #: assets/dist/page-admin/js/app-admin.main.js:1
-msgid "Primary Color"
+msgid "Unlock this feature"
 msgstr ""
 
 #: assets/dist/page-admin/js/app-admin.main.js:1
-msgid "Text Color"
+msgid "Upgrade To Pro"
 msgstr ""
 
 #: assets/dist/page-admin/js/app-admin.main.js:1
-msgid "Description Color"
+msgid "Demo"
 msgstr ""
 
 #: assets/dist/page-admin/js/app-admin.main.js:1
-msgid "Border Color"
+msgid "Your theme doesn't support full customization."
 msgstr ""
 
 #: assets/dist/page-admin/js/app-admin.main.js:1
-msgid "Background Color"
+msgid "For the best experience, we recommend the Brandy theme for fully customizable Yay Bulk Order Patterns and Templates."
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Note: Yay Bulk Order still supports Shortcodes and Classic Settings for Classic theme."
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Features"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Everything you need to create a seamless bulk ordering experience."
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Display products in a clean, scannable table so customers can browse and add items to cart in bulk. The foundation of every bulk order experience."
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Patterns"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Shop / Category Page"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Embed the bulk order table directly on your shop or category pages so customers never have to leave the browse experience to place an order."
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Template"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Quick Start"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Enhance your customers' bulk order experience."
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Learn more…"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Start with Pre-designed Patterns"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Instantly apply a ready-made layout to your bulk order features with zero configuration."
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Browse Patterns"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Your theme doesn't support full Pattern customization."
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "For the best experience, we recommend the Brandy theme for fully customizable Yay Bulk Order Patterns."
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Build Your Own Product Table"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Use the drag-and-drop builder to create a fully custom product table from scratch."
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Open Builder"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Loading"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Fill in the field label"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Heading can only contain letters, numbers, spaces, and common symbols (-, _, &, :, /.)."
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Select at least one category"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Select at least one product"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Select..."
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Search..."
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "No results found"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Full Featured Table"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "All columns, with performant filters and pagination"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Some Categories Table"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Show all products from some selected categories."
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Simple Table"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Only 4 essential columns, fit for small space"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Choose a template to get started"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Categories:"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Search categories..."
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "No categories found"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Build from this template"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Continue to further edit steps"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Create from this template"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Skip editing and go straight to the last step"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Create from scratch"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Start with a blank table and configure everything yourself"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "(always shown, cannot remove)"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Heading"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Column heading"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Responsive"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Always show"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Hide on mobile"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Hide on tablet"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Configure table columns"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Add, reorder, and customize each column."
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Add Columns"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Add columns"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Add"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Back"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Table features"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Enable or disable interactive features."
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Filter"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Search"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Pagination"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Page Size"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Auto"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Select products to display"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Choose which products appear in the table."
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "All products"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "By categories"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Featured products"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "On sale products"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Hand-picked products"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Products:"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Copied"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Cannot Copy"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Publish table"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Give it a name and choose how to publish it."
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Table Title"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Saved"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Save for later"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Save this table so you can easily access and reuse it later"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Copy Table"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Copy as Block"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Copy as Shortcode"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "You can save this product table for future use, or copy as block or shortcode and paste it into any pages or in editor."
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Publish options"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Create Pattern"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Publish the table as a reusable block pattern to the Library."
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Pattern created successfully."
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Cannot create this table pattern"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Open Catalog Template Editor"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Go to Catalog Template Editor and manually custom the template for Shop / Category page."
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Remove from Shop/Category Page"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Remove this table from shop or category pages."
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Save the table before using it in Shop/Category pages."
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Removed from Shop/Category page."
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Could not remove the table from Shop/Category pages."
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Use in Shop/Category Page"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Use the table in shop or category pages. This will replace the default product table."
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Applied to Shop/Category page."
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Could not apply the table to Shop/Category pages."
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Create with new page"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Create new page with this table as the content."
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Could not open the page editor"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Create"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Done"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Columns"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Publish"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "My Product Table"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Product Table Saved!"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Cancel"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Confirm"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Edit"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Open Shop Template"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Remove from Shop / Category"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Use in Shop / Category"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Copy as Blocks"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Delete"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Delete this table?"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "This action cannot be undone. This will permanently delete the product table."
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Use this table in Shop / Category?"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "This will replace the current table used on the Shop/Category pages with this one."
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Remove this table from Shop / Category?"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "The Shop/Category pages will no longer display this product table."
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Remove"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Using in Shop"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Featured"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "On sale"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Hand-picked"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Select all"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Select row"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Table title"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+#, js-format
+msgid "%d categories"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+#, js-format
+msgid "%d products"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Search by table title"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Tables Filter"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "All tables"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Build Product Table"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Loading…"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+#, js-format
+msgid "%d selected"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+#, js-format
+msgid "Delete %d product tables?"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "This action cannot be undone."
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+#, js-format
+msgid "%d tables deleted"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "My Account Page"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Add new menu options to the My Account Page"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Add the \"Purchase List\" menu to My Account."
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Add the \"Quick Order\" menu to My Account."
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "\"Save as Purchase List\" Button"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Enable customers to save purchase lists from their cart and orders history"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Add to Cart Page"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Allow customers save their new purchase list from the Cart page."
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Add to Checkout Page"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Allow customers save their new purchase list from the Checkout page."
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Add to Mini Cart"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Allow customers save their new purchase list from the Mini Cart page."
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Add to Order Table"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Allow customers save their new purchase list from [My Account > Orders page] or after placing an order."
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Product A"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Product B"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Product C"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Product description"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Product Table Design"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Customize product table appearance"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Reset to Default"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "General"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Typography"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Button"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Preview"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Default Cart Quantity"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Default product quantity input in product table."
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Default Page Size"
+msgstr ""
+
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Number of products per page in product table."
 msgstr ""
 
 #: assets/dist/page-admin/js/app-admin.main.js:1
@@ -294,11 +1692,153 @@ msgid "Settings saved!"
 msgstr ""
 
 #: assets/dist/page-admin/js/app-admin.main.js:1
-msgid "General"
+msgid "Design"
 msgstr ""
 
 #: assets/dist/page-admin/js/app-admin.main.js:1
-msgid "Styles"
+msgid "Advanced"
+msgstr ""
+
+#: assets/pro/js/front-store-script.js:7
+msgid "Name this purchase list:"
+msgstr ""
+
+#: assets/pro/js/front-store-script.js:31
+msgid "Purchase list saved."
+msgstr ""
+
+#: assets/pro/js/front-store-script.js:35
+#: assets/pro/js/front-store-script.js:43
+msgid "Something went wrong. Please try again."
+msgstr ""
+
+#: assets/dist/blocks-pro/purchase-list/block.json
+msgctxt "block title"
+msgid "Purchase List"
+msgstr ""
+
+#: assets/dist/blocks-pro/quick-csv-order/block.json
+msgctxt "block title"
+msgid "Quick CSV Order"
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/column-description/block.json
+#: assets/dist/blocks/product-table/column-description/block.json
+msgctxt "block title"
+msgid "Column Description"
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/column-description/block.json
+msgctxt "block description"
+msgid "Variation description"
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/column-product/block.json
+#: assets/dist/blocks/product-table/column-product/block.json
+msgctxt "block title"
+msgid "Column Product"
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/column-product/block.json
+msgctxt "block description"
+msgid "Thumbnail and variation name (e.g. Orange, L)"
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/column-quantity/block.json
+#: assets/dist/blocks/product-table/column-quantity/block.json
+msgctxt "block title"
+msgid "Column Quantity"
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/column-quantity/block.json
+msgctxt "block description"
+msgid "Quantity input, defaults to 1"
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/column-select/block.json
+#: assets/dist/blocks/product-table/column-select/block.json
+msgctxt "block title"
+msgid "Column Select"
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/column-select/block.json
+msgctxt "block description"
+msgid "Check to include this variation in the bulk add to cart"
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/column-sku/block.json
+#: assets/dist/blocks/product-table/column-sku/block.json
+msgctxt "block title"
+msgid "Column SKU"
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/column-sku/block.json
+msgctxt "block description"
+msgid "Variation SKU"
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/column-subtotal/block.json
+#: assets/dist/blocks/product-table/column-subtotal/block.json
+msgctxt "block title"
+msgid "Column Subtotal"
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/column-subtotal/block.json
+msgctxt "block description"
+msgid "Subtotal price of quantity for this variation"
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/table-columns/block.json
+msgctxt "block title"
+msgid "Variant Table Columns"
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/table-columns/block.json
+msgctxt "block description"
+msgid "One row per variation, in this column order."
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/table-footer/block.json
+#: assets/dist/blocks/product-table/table-footer/block.json
+msgctxt "block title"
+msgid "Table Footer"
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/table-footer/block.json
+msgctxt "block description"
+msgid "Total price, Add to cart and Clear selection."
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/table-header/block.json
+#: assets/dist/blocks/product-table/table-header/block.json
+msgctxt "block title"
+msgid "Table Header"
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/table-header/block.json
+msgctxt "block description"
+msgid "Variant Table Header."
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/table-root/block.json
+msgctxt "block title"
+msgid "Variant Table"
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/table-root/block.json
+msgctxt "block description"
+msgid "Lists a variable product's variations as a table optimized for bulk ordering. On a Single Product page it automatically shows that product's variations."
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/table/block.json
+#: assets/dist/blocks/product-table/table/block.json
+msgctxt "block title"
+msgid "Table"
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/table/block.json
+msgctxt "block description"
+msgid "Variant Table Wrapper."
 msgstr ""
 
 #: assets/dist/blocks/common/cart-summary/block.json
@@ -322,18 +1862,8 @@ msgid "Add to Cart Button"
 msgstr ""
 
 #: assets/dist/blocks/product-table/column-description/block.json
-msgctxt "block title"
-msgid "Column Description"
-msgstr ""
-
-#: assets/dist/blocks/product-table/column-description/block.json
 msgctxt "block description"
 msgid "Product Short Description"
-msgstr ""
-
-#: assets/dist/blocks/product-table/column-product/block.json
-msgctxt "block title"
-msgid "Column Product"
 msgstr ""
 
 #: assets/dist/blocks/product-table/column-product/block.json
@@ -342,18 +1872,8 @@ msgid "Thumbnail and Product Title"
 msgstr ""
 
 #: assets/dist/blocks/product-table/column-quantity/block.json
-msgctxt "block title"
-msgid "Column Quantity"
-msgstr ""
-
-#: assets/dist/blocks/product-table/column-quantity/block.json
 msgctxt "block description"
 msgid "Quantity Input"
-msgstr ""
-
-#: assets/dist/blocks/product-table/column-select/block.json
-msgctxt "block title"
-msgid "Column Select"
 msgstr ""
 
 #: assets/dist/blocks/product-table/column-select/block.json
@@ -362,18 +1882,8 @@ msgid "Check to select product"
 msgstr ""
 
 #: assets/dist/blocks/product-table/column-sku/block.json
-msgctxt "block title"
-msgid "Column SKU"
-msgstr ""
-
-#: assets/dist/blocks/product-table/column-sku/block.json
 msgctxt "block description"
 msgid "Product SKU"
-msgstr ""
-
-#: assets/dist/blocks/product-table/column-subtotal/block.json
-msgctxt "block title"
-msgid "Column Subtotal"
 msgstr ""
 
 #: assets/dist/blocks/product-table/column-subtotal/block.json
@@ -422,18 +1932,8 @@ msgid "Product Table Filter by Categories."
 msgstr ""
 
 #: assets/dist/blocks/product-table/table-footer/block.json
-msgctxt "block title"
-msgid "Table Footer"
-msgstr ""
-
-#: assets/dist/blocks/product-table/table-footer/block.json
 msgctxt "block description"
 msgid "Product Table Footer."
-msgstr ""
-
-#: assets/dist/blocks/product-table/table-header/block.json
-msgctxt "block title"
-msgid "Table Header"
 msgstr ""
 
 #: assets/dist/blocks/product-table/table-header/block.json
@@ -469,11 +1969,6 @@ msgstr ""
 #: assets/dist/blocks/product-table/table-search/block.json
 msgctxt "block description"
 msgid "Product Table Search Input."
-msgstr ""
-
-#: assets/dist/blocks/product-table/table/block.json
-msgctxt "block title"
-msgid "Table"
 msgstr ""
 
 #: assets/dist/blocks/product-table/table/block.json

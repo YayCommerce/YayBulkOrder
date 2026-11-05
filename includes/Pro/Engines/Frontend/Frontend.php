@@ -55,6 +55,7 @@ class Frontend {
             $asset['version'],
             true
         );
+        wp_set_script_translations( $slug, 'yay-bulk-order' );
 
         wp_localize_script(
             $slug,

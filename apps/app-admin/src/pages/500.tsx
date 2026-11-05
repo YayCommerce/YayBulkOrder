@@ -10,8 +10,10 @@ export function ErrorPage() {
   return (
     <div className="flex h-[80vh] flex-col items-center justify-center">
       <div className="mb-8 text-center">
-        <h2 className="text-foreground mb-2 text-xl font-semibold">Something Went Wrong</h2>
-        <p className="text-muted-foreground text-sm">{error?.message || 'We hit an unexpected error on our end'}</p>
+        <h2 className="text-foreground mb-2 text-xl font-semibold">{__('Something Went Wrong', 'yay-bulk-order')}</h2>
+        <p className="text-muted-foreground text-sm">
+          {error?.message || __('We hit an unexpected error on our end', 'yay-bulk-order')}
+        </p>
       </div>
 
       <Button variant="primary" onClick={() => navigate('/home')}>

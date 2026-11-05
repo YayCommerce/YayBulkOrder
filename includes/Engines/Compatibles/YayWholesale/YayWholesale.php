@@ -14,7 +14,7 @@ defined( 'ABSPATH' ) || exit;
 class YayWholesale {
     use SingletonTrait;
 
-    private bool $is_buffering_shop_loop;
+    private bool $is_buffering_shop_loop = false;
     private ProductTablesService $product_tables_service;
 
     protected function __construct() {
@@ -143,6 +143,11 @@ class YayWholesale {
     }
 
     public function after_template_woocommerce_loop() {
+        // Close only the buffer opened in before_template_woocommerce_loop().
+        if ( ! $this->is_buffering_shop_loop ) {
+            return;
+        }
+
         $this->is_buffering_shop_loop = false;
         ob_end_clean();
 

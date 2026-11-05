@@ -1,7 +1,8 @@
 import { useBlockProps } from '@wordpress/block-editor';
 import { BlockEditProps } from '@wordpress/blocks';
+import { __ } from '@wordpress/i18n';
 
-export default function Edit(props: BlockEditProps<unknown>) {
+export default function Edit(props: BlockEditProps<Record<string, unknown>>) {
   const blockProps = useBlockProps({
     className: 'wp-block-yay-bulk-order-cart-summary',
   });
@@ -44,7 +45,7 @@ export default function Edit(props: BlockEditProps<unknown>) {
           </svg>
         </span>
         <span>$99.99</span>
-        <span>10 items</span>
+        <span>{__('10 items', 'yay-bulk-order')}</span>
       </button>
     </div>
   );

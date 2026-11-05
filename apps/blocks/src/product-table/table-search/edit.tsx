@@ -1,11 +1,17 @@
 import { useBlockProps } from '@wordpress/block-editor';
+import { __ } from '@wordpress/i18n';
 
 export default function Edit() {
   const blockProps = useBlockProps();
 
   return (
     <div {...blockProps} className={`${blockProps.className ?? ''} ybo-search`}>
-      <input type="search" className="ybo-search__input" placeholder="Search products..." readOnly />
+      <input
+        type="search"
+        className="ybo-search__input"
+        placeholder={__('Search products...', 'yay-bulk-order')}
+        readOnly
+      />
       <span className="ybo-search__icon" aria-hidden="true">
         <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="8" cy="8" r="6.25" stroke="currentColor" strokeWidth="1.5" />
