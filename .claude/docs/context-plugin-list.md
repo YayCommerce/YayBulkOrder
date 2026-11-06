@@ -56,7 +56,7 @@ Always shipped, in `includes/` root.
 | Area | Files |
 |---|---|
 | Product Table CPT + builder (query by all/category/featured/on-sale/hand-picked; columns; filter/search/pagination toggles) | `Engines/Admin/ProductTable.php`, `Services/ProductTablesService.php`, `Controllers/ProductTablesRestController.php` |
-| `[ybo-product-table]` shortcode + shop-page table replacement | `Engines/Shortcodes/ProductTableShortcode.php`, `Engines/Frontend/StorePage.php` |
+| `[yaybulkorder-product-table]` shortcode + shop-page table replacement | `Engines/Shortcodes/ProductTableShortcode.php`, `Engines/Frontend/StorePage.php` |
 | Product search / category lookup for the table builder | `Controllers/ProductQueryRestController.php`, `Services/ProductQueryService.php` |
 | Plugin settings (colors, default cart qty/page size, style) | `Controllers/SettingsRestController.php`, `Services/SettingsService.php` |
 | Price resolution (defers to third-party pricing plugins) | `Services/PricingService.php` |

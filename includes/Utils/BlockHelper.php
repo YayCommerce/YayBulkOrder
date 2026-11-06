@@ -25,6 +25,44 @@ class BlockHelper {
         return implode( ' ', $normalized_attributes );
     }
 
+    /**
+     * Allowed HTML for the rendered rows of a table block. wp_kses_post() has
+     * no <input>, and no srcset on the product image.
+     *
+     * @return array
+     */
+    public static function get_table_row_allowed_html(): array {
+        $allowed_html = wp_kses_allowed_html( 'post' );
+
+        $allowed_html['input'] = [
+            'aria-label' => true,
+            'checked'    => true,
+            'class'      => true,
+            'data-*'     => true,
+            'disabled'   => true,
+            'hidden'     => true,
+            'id'         => true,
+            'max'        => true,
+            'min'        => true,
+            'name'       => true,
+            'step'       => true,
+            'type'       => true,
+            'value'      => true,
+        ];
+
+        $allowed_html['img'] = array_merge(
+            $allowed_html['img'] ?? [],
+            [
+                'decoding'      => true,
+                'fetchpriority' => true,
+                'sizes'         => true,
+                'srcset'        => true,
+            ]
+        );
+
+        return $allowed_html;
+    }
+
     public static function get_page_param( int $query_id = 0 ) {
         $page_key = 'query-' . $query_id . '-page';
         /* phpcs:disable WordPress.Security.NonceVerification.Recommended */

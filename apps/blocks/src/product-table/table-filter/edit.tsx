@@ -12,9 +12,9 @@ export default function Edit() {
   }
 
   return (
-    <button {...blockProps} type="button" className={`${blockProps.className ?? ''} ybo-filter-toggle`}>
+    <button {...blockProps} type="button" className={`${blockProps.className ?? ''} ybod-filter-toggle`}>
       {__('Filters', 'yay-bulk-order')}
-      <span className="ybo-filter-toggle__icon" aria-hidden="true">
+      <span className="ybod-filter-toggle__icon" aria-hidden="true">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
             d="M1.5 4H9.5M13 4H14.5M1.5 8H4.5M8 8H14.5M1.5 12H9.5M13 12H14.5"

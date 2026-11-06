@@ -1,23 +1,23 @@
 /* #region CSS vars */
 * {
-  --ybo-foreground: #171719;
-  --ybo-destructive: #d50719;
-  --ybo-border: #e4e4e7;
-  --ybo-input: #e4e4e7;
-  --ybo-primary: #3858e9;
-  --ybo-primary-foreground: #ffffff;
-  --ybo-primary-accent: #2f4ac4;
-  --ybo-muted-foreground: #7b7c80;
-  --ybo-muted-foreground-400: #c7c7ca;
-  --ybo-muted-400: #fafafa;
-  --ybo-background: #ffffff;
-  --ybo-radius-md: 8px;
-  --ybo-shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --ybod-foreground: #171719;
+  --ybod-destructive: #d50719;
+  --ybod-border: #e4e4e7;
+  --ybod-input: #e4e4e7;
+  --ybod-primary: #3858e9;
+  --ybod-primary-foreground: #ffffff;
+  --ybod-primary-accent: #2f4ac4;
+  --ybod-muted-foreground: #7b7c80;
+  --ybod-muted-foreground-400: #c7c7ca;
+  --ybod-muted-400: #fafafa;
+  --ybod-background: #ffffff;
+  --ybod-radius-md: 8px;
+  --ybod-shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
 }
 /* #endregion */
 
 /* #region Purchase List styles */
-.ybo_button_container {
+.ybod_button_container {
   display: flex;
   margin: 10px 0px;
   justify-content: end;
@@ -25,14 +25,14 @@
   gap: 8px;
 }
 
-.ybo_order_button_container {
+.ybod_order_button_container {
   display: flex;
   padding: 16px;
   justify-content: end;
   gap: 8px;
 }
 
-.ybo_minicart_button_container {
+.ybod_minicart_button_container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -44,7 +44,7 @@
   }
 }
 
-.ybo_slotfill_button_container {
+.ybod_slotfill_button_container {
   display: flex;
   justify-content: end;
   gap: 8px;

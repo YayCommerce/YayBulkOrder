@@ -16,6 +16,9 @@ defined( 'ABSPATH' ) || exit;
 class ProductQueryService {
     use SingletonTrait;
 
+    /** Products per page for a table with pagination off. */
+    private const DEFAULT_MAX_PRODUCTS = 300;
+
     private SettingsService $settings_service;
 
     public function __construct() {
@@ -119,6 +122,18 @@ class ProductQueryService {
         if ( ! empty( $product_query_restriction['tax_query'] ) ) {
             $tax_query_clauses = array_merge( $tax_query_clauses, $product_query_restriction['tax_query'] );
         }
+        // Hidden Products : hide from search, hide from catalogs
+        $visibility_terms = wc_get_product_visibility_term_ids();
+        $hidden_term_id   = $visibility_terms[ '' !== $search_param ? 'exclude-from-search' : 'exclude-from-catalog' ] ?? 0;
+        if ( $hidden_term_id ) {
+            $tax_query_clauses[] = [
+                'taxonomy' => 'product_visibility',
+                'field'    => 'term_taxonomy_id',
+                'terms'    => [ $hidden_term_id ],
+                'operator' => 'NOT IN',
+            ];
+        }
+
         if ( ! empty( $tax_query_clauses ) ) {
             /* phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_tax_query */
             $query_vars['tax_query'] = count( $tax_query_clauses ) > 1
@@ -574,6 +589,6 @@ class ProductQueryService {
             }
         }
 
-        return -1;
+        return defined( 'YAYBULKORDER_MAX_PRODUCTS' ) ? (int) constant( 'YAYBULKORDER_MAX_PRODUCTS' ) : self::DEFAULT_MAX_PRODUCTS;
     }
 }

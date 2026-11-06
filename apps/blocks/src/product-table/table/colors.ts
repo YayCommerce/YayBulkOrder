@@ -17,18 +17,18 @@ export type TableColorKey =
 export type TableColors = Partial<Record<TableColorKey, string>>;
 
 const CSS_VAR_BY_KEY: Record<TableColorKey, string> = {
-  primary: '--ybo-primary-color',
-  headerBackground: '--ybo-header-background-color',
-  headerText: '--ybo-header-text-color',
-  background: '--ybo-background-color',
-  border: '--ybo-border-color',
-  text: '--ybo-text-color',
-  textHover: '--ybo-text-hover-color',
-  description: '--ybo-description-color',
-  buttonBackground: '--ybo-button-background-color',
-  buttonBackgroundHover: '--ybo-button-background-hover-color',
-  buttonText: '--ybo-button-text-color',
-  buttonTextHover: '--ybo-button-text-hover-color',
+  primary: '--ybod-primary-color',
+  headerBackground: '--ybod-header-background-color',
+  headerText: '--ybod-header-text-color',
+  background: '--ybod-background-color',
+  border: '--ybod-border-color',
+  text: '--ybod-text-color',
+  textHover: '--ybod-text-hover-color',
+  description: '--ybod-description-color',
+  buttonBackground: '--ybod-button-background-color',
+  buttonBackgroundHover: '--ybod-button-background-hover-color',
+  buttonText: '--ybod-button-text-color',
+  buttonTextHover: '--ybod-button-text-hover-color',
 };
 
 export function getColorPanels(): { title: string; keys: TableColorKey[] }[] {

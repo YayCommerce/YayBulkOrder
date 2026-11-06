@@ -7,22 +7,22 @@
 ?>
 
 <div <?php echo get_block_wrapper_attributes(); ?>>
-    <span class="ybo-variant-bulk-action-sentinel" aria-hidden="true" data-wp-init="callbacks.watchBulkActionVisibility"></span>
+    <span class="ybod-variant-bulk-action-sentinel" aria-hidden="true" data-wp-init="callbacks.watchBulkActionVisibility"></span>
 
-    <div class="ybo-variant-table-total">
-        <span class="ybo-variant-table-total__label"><?php esc_html_e( 'Total:', 'yay-bulk-order' ); ?></span>
-        <span class="ybo-variant-table-total__amount" data-wp-text="state.totalFormatted"></span>
+    <div class="ybod-variant-table-total">
+        <span class="ybod-variant-table-total__label"><?php esc_html_e( 'Total:', 'yay-bulk-order' ); ?></span>
+        <span class="ybod-variant-table-total__amount" data-wp-text="state.totalFormatted"></span>
     </div>
 
-    <div class="ybo-variant-table-actions" data-wp-class--is-floating="state.showFloatingBulkAction">
+    <div class="ybod-variant-table-actions" data-wp-class--is-floating="state.showFloatingBulkAction">
         <button
             type="button"
-            class="ybo-variant-table-add-to-cart"
+            class="ybod-variant-table-add-to-cart"
             data-wp-on--click="actions.addSelectedToCart"
             data-wp-bind--disabled="state.isAddToCartDisabled"
             data-wp-class--is-loading="context.tableState.bulkAdding"
         >
-            <span class="ybo-icon-cart" aria-hidden="true">
+            <span class="ybod-icon-cart" aria-hidden="true">
                 <svg width="20" height="20" viewBox="0 0 23 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M15.4189 20.9995H7.57253C4.69037 20.9995 2.47928 19.9624 3.10734 15.7881L3.83863 10.131C4.22578 8.04812 5.55932 7.25098 6.72939 7.25098H16.2964C17.4837 7.25098 18.7398 8.10812 19.1872 10.131L19.9185 15.7881C20.4519 19.4909 18.301 20.9995 15.4189 20.9995Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     <path d="M15.5476 7.04574C15.5476 4.81136 13.7295 3.00004 11.4867 3.00004C10.4067 2.99548 9.36944 3.41971 8.60416 4.17892C7.83888 4.93813 7.40868 5.96978 7.40869 7.04574H7.40869" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -35,7 +35,7 @@
 
         <button
             type="button"
-            class="ybo-variant-table-clear"
+            class="ybod-variant-table-clear"
             aria-label="<?php esc_attr_e( 'Clear selection', 'yay-bulk-order' ); ?>"
             data-wp-on--click="actions.clearSelection"
             data-wp-bind--hidden="!state.hasSelectedRows"
@@ -46,12 +46,12 @@
         </button>
     </div>
 
-    <div class="ybo-variant-table-cart-error" role="alert" hidden data-wp-bind--hidden="!state.showCartError">
-        <span class="ybo-variant-table-cart-error__text" data-wp-text="state.cartErrorText"></span>
+    <div class="ybod-variant-table-cart-error" role="alert" hidden data-wp-bind--hidden="!state.showCartError">
+        <span class="ybod-variant-table-cart-error__text" data-wp-text="state.cartErrorText"></span>
 
         <button
             type="button"
-            class="ybo-variant-table-cart-error__close"
+            class="ybod-variant-table-cart-error__close"
             aria-label="<?php esc_attr_e( 'Dismiss', 'yay-bulk-order' ); ?>"
             data-wp-on--click="actions.clearCartError"
         >
@@ -61,9 +61,9 @@
         </button>
     </div>
 
-    <div class="ybo-variant-table-cart-notice" data-wp-bind--hidden="!state.showCartNotice">
-        <a class="ybo-variant-table-cart-notice__link" data-wp-bind--href="state.cartUrl">
-            <span class="ybo-variant-table-cart-notice__icon" aria-hidden="true">
+    <div class="ybod-variant-table-cart-notice" data-wp-bind--hidden="!state.showCartNotice">
+        <a class="ybod-variant-table-cart-notice__link" data-wp-bind--href="state.cartUrl">
+            <span class="ybod-variant-table-cart-notice__icon" aria-hidden="true">
                 <svg width="23px" height="24px" viewBox="0 0 23 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M15.4189 20.9995H7.57253C4.69037 20.9995 2.47928 19.9624 3.10734 15.7881L3.83863 10.131C4.22578 8.04812 5.55932 7.25098 6.72939 7.25098H16.2964C17.4837 7.25098 18.7398 8.10812 19.1872 10.131L19.9185 15.7881C20.4519 19.4909 18.301 20.9995 15.4189 20.9995Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     <path d="M15.5476 7.04574C15.5476 4.81136 13.7295 3.00004 11.4867 3.00004C10.4067 2.99548 9.36944 3.41971 8.60416 4.17892C7.83888 4.93813 7.40868 5.96978 7.40869 7.04574H7.40869" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -76,7 +76,7 @@
 
         <button
             type="button"
-            class="ybo-variant-table-cart-notice__close"
+            class="ybod-variant-table-cart-notice__close"
             aria-label="<?php esc_attr_e( 'Dismiss', 'yay-bulk-order' ); ?>"
             data-wp-on--click="actions.clearCartNotice"
         >

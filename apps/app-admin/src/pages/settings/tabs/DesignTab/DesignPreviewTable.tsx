@@ -59,8 +59,8 @@ export function DesignPreviewTable() {
                   )}
                 </div>
                 <div
-                  className="hover:text-(--ybo-preview-text-hover)"
-                  style={{ '--ybo-preview-text-hover': watch('colors.textHover') } as CSSProperties}
+                  className="hover:text-(--ybod-preview-text-hover)"
+                  style={{ '--ybod-preview-text-hover': watch('colors.textHover') } as CSSProperties}
                 >
                   {product.name}
                 </div>
@@ -92,13 +92,13 @@ export function DesignPreviewTable() {
               <PreviewTableCell style={cellStyle}>{parseWCCurrency(product.price)}</PreviewTableCell>
               <PreviewTableCell style={cellStyle}>
                 <Button
-                  className="bg-(--ybo-preview-button-background) text-(--ybo-preview-button-text) hover:bg-(--ybo-preview-button-background-hover) hover:text-(--ybo-preview-button-text-hover) rounded-xs px-3 py-1.5 text-xs font-medium"
+                  className="bg-(--ybod-preview-button-background) text-(--ybod-preview-button-text) hover:bg-(--ybod-preview-button-background-hover) hover:text-(--ybod-preview-button-text-hover) rounded-xs px-3 py-1.5 text-xs font-medium"
                   style={
                     {
-                      '--ybo-preview-button-background': watch('colors.buttonBackground'),
-                      '--ybo-preview-button-text': watch('colors.buttonText'),
-                      '--ybo-preview-button-background-hover': watch('colors.buttonBackgroundHover'),
-                      '--ybo-preview-button-text-hover': watch('colors.buttonTextHover'),
+                      '--ybod-preview-button-background': watch('colors.buttonBackground'),
+                      '--ybod-preview-button-text': watch('colors.buttonText'),
+                      '--ybod-preview-button-background-hover': watch('colors.buttonBackgroundHover'),
+                      '--ybod-preview-button-text-hover': watch('colors.buttonTextHover'),
                     } as CSSProperties
                   }
                 >

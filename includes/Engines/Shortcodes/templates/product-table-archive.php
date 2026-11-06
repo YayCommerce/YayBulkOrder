@@ -11,5 +11,5 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$ybo_default_query_by = 'inherit';
+$ybod_default_query_by = 'inherit';
 require __DIR__ . '/parts/product-table.php';

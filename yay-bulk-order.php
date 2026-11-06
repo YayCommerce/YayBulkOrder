@@ -3,7 +3,7 @@
  * Plugin Name:       Yay Bulk Order for WooCommerce
  * Plugin URI:        https://yaycommerce.com/
  * Description:       WooCommerce plugin for quick bulk ordering.
- * Version:           1.0.0
+ * Version:           1.0.2
  * Author:            YayCommerce
  * Author URI:        https://yaycommerce.com
  * License:     GPLv2 or later
@@ -34,7 +34,7 @@ if ( function_exists( 'YayBulkOrder\\plugin_init' ) ) {
 }
 
 if ( ! defined( 'YAYBULKORDER_VERSION' ) ) {
-    define( 'YAYBULKORDER_VERSION', '1.0.0' );
+    define( 'YAYBULKORDER_VERSION', '1.0.2' );
     define( 'YAYBULKORDER_FILE', __FILE__ );
     define( 'YAYBULKORDER_PLUGIN_URL', plugin_dir_url( YAYBULKORDER_FILE ) );
     define( 'YAYBULKORDER_PLUGIN_PATH', plugin_dir_path( YAYBULKORDER_FILE ) );
@@ -42,6 +42,18 @@ if ( ! defined( 'YAYBULKORDER_VERSION' ) ) {
 
     define( 'YAYBULKORDER_MENU_ORDER', 20 );
     define( 'YAYBULKORDER_MENU_PRIORITY', 95 );
+}
+
+if ( version_compare( PHP_VERSION, '7.4', '<' ) || version_compare( get_bloginfo( 'version' ), '6.8', '<' ) ) {
+    add_action(
+        'admin_notices',
+        function () {
+            /* translators: 1: minimum WordPress version, 2: minimum PHP version */
+            $message = sprintf( __( 'YayBulkOrder is enabled but not effective. It requires WordPress %1$s and PHP %2$s or newer.', 'yay-bulk-order' ), '6.8', '7.4' );
+            echo '<div class="error"><p><strong>' . esc_html( $message ) . '</strong></p></div>';
+        }
+    );
+    return;
 }
 
 if ( ! function_exists( 'YayBulkOrder\\plugin_init' ) ) {

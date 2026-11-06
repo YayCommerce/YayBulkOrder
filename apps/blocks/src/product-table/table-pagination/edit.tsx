@@ -6,22 +6,22 @@ export default function Edit() {
   // Static preview only — the real page count/links are computed server-side
   // in render.php from the live product query, same as core's Query Pagination block.
   return (
-    <nav {...blockProps} className={`${blockProps.className ?? ''} ybo-pagination`}>
-      <ul className="ybo-pagination__list">
+    <nav {...blockProps} className={`${blockProps.className ?? ''} ybod-pagination`}>
+      <ul className="ybod-pagination__list">
         {/* <li>
-          <span className="ybo-pagination__link is-disabled">←</span>
+          <span className="ybod-pagination__link is-disabled">←</span>
         </li> */}
         <li>
-          <span className="ybo-pagination__link is-current">1</span>
+          <span className="ybod-pagination__link is-current">1</span>
         </li>
         <li>
-          <span className="ybo-pagination__link">2</span>
+          <span className="ybod-pagination__link">2</span>
         </li>
         <li>
-          <span className="ybo-pagination__link">3</span>
+          <span className="ybod-pagination__link">3</span>
         </li>
         <li>
-          <span className="ybo-pagination__link">→</span>
+          <span className="ybod-pagination__link">→</span>
         </li>
       </ul>
     </nav>

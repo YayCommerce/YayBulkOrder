@@ -21,11 +21,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 <!-- wp:yay-bulk-order/cart-summary /--></div>
 <!-- /wp:group -->
 
-<!-- wp:group {"className":"ybo-filter-layout","layout":{"type":"flex","flexWrap":"nowrap"}} -->
-<div class="wp-block-group ybo-filter-layout"><!-- wp:yay-bulk-order/product-table-filter-sidebar /-->
+<!-- wp:group {"className":"ybod-filter-layout","layout":{"type":"flex","flexWrap":"nowrap"}} -->
+<div class="wp-block-group ybod-filter-layout"><!-- wp:yay-bulk-order/product-table-filter-sidebar /-->
 
-<!-- wp:group {"className":"ybo-table-column"} -->
-<div class="wp-block-group ybo-table-column"><!-- wp:yay-bulk-order/product-table -->
+<!-- wp:group {"className":"ybod-table-column"} -->
+<div class="wp-block-group ybod-table-column"><!-- wp:yay-bulk-order/product-table -->
 <table class="wp-block-yay-bulk-order-product-table"><!-- wp:yay-bulk-order/product-table-header {"columns":[{"name":"yay-bulk-order/product-table-column-product"},{"name":"yay-bulk-order/product-table-column-quantity"},{"name":"yay-bulk-order/product-table-column-subtotal"},{"name":"yay-bulk-order/product-table-column-add-to-cart"},{"name":"yay-bulk-order/product-table-column-select"}]} -->
 <thead class="wp-block-yay-bulk-order-product-table-header" data-wp-init="callbacks.watchBackToTopVisibility"><tr><th>Product</th><th>Quantity</th><th>Subtotal</th><th>Add to Cart</th><th></th></tr></thead>
 <!-- /wp:yay-bulk-order/product-table-header -->

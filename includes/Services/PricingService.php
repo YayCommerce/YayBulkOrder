@@ -18,6 +18,11 @@ class PricingService {
         $quantity = max( 1, $quantity );
 
         if ( $product instanceof \WC_Product_Variable ) {
+            // Handlers can change the price of each variation. Without them, use the WooCommerce cached prices.
+            if ( ! has_action( 'yaybulkorder_adjust_raw_price' ) ) {
+                return (float) $product->get_variation_price( 'min' );
+            }
+
             $prices = [];
             foreach ( $product->get_children() as $variation_id ) {
                 $variation = wc_get_product( $variation_id );
@@ -29,10 +34,16 @@ class PricingService {
             return empty( $prices ) ? 0.0 : (float) min( $prices );
         }
 
-        $clone = clone $product;
-        do_action( 'yaybulkorder_adjust_raw_price', $clone, $quantity );
+        // Handlers change the price on the product they receive, so they get a copy.
+        // Cloning reads the product meta, so skip it when no handler can change the price.
+        if ( has_action( 'yaybulkorder_adjust_raw_price' ) ) {
+            $clone = clone $product;
+            do_action( 'yaybulkorder_adjust_raw_price', $clone, $quantity );
 
-        $raw_price = (float) $clone->get_price( 'edit' );
+            $raw_price = (float) $clone->get_price( 'edit' );
+        } else {
+            $raw_price = (float) $product->get_price( 'edit' );
+        }
 
         return (float) apply_filters( 'woocommerce_product_get_price', $raw_price, $product );
     }

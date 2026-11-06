@@ -20,7 +20,7 @@ registerBlockType(metadata as unknown as BlockConfiguration, {
  * Query arg set by `archiveProductTemplateUrl()` (apps/app-admin/src/lib/helpers/wp.helper.ts)
  * when linking here from the Publish step. Must match `CATALOG_TEMPLATE_NOTICE_PARAM` there.
  */
-const CATALOG_TEMPLATE_NOTICE_PARAM = 'ybo-catalog-notice';
+const CATALOG_TEMPLATE_NOTICE_PARAM = 'ybod-catalog-notice';
 
 /** Minimal shape of the `core/notices` store's dispatch actions we use. */
 type NoticesDispatch = {

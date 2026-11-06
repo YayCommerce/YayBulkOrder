@@ -31,7 +31,7 @@ class YayWholesale {
 
         add_filter( 'yaybulkorder_shop_page_prevent_apply_template', [ $this, 'prevent_apply_template_for_pro' ] );
 
-        add_filter( 'ywhs_classic_shop_template_list', [ $this, 'add_ybo_product_table_template' ] );
+        add_filter( 'ywhs_classic_shop_template_list', [ $this, 'add_ybod_product_table_template' ] );
 
         add_action( 'ywhs_ybo_before_shop_loop', [ $this, 'before_template_woocommerce_loop' ] );
 
@@ -128,10 +128,11 @@ class YayWholesale {
         return class_exists( 'YayWholesaleB2B\Pro\YayWholesaleB2BPro', true );
     }
 
-    public function add_ybo_product_table_template( array $templates ) {
+    public function add_ybod_product_table_template( array $templates ) {
         $templates[] = [
-            'slug' => 'ybo_product_table',
-            'name' => 'Yay Bulk Order Template',
+            'slug' => 'yaybulkorder_table',
+            // Translators: %s: The plugin name
+            'name' => sprintf(__("%s Template", "yay-bulk-order"), "Yay Bulk Order"),
             'path' => YAYBULKORDER_PLUGIN_PATH . 'includes/Engines/Compatibles/YayWholesale/templates/product-table-shop.php',
         ];
         return $templates;
@@ -153,9 +154,9 @@ class YayWholesale {
 
         $table_id = $this->product_tables_service->get_shop_page_product_table();
         if ( $table_id > 0 ) {
-            echo do_shortcode( '[ybo-product-table id="' . $table_id . '"]' );
+            echo do_shortcode( '[yaybulkorder-product-table id="' . $table_id . '"]' );
         } else {
-            echo do_shortcode( '[ybo-product-table]' );
+            echo do_shortcode( '[yaybulkorder-product-table]' );
         }
     }
 

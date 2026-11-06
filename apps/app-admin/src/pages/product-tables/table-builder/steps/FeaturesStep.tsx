@@ -51,6 +51,14 @@ export default function FeaturesStep({ setSteps }: BuilderStepsProps) {
               </div>
             )}
           />
+          {/* {!hasPagination && (
+            <p className="text-muted-foreground text-xs">
+              {__(
+                'Tables without pagination show up to 300 products per page. Page links appear if you have more.',
+                'yay-bulk-order',
+              )}
+            </p>
+          )} */}
           {hasPagination && (
             <Controller
               control={control}

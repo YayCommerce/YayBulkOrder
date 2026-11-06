@@ -75,11 +75,7 @@ body.yay-ui {
   display: none !important;
 }
 
-#adminmenu div.wp-menu-image:has(img) {
-  display: flex;
-  justify-content: center;
-}
-
-#adminmenu div.wp-menu-image img {
-  align-self: flex-start;
+/* Tailwind's preflight makes img block, which breaks WordPress's text-align centering. */
+#adminmenu .wp-menu-image img {
+  display: inline;
 }

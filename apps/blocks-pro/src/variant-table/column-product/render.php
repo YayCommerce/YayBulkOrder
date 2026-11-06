@@ -16,22 +16,22 @@ if ( ! $variation instanceof WC_Product ) {
 	return;
 }
 
-$thumbnail = $variation->get_image( 'woocommerce_thumbnail', array( 'class' => 'ybo-product-thumbnail__image' ) );
+$thumbnail = $variation->get_image( 'woocommerce_thumbnail', array( 'class' => 'ybod-product-thumbnail__image' ) );
 $title     = $variation instanceof WC_Product_Variation ? wc_get_formatted_variation( $variation, true, false ) : $variation->get_title();
 $title     = $title ? $title : $variation->get_title();
 $permalink = $variation->get_permalink();
 ?>
 
 <td <?php echo get_block_wrapper_attributes(); ?>>
-	<a href="<?php echo esc_url( $permalink ); ?>" target="_blank" class="ybo-product-cell" title="<?php echo esc_attr( $title ); ?>">
-		<span class="ybo-product-thumbnail">
+	<a href="<?php echo esc_url( $permalink ); ?>" target="_blank" class="ybod-product-cell" title="<?php echo esc_attr( $title ); ?>">
+		<span class="ybod-product-thumbnail">
 			<?php echo $thumbnail; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- WC_Product::get_image() output is already escaped. ?>
 			<span
-				class="ybo-product-thumbnail__badge"
+				class="ybod-product-thumbnail__badge"
 				data-wp-bind--hidden="!context.cartQuantity"
 				data-wp-text="context.cartQuantity"
 			></span>
 		</span>
-		<span class="ybo-product-title"><?php echo esc_html( $title ); ?></span>
+		<span class="ybod-product-title"><?php echo esc_html( $title ); ?></span>
 	</a>
 </td>

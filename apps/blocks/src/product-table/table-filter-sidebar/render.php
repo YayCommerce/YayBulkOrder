@@ -34,16 +34,16 @@ $selected_rating = BlockHelper::get_rating_param( $query_id );
 ?>
 
 <div
-    <?php echo get_block_wrapper_attributes( array( 'class' => 'ybo-filter-sidebar' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+    <?php echo get_block_wrapper_attributes( array( 'class' => 'ybod-filter-sidebar' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
     data-wp-bind--hidden="!state.isFilterOpen"
 >
-    <p class="ybo-filter-sidebar__title"><?php esc_html_e( 'Price', 'yay-bulk-order' ); ?></p>
-    <hr class="ybo-filter-sidebar__divider" />
+    <p class="ybod-filter-sidebar__title"><?php esc_html_e( 'Price', 'yay-bulk-order' ); ?></p>
+    <hr class="ybod-filter-sidebar__divider" />
 
-    <div class="ybo-filter-sidebar__price-range">
+    <div class="ybod-filter-sidebar__price-range">
         <input
             type="number"
-            class="ybo-filter-sidebar__price-input"
+            class="ybod-filter-sidebar__price-input"
             min="<?php echo esc_attr( $price_bounds['min'] ); ?>"
             max="<?php echo esc_attr( $price_bounds['max'] ); ?>"
             step="0.01"
@@ -52,10 +52,10 @@ $selected_rating = BlockHelper::get_rating_param( $query_id );
             data-wp-on--change="actions.updateMinPrice"
             aria-label="<?php esc_attr_e( 'Minimum price', 'yay-bulk-order' ); ?>"
         />
-        <span class="ybo-filter-sidebar__price-separator" aria-hidden="true">&ndash;</span>
+        <span class="ybod-filter-sidebar__price-separator" aria-hidden="true">&ndash;</span>
         <input
             type="number"
-            class="ybo-filter-sidebar__price-input"
+            class="ybod-filter-sidebar__price-input"
             min="<?php echo esc_attr( $price_bounds['min'] ); ?>"
             max="<?php echo esc_attr( $price_bounds['max'] ); ?>"
             step="0.01"
@@ -66,12 +66,12 @@ $selected_rating = BlockHelper::get_rating_param( $query_id );
         />
     </div>
 
-    <p class="ybo-filter-sidebar__title"><?php esc_html_e( 'Rating', 'yay-bulk-order' ); ?></p>
-    <hr class="ybo-filter-sidebar__divider" />
+    <p class="ybod-filter-sidebar__title"><?php esc_html_e( 'Rating', 'yay-bulk-order' ); ?></p>
+    <hr class="ybod-filter-sidebar__divider" />
 
-    <div class="ybo-filter-sidebar__list">
+    <div class="ybod-filter-sidebar__list">
         <?php for ( $stars = 5; $stars >= 1; $stars-- ) : ?>
-            <label class="ybo-filter-sidebar__checkbox">
+            <label class="ybod-filter-sidebar__checkbox">
                 <input
                     type="checkbox"
                     <?php checked( $selected_rating === $stars ); ?>
@@ -91,12 +91,12 @@ $selected_rating = BlockHelper::get_rating_param( $query_id );
         <?php endfor; ?>
     </div>
 
-    <p class="ybo-filter-sidebar__title"><?php esc_html_e( 'Categories', 'yay-bulk-order' ); ?></p>
-    <hr class="ybo-filter-sidebar__divider" />
+    <p class="ybod-filter-sidebar__title"><?php esc_html_e( 'Categories', 'yay-bulk-order' ); ?></p>
+    <hr class="ybod-filter-sidebar__divider" />
 
-    <div class="ybo-filter-sidebar__list">
+    <div class="ybod-filter-sidebar__list">
         <?php foreach ( $categories as $category ) : ?>
-            <label class="ybo-filter-sidebar__checkbox">
+            <label class="ybod-filter-sidebar__checkbox">
                 <input
                     type="checkbox"
                     <?php checked( in_array( $category->slug, $selected_slugs, true ) ); ?>
@@ -109,12 +109,12 @@ $selected_rating = BlockHelper::get_rating_param( $query_id );
     </div>
 
     <?php if ( ! empty( $tags ) ) : ?>
-        <p class="ybo-filter-sidebar__title"><?php esc_html_e( 'Tags', 'yay-bulk-order' ); ?></p>
-        <hr class="ybo-filter-sidebar__divider" />
+        <p class="ybod-filter-sidebar__title"><?php esc_html_e( 'Tags', 'yay-bulk-order' ); ?></p>
+        <hr class="ybod-filter-sidebar__divider" />
 
-        <div class="ybo-filter-sidebar__list">
+        <div class="ybod-filter-sidebar__list">
             <?php foreach ( $tags as $tag ) : ?>
-                <label class="ybo-filter-sidebar__checkbox">
+                <label class="ybod-filter-sidebar__checkbox">
                     <input
                         type="checkbox"
                         <?php checked( in_array( $tag->slug, $selected_tags, true ) ); ?>

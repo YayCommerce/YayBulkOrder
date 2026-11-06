@@ -45,7 +45,7 @@ class Frontend {
             return;
         }
 
-        $slug  = 'ybo_checkout_actions';
+        $slug  = 'yaybulkorder_checkout_actions';
         $asset = include $asset_path;
 
         wp_enqueue_script(
@@ -61,7 +61,7 @@ class Frontend {
             $slug,
             'yayBulkOrderSlotFill',
             [
-                'ybo_meta' => [
+                'ybod_meta' => [
                     'settings' => $this->settings_service->get_settings(),
                 ],
                 'wc_meta'  => [

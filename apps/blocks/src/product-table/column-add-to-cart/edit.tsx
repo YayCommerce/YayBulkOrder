@@ -3,11 +3,11 @@ import { BlockEditProps } from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
 
 export default function Edit(props: BlockEditProps) {
-  const blockProps = useBlockProps({ className: 'ybo-table-cell' });
+  const blockProps = useBlockProps({ className: 'ybod-table-cell' });
 
   return (
     <div {...blockProps}>
-      <button type="button" className="ybo-add-to-cart-button">
+      <button type="button" className="ybod-add-to-cart-button">
         {__('Add to cart', 'yay-bulk-order')}
       </button>
     </div>

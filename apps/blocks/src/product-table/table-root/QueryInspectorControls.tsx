@@ -41,7 +41,7 @@ export default function QueryInspectorControls({
     <InspectorControls>
       <PanelBody title={__('Products to Show', 'yay-bulk-order')} initialOpen>
         {isInherit && (
-          <Notice status="info" isDismissible={false} className="ybo-inherit-notice">
+          <Notice status="info" isDismissible={false} className="ybod-inherit-notice">
             {__(
               'This table shows products from the current Shop or product archive. Change the collection below to override.',
               'yay-bulk-order',

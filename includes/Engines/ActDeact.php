@@ -14,7 +14,7 @@ class ActDeact {
     public static function single_deactivate() {
         // Flush to reset
         flush_rewrite_rules();
-        delete_option( 'ybo_flushed_rewrite' );
+        delete_option( 'yaybulkorder_flushed_rewrite' );
     }
 
     public static function single_uninstall() {

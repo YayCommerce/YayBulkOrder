@@ -55,7 +55,7 @@ class LocalizeService {
                 'shopPageId'                 => function_exists( 'wc_get_page_id' ) ? (int) wc_get_page_id( 'shop' ) : 0,
                 'shopPageUrl'                => function_exists( 'wc_get_page_permalink' ) ? esc_url_raw( wc_get_page_permalink( 'shop' ) ) : '',
                 'themeSlug'                  => get_stylesheet(),
-                'archiveProductTemplateSlug' => apply_filters( 'ybo_main_catalog_template', get_stylesheet() . '//' . self::ARCHIVE_PRODUCT_TEMPLATE_SLUG ),
+                'archiveProductTemplateSlug' => apply_filters( 'yaybulkorder_main_catalog_template', get_stylesheet() . '//' . self::ARCHIVE_PRODUCT_TEMPLATE_SLUG ),
                 'patternCategoryId'          => $this->pattern_service->get_pattern_category_id(),
             ],
             'bulkOrderMeta' => [

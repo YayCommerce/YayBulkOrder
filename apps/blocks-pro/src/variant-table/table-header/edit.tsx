@@ -41,7 +41,7 @@ export default function Edit({ clientId, attributes, setAttributes }: BlockEditP
       style={{ ...style, display: 'grid', minWidth: 0, gridTemplateColumns: getGridTemplateColumns(columns) }}
     >
       {columns.map((name, index) => (
-        <div key={`${name}-${index}`} className="ybo-table-cell">
+        <div key={`${name}-${index}`} className="ybod-table-cell">
           {getColumnLabel(name)}
         </div>
       ))}

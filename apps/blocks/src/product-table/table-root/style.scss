@@ -3,7 +3,7 @@
  * front end — the placeholder markup is replaced by the inner blocks
  * template as soon as a collection is picked).
  */
-.ybo-product-query-placeholder {
+.ybod-product-query-placeholder {
   padding: 32px 24px;
   text-align: center;
   border: 1px solid #ddd;
@@ -79,7 +79,7 @@
   }
 }
 
-.ybo-inherit-notice {
+.ybod-inherit-notice {
   margin: 0 0 12px;
 }
 
@@ -102,7 +102,7 @@
   }
 }
 
-.ybo-table-loading-overlay {
+.ybod-table-loading-overlay {
   position: absolute;
   inset: 0;
   z-index: 10;
@@ -120,19 +120,19 @@
     width: 32px;
     height: 32px;
     border: 3px solid rgba(0, 0, 0, 0.1);
-    border-top-color: var(--ybo-primary-color, #3858e9);
+    border-top-color: var(--ybod-primary-color, #3858e9);
     border-radius: 50%;
-    animation: ybo-table-loading-spin 0.8s linear infinite;
+    animation: ybod-table-loading-spin 0.8s linear infinite;
   }
 }
 
-@keyframes ybo-table-loading-spin {
+@keyframes ybod-table-loading-spin {
   to {
     transform: rotate(360deg);
   }
 }
 
-.ybo-category-picker {
+.ybod-category-picker {
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   overflow: hidden;
@@ -199,7 +199,7 @@
   }
 }
 
-.ybo-product-table-picker {
+.ybod-product-table-picker {
   display: flex;
   flex-direction: column;
   width: 50%;
