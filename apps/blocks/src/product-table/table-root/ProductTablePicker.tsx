@@ -82,7 +82,7 @@ export default function ProductTablePicker({ onSelect, onSelectTemplate }: Produ
   const debouncedSearch = useDebounce(applySearch, 300);
 
   return (
-    <div className="ybo-product-table-picker">
+    <div className="ybod-product-table-picker">
       <TextControl
         __next40pxDefaultSize
         __nextHasNoMarginBottom
@@ -97,7 +97,7 @@ export default function ProductTablePicker({ onSelect, onSelectTemplate }: Produ
       {hasError && <p>{__('Could not load product tables.', 'yay-bulk-order')}</p>}
 
       {!hasError && !tables && (
-        <div className="ybo-product-table-picker__loading">
+        <div className="ybod-product-table-picker__loading">
           <Spinner />
         </div>
       )}
@@ -105,15 +105,15 @@ export default function ProductTablePicker({ onSelect, onSelectTemplate }: Produ
       {!hasError && tables && tables.length === 0 && <p>{__('No product tables found.', 'yay-bulk-order')}</p>}
 
       {!hasError && tables && tables.length > 0 && (
-        <div className="ybo-product-table-picker__table-wrapper">
-          <table className="ybo-product-table-picker__table">
+        <div className="ybod-product-table-picker__table-wrapper">
+          <table className="ybod-product-table-picker__table">
             <tbody>
               {tables.map((table) => (
                 <tr key={table.id}>
-                  <td className="ybo-product-table-picker__title">
+                  <td className="ybod-product-table-picker__title">
                     <span>{table.title}</span>
                   </td>
-                  <td className="ybo-product-table-picker__action">
+                  <td className="ybod-product-table-picker__action">
                     <Button variant="primary" onClick={() => handleSelect(table)}>
                       {__('Select', 'yay-bulk-order')}
                     </Button>
@@ -124,11 +124,11 @@ export default function ProductTablePicker({ onSelect, onSelectTemplate }: Produ
           </table>
 
           {totalPages > 1 && (
-            <div className="ybo-product-table-picker__pagination">
+            <div className="ybod-product-table-picker__pagination">
               <Button variant="tertiary" disabled={page <= 1} onClick={() => setPage((current) => current - 1)}>
                 {__('Previous', 'yay-bulk-order')}
               </Button>
-              <span className="ybo-product-table-picker__pagination-info">
+              <span className="ybod-product-table-picker__pagination-info">
                 {sprintf(
                   /* translators: 1: current page, 2: total pages */
                   __('Page %1$d of %2$d', 'yay-bulk-order'),

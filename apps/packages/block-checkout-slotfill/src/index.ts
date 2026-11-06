@@ -2,7 +2,7 @@ import { registerPlugin } from '@wordpress/plugins';
 
 import Render from './render';
 
-registerPlugin('ybo-checkout-actions', {
+registerPlugin('ybod-checkout-actions', {
   render: Render,
   scope: 'woocommerce-checkout',
 });

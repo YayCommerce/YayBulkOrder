@@ -13,10 +13,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 ?>
-<div <?php echo get_block_wrapper_attributes( array( 'class' => 'ybo-search' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
+<div <?php echo get_block_wrapper_attributes( array( 'class' => 'ybod-search' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
 	<input
 		type="search"
-		class="ybo-search__input"
+		class="ybod-search__input"
 		placeholder="<?php esc_attr_e( 'Search products...', 'yay-bulk-order' ); ?>"
 		aria-label="<?php esc_attr_e( 'Search products', 'yay-bulk-order' ); ?>"
 		data-wp-bind--value="context.tableState.filter.search"
@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		data-wp-on--keydown="actions.handleSearchKeydown"
 	/>
 
-	<span class="ybo-search__icon" data-wp-bind--hidden="state.hasSearchKeyword" aria-hidden="true">
+	<span class="ybod-search__icon" data-wp-bind--hidden="state.hasSearchKeyword" aria-hidden="true">
 		<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<circle cx="8" cy="8" r="6.25" stroke="currentColor" stroke-width="1.5"></circle>
 			<path d="M16 16L12.6 12.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
@@ -33,7 +33,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	<button
 		type="button"
-		class="ybo-search__clear"
+		class="ybod-search__clear"
 		aria-label="<?php esc_attr_e( 'Clear search', 'yay-bulk-order' ); ?>"
 		data-wp-bind--hidden="!state.hasSearchKeyword"
 		data-wp-on--click="actions.clearSearch"

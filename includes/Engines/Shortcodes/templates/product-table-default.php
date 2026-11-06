@@ -11,5 +11,5 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$ybo_default_query_by = 'all';
+$ybod_default_query_by = 'all';
 require __DIR__ . '/parts/product-table.php';

@@ -9,15 +9,15 @@
 <td
     <?php echo get_block_wrapper_attributes(); ?>
 >
-    <div class="ybo-quantity-stepper">
+    <div class="ybod-quantity-stepper">
         <button
             type="button"
-            class="ybo-quantity-stepper__button ybo-quantity-stepper__button--minus"
+            class="ybod-quantity-stepper__button ybod-quantity-stepper__button--minus"
             data-wp-on--click="actions.decrementQuantity"
             aria-label="<?php echo esc_attr__( 'Decrease quantity', 'yay-bulk-order' ); ?>"
         >−</button>
         <input
-            class="ybo-quantity-input"
+            class="ybod-quantity-input"
             type="number"
             min="1"
             step="1"
@@ -27,7 +27,7 @@
         />
         <button
             type="button"
-            class="ybo-quantity-stepper__button ybo-quantity-stepper__button--plus"
+            class="ybod-quantity-stepper__button ybod-quantity-stepper__button--plus"
             data-wp-on--click="actions.incrementQuantity"
             aria-label="<?php echo esc_attr__( 'Increase quantity', 'yay-bulk-order' ); ?>"
         >+</button>

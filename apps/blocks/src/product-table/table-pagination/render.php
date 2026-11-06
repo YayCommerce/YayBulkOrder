@@ -25,7 +25,7 @@ $total_pages  = $pagination['totalPages'];
 
 if ( $total_pages <= 1 ) {
     ?>
-    <nav <?php echo get_block_wrapper_attributes( array( 'class' => 'ybo-pagination' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>></nav>
+    <nav <?php echo get_block_wrapper_attributes( array( 'class' => 'ybod-pagination' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>></nav>
     <?php
     return;
 }
@@ -34,14 +34,14 @@ $page_range = BlockHelper::get_pagination_range( $current_page, $total_pages );
 ?>
 
 <nav
-    <?php echo get_block_wrapper_attributes( array( 'class' => 'ybo-pagination' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+    <?php echo get_block_wrapper_attributes( array( 'class' => 'ybod-pagination' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
     aria-label="<?php echo esc_attr__( 'Products pagination', 'yay-bulk-order' ); ?>"
 >
-    <ul class="ybo-pagination__list">
+    <ul class="ybod-pagination__list">
         <?php if ( $current_page > 1 ) : ?>
             <li>
                 <a
-                    class="ybo-pagination__link ybo-pagination__link--prev"
+                    class="ybod-pagination__link ybod-pagination__link--prev"
                     href="<?php echo esc_url( BlockHelper::build_query_url( $query_id, array( 'page' => $current_page - 1 ) ) ); ?>"
                     aria-label="<?php echo esc_attr__( 'Previous page', 'yay-bulk-order' ); ?>"
                     data-wp-on--click="actions.navigatePagination"
@@ -53,12 +53,12 @@ $page_range = BlockHelper::get_pagination_range( $current_page, $total_pages );
         <?php foreach ( $page_range as $page ) : ?>
             <li>
                 <?php if ( null === $page ) : ?>
-                    <span class="ybo-pagination__ellipsis" aria-hidden="true">&hellip;</span>
+                    <span class="ybod-pagination__ellipsis" aria-hidden="true">&hellip;</span>
                 <?php elseif ( $page === $current_page ) : ?>
-                    <span class="ybo-pagination__link is-current" aria-current="page"><?php echo (int) $page; ?></span>
+                    <span class="ybod-pagination__link is-current" aria-current="page"><?php echo (int) $page; ?></span>
                 <?php else : ?>
                     <a
-                        class="ybo-pagination__link"
+                        class="ybod-pagination__link"
                         href="<?php echo esc_url( BlockHelper::build_query_url( $query_id, array( 'page' => $page ) ) ); ?>"
                         aria-label="<?php echo esc_attr( sprintf( /* translators: %d: page number. */ __( 'Page %d', 'yay-bulk-order' ), $page ) ); ?>"
                         data-wp-on--click="actions.navigatePagination"
@@ -71,7 +71,7 @@ $page_range = BlockHelper::get_pagination_range( $current_page, $total_pages );
         <?php if ( $current_page < $total_pages ) : ?>
             <li>
                 <a
-                    class="ybo-pagination__link ybo-pagination__link--next"
+                    class="ybod-pagination__link ybod-pagination__link--next"
                     href="<?php echo esc_url( BlockHelper::build_query_url( $query_id, array( 'page' => $current_page + 1 ) ) ); ?>"
                     aria-label="<?php echo esc_attr__( 'Next page', 'yay-bulk-order' ); ?>"
                     data-wp-on--click="actions.navigatePagination"

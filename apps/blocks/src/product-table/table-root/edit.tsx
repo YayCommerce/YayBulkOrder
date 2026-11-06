@@ -152,7 +152,7 @@ function buildTemplate(templateQuery: TemplateQuery | null, isTaxonomyArchiveTem
     block('yay-bulk-order/product-table-column-select'),
   ];
 
-  const tableAndFooter = block('core/group', { className: 'ybo-table-column' }, [
+  const tableAndFooter = block('core/group', { className: 'ybod-table-column' }, [
     block('yay-bulk-order/product-table', {}, [
       block('yay-bulk-order/product-table-header'),
       block('yay-bulk-order/product-table-columns', {}, columns),
@@ -165,7 +165,7 @@ function buildTemplate(templateQuery: TemplateQuery | null, isTaxonomyArchiveTem
 
   return [
     toolbarRow,
-    block('core/group', { className: 'ybo-filter-layout', layout: { type: 'flex', flexWrap: 'nowrap' } }, [
+    block('core/group', { className: 'ybod-filter-layout', layout: { type: 'flex', flexWrap: 'nowrap' } }, [
       ...(showFilter ? [block('yay-bulk-order/product-table-filter-sidebar')] : []),
       tableAndFooter,
     ]),

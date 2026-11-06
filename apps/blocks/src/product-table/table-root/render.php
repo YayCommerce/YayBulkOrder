@@ -131,7 +131,7 @@ $data_context = [
     <?php
     // A table with pagination off has no pagination block, but it still needs
     // page links when it has more products than the unpaginated page size.
-    if ( false === ( $attributes['productQuery']['hasPagination'] ?? null ) && false === strpos( $content, 'ybo-pagination' ) ) {
+    if ( false === ( $attributes['productQuery']['hasPagination'] ?? null ) && false === strpos( $content, 'ybod-pagination' ) ) {
         $pagination_block = new WP_Block(
             array(
                 'blockName'    => 'yay-bulk-order/product-table-pagination',
@@ -154,11 +154,11 @@ $data_context = [
     ?>
 
     <div
-        class="ybo-table-loading-overlay"
+        class="ybod-table-loading-overlay"
         data-wp-bind--hidden="!state.isTableLoading"
         aria-hidden="true"
     >
-        <span class="ybo-table-loading-overlay__spinner"></span>
+        <span class="ybod-table-loading-overlay__spinner"></span>
     </div>
 
 </div>

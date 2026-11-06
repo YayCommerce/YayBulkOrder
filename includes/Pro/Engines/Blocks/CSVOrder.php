@@ -16,7 +16,7 @@ class CSVOrder {
 
     private string $shortcode_name = 'yaybulkorder_csv_order';
 
-    private string $file_field_name = 'ybo_csv_order';
+    private string $file_field_name = 'ybod_csv_order';
 
     protected function __construct() {
         $this->csv_order_service = CSVOrderService::get_instance();
@@ -51,7 +51,7 @@ class CSVOrder {
             return;
         }
 
-        if ( ! isset( $_POST['ybo_csv_order_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['ybo_csv_order_nonce'] ) ), 'ybo_csv_order_nonce' ) ) {
+        if ( ! isset( $_POST['ybod_csv_order_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['ybod_csv_order_nonce'] ) ), 'ybod_csv_order_nonce' ) ) {
             return;
         }
 

@@ -54,7 +54,7 @@ export default function Edit({ clientId, attributes, setAttributes }: BlockEditP
       }}
     >
       {columns.map(({ name, className }, index) => (
-        <div key={`${name}-${index}`} className={['ybo-table-cell', className].filter(Boolean).join(' ')}>
+        <div key={`${name}-${index}`} className={['ybod-table-cell', className].filter(Boolean).join(' ')}>
           {getColumnLabel(name)}
         </div>
       ))}

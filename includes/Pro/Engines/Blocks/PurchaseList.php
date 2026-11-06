@@ -22,9 +22,9 @@ class PurchaseList {
         add_action( 'init', [ $this, 'register_purchase_list_post_type' ] );
 
         // Ajax
-        add_action( 'wp_ajax_ybo_add_purchase_list_to_cart', [ $this, 'add_purchase_list_to_cart' ] );
-        add_action( 'wp_ajax_ybo_save_purchase_list_from_cart', [ $this, 'save_purchase_list_from_cart' ] );
-        add_action( 'wp_ajax_ybo_save_purchase_list_from_order', [ $this, 'save_purchase_list_from_order' ] );
+        add_action( 'wp_ajax_ybod_add_purchase_list_to_cart', [ $this, 'add_purchase_list_to_cart' ] );
+        add_action( 'wp_ajax_ybod_save_purchase_list_from_cart', [ $this, 'save_purchase_list_from_cart' ] );
+        add_action( 'wp_ajax_ybod_save_purchase_list_from_order', [ $this, 'save_purchase_list_from_order' ] );
 
         // Save From Cart UI
         // Classic
@@ -91,7 +91,7 @@ class PurchaseList {
     }
 
     /**
-     * AJAX handler ("ybo_add_purchase_list_to_cart"): Add purchase list's products to cart
+     * AJAX handler ("ybod_add_purchase_list_to_cart"): Add purchase list's products to cart
      *
      * @return void
      */
@@ -170,7 +170,7 @@ class PurchaseList {
     }
 
     /**
-     * AJAX handler ("ybo_save_purchase_list_from_cart"): save as a new purchase list from cart
+     * AJAX handler ("ybod_save_purchase_list_from_cart"): save as a new purchase list from cart
      *
      * @return void
      */
@@ -216,7 +216,7 @@ class PurchaseList {
     }
 
     /**
-     * AJAX handler ("ybo_save_purchase_list_from_order"): save as a new purchase list form user's order
+     * AJAX handler ("ybod_save_purchase_list_from_order"): save as a new purchase list form user's order
      *
      * @return void
      */
@@ -288,8 +288,8 @@ class PurchaseList {
         }
 
         ?>
-        <div class="ybo_button_container">
-            <button class="ybo_save_pl_cart_button wp-element-button checkout"><?php esc_html_e( 'Save as Purchase list', 'yay-bulk-order' ); ?></button>
+        <div class="ybod_button_container">
+            <button class="ybod_save_pl_cart_button wp-element-button checkout"><?php esc_html_e( 'Save as Purchase list', 'yay-bulk-order' ); ?></button>
         </div>
         <?php
     }
@@ -306,8 +306,8 @@ class PurchaseList {
             return;
         }
         ?>
-        <div class="ybo_minicart_button_container">
-            <button class="ybo_save_pl_cart_button wp-element-button checkout"><?php esc_html_e( 'Save as Purchase list', 'yay-bulk-order' ); ?></button>
+        <div class="ybod_minicart_button_container">
+            <button class="ybod_save_pl_cart_button wp-element-button checkout"><?php esc_html_e( 'Save as Purchase list', 'yay-bulk-order' ); ?></button>
         </div>
         <?php
     }
@@ -332,8 +332,8 @@ class PurchaseList {
             return;
         }
         ?>
-        <div class="ybo_order_button_container">
-            <button class="ybo_save_pl_order_button wp-element-button" data-order-id="<?php echo esc_attr( $order->get_id() ); ?>"><?php esc_html_e( 'Save as Purchase list', 'yay-bulk-order' ); ?></button>
+        <div class="ybod_order_button_container">
+            <button class="ybod_save_pl_order_button wp-element-button" data-order-id="<?php echo esc_attr( $order->get_id() ); ?>"><?php esc_html_e( 'Save as Purchase list', 'yay-bulk-order' ); ?></button>
         </div>
         <?php
     }
@@ -353,8 +353,8 @@ class PurchaseList {
 
         ob_start()
         ?>
-        <div class="ybo_minicart_button_container">
-            <button class="ybo_save_pl_cart_button wp-element-button"><?php esc_html_e( 'Save as Purchase list', 'yay-bulk-order' ); ?></button>
+        <div class="ybod_minicart_button_container">
+            <button class="ybod_save_pl_cart_button wp-element-button"><?php esc_html_e( 'Save as Purchase list', 'yay-bulk-order' ); ?></button>
         </div>
         <?php
         $custom = ob_get_clean();

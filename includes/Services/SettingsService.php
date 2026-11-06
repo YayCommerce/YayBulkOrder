@@ -44,27 +44,27 @@ class SettingsService {
         $colors         = $settings['colors'];
 
         return [
-            '--ybo-primary-color'                 => $colors['primary'],
-            '--ybo-text-color'                    => $colors['text'],
-            '--ybo-text-hover-color'              => $colors['textHover'],
-            '--ybo-description-color'             => $colors['description'],
-            '--ybo-border-color'                  => $colors['border'],
-            '--ybo-background-color'              => $colors['background'],
-            '--ybo-button-background-color'       => $colors['buttonBackground'],
-            '--ybo-button-background-hover-color' => $colors['buttonBackgroundHover'],
-            '--ybo-button-text-color'             => $colors['buttonText'],
-            '--ybo-button-text-hover-color'       => $colors['buttonTextHover'],
-            '--ybo-header-text-color'             => $colors['headerText'],
-            '--ybo-header-background-color'       => $colors['headerBackground'],
+            '--ybod-primary-color'                 => $colors['primary'],
+            '--ybod-text-color'                    => $colors['text'],
+            '--ybod-text-hover-color'              => $colors['textHover'],
+            '--ybod-description-color'             => $colors['description'],
+            '--ybod-border-color'                  => $colors['border'],
+            '--ybod-background-color'              => $colors['background'],
+            '--ybod-button-background-color'       => $colors['buttonBackground'],
+            '--ybod-button-background-hover-color' => $colors['buttonBackgroundHover'],
+            '--ybod-button-text-color'             => $colors['buttonText'],
+            '--ybod-button-text-hover-color'       => $colors['buttonTextHover'],
+            '--ybod-header-text-color'             => $colors['headerText'],
+            '--ybod-header-background-color'       => $colors['headerBackground'],
 
-            '--ybo-text-default-color'            => $default_colors['text'],
-            '--ybo-text-hover-default-color'      => $default_colors['textHover'],
-            '--ybo-description-default-color'     => $default_colors['description'],
-            '--ybo-border-default-color'          => $default_colors['border'],
-            '--ybo-background-default-color'      => $default_colors['background'],
+            '--ybod-text-default-color'            => $default_colors['text'],
+            '--ybod-text-hover-default-color'      => $default_colors['textHover'],
+            '--ybod-description-default-color'     => $default_colors['description'],
+            '--ybod-border-default-color'          => $default_colors['border'],
+            '--ybod-background-default-color'      => $default_colors['background'],
 
-            'color'                               => 'var(--ybo-text-color)',
-            'border-color'                        => 'var(--ybo-border-color)',
+            'color'                               => 'var(--ybod-text-color)',
+            'border-color'                        => 'var(--ybod-border-color)',
         ];
     }
 

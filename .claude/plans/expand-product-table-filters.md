@@ -34,7 +34,7 @@ Extend `tests/e2e/bin/seed.sh` with varied fixture data (different prices, categ
 - Product attribute filters (Color/Size — `pa_*` taxonomies).
 - Pixel-perfect UI redesign matching the reference screenshot.
 - Renaming the existing `query-{id}-filter` (on-sale/in-stock) param — left as-is.
-- Any URL scheme beyond `query-{id}-*` (no `ybo_` prefix, no separate instance-id param) — multi-instance correctness is handled by the `queryId` collision fix instead.
+- Any URL scheme beyond `query-{id}-*` (no `ybod_` prefix, no separate instance-id param) — multi-instance correctness is handled by the `queryId` collision fix instead.
 
 ## Meta
 - Target branch: `origin/jack/setup/claude` (current branch; not `develop`/`main`, so no new branch created)

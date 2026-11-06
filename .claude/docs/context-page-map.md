@@ -129,4 +129,4 @@ fetch('/wp-json/yay-bulk-order/v1/<endpoint>', { headers: { 'X-WP-Nonce': wpApiS
 | PUT/DELETE | `/purchase-list/{list_id}` (Pro) | Pro\Controllers\PurchaseListRestController | Update/delete a purchase list |
 | GET | `/purchase-list/{list_id}/download` (Pro) | Pro\Controllers\PurchaseListRestController | Download purchase list as CSV |
 
-There is also a non-REST ajax surface for Purchase List used by storefront widgets (not the admin SPA): `wp_ajax_ybo_add_purchase_list_to_cart`, `wp_ajax_ybo_save_purchase_list_from_cart`, `wp_ajax_ybo_save_purchase_list_from_order` (all in `Pro\Engines\Blocks\PurchaseList.php`, logged-in only — no `nopriv` variants).
+There is also a non-REST ajax surface for Purchase List used by storefront widgets (not the admin SPA): `wp_ajax_ybod_add_purchase_list_to_cart`, `wp_ajax_ybod_save_purchase_list_from_cart`, `wp_ajax_ybod_save_purchase_list_from_order` (all in `Pro\Engines\Blocks\PurchaseList.php`, logged-in only — no `nopriv` variants).

@@ -5,7 +5,7 @@ triggers: [data model, model relationship, schema, options, meta data in order, 
 
 # Model List
 
-Bottom line: no custom DB tables. Every entity lives in WP core tables (posts, postmeta, options, transients) or WooCommerce's own data. **Three different key-prefix conventions coexist** (`yaybulkorder_*`, `yay_bulk_order_*`, `ybo_*`) — see the note in `context-project-structure.md`.
+Bottom line: no custom DB tables. Every entity lives in WP core tables (posts, postmeta, options, transients) or WooCommerce's own data. **Three different key-prefix conventions coexist** (`yaybulkorder_*`, `yay_bulk_order_*`, `ybod_*`) — see the note in `context-project-structure.md`.
 
 ---
 
@@ -103,7 +103,7 @@ Product Table (CPT yaybulkorder_table)
 
 Purchase List (CPT yaybulkorder_plist, Pro)
   ├─ belongs to → User (post_author, created from cart/order/manual save)
-  └─ reloaded into → WC Cart (ajax: ybo_add_purchase_list_to_cart)
+  └─ reloaded into → WC Cart (ajax: ybod_add_purchase_list_to_cart)
 
 Settings (option yaybulkorder_settings)
   └─ read by → SettingsService::get_config()/get_styles(), consumed by both the admin SPA (REST) and storefront blocks (localized data via LocalizeService)

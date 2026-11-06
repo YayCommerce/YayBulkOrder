@@ -61,7 +61,7 @@ class Frontend {
             $slug,
             'yayBulkOrderSlotFill',
             [
-                'ybo_meta' => [
+                'ybod_meta' => [
                     'settings' => $this->settings_service->get_settings(),
                 ],
                 'wc_meta'  => [

@@ -27,8 +27,8 @@ if ( $product instanceof WC_Product_Variable ) {
 			'wp-block-button__link',
 			'wp-element-button',
 			'wc-block-components-product-button__button',
-			'ybo-add-to-cart-button',
-			'ybo-view-options-button',
+			'ybod-add-to-cart-button',
+			'ybod-view-options-button',
 			'product_type_' . $product_type,
 		)
 	);
@@ -53,7 +53,7 @@ $button_class = implode(
 		'wp-block-button__link',
 		'wp-element-button',
 		'wc-block-components-product-button__button',
-		'ybo-add-to-cart-button',
+		'ybod-add-to-cart-button',
 		'product_type_' . $product_type,
 	)
 );
@@ -92,6 +92,6 @@ $button_text = $product->add_to_cart_text() ?: __( 'Add to cart', 'yay-bulk-orde
 			<?php echo esc_html( $button_text ); ?>
 		</a>
 	<?php else : ?>
-		<span class="ybo-add-to-cart-unavailable"><?php esc_html_e( 'Not Available', 'yay-bulk-order' ); ?></span>
+		<span class="ybod-add-to-cart-unavailable"><?php esc_html_e( 'Not Available', 'yay-bulk-order' ); ?></span>
 	<?php endif; ?>
 </td>

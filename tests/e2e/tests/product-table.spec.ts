@@ -40,7 +40,7 @@ test.describe('Product Table block', () => {
     for (const product of PRODUCTS) {
       const row = page.locator(`tr[data-wp-key="${productIds[product.sku]}"]`);
       await expect(row).toBeVisible();
-      await expect(row.locator('.ybo-product-title')).toHaveText(product.name);
+      await expect(row.locator('.ybod-product-title')).toHaveText(product.name);
     }
   });
 
@@ -48,8 +48,8 @@ test.describe('Product Table block', () => {
     await page.goto(`/${PAGE_SLUG}/`);
 
     const row = page.locator(`tr[data-wp-key="${productIds['YBO-E2E-1']}"]`);
-    await row.locator('.ybo-quantity-input').fill('2');
-    await row.locator('.ybo-add-to-cart-button').click();
+    await row.locator('.ybod-quantity-input').fill('2');
+    await row.locator('.ybod-add-to-cart-button').click();
 
     const cartCount = page.locator('.yay-cart-trigger__count');
     await expect(cartCount).toBeVisible();
