@@ -14,13 +14,13 @@ class SettingsService {
     use SingletonTrait;
 
     public function get_settings() {
-        $settings = get_option( 'yay_bulk_order_settings', [] );
+        $settings = get_option( 'yaybulkorder_settings', [] );
         return array_replace_recursive( $this->get_default_settings(), $settings );
     }
 
     public function save_settings( array $settings ) {
         $settings = array_replace_recursive( $this->get_default_settings(), $settings );
-        return update_option( 'yay_bulk_order_settings', $settings );
+        return update_option( 'yaybulkorder_settings', $settings );
     }
 
     public function get_config() {

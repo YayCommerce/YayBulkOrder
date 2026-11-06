@@ -13,6 +13,7 @@ use YayBulkOrder\Services\ProductQueryService;
 use YayBulkOrder\Services\LocalizeService;
 use YayBulkOrder\Services\PricingService;
 use YayBulkOrder\Services\VariationAttributeService;
+use YayBulkOrder\Utils\BlockHelper;
 
 $product_query_service = ProductQueryService::get_instance();
 $localize_service = LocalizeService::get_instance();
@@ -123,18 +124,34 @@ if ( $query->have_posts() ) {
         $table_body_content .= $render_row( $block, $product_id, $product, $default_cart_quantity, $cart_quantities, null );
 
         if ( $product instanceof WC_Product_Variable ) {
-            foreach ( $product->get_available_variations( 'objects' ) as $variation ) {
-                if ( ! $variation instanceof WC_Product_Variation || ! $variation->exists() ) {
+            $max_display = defined( 'YAYBULKORDER_MAX_VARIATION_IN_ROW' ) ? YAYBULKORDER_MAX_VARIATION_IN_ROW : 20;
+            $children    = $product->get_visible_children();
+            $display_ids = array_slice( $children, 0, $max_display );
+
+            _prime_post_caches( $display_ids );
+
+            foreach ( $display_ids as $variation_id ) {
+                $variation = wc_get_product( $variation_id );
+                if ( ! $variation instanceof WC_Product_Variation || ! $variation->exists() || ! $variation->variation_is_visible() ) {
                     continue;
                 }
                 $table_body_content .= $render_row( $block, $variation->get_id(), $variation, $default_cart_quantity, $cart_quantities, $product_id, $product );
+            }
+
+            if ( count( $children ) > $max_display ) {
+                $table_body_content .= sprintf(
+                    '<tr class="yay-bulk-order-table-template-row--variation" %s data-wp-bind--hidden="state.isVariationRowHidden"><td colspan="999"><a href="%s">%s</a></td></tr>',
+                    wp_interactivity_data_wp_context( array( 'parentProductId' => $product_id ) ),
+                    esc_url( $product->get_permalink() ),
+                    esc_html__( 'View more options...', 'yay-bulk-order' )
+                );
             }
         }
     }
 
     // end row loop
     wp_reset_postdata();
-    echo $table_body_content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+    echo wp_kses( $table_body_content, BlockHelper::get_table_row_allowed_html() );
 }
 
 ?>

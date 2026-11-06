@@ -11,15 +11,15 @@ defined( 'ABSPATH' ) || exit;
 class ProductTablesService {
     use SingletonTrait;
 
-    public const POST_TYPE                    = 'ybo_product_table';
-    public const TABLE_CONFIG_META            = 'ybo_product_table_config';
-    public const PRODUCT_TABLE_DISPLAY_META   = 'ybo_product_table_products';
-    public const SHOP_PAGE_PRODUCT_TABLE_META = 'ybo_shop_page_product_table';
+    public const POST_TYPE                    = 'yaybulkorder_table';
+    public const TABLE_CONFIG_META            = 'yaybulkorder_product_table_config';
+    public const PRODUCT_TABLE_DISPLAY_META   = 'yaybulkorder_product_table_products';
+    public const SHOP_PAGE_PRODUCT_TABLE_META = 'yaybulkorder_shop_page_product_table';
 
     public const QUERY_BY_OPTIONS   = [ 'all-products', 'by-category', 'featured', 'on-sale', 'hand-picked' ];
     public const RESPONSIVE_OPTIONS = [ 'always-show', 'hide-on-mobile', 'hide-on-tablet' ];
 
-    private const STASHED_NEW_PAGE_CONTENT_TRANSIENT = 'ybo_new_page_blocks_';
+    private const STASHED_NEW_PAGE_CONTENT_TRANSIENT = 'yaybulkorder_new_page_blocks_';
 
     public function get_paginated_product_tables( string $search, int $page, int $per_page, $display_type = 'all-type' ) {
         $args = [

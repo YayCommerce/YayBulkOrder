@@ -13,8 +13,8 @@ defined( 'ABSPATH' ) || exit;
 class PurchaseListService {
     use SingletonTrait;
 
-    public const PURCHASE_LIST_POST_TYPE = 'ybo_purchase_list';
-    public const PURCHASE_LIST_META_DATA = 'ybo_purchase_list_data';
+    public const PURCHASE_LIST_POST_TYPE = 'yaybulkorder_plist';
+    public const PURCHASE_LIST_META_DATA = 'yaybulkorder_purchase_list_data';
     public const PURCHASE_LIST_PER_PAGE  = 10;
 
     public function get_config() {

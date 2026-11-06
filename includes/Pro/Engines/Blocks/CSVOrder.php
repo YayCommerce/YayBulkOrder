@@ -14,7 +14,9 @@ class CSVOrder {
     private CSVOrderService $csv_order_service;
     private SettingsService $settings_service;
 
-    private string $shortcode_name = 'ybo_csv_order';
+    private string $shortcode_name = 'yaybulkorder_csv_order';
+
+    private string $file_field_name = 'ybo_csv_order';
 
     protected function __construct() {
         $this->csv_order_service = CSVOrderService::get_instance();
@@ -25,7 +27,7 @@ class CSVOrder {
 
         // Add to My Account
         add_filter( 'woocommerce_account_menu_items', [ $this, 'add_menu_quick_order' ], 11, 1 );
-        add_action( 'woocommerce_account_ybo-quick-order_endpoint', [ $this, 'render_menu_quick_order' ] );
+        add_action( 'woocommerce_account_yaybulkorder-quick-order_endpoint', [ $this, 'render_menu_quick_order' ] );
     }
 
     public function add_csv_order_shortcode() {
@@ -33,10 +35,10 @@ class CSVOrder {
             add_shortcode( $this->shortcode_name, [ $this, 'render_csv_order_shortcode' ] );
         }
 
-        add_rewrite_endpoint( 'ybo-quick-order', EP_ROOT | EP_PAGES );
-        if ( empty( get_option( 'ybo_flushed_rewrite' ) ) ) {
+        add_rewrite_endpoint( 'yaybulkorder-quick-order', EP_ROOT | EP_PAGES );
+        if ( empty( get_option( 'yaybulkorder_flushed_rewrite' ) ) ) {
             flush_rewrite_rules();
-            update_option( 'ybo_flushed_rewrite', true );
+            update_option( 'yaybulkorder_flushed_rewrite', true );
         }
     }
 
@@ -53,12 +55,12 @@ class CSVOrder {
             return;
         }
 
-        if ( ! isset( $_FILES ) || ! isset( $_FILES[ $this->shortcode_name ] ) || ! isset( $_FILES[ $this->shortcode_name ]['tmp_name'] ) ) {
+        if ( ! isset( $_FILES ) || ! isset( $_FILES[ $this->file_field_name ] ) || ! isset( $_FILES[ $this->file_field_name ]['tmp_name'] ) ) {
             return;
         }
 
         // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-        $full_filename = $_FILES[ $this->shortcode_name ]['tmp_name'];
+        $full_filename = $_FILES[ $this->file_field_name ]['tmp_name'];
         $logs          = $this->csv_order_service->quick_csv_add_to_cart( $full_filename );
 
         set_transient( CSVOrderService::CSV_ORDER_RECENT_LOG, $logs, 10 * 60 );
@@ -92,7 +94,7 @@ class CSVOrder {
                     $new_items,
                     [
                         $key              => $val,
-                        'ybo-quick-order' => __( 'Quick Order', 'yay-bulk-order' ),
+                        'yaybulkorder-quick-order' => __( 'Quick Order', 'yay-bulk-order' ),
                     ]
                 );
             } else {

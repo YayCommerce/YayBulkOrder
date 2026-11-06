@@ -40,12 +40,12 @@ class PurchaseList {
 
         // Add to My Account
         add_filter( 'woocommerce_account_menu_items', [ $this, 'add_menu_purchase_list' ], 12, 1 );
-        add_action( 'woocommerce_account_ybo-purchase-list_endpoint', [ $this, 'render_menu_purchase_list' ] );
+        add_action( 'woocommerce_account_yaybulkorder-purchase-list_endpoint', [ $this, 'render_menu_purchase_list' ] );
     }
 
     /**
      * Register the "purchase list" custom post type and, on block themes,
-     * add the "ybo-purchase-list-page" My Account rewrite endpoint.
+     * add the "yaybulkorder-purchase-list-page" My Account rewrite endpoint.
      *
      * @return void
      */
@@ -83,10 +83,10 @@ class PurchaseList {
 
         register_post_type( $post_type, $args );
 
-        add_rewrite_endpoint( 'ybo-purchase-list', EP_ROOT | EP_PAGES );
-        if ( empty( get_option( 'ybo_flushed_rewrite' ) ) ) {
+        add_rewrite_endpoint( 'yaybulkorder-purchase-list', EP_ROOT | EP_PAGES );
+        if ( empty( get_option( 'yaybulkorder_flushed_rewrite' ) ) ) {
             flush_rewrite_rules();
-            update_option( 'ybo_flushed_rewrite', true );
+            update_option( 'yaybulkorder_flushed_rewrite', true );
         }
     }
 
@@ -390,7 +390,7 @@ class PurchaseList {
                     $new_items,
                     [
                         $key                => $val,
-                        'ybo-purchase-list' => __( 'Purchase List', 'yay-bulk-order' ),
+                        'yaybulkorder-purchase-list' => __( 'Purchase List', 'yay-bulk-order' ),
                     ]
                 );
             } else {

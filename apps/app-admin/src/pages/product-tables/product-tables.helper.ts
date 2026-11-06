@@ -114,7 +114,7 @@ ${columnBlocks}
 <!-- /wp:yay-bulk-order/product-table-root -->`;
 };
 
-export const makeShortcodeWithId = (tableId: number) => `[ybo-product-table id=${tableId}]`;
+export const makeShortcodeWithId = (tableId: number) => `[yaybulkorder-product-table id=${tableId}]`;
 
 export const makeShortcodeWithTable = (table: ProductTableForm) => {
   const cols = table.columns
@@ -135,5 +135,5 @@ export const makeShortcodeWithTable = (table: ProductTableForm) => {
     queryStr = `query_by="${queryBy}"`;
   }
 
-  return `[ybo-product-table ${queryStr} columns="${cols}" has_filter="${hasFilter}" has_search="${hasSearch}" has_pagination="${hasPagination}" ${hasPagination && pageSize > 0 ? 'page_size=' + pageSize : ''}]`;
+  return `[yaybulkorder-product-table ${queryStr} columns="${cols}" has_filter="${hasFilter}" has_search="${hasSearch}" has_pagination="${hasPagination}" ${hasPagination && pageSize > 0 ? 'page_size=' + pageSize : ''}]`;
 };

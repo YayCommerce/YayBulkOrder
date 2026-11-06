@@ -7,13 +7,13 @@ use YayBulkOrder\Utils\SingletonTrait;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Registers the [ybo-product-table] shortcode, rendering the default
+ * Registers the [yaybulkorder-product-table] shortcode, rendering the default
  * Product Table block on the frontend outside the block editor.
  */
 class ProductTableShortcode {
     use SingletonTrait;
 
-    private const SHORTCODE_TAG = 'ybo-product-table';
+    private const SHORTCODE_TAG = 'yaybulkorder-product-table';
     private ProductTablesService $product_tables_service;
 
     protected function __construct() {

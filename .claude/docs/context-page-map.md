@@ -50,7 +50,7 @@ Other admin-area hooks (not separate pages):
 
 | Area | File | Purpose |
 |---|---|---|
-| Product Table CPT | [ProductTable.php](../../includes/Engines/Admin/ProductTable.php) | Registers `ybo_product_table` (non-public, REST-enabled, `rest_base=table-prebuilds`), and swaps stashed block content into a freshly auto-drafted Page (the "apply to a new page" flow) |
+| Product Table CPT | [ProductTable.php](../../includes/Engines/Admin/ProductTable.php) | Registers `yaybulkorder_table` (non-public, REST-enabled, `rest_base=table-prebuilds`), and swaps stashed block content into a freshly auto-drafted Page (the "apply to a new page" flow) |
 | Plugin action links / body class / asset enqueue | [AdminPage.php](../../includes/Engines/Admin/AdminPage.php) | "Settings" row action link on the plugins list, `yay-ui` body class, enqueues the admin SPA bundle only on the `yaycommerce_page_yay_bulk_order` hook suffix |
 
 ---
@@ -62,7 +62,7 @@ Other admin-area hooks (not separate pages):
 | Product Table | `blocks/src/product-table/` | Root table block + column sub-blocks (`column-{product,description,sku,quantity,select,subtotal,add-to-cart}`), plus `table-{header,footer,filter,filter-sidebar,search,pagination,bulk-action,columns,root}` supporting blocks. Interactivity state via `apps/packages/product-table-store`. |
 | Common | `blocks/src/common/cart-summary` | Floating cart-summary widget shared across table types |
 | Variant Table (Pro) | `blocks-pro/src/variant-table/` | Per-product variation ordering table — root/table/columns + `column-{description,product,quantity,sku,select,subtotal}`. State: `apps/packages/variant-table-store`. Product resolution: `Pro\Services\VariantTableService` (auto-detects `postId` on Single Product, else the editor-picked `productId`). |
-| Purchase List (Pro) | `blocks-pro/src/purchase-list/` | Save/reload a named list of products for reorder. State: `apps/packages/purchase-list-store`. Backend: `Pro\Engines\Blocks\PurchaseList.php` (ajax handlers + CPT `ybo_purchase_list`), REST: `PurchaseListRestController`. |
+| Purchase List (Pro) | `blocks-pro/src/purchase-list/` | Save/reload a named list of products for reorder. State: `apps/packages/purchase-list-store`. Backend: `Pro\Engines\Blocks\PurchaseList.php` (ajax handlers + CPT `yaybulkorder_plist`), REST: `PurchaseListRestController`. |
 | CSV / Quick Order (Pro) | `blocks-pro/src/{csv-ordering,quick-csv-order}` | Bulk add-to-cart from an uploaded CSV file. Backend: `Pro\Engines\Blocks\CSVOrder.php`, `Pro\Services\CSVOrderService.php`. |
 | Product Table Columns (Pro) | `blocks-pro/src/product-table-columns-pro/` | Pro-only extra column(s) for the Product Table block |
 | Checkout slot-fill (Pro) | `apps/packages/block-checkout-slotfill` | Injects a "Save as Purchase List" action into the WooCommerce Blocks checkout, enqueued by `Pro\Engines\Frontend\Frontend.php` |
@@ -71,13 +71,13 @@ Other admin-area hooks (not separate pages):
 
 `table-filter-sidebar` filters (category, tag, price range, rating) and `table-pagination`/`table-search` all read/write GET params named `query-{queryId}-{param}` (e.g. `?query-1-categories=dictionary,clothing&query-1-tags=aa&query-1-min-price=10&query-1-max-price=100&query-1-rating=4`), built by `BlockHelper::build_query_url()` / `BlockHelper::get_*_param()`. Category and tag are multi-select (comma-separated, OR within the same taxonomy, AND across categories vs tags). Rating is a single "N stars & up" threshold. `filter` (on-sale/in-stock) keeps the same `query-{id}-filter` scheme but is a separate, older param — not part of this filter set.
 
-**`queryId` collision fix**: a static pattern (e.g. "Simple Product Table") inserted twice on one page bakes the *same* `queryId` into both instances' saved attributes — the block editor renumbers this automatically when both blocks are visible together in the editor (`table-root/edit.tsx`), but that never runs for content assembled outside the editor (the `[ybo-product-table]` shortcode always bakes `queryId: 1`; programmatic content — stashed "apply to a new page", migrations, tests — can too). `Engines\Blocks\RegisterBlocks::disambiguate_query_id()` hooks WordPress's `render_block_data` filter to rewrite the 2nd+ occurrence's `queryId` before context resolution, so every descendant block and the table's own `data-wp-router-region` see a collision-free value with no other code needing to know about it.
+**`queryId` collision fix**: a static pattern (e.g. "Simple Product Table") inserted twice on one page bakes the *same* `queryId` into both instances' saved attributes — the block editor renumbers this automatically when both blocks are visible together in the editor (`table-root/edit.tsx`), but that never runs for content assembled outside the editor (the `[yaybulkorder-product-table]` shortcode always bakes `queryId: 1`; programmatic content — stashed "apply to a new page", migrations, tests — can too). `Engines\Blocks\RegisterBlocks::disambiguate_query_id()` hooks WordPress's `render_block_data` filter to rewrite the 2nd+ occurrence's `queryId` before context resolution, so every descendant block and the table's own `data-wp-router-region` see a collision-free value with no other code needing to know about it.
 
 ## Frontend — PHP templates / shortcode
 
 | Item | Purpose |
 |---|---|
-| `[ybo-product-table]` shortcode | [ProductTableShortcode.php](../../includes/Engines/Shortcodes/ProductTableShortcode.php) — renders the default Product Table block markup outside the block editor |
+| `[yaybulkorder-product-table]` shortcode | [ProductTableShortcode.php](../../includes/Engines/Shortcodes/ProductTableShortcode.php) — renders the default Product Table block markup outside the block editor |
 | `includes/Engines/Shortcodes/templates/product-table-default.php` | Shortcode render target on ordinary pages |
 | `includes/Engines/Shortcodes/templates/product-table-archive.php` | Shortcode render target on shop/product-archive pages |
 | `includes/Engines/Shortcodes/templates/parts/product-table.php` | Shared table markup partial |

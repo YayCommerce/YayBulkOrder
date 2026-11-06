@@ -45,7 +45,7 @@ class Frontend {
             return;
         }
 
-        $slug  = 'ybo_checkout_actions';
+        $slug  = 'yaybulkorder_checkout_actions';
         $asset = include $asset_path;
 
         wp_enqueue_script(

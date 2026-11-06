@@ -12,6 +12,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+use YayBulkOrder\Utils\BlockHelper;
+
 $product_id = absint( $block->context['yay-bulk-order/productId'] ?? get_the_ID() );
 $product    = wc_get_product( $product_id );
 
@@ -30,7 +32,7 @@ $permalink    = $product->get_permalink();
 <td <?php echo get_block_wrapper_attributes(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
 	<a href="<?php echo esc_url( $permalink ); ?>" target="_blank" class="ybo-product-cell<?php echo $is_variation ? ' ybo-product-cell--variation' : ''; ?>" title="<?php echo esc_attr( $title ? $title : $product->get_title() ); ?>">
 		<span class="ybo-product-thumbnail">
-			<?php echo $thumbnail; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- WC_Product::get_image() output is already escaped. ?>
+			<?php echo wp_kses( $thumbnail, BlockHelper::get_table_row_allowed_html() ); ?>
 			<span
 				class="ybo-product-thumbnail__badge"
 				data-wp-bind--hidden="!context.cartQuantity"

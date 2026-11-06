@@ -131,7 +131,7 @@ class PurchaseListRestController extends BaseRestController {
         $filename    = 'purchase_list_' . str_replace( '-', '_', sanitize_title( $purchase_list['name'] ) ) . '.csv';
         $csv_content = $this->purchase_list_service->build_purchase_list_csv( $purchase_list['products'] );
 
-        do_action( 'ybo_before_export_purchase_list_products', $csv_content, $purchase_list );
+        do_action( 'yaybulkorder_before_export_purchase_list_products', $csv_content, $purchase_list );
 
         nocache_headers();
         header( 'Content-Type: text/csv; charset=utf-8' );

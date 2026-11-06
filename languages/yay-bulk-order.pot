@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Yay Bulk Order for WooCommerce 1.0.0\n"
+"Project-Id-Version: Yay Bulk Order for WooCommerce 1.0.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/YayBulkOrder\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-02T03:15:11+00:00\n"
+"POT-Creation-Date: 2026-11-06T08:09:51+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: yay-bulk-order\n"
@@ -104,7 +104,9 @@ msgid "Purchase List Name"
 msgstr ""
 
 #: assets/dist/blocks-pro/purchase-list/render.php:142
+#: assets/dist/blocks-pro/variant-table/table-header/render.php:17
 #: assets/dist/blocks/product-table/table-header/render.php:18
+#: assets/dist/blocks-pro/variant-table/table-header/editor.js:1
 #: assets/dist/blocks-pro/variant-table/table-root/editor.js:1
 #: assets/dist/blocks/product-table/table-header/editor.js:1
 #: assets/dist/page-admin/js/app-admin.main.js:1
@@ -112,11 +114,15 @@ msgid "Product"
 msgstr ""
 
 #: assets/dist/blocks-pro/purchase-list/render.php:144
+#: assets/dist/blocks-pro/variant-table/table-header/render.php:20
+#: assets/dist/blocks-pro/variant-table/table-header/editor.js:1
 msgid "Qty"
 msgstr ""
 
 #: assets/dist/blocks-pro/purchase-list/render.php:145
+#: assets/dist/blocks-pro/variant-table/table-header/render.php:21
 #: assets/dist/blocks/product-table/table-header/render.php:22
+#: assets/dist/blocks-pro/variant-table/table-header/editor.js:1
 #: assets/dist/blocks/product-table/table-header/editor.js:1
 #: assets/dist/page-admin/js/app-admin.main.js:1
 msgid "Subtotal"
@@ -233,8 +239,9 @@ msgid "No variations found"
 msgstr ""
 
 #: assets/dist/blocks-pro/variant-table/table-footer/render.php:33
-#: assets/dist/blocks/product-table/column-add-to-cart/render.php:71
-#: assets/dist/blocks/product-table/table-columns/render.php:44
+#: assets/dist/blocks-pro/variant-table/table-root/render.php:55
+#: assets/dist/blocks/product-table/column-add-to-cart/render.php:61
+#: assets/dist/blocks/product-table/table-columns/render.php:45
 #: assets/dist/blocks-pro/variant-table/table-footer/editor.js:1
 #: assets/dist/blocks/product-table/column-add-to-cart/editor.js:1
 #: assets/dist/page-admin/js/app-admin.main.js:1
@@ -259,14 +266,48 @@ msgstr ""
 msgid "View cart"
 msgstr ""
 
+#: assets/dist/blocks-pro/variant-table/table-header/render.php:18
+#: assets/dist/blocks/product-table/table-header/render.php:19
+#: assets/dist/blocks-pro/variant-table/table-header/editor.js:1
+#: assets/dist/blocks/product-table/table-header/editor.js:1
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "SKU"
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/table-header/render.php:19
+#: assets/dist/blocks/product-table/table-header/render.php:20
+#: assets/dist/blocks-pro/variant-table/table-header/editor.js:1
+#: assets/dist/blocks/product-table/table-header/editor.js:1
+#: assets/dist/page-admin/js/app-admin.main.js:1
+msgid "Description"
+msgstr ""
+
 #: assets/dist/blocks-pro/variant-table/table-root/render.php:44
-#: assets/dist/blocks/product-table/table-root/render.php:28
+#: assets/dist/blocks/product-table/table-root/render.php:29
 msgid "Could not add the items to the cart. Please try again."
 msgstr ""
 
 #: assets/dist/blocks-pro/variant-table/table-root/render.php:45
-#: assets/dist/blocks/product-table/table-root/render.php:29
+#: assets/dist/blocks/product-table/table-root/render.php:30
 msgid "Too many requests. Please wait and try again."
+msgstr ""
+
+#: assets/dist/blocks-pro/variant-table/table-root/render.php:54
+#: assets/dist/blocks/product-table/table-root/render.php:34
+msgid "Adding..."
+msgstr ""
+
+#. translators: %d: total quantity of the selected variations.
+#: assets/dist/blocks-pro/variant-table/table-root/render.php:57
+#, php-format
+msgid "Add to cart (%d)"
+msgstr ""
+
+#. translators: %s: formatted cart total.
+#: assets/dist/blocks-pro/variant-table/table-root/render.php:59
+#: assets/dist/blocks/product-table/table-root/render.php:39
+#, php-format
+msgid "View cart | %s"
 msgstr ""
 
 #. translators: %d: number of items in the cart.
@@ -283,16 +324,16 @@ msgstr[1] ""
 msgid "Open cart"
 msgstr ""
 
-#: assets/dist/blocks/product-table/column-add-to-cart/render.php:47
-#: assets/dist/blocks/product-table/table-root/render.php:41
+#: assets/dist/blocks/product-table/column-add-to-cart/render.php:43
+#: assets/dist/blocks/product-table/table-root/render.php:42
 msgid "View options"
 msgstr ""
 
-#: assets/dist/blocks/product-table/column-add-to-cart/render.php:88
+#: assets/dist/blocks/product-table/column-add-to-cart/render.php:95
 msgid "Not Available"
 msgstr ""
 
-#: assets/dist/blocks/product-table/column-product/render.php:19
+#: assets/dist/blocks/product-table/column-product/render.php:21
 msgid "No Product"
 msgstr ""
 
@@ -308,14 +349,18 @@ msgid "Go Back to Top"
 msgstr ""
 
 #: assets/dist/blocks/product-table/table-bulk-action/render.php:61
-#: assets/dist/blocks/product-table/table-root/render.php:34
+#: assets/dist/blocks/product-table/table-root/render.php:35
 #: assets/dist/blocks/product-table/table-bulk-action/editor.js:1
 msgid "Add selected items to cart"
 msgstr ""
 
-#: assets/dist/blocks/product-table/table-columns/render.php:108
+#: assets/dist/blocks/product-table/table-columns/render.php:109
 #: assets/dist/page-admin/js/app-admin.main.js:1
 msgid "No products found"
+msgstr ""
+
+#: assets/dist/blocks/product-table/table-columns/render.php:146
+msgid "View more options..."
 msgstr ""
 
 #: assets/dist/blocks/product-table/table-filter-sidebar/render.php:40
@@ -356,18 +401,6 @@ msgstr ""
 msgid "Filters"
 msgstr ""
 
-#: assets/dist/blocks/product-table/table-header/render.php:19
-#: assets/dist/blocks/product-table/table-header/editor.js:1
-#: assets/dist/page-admin/js/app-admin.main.js:1
-msgid "SKU"
-msgstr ""
-
-#: assets/dist/blocks/product-table/table-header/render.php:20
-#: assets/dist/blocks/product-table/table-header/editor.js:1
-#: assets/dist/page-admin/js/app-admin.main.js:1
-msgid "Description"
-msgstr ""
-
 #: assets/dist/blocks/product-table/table-pagination/render.php:38
 msgid "Products pagination"
 msgstr ""
@@ -386,33 +419,23 @@ msgstr ""
 msgid "Next page"
 msgstr ""
 
-#: assets/dist/blocks/product-table/table-root/render.php:32
+#: assets/dist/blocks/product-table/table-root/render.php:33
 msgid "Add more"
 msgstr ""
 
-#: assets/dist/blocks/product-table/table-root/render.php:33
-msgid "Adding..."
-msgstr ""
-
 #. translators: %d: total quantity of the selected items.
-#: assets/dist/blocks/product-table/table-root/render.php:36
+#: assets/dist/blocks/product-table/table-root/render.php:37
 #, php-format
 msgid "Add selected items to cart (%d)"
 msgstr ""
 
-#. translators: %s: formatted cart total.
-#: assets/dist/blocks/product-table/table-root/render.php:38
-#, php-format
-msgid "View cart | %s"
-msgstr ""
-
 #. translators: %s: formatted lowest price of a variable product.
-#: assets/dist/blocks/product-table/table-root/render.php:40
+#: assets/dist/blocks/product-table/table-root/render.php:41
 #, php-format
 msgid "From %s"
 msgstr ""
 
-#: assets/dist/blocks/product-table/table-root/render.php:42
+#: assets/dist/blocks/product-table/table-root/render.php:43
 msgid "Hide options"
 msgstr ""
 
@@ -430,9 +453,16 @@ msgstr ""
 msgid "Clear search"
 msgstr ""
 
+#. translators: 1: minimum WordPress version, 2: minimum PHP version
+#: assets/pro/yay-bulk-order-pro.php:50
+#: yay-bulk-order.php:52
+#, php-format
+msgid "YayBulkOrder is enabled but not effective. It requires WordPress %1$s and PHP %2$s or newer."
+msgstr ""
+
 #. translators: %s: Woocommerce link
-#: assets/pro/yay-bulk-order-pro.php:55
-#: yay-bulk-order.php:57
+#: assets/pro/yay-bulk-order-pro.php:67
+#: yay-bulk-order.php:69
 #, php-format
 msgid "YayBulkOrder is enabled but not effective. It requires %s in order to work"
 msgstr ""
@@ -449,11 +479,11 @@ msgstr ""
 msgid "Invalid table."
 msgstr ""
 
-#: includes/Engines/Admin/AdminPage.php:31
+#: includes/Engines/Admin/AdminPage.php:33
 msgid "YayBulkOrder"
 msgstr ""
 
-#: includes/Engines/Admin/AdminPage.php:31
+#: includes/Engines/Admin/AdminPage.php:33
 #: assets/dist/page-admin/js/app-admin.main.js:1
 msgid "Settings"
 msgstr ""
@@ -489,6 +519,12 @@ msgstr ""
 msgid "Display products in a clean, scannable table so customers can browse and add items to cart in bulk. The foundation of every bulk order experience. (Only 4 essential columns, fit for small space)"
 msgstr ""
 
+#. Translators: %s: The plugin name
+#: includes/Engines/Compatibles/YayWholesale/YayWholesale.php:135
+#, php-format
+msgid "%s Template"
+msgstr ""
+
 #: includes/Fallback.php:11
 msgid "It looks like you have another YayBulkOrder version installed, please delete it before activating this new version. All of the settings and data are still preserved."
 msgstr ""
@@ -508,7 +544,7 @@ msgstr ""
 msgid "This purchase list is not found or not belong to the current user"
 msgstr ""
 
-#: includes/Pro/Engines/Blocks/CSVOrder.php:95
+#: includes/Pro/Engines/Blocks/CSVOrder.php:97
 msgid "Quick Order"
 msgstr ""
 

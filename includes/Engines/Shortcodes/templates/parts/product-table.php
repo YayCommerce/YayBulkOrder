@@ -112,7 +112,7 @@ $ybo_has_search = filter_var( $attrs['has_search'], FILTER_VALIDATE_BOOLEAN );
 // Render
 // phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped -- static block markup / values escaped above.
 ?>
-<!-- wp:yay-bulk-order/product-table-root <?php echo wp_json_encode( $ybo_root_attrs ); ?> -->
+<!-- wp:yay-bulk-order/product-table-root <?php echo serialize_block_attributes( $ybo_root_attrs ); ?> -->
 <!-- wp:group {"layout":{"type":"flex","justifyContent":"space-between","flexWrap":"nowrap"}} -->
 <div class="wp-block-group">
 <?php if ( $ybo_has_filter ) : ?>
@@ -133,13 +133,13 @@ $ybo_has_search = filter_var( $attrs['has_search'], FILTER_VALIDATE_BOOLEAN );
 <?php endif ?>
 <!-- wp:group {"className":"ybo-table-column"} -->
 <div class="wp-block-group ybo-table-column"><!-- wp:yay-bulk-order/product-table -->
-<table class="wp-block-yay-bulk-order-product-table"><!-- wp:yay-bulk-order/product-table-header <?php echo wp_json_encode( [ 'columns' => $ybo_header_columns ] ); ?> -->
-<thead class="wp-block-yay-bulk-order-product-table-header" data-wp-init="callbacks.watchBackToTopVisibility"><tr><?php echo $ybo_header_cells; ?></tr></thead>
+<table class="wp-block-yay-bulk-order-product-table"><!-- wp:yay-bulk-order/product-table-header <?php echo serialize_block_attributes( [ 'columns' => $ybo_header_columns ] ); ?> -->
+<thead class="wp-block-yay-bulk-order-product-table-header" data-wp-init="callbacks.watchBackToTopVisibility"><tr><?php echo wp_kses( $ybo_header_cells, [ 'th' => [ 'class' => true ] ] ); ?></tr></thead>
 <!-- /wp:yay-bulk-order/product-table-header -->
 
 <!-- wp:yay-bulk-order/product-table-columns -->
 <?php foreach ( $ybo_column_slugs as $ybo_slug ) : ?>
-    <!-- wp:yay-bulk-order/product-table-column-<?php echo esc_attr( $ybo_slug ); ?> <?php echo ! empty( $ybo_column_responsive[ $ybo_slug ] ) ? wp_json_encode( [ 'className' => $ybo_column_responsive[ $ybo_slug ] ] ) : ''; ?> /-->
+    <!-- wp:yay-bulk-order/product-table-column-<?php echo esc_attr( $ybo_slug ); ?> <?php echo ! empty( $ybo_column_responsive[ $ybo_slug ] ) ? serialize_block_attributes( [ 'className' => $ybo_column_responsive[ $ybo_slug ] ] ) : ''; ?> /-->
 <?php endforeach ?>
 <!-- wp:yay-bulk-order/product-table-column-select /-->
 <!-- /wp:yay-bulk-order/product-table-columns --></table>
