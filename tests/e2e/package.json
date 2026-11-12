@@ -8,7 +8,8 @@
     "env:stop": "wp-env stop",
     "seed": "bash ./bin/seed.sh",
     "test": "playwright test",
-    "test:ui": "playwright test --ui"
+    "test:ui": "playwright test --ui",
+    "test:record": "RECORD=1 playwright test"
   },
   "devDependencies": {
     "@playwright/test": "^1.52.0",

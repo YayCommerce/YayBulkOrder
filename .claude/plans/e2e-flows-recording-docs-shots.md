@@ -18,7 +18,7 @@ Add 11 end-to-end tests with an opt-in recording mode, plus a `docs:shots` comma
 
 Setup:
 
-- `.wp-env.json`: add Twenty Twenty-One as the classic theme. Twenty Twenty-Five is the block theme.
+- Themes: Brandy (block theme, `.wp-env.json` `themes`) for every test except test 2, which uses Twenty Twenty-One (classic, already in the wp-env WordPress image).
 - `bin/seed.sh`: a variable product with variations, one completed order (order details page), a CSV file for Quick Order.
 - `utils/wp-cli.ts`: switch theme and reset data between tests.
 - `utils/site-editor.ts`: open and save the Catalog template, and reset it after each test.

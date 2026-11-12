@@ -26,7 +26,9 @@
     "test:e2e:env:start": "pnpm --filter @yay-bulk-order/tests-e2e run env:start",
     "test:e2e:env:stop": "pnpm --filter @yay-bulk-order/tests-e2e run env:stop",
     "test:e2e": "pnpm --filter @yay-bulk-order/tests-e2e run test",
-    "test:e2e:ui": "pnpm --filter @yay-bulk-order/tests-e2e run test:ui"
+    "test:e2e:ui": "pnpm --filter @yay-bulk-order/tests-e2e run test:ui",
+    "test:e2e:record": "pnpm --filter @yay-bulk-order/tests-e2e run test:record",
+    "docs:shots": "bash tests/e2e/docs-shots/run.sh"
   },
   "keywords": [],
   "author": "Yay Commerce",

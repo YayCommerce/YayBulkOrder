@@ -1,0 +1,10 @@
+{
+  "phpVersion": "8.2",
+  "port": 8891,
+  "testsEnvironment": false,
+  "plugins": ["https://downloads.wordpress.org/plugin/woocommerce.zip", "../.."],
+  "themes": ["https://downloads.wordpress.org/theme/brandy.zip"],
+  "config": {
+    "WP_DEBUG": false
+  }
+}

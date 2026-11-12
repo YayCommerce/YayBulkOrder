@@ -11,11 +11,7 @@ set -euo pipefail
 CONFIG="${1:-.wp-env.json}"
 WP="wp-env run cli --config=$CONFIG wp"
 
-if $WP post list --post_type=page --name=e2e-product-table --field=ID | grep -q .; then
-    echo 'e2e fixtures already seeded, skipping.'
-    exit 0
-fi
-
+seed_base() {
 echo -e 'Verifying WooCommerce + Yay Bulk Order are active \n'
 # wp-env auto-activates every plugin listed in .wp-env.json on start, so no
 # explicit `wp plugin activate` here — the mapped local plugin's container
@@ -92,3 +88,54 @@ $post_id = wp_insert_post( array(
 ) );
 WP_CLI::success( "Created page {$post_id}" );
 '
+}
+
+# Fixtures added for the flow specs (Variant Table, Purchase List, Quick
+# Order). Each one checks before it creates, so this part also runs on a site
+# that was seeded before it existed.
+seed_more() {
+    echo -e 'Activating the Brandy block theme \n'
+    $WP theme activate brandy
+
+    if ! $WP wc product list --sku=YBO-E2E-VAR --field=id --user=admin | grep -q .; then
+        echo -e 'Creating the e2e variable product (Variant Table spec) \n'
+        $WP eval '
+$product = new WC_Product_Variable();
+$product->set_name( "E2E Variable Hoodie" );
+$product->set_sku( "YBO-E2E-VAR" );
+$size = new WC_Product_Attribute();
+$size->set_name( "Size" );
+$size->set_options( array( "S", "M", "L" ) );
+$size->set_visible( true );
+$size->set_variation( true );
+$product->set_attributes( array( $size ) );
+$product->set_status( "publish" );
+$product_id = $product->save();
+foreach ( array( "S", "M", "L" ) as $option ) {
+    $variation = new WC_Product_Variation();
+    $variation->set_parent_id( $product_id );
+    $variation->set_attributes( array( "size" => $option ) );
+    $variation->set_sku( "YBO-E2E-VAR-" . $option );
+    $variation->set_regular_price( "15" );
+    $variation->set_status( "publish" );
+    $variation->save();
+}
+WC_Product_Variable::sync( $product_id );
+WP_CLI::success( "Created variable product {$product_id}" );
+'
+    fi
+
+    if ! $WP wc shop_order list --customer=1 --status=completed --field=id --user=admin | grep -q .; then
+        echo -e 'Creating a completed order for admin (order details page) \n'
+        PRODUCT_ONE_ID=$($WP wc product list --sku=YBO-E2E-1 --field=id --user=admin)
+        $WP wc shop_order create --customer_id=1 --status=completed --user=admin \
+            --line_items="[{\"product_id\":${PRODUCT_ONE_ID},\"quantity\":2}]"
+    fi
+}
+
+if $WP post list --post_type=page --name=e2e-product-table --field=ID | grep -q .; then
+    echo 'Base e2e fixtures already seeded, skipping them.'
+else
+    seed_base
+fi
+seed_more
