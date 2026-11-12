@@ -37,13 +37,12 @@ Review the **Lite release zip** against `.claude/docs/context-wporg-release-chec
 
 ## Project specifics
 
-- **G1:** `vendor-prefixed/src/License/` must not exist in the zip.
+- **G1:** `vendor-prefixed/src/License/` must contain only `LicenseState.php`. The shared admin shell needs it for other YayCommerce plugins' licenses, and it has no network calls or updater code.
 - **G1, B4:** no Pro files: `includes/Pro`, `assets/pro`, `assets/dist/{blocks-pro,variant-table-store,purchase-list-store,block-checkout-slotfill}`.
 - **B1:** every GitHub link in the readme must return HTTP 200 (`curl -s -o /dev/null -w '%{http_code}' <url>`). A 404 means the repo is private, which is a blocker. Then compare the default branch with the code you review: `gh api repos/YayCommerce/YayBulkOrder/compare/main...<branch>`. If `main` is behind, report it. The repo also holds Pro code (`includes/Pro`, `apps/blocks-pro`), so report it if that is still public.
-- **Q2:** PHP names (options, meta, transients, post types, shortcodes, hooks) use `yaybulkorder`. `ybo` is OK only for template variables (`$ybod_*`, local to the function that includes the template), HTML attributes, JS strings and CSS (`ybod-*` classes, `--ybod-*` variables, the `ybod_csv_order` form fields, `ybod_*` AJAX actions). The Pro `ybod_*` hooks are not in the Lite zip. `ywhs` and `woocommerce` names belong to other plugins: they are not findings, but the reply must explain them (U3).
+- **Q2:** PHP names (options, meta, transients, post types, shortcodes, hooks) use `yaybulkorder`. `ybod` is OK only for template variables (`$ybod_*`, local to the function that includes the template), HTML attributes, JS strings and CSS (`ybod-*` classes, `--ybod-*` variables, the `ybod_csv_order` form fields, `ybod_*` AJAX actions). The Pro `ybod_*` hooks are not in the Lite zip. `ywhs` and `woocommerce` names belong to other plugins: they are not findings, but the reply must explain them (U3).
 - **Q10:** the check must be in both `yay-bulk-order.php` and `assets/pro/yay-bulk-order-pro.php`.
 - **Q11:** needs a clean site. Do not activate the copy in step 4. Without a clean site, report "not checked".
-- **Q12:** check that `YAYBULKORDER_MAX_VARIATION_IN_ROW` and `YAYBULKORDER_MAX_PRODUCTS` limits are applied, and that `get_variation_price( 'min' )` is used when no `yaybulkorder_adjust_raw_price` handler is hooked.
 - **T1:** see step 4. Report each Plugin Check finding as `T1 <code>`, with file:line.
 - **T2:** run PHPCS only if `vendor/bin/phpcs` exists. Otherwise report "not run". Do not install it without asking.
 
