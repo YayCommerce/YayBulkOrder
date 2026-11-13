@@ -9,6 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+use YayBulkOrder\Services\ProductQueryService;
 use YayBulkOrder\Services\LocalizeService;
 use YayBulkOrder\Services\SettingsService;
 use YayBulkOrder\Utils\BlockHelper;
@@ -46,7 +47,7 @@ wp_interactivity_config(
 $styles = $settings_service->get_styles();
 $style_attr = '';
 foreach ( $styles as $property => $value ) {
-    $style_attr .= esc_attr( $property ) . ':' . esc_attr( $value ) . ';';
+    $style_attr .= $property . ':' . $value . ';';
 }
 
 $query_id = $attributes['queryId'];
@@ -122,17 +123,42 @@ $data_context = [
     <?php echo wp_interactivity_data_wp_context( $data_context ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
     data-wp-init="callbacks.onRender"
     data-wp-watch="callbacks.syncCartNoticeFromExternalChange"
-    style="<?php echo $style_attr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>"
+    style="<?php echo esc_attr( $style_attr ); ?>"
 >
 
     <?php echo do_blocks( $content ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 
+    <?php
+    // A table with pagination off has no pagination block, but it still needs
+    // page links when it has more products than the unpaginated page size.
+    if ( false === ( $attributes['productQuery']['hasPagination'] ?? null ) && false === strpos( $content, 'ybod-pagination' ) ) {
+        $pagination_block = new WP_Block(
+            array(
+                'blockName'    => 'yay-bulk-order/product-table-pagination',
+                'attrs'        => array(),
+                'innerBlocks'  => array(),
+                'innerHTML'    => '',
+                'innerContent' => array(),
+            ),
+            array(
+                'queryId'      => $attributes['queryId'],
+                'query'        => $attributes['query'],
+                'productQuery' => $attributes['productQuery'],
+            )
+        );
+
+        if ( ProductQueryService::get_instance()->get_pagination_info( $pagination_block )['totalPages'] > 1 ) {
+            echo wp_kses_post( $pagination_block->render() );
+        }
+    }
+    ?>
+
     <div
-        class="ybo-table-loading-overlay"
+        class="ybod-table-loading-overlay"
         data-wp-bind--hidden="!state.isTableLoading"
         aria-hidden="true"
     >
-        <span class="ybo-table-loading-overlay__spinner"></span>
+        <span class="ybod-table-loading-overlay__spinner"></span>
     </div>
 
 </div>

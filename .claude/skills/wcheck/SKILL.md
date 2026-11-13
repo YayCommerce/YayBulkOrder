@@ -13,7 +13,7 @@ Workflow - Browser verification. Run this before marking any frontend task done.
 Ask the user:
 1. Is the **Claude in Chrome** (or Firefox) extension installed and enabled for this site?
 2. What is the **site URL**? (e.g. `http://localhost:8888`)
-3. What is the **testing page URL**? (e.g. `/wp-admin/admin.php?page=yay_bulk_order#/product-tables`, or a storefront page containing the Product Table / Variant Table block, or a page with the `[ybo-product-table]` shortcode)
+3. What is the **testing page URL**? (e.g. `/wp-admin/admin.php?page=yay_bulk_order#/product-tables`, or a storefront page containing the Product Table / Variant Table block, or a page with the `[yaybulkorder-product-table]` shortcode)
 
 Do not proceed until you have both URLs confirmed.
 

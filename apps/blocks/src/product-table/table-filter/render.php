@@ -23,7 +23,7 @@ if ( ProductQueryService::get_instance()->should_hide_filters() ) {
 ?>
 
 <button
-    <?php echo get_block_wrapper_attributes( array( 'class' => 'ybo-filter-toggle' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+    <?php echo get_block_wrapper_attributes( array( 'class' => 'ybod-filter-toggle' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
     type="button"
     data-wp-on--click="actions.toggleFilterPanel"
     data-wp-bind--aria-expanded="state.isFilterOpen"
@@ -31,7 +31,7 @@ if ( ProductQueryService::get_instance()->should_hide_filters() ) {
 >
     <?php esc_html_e( 'Filters', 'yay-bulk-order' ); ?>
 
-    <span class="ybo-filter-toggle__icon" data-wp-bind--hidden="state.isFilterOpen" aria-hidden="true">
+    <span class="ybod-filter-toggle__icon" data-wp-bind--hidden="state.isFilterOpen" aria-hidden="true">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M1.5 4H9.5M13 4H14.5M1.5 8H4.5M8 8H14.5M1.5 12H9.5M13 12H14.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
             <circle cx="11" cy="4" r="1.6" fill="currentColor"/>
@@ -39,7 +39,7 @@ if ( ProductQueryService::get_instance()->should_hide_filters() ) {
             <circle cx="11" cy="12" r="1.6" fill="currentColor"/>
         </svg>
     </span>
-    <span class="ybo-filter-toggle__icon" data-wp-bind--hidden="!state.isFilterOpen" aria-hidden="true">
+    <span class="ybod-filter-toggle__icon" data-wp-bind--hidden="!state.isFilterOpen" aria-hidden="true">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
         </svg>

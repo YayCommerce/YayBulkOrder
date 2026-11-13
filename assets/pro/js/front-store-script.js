@@ -48,14 +48,14 @@ jQuery(function ($) {
         });
     }
 
-    $(document).on('click', '.ybo_save_pl_cart_button', function (event) {
+    $(document).on('click', '.ybod_save_pl_cart_button', function (event) {
       event.preventDefault();
-      saveList($(this), 'ybo_save_purchase_list_from_cart', {});
+      saveList($(this), 'ybod_save_purchase_list_from_cart', {});
     });
 
-    $(document).on('click', '.ybo_save_pl_order_button', function (event) {
+    $(document).on('click', '.ybod_save_pl_order_button', function (event) {
       event.preventDefault();
-      saveList($(this), 'ybo_save_purchase_list_from_order', { orderId: $(this).data('order-id') });
+      saveList($(this), 'ybod_save_purchase_list_from_order', { orderId: $(this).data('order-id') });
     });
   });
   // #endregion

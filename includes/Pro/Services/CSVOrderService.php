@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 class CSVOrderService {
     use SingletonTrait;
 
-    public const CSV_ORDER_RECENT_LOG = 'ybo_csv_order_recent_logs';
+    public const CSV_ORDER_RECENT_LOG = 'yaybulkorder_csv_order_recent_logs';
 
     public function quick_csv_add_to_cart( string $filename ) {
         $logs = [

@@ -4,7 +4,7 @@ Tags: woocommerce, bulk order, product table, quick order, wholesale
 Requires at least: 6.8
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.0.0
+Stable tag: 1.0.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 WC requires at least: 10.0.0
@@ -31,7 +31,7 @@ Yay Bulk Order shows your WooCommerce products in an order table. Shoppers set q
 = Show the table anywhere =
 
 * Gutenberg blocks and block patterns ("Full-featured" and "Simple" product tables).
-* `[ybo-product-table]` shortcode.
+* `[yaybulkorder-product-table]` shortcode.
 * Replace the shop page product loop (classic themes) or link to the shop catalog template (block themes).
 * "Create new page" from a saved table.
 
@@ -54,22 +54,33 @@ Yay Bulk Order shows your WooCommerce products in an order table. Shoppers set q
 * YayWholesale B2B and YayPricing: wholesale prices and quantity rules show in the table.
 * Uses the WooCommerce Store API for add to cart.
 
-= Source code =
+== Source Code ==
 
-The JavaScript and CSS files in `assets/dist/` are compiled. The source code is public at [https://github.com/YayCommerce/YayBulkOrder](https://github.com/YayCommerce/YayBulkOrder).
+This plugin ships compiled JavaScript and CSS in the `assets/dist/` folder. The human-readable source code of these files is public, and you can review, study and fork it:
 
-Compiled files and their source folders in the repository:
+[https://github.com/YayCommerce/YayBulkOrder](https://github.com/YayCommerce/YayBulkOrder)
 
-* `assets/dist/blocks/` (block editor and frontend scripts): `apps/blocks/src/`
-* `assets/dist/page-admin/` (admin app): `apps/app-admin/src/`
-* `assets/dist/product-table-store/`: `apps/packages/product-table-store/`
-* `assets/dist/block-checkout-slotfill/`: `apps/packages/block-checkout-slotfill/`
+= Compiled files and their source =
 
-To build the files from source (Node.js and PNPM required):
+* `assets/dist/blocks/product-table/` (Product Table block editor scripts and styles): [apps/blocks/src/product-table](https://github.com/YayCommerce/YayBulkOrder/tree/main/apps/blocks/src/product-table)
+* `assets/dist/blocks/common/` (Cart Summary block): [apps/blocks/src/common](https://github.com/YayCommerce/YayBulkOrder/tree/main/apps/blocks/src/common)
+* `assets/dist/product-table-store/` (Product Table frontend store): [apps/packages/product-table-store](https://github.com/YayCommerce/YayBulkOrder/tree/main/apps/packages/product-table-store)
+* `assets/dist/page-admin/` (admin app): [apps/app-admin/src](https://github.com/YayCommerce/YayBulkOrder/tree/main/apps/app-admin/src)
+* Code shared by these files: [apps/packages/common](https://github.com/YayCommerce/YayBulkOrder/tree/main/apps/packages/common)
 
-1. `pnpm install`
-2. `pnpm build` (Gutenberg blocks)
-3. `pnpm build:admin:lite` (admin app)
+The blocks and the frontend store are built with `@wordpress/scripts` (webpack). The admin app is built with Vite.
+
+= Build from source =
+
+You need Node.js 24 and PNPM 11. Run these commands:
+
+1. `git clone https://github.com/YayCommerce/YayBulkOrder.git`
+2. `cd YayBulkOrder`
+3. `pnpm install`
+4. `pnpm build` (builds the blocks and the frontend store)
+5. `pnpm build:admin:lite` (builds the admin app)
+
+The compiled files go to `assets/dist/`.
 
 == Installation ==
 
@@ -106,16 +117,16 @@ No. The Product Table is free. Pro adds the Variant Table, Purchase List and Qui
 
 == Changelog ==
 
-= 1.0.0 =
-* Initial public release.
-* Product Table block, block patterns and `[ybo-product-table]` shortcode.
-* Table builder in the admin: Products, Columns, Features, Publish.
-* Filter sidebar (categories, tags, price range, rating), search and pagination.
-* Single and bulk add to cart, with clear error messages when WooCommerce rejects an item.
-* Shop page table for classic themes, and a link to the shop catalog template for block themes.
-* Design presets with live preview and block color controls.
-* Compatibility with WooCommerce 11.2, YayWholesale B2B and YayPricing.
-* Variant Table block: order many variations of one product from the product page (Pro).
-* Purchase List: save a cart as a named list and reorder it in one click; save from the cart, mini-cart, checkout or a past order; download as CSV (Pro).
-* Quick CSV Order: upload a CSV file to add many products to the cart at once (Pro).
-* More table patterns and extra Product Table columns (Pro).
+= 1.0.3 =
+* Fix a crash when other Pro plugins are active.
+* Fix the table layout in classic themes: width, images, checkboxes and mobile scroll.
+* Fix auto update on Pro version
+
+= 1.0.2 =
+* Initial release.
+* Added Product Table for ordering multiple products.
+* Added Product Table Builder.
+* Added customizable Columns Manager.
+* Added Full Features and Simple Product Table templates.
+* Added Gutenberg block and shortcode display options.
+* Added general and design settings.

@@ -5,15 +5,15 @@
   box-sizing: border-box;
   border-collapse: separate;
   border-spacing: 0;
-  border: 1px solid var(--ybo-border-color);
-  border-radius: var(--ybo-border-radius, 8px);
+  border: 1px solid var(--ybod-border-color);
+  border-radius: var(--ybod-border-radius, 8px);
   overflow: hidden !important;
   margin: 10px 0 !important;
   table-layout: auto;
 
   th,
   td {
-    background-color: var(--ybo-background-color, #fff) !important;
+    background-color: var(--ybod-background-color, #fff) !important;
   }
 
   thead th {
@@ -21,9 +21,9 @@
     text-align: left;
     vertical-align: middle;
     border: none;
-    border-bottom: 1px solid var(--ybo-border-color);
+    border-bottom: 1px solid var(--ybod-border-color);
     font-weight: 600;
-    color: var(--ybo-text-color, #171719);
+    color: var(--ybod-text-color, #171719);
     * {
       margin: 0;
     }
@@ -35,13 +35,13 @@
     margin: 0;
   }
 
-  .wp-block-yay-bulk-order-variant-table-header .ybo-table-cell {
+  .wp-block-yay-bulk-order-variant-table-header .ybod-table-cell {
     display: flex;
     align-items: center;
     width: 100% !important;
     padding: 14px 16px;
     text-align: left;
-    border-bottom: 1px solid var(--ybo-border-color);
+    border-bottom: 1px solid var(--ybod-border-color);
     font-weight: 600;
     min-width: 0;
     box-sizing: border-box;
@@ -50,7 +50,7 @@
     }
   }
 
-  .wp-block-yay-bulk-order-variant-table-columns .ybo-table-cell {
+  .wp-block-yay-bulk-order-variant-table-columns .ybod-table-cell {
     display: flex;
     align-items: center;
     width: 100% !important;
@@ -71,7 +71,7 @@
         text-align: left;
         vertical-align: middle;
         border: none;
-        border-bottom: 1px solid var(--ybo-border-color);
+        border-bottom: 1px solid var(--ybod-border-color);
         overflow-wrap: anywhere;
         display: table-cell !important;
       }
@@ -95,7 +95,7 @@
     width: 1%;
   }
 
-  .ybo-product-cell {
+  .ybod-product-cell {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -106,12 +106,12 @@
     text-decoration: none !important;
     color: inherit;
 
-    &:hover .ybo-product-title {
-      color: var(--ybo-text-hover-color, var(--ybo-primary-color, #3858e9));
+    &:hover .ybod-product-title {
+      color: var(--ybod-text-hover-color, var(--ybod-primary-color, #3858e9));
     }
   }
 
-  .ybo-product-thumbnail {
+  .ybod-product-thumbnail {
     position: relative;
     flex-shrink: 0;
     display: inline-flex;
@@ -119,20 +119,20 @@
     justify-content: center;
     width: 56px;
     height: 56px;
-    background-color: var(--ybo-thumbnail-background, rgba(0, 0, 0, 0.04));
+    background-color: var(--ybod-thumbnail-background, rgba(0, 0, 0, 0.04));
     border-radius: 10px;
     line-height: 0;
   }
 
-  .ybo-product-thumbnail__image {
+  .ybod-product-thumbnail__image {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: var(--ybo-border-radius, 8px);
+    border-radius: var(--ybod-border-radius, 8px);
   }
 
   // Marks the quantity already sitting in the cart for this variation.
-  .ybo-product-thumbnail__badge {
+  .ybod-product-thumbnail__badge {
     position: absolute;
     top: -8px;
     left: -8px;
@@ -142,8 +142,8 @@
     min-width: 22px;
     height: 22px;
     border-radius: 50%;
-    border: 2px solid var(--ybo-background-color, #fff);
-    background-color: var(--ybo-primary-color, #3c434a);
+    border: 2px solid var(--ybod-background-color, #fff);
+    background-color: var(--ybod-primary-color, #3c434a);
     color: #fff;
     font-size: 0.75rem;
     font-weight: 600;
@@ -154,7 +154,7 @@
     }
   }
 
-  .ybo-product-title {
+  .ybod-product-title {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
@@ -171,22 +171,22 @@
   // Pill-shaped +/- stepper, independent of the active theme's own quantity
   // input styling (WooCommerce themes vary widely here). Kept identical to
   // the Product Table block's own stepper (see product-table/table/style.scss).
-  .ybo-quantity-stepper {
+  .ybod-quantity-stepper {
     display: inline-flex;
     align-items: center;
     gap: 2px;
     width: fit-content;
     padding: 4px;
     box-sizing: border-box;
-    background-color: var(--ybo-quantity-background, #f9f9f9);
-    border-radius: var(--ybo-border-radius, 8px) !important;
-    border: 1px solid var(--ybo-border-color, #e4e4e7) !important;
+    background-color: var(--ybod-quantity-background, #f9f9f9);
+    border-radius: var(--ybod-border-radius, 8px) !important;
+    border: 1px solid var(--ybod-border-color, #e4e4e7) !important;
     &[hidden] {
       display: none !important;
     }
   }
 
-  .ybo-quantity-stepper__button {
+  .ybod-quantity-stepper__button {
     flex: 0 0 auto;
     display: inline-flex;
     align-items: center;
@@ -223,7 +223,7 @@
     }
   }
 
-  .ybo-quantity-input {
+  .ybod-quantity-input {
     flex: 1 1 auto;
     width: 25px;
     min-width: 0;
@@ -231,7 +231,7 @@
     padding: 0;
     border: none;
     background: transparent;
-    color: var(--ybo-text-color, #171719);
+    color: var(--ybod-text-color, #171719);
     font-weight: 600;
     font-size: 14px !important;
     text-align: center;
@@ -262,7 +262,7 @@
     height: 18px;
     margin: 0;
     vertical-align: middle;
-    accent-color: var(--ybo-primary-color, #3c434a);
+    accent-color: var(--ybod-primary-color, #3c434a);
     cursor: pointer;
     &:focus {
       outline: none !important;
@@ -306,18 +306,18 @@
   margin: 12px 0 0;
 }
 
-.ybo-variant-table-total {
+.ybod-variant-table-total {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   padding: 10px 16px;
-  border: 1px dashed var(--ybo-border-color, #d0d0d5);
-  border-radius: var(--ybo-border-radius, 8px);
-  color: var(--ybo-text-color, #171719);
+  border: 1px dashed var(--ybod-border-color, #d0d0d5);
+  border-radius: var(--ybod-border-radius, 8px);
+  color: var(--ybod-text-color, #171719);
   font-size: 0.95rem;
 
   &__label {
-    color: var(--ybo-description-color, #7b7c80);
+    color: var(--ybod-description-color, #7b7c80);
   }
 
   &__amount {
@@ -325,7 +325,7 @@
   }
 }
 
-.ybo-variant-table-actions {
+.ybod-variant-table-actions {
   display: inline-flex;
   align-items: center;
   gap: 12px;
@@ -339,21 +339,21 @@
     bottom: 20px;
     translate: -50% 0;
     z-index: 9999999;
-    animation: ybo-variant-table-pulse 2s infinite;
+    animation: ybod-variant-table-pulse 2s infinite;
 
-    .ybo-variant-table-clear {
+    .ybod-variant-table-clear {
       display: none !important;
     }
 
-    .ybo-variant-table-add-to-cart {
+    .ybod-variant-table-add-to-cart {
       box-shadow: 0 3px 20px 0 rgba(0, 0, 0, 0.15);
     }
   }
 }
 
-// Marks where `.ybo-variant-table-actions` normally sits, so its visibility
+// Marks where `.ybod-variant-table-actions` normally sits, so its visibility
 // can be watched independently of the control itself switching to `position: fixed`.
-.ybo-variant-bulk-action-sentinel {
+.ybod-variant-bulk-action-sentinel {
   position: absolute;
   left: 0;
   bottom: 0;
@@ -363,7 +363,7 @@
   visibility: hidden;
 }
 
-@keyframes ybo-variant-table-pulse {
+@keyframes ybod-variant-table-pulse {
   0%,
   100% {
     scale: 1;
@@ -374,7 +374,7 @@
   }
 }
 
-.ybo-variant-table-cart-notice {
+.ybod-variant-table-cart-notice {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -384,7 +384,7 @@
   bottom: 20px;
   translate: -50% 0;
   z-index: 9999999;
-  animation: ybo-variant-table-pulse 2s infinite;
+  animation: ybod-variant-table-pulse 2s infinite;
 
   &[hidden] {
     display: none;
@@ -394,18 +394,18 @@
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    background-color: var(--ybo-button-background-color, #4caf6f) !important;
-    color: var(--ybo-button-text-color, #fff) !important;
+    background-color: var(--ybod-button-background-color, #4caf6f) !important;
+    color: var(--ybod-button-text-color, #fff) !important;
     text-decoration: none !important;
     font-weight: 550;
     padding: 10px;
-    border-radius: var(--ybo-border-radius, 8px) !important;
+    border-radius: var(--ybod-border-radius, 8px) !important;
     box-shadow: 0 3px 20px 0 rgba(0, 0, 0, 0.15);
     transition: all 0.2s ease-in-out;
 
     &:hover {
-      background-color: var(--ybo-button-background-hover-color, #429f62) !important;
-      color: var(--ybo-button-text-hover-color, #fff) !important;
+      background-color: var(--ybod-button-background-hover-color, #429f62) !important;
+      color: var(--ybod-button-text-hover-color, #fff) !important;
     }
   }
 
@@ -434,15 +434,15 @@
   }
 }
 
-.ybo-variant-table-add-to-cart {
+.ybod-variant-table-add-to-cart {
   display: inline-flex !important;
   align-items: center;
   gap: 4px;
   cursor: pointer;
   border: none !important;
-  border-radius: var(--ybo-border-radius, 8px) !important;
-  background-color: var(--ybo-button-background-color, #4caf6f) !important;
-  color: var(--ybo-button-text-color, #fff) !important;
+  border-radius: var(--ybod-border-radius, 8px) !important;
+  background-color: var(--ybod-button-background-color, #4caf6f) !important;
+  color: var(--ybod-button-text-color, #fff) !important;
   padding: 10px;
   font-weight: 550;
   font-size: 16px;
@@ -450,15 +450,15 @@
   transition: all 0.2s ease-in-out;
   min-height: 40px;
   margin: 0 !important;
-  .ybo-icon-cart {
+  .ybod-icon-cart {
     display: inline-flex;
     align-items: center;
     line-height: 0;
     font-size: 20px;
   }
   &:hover:not(:disabled) {
-    background-color: var(--ybo-button-background-hover-color, #429f62) !important;
-    color: var(--ybo-button-text-hover-color, #fff) !important;
+    background-color: var(--ybod-button-background-hover-color, #429f62) !important;
+    color: var(--ybod-button-text-hover-color, #fff) !important;
     box-shadow: 0 3px 16px 0 rgba(0, 0, 0, 0.15);
   }
 
@@ -474,7 +474,7 @@
   }
 }
 
-.ybo-variant-table-clear {
+.ybod-variant-table-clear {
   display: inline-flex !important;
   align-items: center;
   justify-content: center;
@@ -484,7 +484,7 @@
   border: none !important;
   background: transparent !important;
   box-shadow: none !important;
-  color: var(--ybo-description-color, #7b7c80) !important;
+  color: var(--ybod-description-color, #7b7c80) !important;
   padding: 0 !important;
   transition: opacity 0.15s ease-in-out !important;
 
@@ -497,7 +497,7 @@
   }
 }
 
-.ybo-variant-table-cart-error {
+.ybod-variant-table-cart-error {
   display: flex;
   align-items: flex-start;
   gap: 10px;
@@ -512,7 +512,7 @@
   background-color: #fff;
   color: #b32d2e;
   border-left: 4px solid #d63638;
-  border-radius: var(--ybo-border-radius, 8px);
+  border-radius: var(--ybod-border-radius, 8px);
   box-shadow: 0 3px 20px 0 rgba(0, 0, 0, 0.15);
 
   &[hidden] {

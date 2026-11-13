@@ -158,7 +158,8 @@ class RegisterFacade {
                 'locale_data' => [
                     'messages' => $messages,
                 ],
-            ]
+            ],
+            JSON_HEX_TAG | JSON_HEX_AMP
         );
     }
 }

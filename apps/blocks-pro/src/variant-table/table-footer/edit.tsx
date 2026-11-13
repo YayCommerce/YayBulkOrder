@@ -7,15 +7,15 @@ export default function Edit() {
 
   return (
     <div {...blockProps}>
-      <div className="ybo-variant-table-total">
-        <span className="ybo-variant-table-total__label">{__('Total:', 'yay-bulk-order')}</span>
-        <span className="ybo-variant-table-total__amount">£0.00</span>
+      <div className="ybod-variant-table-total">
+        <span className="ybod-variant-table-total__label">{__('Total:', 'yay-bulk-order')}</span>
+        <span className="ybod-variant-table-total__amount">£0.00</span>
       </div>
-      <div className="ybo-variant-table-actions">
-        <button type="button" className="ybo-variant-table-add-to-cart" disabled>
+      <div className="ybod-variant-table-actions">
+        <button type="button" className="ybod-variant-table-add-to-cart" disabled>
           {__('Add to cart', 'yay-bulk-order')}
         </button>
-        <button type="button" className="ybo-variant-table-clear" aria-label={__('Clear selection', 'yay-bulk-order')}>
+        <button type="button" className="ybod-variant-table-clear" aria-label={__('Clear selection', 'yay-bulk-order')}>
           <Icon icon={closeSmall} />
         </button>
       </div>

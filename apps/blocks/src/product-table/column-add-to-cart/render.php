@@ -21,26 +21,22 @@ if ( ! $product instanceof WC_Product ) {
 $product_type = $product->get_type();
 
 if ( $product instanceof WC_Product_Variable ) {
-	$toggle_attributes = wc_implode_html_attributes(
+	$toggle_class = implode(
+		' ',
 		array(
-			'class' => implode(
-				' ',
-				array(
-					'wp-block-button__link',
-					'wp-element-button',
-					'wc-block-components-product-button__button',
-					'ybo-add-to-cart-button',
-					'ybo-view-options-button',
-					'product_type_' . $product_type,
-				)
-			),
+			'wp-block-button__link',
+			'wp-element-button',
+			'wc-block-components-product-button__button',
+			'ybod-add-to-cart-button',
+			'ybod-view-options-button',
+			'product_type_' . $product_type,
 		)
 	);
 	?>
 	<td <?php echo get_block_wrapper_attributes( array( 'class' => 'wp-block-button wc-block-components-product-button' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
 		<button
 			type="button"
-			<?php echo $toggle_attributes; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+			class="<?php echo esc_attr( $toggle_class ); ?>"
 			data-wp-on--click="actions.toggleProductVariations"
 			data-wp-bind--aria-expanded="state.isProductExpanded"
 		>
@@ -51,29 +47,28 @@ if ( $product instanceof WC_Product_Variable ) {
 	return;
 }
 
-$button_attributes = wc_implode_html_attributes(
+$button_class = implode(
+	' ',
 	array(
-		'class'            => implode(
-			' ',
-			array(
-				'wp-block-button__link',
-				'wp-element-button',
-				'wc-block-components-product-button__button',
-				'ybo-add-to-cart-button',
-				'product_type_' . $product_type,
-			)
-		),
-		'data-product_id'  => (string) $product_id,
-		'data-product_sku' => $product->get_sku(),
-		'aria-label'       => wp_strip_all_tags( $product->add_to_cart_description() ),
+		'wp-block-button__link',
+		'wp-element-button',
+		'wc-block-components-product-button__button',
+		'ybod-add-to-cart-button',
+		'product_type_' . $product_type,
 	)
 );
+$button_label = wp_strip_all_tags( $product->add_to_cart_description() );
 $button_text = $product->add_to_cart_text() ?: __( 'Add to cart', 'yay-bulk-order' );
 ?>
 
 <td <?php echo get_block_wrapper_attributes( array( 'class' => 'wp-block-button wc-block-components-product-button' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
 	<?php if ( $product->supports( 'ajax_add_to_cart' ) ) : ?>
-		<button type="button" <?php echo $button_attributes; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+		<button
+			type="button"
+			class="<?php echo esc_attr( $button_class ); ?>"
+			data-product_id="<?php echo esc_attr( $product_id ); ?>"
+			data-product_sku="<?php echo esc_attr( $product->get_sku() ); ?>"
+			aria-label="<?php echo esc_attr( $button_label ); ?>"
 			data-wp-on--click="actions.addToCart"
 			data-wp-bind--disabled="state.isAddToCartDisabled"
 			data-wp-class--loading="context.isAddingToCart"
@@ -81,10 +76,22 @@ $button_text = $product->add_to_cart_text() ?: __( 'Add to cart', 'yay-bulk-orde
 			<span data-wp-text="state.addToCartText"><?php echo esc_html( $button_text ); ?></span>
 		</button>
 	<?php elseif ( $product->is_purchasable() || in_array( $product_type, array( 'variable', 'grouped', 'external' ), true ) ) : ?>
-		<a href="<?php echo esc_url( $product->add_to_cart_url() ); ?>" <?php echo $button_attributes; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> <?php echo $product->is_type( 'external' ) ? 'target="_blank" rel="nofollow noopener noreferrer"' : 'rel="nofollow"'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
+		<a
+			href="<?php echo esc_url( $product->add_to_cart_url() ); ?>"
+			class="<?php echo esc_attr( $button_class ); ?>"
+			data-product_id="<?php echo esc_attr( $product_id ); ?>"
+			data-product_sku="<?php echo esc_attr( $product->get_sku() ); ?>"
+			aria-label="<?php echo esc_attr( $button_label ); ?>"
+			<?php if ( $product->is_type( 'external' ) ) : ?>
+				target="_blank"
+				rel="nofollow noopener noreferrer"
+			<?php else : ?>
+				rel="nofollow"
+			<?php endif; ?>
+		>
 			<?php echo esc_html( $button_text ); ?>
 		</a>
 	<?php else : ?>
-		<span class="ybo-add-to-cart-unavailable"><?php esc_html_e( 'Not Available', 'yay-bulk-order' ); ?></span>
+		<span class="ybod-add-to-cart-unavailable"><?php esc_html_e( 'Not Available', 'yay-bulk-order' ); ?></span>
 	<?php endif; ?>
 </td>

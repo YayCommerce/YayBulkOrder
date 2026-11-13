@@ -12,7 +12,7 @@ const PURCHASE_LIST_API = {
     download: (id: number) => `purchase-list/${id}/download`,
   },
   ajax: {
-    addToCart: 'ybo_add_purchase_list_to_cart',
+    addToCart: 'ybod_add_purchase_list_to_cart',
   },
 } as const;
 

@@ -81,7 +81,7 @@ export default function SingleProductPicker({ productId, onSelect, compact = fal
         allowReset={false}
       />
       {hasLoaded && !options.length && (
-        <p className="ybo-variant-table-placeholder__hint">
+        <p className="ybod-variant-table-placeholder__hint">
           {__('No variable products found. Create one first.', 'yay-bulk-order')}
         </p>
       )}
@@ -93,11 +93,11 @@ export default function SingleProductPicker({ productId, onSelect, compact = fal
   }
 
   return (
-    <div className="ybo-variant-table-placeholder">
-      <p className="ybo-variant-table-placeholder__title">
+    <div className="ybod-variant-table-placeholder">
+      <p className="ybod-variant-table-placeholder__title">
         {__('Which variable product should this table show?', 'yay-bulk-order')}
       </p>
-      <p className="ybo-variant-table-placeholder__hint">
+      <p className="ybod-variant-table-placeholder__hint">
         {__('On a Single Product page this is automatic — this picker only shows up elsewhere.', 'yay-bulk-order')}
       </p>
       {combobox}

@@ -35,7 +35,7 @@ class RegisterBlocks {
         $this->pattern_service  = PatternService::get_instance();
 
         add_action( 'init', [ $this, 'register_blocks' ] );
-        add_action( 'enqueue_block_assets', [ $this, 'enqueue_block_assets' ] );
+        add_filter( 'render_block', [ $this, 'enqueue_cart_data_store' ], 10, 2 );
         add_action( 'enqueue_block_editor_assets', [ $this, 'enqueue_block_editor_assets' ] );
         add_filter( 'render_block_data', [ $this, 'disambiguate_query_id' ] );
     }
@@ -55,7 +55,7 @@ class RegisterBlocks {
      * The editor already assigns a fresh queryId when it detects a
      * collision between sibling blocks in the *same* post (see
      * table-root/edit.tsx), but that never runs for content assembled
-     * outside the block editor: the `[ybo-product-table]` shortcode (which
+     * outside the block editor: the `[yaybulkorder-product-table]` shortcode (which
      * always bakes `queryId: 1`), or any post content built programmatically
      * (stashed "apply to a new page" content, migrations, tests). This is
      * the catch-all for those paths.
@@ -89,10 +89,19 @@ class RegisterBlocks {
         BlockHelper::register_block_collection( YAYBULKORDER_PLUGIN_PATH . 'assets/dist/blocks/common' );
     }
 
-    public function enqueue_block_assets() {
-        if ( ! is_admin() ) {
+    /**
+     * Load the WooCommerce cart store only on pages that render a plugin block.
+     *
+     * @param string $block_content Rendered block HTML, returned as is.
+     * @param array  $block         The parsed block.
+     * @return string
+     */
+    public function enqueue_cart_data_store( $block_content, $block ) {
+        if ( ! is_admin() && 0 === strpos( (string) ( $block['blockName'] ?? '' ), 'yay-bulk-order/' ) ) {
             wp_enqueue_script( 'wc-blocks-data-store' );
         }
+
+        return $block_content;
     }
 
     public function enqueue_block_editor_assets() {

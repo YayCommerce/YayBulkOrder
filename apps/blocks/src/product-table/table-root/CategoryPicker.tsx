@@ -50,20 +50,20 @@ export default function CategoryPicker({ categoryIds, onChange }: CategoryPicker
   };
 
   return (
-    <div className="ybo-category-picker">
+    <div className="ybod-category-picker">
       {categories.map((category) => {
         const isChecked = categoryIds.includes(category.id);
 
         return (
-          <label key={category.id} className="ybo-category-picker__row">
+          <label key={category.id} className="ybod-category-picker__row">
             <input
               type="checkbox"
-              className="ybo-category-picker__checkbox"
+              className="ybod-category-picker__checkbox"
               checked={isChecked}
               onChange={(event) => toggleCategory(category.id, event.target.checked)}
             />
-            <span className="ybo-category-picker__name">{category.name}</span>
-            <span className="ybo-category-picker__badge">
+            <span className="ybod-category-picker__name">{category.name}</span>
+            <span className="ybod-category-picker__badge">
               {sprintf(
                 /* translators: %d: number of products in the category */
                 _n('%d product', '%d products', category.count, 'yay-bulk-order'),

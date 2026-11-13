@@ -1,26 +1,26 @@
-const YBO_QUICK_ORDER_FILE_LIMIT = 10 * 1024 * 1024; // 10MB
+const YBOD_QUICK_ORDER_FILE_LIMIT = 10 * 1024 * 1024; // 10MB
 
 const { __ } = window.wp.i18n;
 
 jQuery(function ($: JQueryStatic) {
   $(document).ready(() => {
-    const dropzone = $('.ybo_csv_order_drop_zone');
+    const dropzone = $('.ybod_csv_order_drop_zone');
     dropzone.on('dragenter dragover dragleave drop', function (e) {
       e.preventDefault();
       e.stopPropagation();
     });
 
     dropzone.on('dragenter dragover', function () {
-      dropzone.addClass('ybo_csv_order_dropenter');
+      dropzone.addClass('ybod_csv_order_dropenter');
     });
 
     dropzone.on('dragleave drop', function () {
-      dropzone.removeClass('ybo_csv_order_dropenter');
+      dropzone.removeClass('ybod_csv_order_dropenter');
     });
 
     dropzone.on('drop', function (e) {
       const files = e.originalEvent.dataTransfer.files;
-      const fileInput = $(this).find('.ybo_csv_order_file_input');
+      const fileInput = $(this).find('.ybod_csv_order_file_input');
 
       if (!fileInput) return;
       if (!files.length) return;
@@ -29,11 +29,11 @@ jQuery(function ($: JQueryStatic) {
       fileInput.trigger('change');
     });
 
-    const fileRemove = $('.ybo_csv_order_file_remove');
+    const fileRemove = $('.ybod_csv_order_file_remove');
     fileRemove.on('click', function (e) {
       e.preventDefault();
       e.stopPropagation();
-      const fileInput = $(this).closest('.ybo_csv_order_zone_file').siblings('.ybo_csv_order_file_input');
+      const fileInput = $(this).closest('.ybod_csv_order_zone_file').siblings('.ybod_csv_order_file_input');
 
       if (!fileInput) return;
 
@@ -42,14 +42,14 @@ jQuery(function ($: JQueryStatic) {
     });
   });
 
-  $(document).on('change', '.ybo_csv_order_file_input', function () {
-    const dropzone = $(this).closest('.ybo_csv_order_drop_zone');
-    const dropzonePlaceholder = dropzone.find('.ybo_csv_order_zone_placeholder');
-    const dropzoneFile = dropzone.find('.ybo_csv_order_zone_file');
-    const dropzoneError = dropzone.siblings('.ybo_csv_order_file_error');
+  $(document).on('change', '.ybod_csv_order_file_input', function () {
+    const dropzone = $(this).closest('.ybod_csv_order_drop_zone');
+    const dropzonePlaceholder = dropzone.find('.ybod_csv_order_zone_placeholder');
+    const dropzoneFile = dropzone.find('.ybod_csv_order_zone_file');
+    const dropzoneError = dropzone.siblings('.ybod_csv_order_file_error');
 
     const resetZone = () => {
-      dropzoneFile.find('.ybo_csv_order_file_name').text('');
+      dropzoneFile.find('.ybod_csv_order_file_name').text('');
       dropzonePlaceholder.show();
       dropzoneFile.hide();
     };
@@ -67,7 +67,7 @@ jQuery(function ($: JQueryStatic) {
 
     if (!isCsv) {
       errorMsg = __('Error: Please upload a csv file.', 'yay-bulk-order');
-    } else if (file.size > YBO_QUICK_ORDER_FILE_LIMIT) {
+    } else if (file.size > YBOD_QUICK_ORDER_FILE_LIMIT) {
       errorMsg = __('Error: This csv file is too large', 'yay-bulk-order');
     }
 
@@ -85,6 +85,6 @@ jQuery(function ($: JQueryStatic) {
 
     dropzonePlaceholder.hide();
     dropzoneFile.show();
-    dropzoneFile.find('.ybo_csv_order_file_name').text(fileName);
+    dropzoneFile.find('.ybod_csv_order_file_name').text(fileName);
   });
 });

@@ -15,6 +15,8 @@ defined( 'ABSPATH' ) || exit;
 class AdminPage {
     use SingletonTrait;
 
+    private const PAGE_HOOK_SUFFIX = 'yaycommerce_page_yay_bulk_order';
+
     private LocalizeService $localize_service;
 
     private function __construct() {
@@ -34,7 +36,7 @@ class AdminPage {
     }
 
     public function enqueue_admin_page_scripts( string $hook_suffix ) {
-        if ( 'yaycommerce_page_yay_bulk_order' !== $hook_suffix ) {
+        if ( self::PAGE_HOOK_SUFFIX !== $hook_suffix ) {
             return;
         }
 
@@ -46,7 +48,9 @@ class AdminPage {
     }
 
     public function admin_body_class( string $classes ) {
-        if ( strpos( $classes, 'yay-ui' ) === false ) {
+        global $hook_suffix;
+
+        if ( self::PAGE_HOOK_SUFFIX === $hook_suffix && strpos( $classes, 'yay-ui' ) === false ) {
             $classes .= ' yay-ui';
         }
         return $classes;

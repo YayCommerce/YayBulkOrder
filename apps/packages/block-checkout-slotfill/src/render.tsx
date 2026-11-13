@@ -11,7 +11,7 @@ declare global {
       };
     };
     yayBulkOrderSlotFill: {
-      ybo_meta: {
+      ybod_meta: {
         settings: Settings;
       };
       wc_meta: {

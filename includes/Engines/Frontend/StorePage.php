@@ -59,6 +59,6 @@ class StorePage {
         }
 
         $table_id = (int) $this->product_tables_service->get_shop_page_product_table();
-        echo do_shortcode( '[ybo-product-table id="' . $table_id . '"]' );
+        echo do_shortcode( '[yaybulkorder-product-table id="' . $table_id . '"]' );
     }
 }

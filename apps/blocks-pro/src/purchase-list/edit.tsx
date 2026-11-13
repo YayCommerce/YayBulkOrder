@@ -30,13 +30,13 @@ export default function Edit(props: BlockEditProps) {
   return (
     <div {...blockProps}>
       <div className="wp-block-yay-bulk-order-purchase-list">
-        <div className="ybo_header">
+        <div className="ybod_header">
           <h2>{__('Purchase lists', 'yay-bulk-order')}</h2>
           <Button variant="primary" icon={plus}>
             {__('New List', 'yay-bulk-order')}
           </Button>
         </div>
-        <div className="ybo_table_wrapper">
+        <div className="ybod_table_wrapper">
           <table>
             <thead>
               <tr>
@@ -48,7 +48,7 @@ export default function Edit(props: BlockEditProps) {
             <tbody>
               {SAMPLE_DATA.map((list) => (
                 <tr key={list.id}>
-                  <td className="ybo_purchase_list_item_name">{list.name}</td>
+                  <td className="ybod_purchase_list_item_name">{list.name}</td>
                   <td>
                     {sprintf(
                       /* translators: %d: number of items in the list */
@@ -56,7 +56,7 @@ export default function Edit(props: BlockEditProps) {
                       list.itemCount,
                     )}
                   </td>
-                  <td className="ybo_purchase_list_item_actions">
+                  <td className="ybod_purchase_list_item_actions">
                     <Button variant="secondary">
                       <span>{__('View', 'yay-bulk-order')}</span>
                     </Button>

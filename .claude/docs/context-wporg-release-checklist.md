@@ -16,6 +16,9 @@ Run before you submit a new plugin or a review update to WordPress.org. Each ite
 | S8 | SQL prepared | [1. Security](#1-security) |
 | S9 | `ABSPATH` guard in every PHP file | [1. Security](#1-security) |
 | S10 | No dangerous functions | [1. Security](#1-security) |
+| S11 | JSON in inline scripts is hex-encoded | [1. Security](#1-security) |
+| S12 | Stored HTML escaped when echoed | [1. Security](#1-security) |
+| S13 | Block comment attributes serialized | [1. Security](#1-security) |
 | G1 | No updater or license client in the free zip | [2. Guidelines](#2-guidelines-compliance) |
 | G2 | No remote code or assets | [2. Guidelines](#2-guidelines-compliance) |
 | G3 | No tracking without opt-in | [2. Guidelines](#2-guidelines-compliance) |
@@ -35,6 +38,11 @@ Run before you submit a new plugin or a review update to WordPress.org. Each ite
 | Q6 | No PHP notices | [4. Code quality](#4-code-quality) |
 | Q7 | Clean activate, deactivate, uninstall | [4. Code quality](#4-code-quality) |
 | Q8 | WordPress bundled libraries used | [4. Code quality](#4-code-quality) |
+| Q9 | Post type keys 20 characters or fewer | [4. Code quality](#4-code-quality) |
+| Q10 | Requirements checked at runtime | [4. Code quality](#4-code-quality) |
+| Q11 | Activation is clean | [4. Code quality](#4-code-quality) |
+| Q12 | Query and render cost is bounded | [4. Code quality](#4-code-quality) |
+| Q13 | Product queries respect catalog visibility | [4. Code quality](#4-code-quality) |
 | R1 | Readme validator passes | [5. Readme and headers](#5-readme-and-headers) |
 | R2 | Versions match | [5. Readme and headers](#5-readme-and-headers) |
 | R3 | Requirements correct | [5. Readme and headers](#5-readme-and-headers) |
@@ -47,6 +55,7 @@ Run before you submit a new plugin or a review update to WordPress.org. Each ite
 | U1 | Test the real zip | [7. Before you upload](#7-before-you-upload) |
 | U2 | Confirm the slug | [7. Before you upload](#7-before-you-upload) |
 | U3 | Short reply in the same thread | [7. Before you upload](#7-before-you-upload) |
+| U4 | Every case of a reported issue fixed | [7. Before you upload](#7-before-you-upload) |
 
 ### Review email headings → items
 
@@ -56,6 +65,7 @@ Use this table when a WordPress.org review email arrives. Find its heading, then
 |---|---|
 | Nonces and user permissions before processing requests | S1, S2 |
 | Proper escaping of outputs | S4, S6, S7 |
+| Variables and options must be escaped when echo'd | S4, S6, S11, S12, S13 |
 | Callback calls … return values are output must be properly escaped | S5, S7 |
 | Sanitize, validate and escape / data must be sanitized | S3 |
 | Calling files remotely / Including an update checker | G1, G2 |
@@ -63,8 +73,11 @@ Use this table when a WordPress.org review email arrives. Find its heading, then
 | Trialware / locked features | G4 |
 | Hijacking the admin dashboard / Guideline 11 | G5 |
 | The source code of your plugin should be publicly accessible / Guidelines 1, 4 | B1, B2, B3 |
+| No publicly documented resource for your generated/compressed content | B1, B2 |
+| The plugin has problems when it is activated | Q3, Q10, Q11, G3 |
+| Other possible issues (AI-detected) | Q12, U3, U4 |
 | Unclosed `ob_start()` | Q1 |
-| Generic function/class/define/namespace/option names | Q2 |
+| Generic function/class/define/namespace/option names | Q2, Q9, U3 |
 | `load_plugin_textdomain()` is not needed | Q4 |
 | Allowing direct file access | S9 |
 | Readme / Stable tag / Tested up to | R1, R2, R3 |
@@ -87,7 +100,7 @@ Use this table when a WordPress.org review email arrives. Find its heading, then
   How: `grep -rn "add_shortcode\|add_filter( 'the_content\|the_title"`. Follow each callback to its `return`. Every dynamic value in it must be escaped or allow-listed.
 
 - [ ] **S6. JSON uses no flags that bypass escaping.**
-  How: `grep -rn "JSON_UNESCAPED\|JSON_HEX"`. Remove the flags, or wrap the output in `esc_attr()` or `esc_html()`, whichever fits the context.
+  How: `grep -rn "JSON_UNESCAPED"`. Remove the flags, or wrap the output in `esc_attr()` or `esc_html()`, whichever fits the context. Do not remove `JSON_HEX_*` flags: S11 requires them.
 
 - [ ] **S7. User values in markup are allow-listed.**
   How: find values from shortcode attributes, block attributes or query strings that go into class names, block comments or attributes. Check them against a fixed array with `in_array( $x, $allowed, true )` or use `sanitize_key()`.
@@ -101,10 +114,20 @@ Use this table when a WordPress.org review email arrives. Find its heading, then
 - [ ] **S10. No dangerous functions.**
   How: `grep -rn "eval(\|extract(\|unserialize(\|base64_decode\|create_function\|shell_exec\|exec("`. Each hit needs a valid reason, or remove it.
 
+- [ ] **S11. JSON in an inline script is hex-encoded.**
+  How: `grep -rn "wp_add_inline_script\|wp_print_inline_script_tag"`. Follow each value that comes from `wp_json_encode()`. It must use `JSON_HEX_TAG | JSON_HEX_AMP`, so that a value that contains `</script>` cannot close the script tag. Translations are included: they are not your text.
+
+- [ ] **S12. HTML stored in a variable is escaped when it is echoed.**
+  How: `grep -rn "echo \$.*phpcs:ignore\|echo \$"`. A `phpcs:ignore` comment does not pass the review. Echo through `wp_kses()`, or escape each attribute at output and remove the variable. `wp_kses_post()` removes `<input>`, `<svg>` and `srcset`, so markup with these needs its own allow-list. After the change, parse the HTML from before and after and compare each tag, attribute and value.
+
+- [ ] **S13. Block comment attributes are serialized.**
+  How: `grep -rn "<!-- wp:.*wp_json_encode"`. Use `serialize_block_attributes()`. A value that contains `-->` can close the comment and add markup.
+
 ## 2. Guidelines compliance
 
 - [ ] **G1. The free zip has no updater or license client.**
-  How: unzip the release and run `grep -rni "updater\|license\|edd_sl\|update_plugins\|pre_set_site_transient_update"`. You should get no hits in the free build.
+  How: unzip the release and run `grep -rni "updater\|license\|edd_sl\|update_plugins\|pre_set_site_transient_update"`. Each hit must not be an updater or a license client: no remote calls and no update hooks. A read-only helper that only checks a saved license status can stay, if code that runs in the free build needs it.
+  - If the build deletes files from a bundled library, search the rest of the library for each deleted class: `grep -rn "DeletedClass" vendor-prefixed/`. A deleted class that other code still uses causes a fatal error.
 
 - [ ] **G2. No remote code or assets.**
   How: `grep -rn "https\?://" --include=*.php --include=*.js` in the zip. Look for CDNs, Google Fonts and remote scripts. Bundle them locally.
@@ -127,10 +150,13 @@ Use this table when a WordPress.org review email arrives. Find its heading, then
 ## 3. Source code and build
 
 - [ ] **B1. The source of every minified file is public.**
-  How: list `assets/dist/**`. For each one, either its source folder is in the zip, or `readme.txt` has a "Source code" section with a public repo URL.
+  How: list `assets/dist/**`. For each one, either its source folder is in the zip, or `readme.txt` has its own `== Source Code ==` section with a public repo URL and a direct link from each compiled folder to its source folder. Do all of these checks:
+  - Open each link in a logged-out browser. A private repo returns 404, and that is a blocker.
+  - The repo's default branch must hold the same code as the zip. Reviewers land on that branch.
+  - Check what the public repo exposes. It holds every branch and the git history, including paid code.
 
 - [ ] **B2. Build steps are documented.**
-  How: in a fresh clone, follow the readme steps exactly (`pnpm install && pnpm build`). They must rebuild `dist/` with no other steps.
+  How: clone the public repo into an empty folder, with no login. Follow the readme steps exactly (`pnpm install && pnpm build`). They must rebuild `dist/` with no other steps, and give the same folders as the zip. The readme must name the tool versions and the build tools.
 
 - [ ] **B3. Third-party libraries are credited.**
   How: check that each bundled library has a header comment, or is listed in the readme with name, version and URL.
@@ -144,10 +170,14 @@ Use this table when a WordPress.org review email arrives. Find its heading, then
   How: `grep -rn "ob_start"`. Follow every `return` and branch after it. Each one must reach `ob_get_clean()` or `ob_end_*()` in the same function.
 
 - [ ] **Q2. Names have a unique prefix.**
-  How: `grep -rn "^function \|add_option\|update_option\|wp_enqueue_script(\|do_action(" | grep -v "yourprefix"`. The prefix must be 4+ characters and unique to this plugin.
+  How: `grep -rn "^function \|add_option\|update_option\|set_transient\|update_post_meta\|add_shortcode\|register_post_type\|wp_ajax_\|apply_filters(\|do_action(\|wp_enqueue_script(" | grep -v "yourprefix"`. The prefix must be 4+ characters and unique to this plugin. A variable needs the prefix only if it is declared with `global`, or if it is in a file that runs in the global scope. Names that belong to another plugin are not your prefix: keep them and explain them in the reply (U3). Before a rename, check for a shared value: a form field name can also be the key that PHP reads, and a JS action must match its `wp_ajax_` hook.
 
 - [ ] **Q3. Assets load only where needed.**
-  How: open a frontend page with no plugin content, and an unrelated admin page. In DevTools > Network, filter by your plugin slug. You should see no plugin files.
+  How: open a frontend page with no plugin content, and an unrelated admin page. In DevTools > Network, filter by your plugin slug. You should see no plugin files. Also check the things that do not show in Network:
+  - `grep -rn "admin_body_class"`: add a class only on your own screen.
+  - `grep -rn "enqueue_block_assets\|wp_enqueue_scripts"`: a dependency such as a WooCommerce script must load only on pages that use it.
+  - Your CSS selectors must not reach WordPress's own interface, even on your own screen. Global selectors such as `*`, `html`, `img` and `#adminmenu` reach it, and so does a CSS reset like Tailwind's preflight. Scope them to your app's root element. Rules that fix WordPress's interface show that your CSS reaches it.
+  - To test, open your screen and compare the computed styles of `#adminmenumain *` and `#wpadminbar *` with your stylesheet on and off. No element may change.
 
 - [ ] **Q4. No `load_plugin_textdomain()`.**
   How: `grep -rn "load_plugin_textdomain"`. Remove it, or move it to the `init` hook.
@@ -163,6 +193,24 @@ Use this table when a WordPress.org review email arrives. Find its heading, then
 
 - [ ] **Q8. You use WordPress's bundled libraries.**
   How: search `dist/` for a bundled jQuery, React or lodash. Mark them as externals (`window.wp.*`, `window.React`) in the build.
+
+- [ ] **Q9. Post type keys have 20 characters or fewer.**
+  How: `grep -rn "register_post_type"`. Count the characters of each key. A longer key makes `register_post_type()` fail. A long prefix can use up this limit, so check this after a rename.
+
+- [ ] **Q10. Requirements are checked at runtime.**
+  How: the `Requires at least` header is not enough. It does not protect a site that downgrades WordPress or PHP. Before the plugin loads code that needs them, it must check the minimum WordPress version, PHP version and required plugins, then show an admin notice and stop. To test, force an old version in memory with a `muplugins_loaded` hook that sets `$GLOBALS['wp_version']`, then confirm that no plugin class loads and that the notice shows.
+
+- [ ] **Q11. Activation is clean.**
+  How: on a clean site with `WP_DEBUG` true, activate the plugin and read the output: `wp plugin activate your-plugin`. Confirm that it prints nothing and logs no errors, warnings or notices. Any table must use `$wpdb->prefix`, `$wpdb->get_charset_collate()` and `dbDelta()`. Activation must not contact an external server.
+
+- [ ] **Q12. Query and render cost is bounded.**
+  How: `grep -rn "posts_per_page.*-1\|get_available_variations\|get_children\|wc_get_product("`. For each loop, find its upper limit, including when a setting turns pagination off. A limit in the admin UI alone does not count: the server must apply it too.
+  - Load items in a batch before a loop with `_prime_post_caches()`. `wc_get_product()` on an item that is not cached runs about 4 queries. A loop can only run from cache if you prime it first.
+  - `clone` on a `WC_Data` object runs one meta query, unless the meta is already read. Clone only when needed.
+  - Measure with `SAVEQUERIES`, at two sizes and one process per size. Compare with a similar WooCommerce block. Test with a large temporary data set in a transaction, then roll it back.
+
+- [ ] **Q13. Product queries respect catalog visibility (WooCommerce plugins).**
+  How: set a product to "Catalog visibility: Hidden" and confirm that no plugin list shows it, including search results and pagination totals. A `WP_Query` on `product` does not do this for you. Exclude `exclude-from-catalog`, or `exclude-from-search` while searching.
 
 ## 5. Readme and headers
 
@@ -194,6 +242,7 @@ Use this table when a WordPress.org review email arrives. Find its heading, then
 
 - [ ] **T3. The plugin works on a clean install.**
   How: start a fresh site with `wp-env` or LocalWP on the latest WordPress. Test with the minimum and the latest PHP versions, and with only the required plugins active.
+  - Then activate the free build together with your other plugins that share a library with it, with their license keys saved. A clean site does not show a crash that only happens when they run together.
 
 ## 7. Before you upload
 
@@ -204,4 +253,7 @@ Use this table when a WordPress.org review email arrives. Find its heading, then
   How: check the folder name and Text Domain. You can't change the slug after approval, so ask for a change in your reply before then.
 
 - [ ] **U3. Write a short reply.**
-  How: reply in the same email thread. Give only context or clarifications, such as a repo link or answers to their questions. Don't include a changelog.
+  How: reply in the same email thread. Give only context or clarifications, such as a repo link or answers to their questions. Don't include a changelog. If a finding is a false positive, or a name belongs to another plugin, say so and give an example. AI-detected findings can be wrong, so read the code, then fix them or explain why you did not.
+
+- [ ] **U4. Every case of a reported issue is fixed.**
+  How: the email lists examples only. For each finding, search the whole plugin for the same pattern and fix all cases. Then test the updated zip on a clean site with `WP_DEBUG` true (Q11, T3). Reviewers reject an update that skips this.

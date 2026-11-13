@@ -5,11 +5,11 @@ export default function Edit() {
   const blockProps = useBlockProps();
 
   return (
-    <div {...blockProps} className={`${blockProps.className ?? ''} ybo-bulk-action-wrap`}>
-      <div className="ybo-bulk-action">
+    <div {...blockProps} className={`${blockProps.className ?? ''} ybod-bulk-action-wrap`}>
+      <div className="ybod-bulk-action">
         <a
           href="#top"
-          className="ybo-bulk-action__back-to-top"
+          className="ybod-bulk-action__back-to-top"
           aria-label={__('Go Back to Top', 'yay-bulk-order')}
           title={__('Go Back to Top', 'yay-bulk-order')}
           onClick={(e) => e.preventDefault()}
@@ -26,8 +26,8 @@ export default function Edit() {
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 19V5M5 12l7-7 7 7" />
           </svg>
         </a>
-        <button type="button" className="ybo-bulk-action__submit" disabled>
-          <span className="ybo-icon-cart" aria-hidden="true">
+        <button type="button" className="ybod-bulk-action__submit" disabled>
+          <span className="ybod-icon-cart" aria-hidden="true">
             <svg width="1.05em" height="1.1em" viewBox="0 0 23 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 fillRule="evenodd"
