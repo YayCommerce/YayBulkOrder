@@ -126,7 +126,8 @@ Use this table when a WordPress.org review email arrives. Find its heading, then
 ## 2. Guidelines compliance
 
 - [ ] **G1. The free zip has no updater or license client.**
-  How: unzip the release and run `grep -rni "updater\|license\|edd_sl\|update_plugins\|pre_set_site_transient_update"`. You should get no hits in the free build.
+  How: unzip the release and run `grep -rni "updater\|license\|edd_sl\|update_plugins\|pre_set_site_transient_update"`. Each hit must not be an updater or a license client: no remote calls and no update hooks. A read-only helper that only checks a saved license status can stay, if code that runs in the free build needs it.
+  - If the build deletes files from a bundled library, search the rest of the library for each deleted class: `grep -rn "DeletedClass" vendor-prefixed/`. A deleted class that other code still uses causes a fatal error.
 
 - [ ] **G2. No remote code or assets.**
   How: `grep -rn "https\?://" --include=*.php --include=*.js` in the zip. Look for CDNs, Google Fonts and remote scripts. Bundle them locally.
@@ -175,7 +176,8 @@ Use this table when a WordPress.org review email arrives. Find its heading, then
   How: open a frontend page with no plugin content, and an unrelated admin page. In DevTools > Network, filter by your plugin slug. You should see no plugin files. Also check the things that do not show in Network:
   - `grep -rn "admin_body_class"`: add a class only on your own screen.
   - `grep -rn "enqueue_block_assets\|wp_enqueue_scripts"`: a dependency such as a WooCommerce script must load only on pages that use it.
-  - Your CSS selectors must not reach WordPress's own interface.
+  - Your CSS selectors must not reach WordPress's own interface, even on your own screen. Global selectors such as `*`, `html`, `img` and `#adminmenu` reach it, and so does a CSS reset like Tailwind's preflight. Scope them to your app's root element. Rules that fix WordPress's interface show that your CSS reaches it.
+  - To test, open your screen and compare the computed styles of `#adminmenumain *` and `#wpadminbar *` with your stylesheet on and off. No element may change.
 
 - [ ] **Q4. No `load_plugin_textdomain()`.**
   How: `grep -rn "load_plugin_textdomain"`. Remove it, or move it to the `init` hook.
@@ -240,6 +242,7 @@ Use this table when a WordPress.org review email arrives. Find its heading, then
 
 - [ ] **T3. The plugin works on a clean install.**
   How: start a fresh site with `wp-env` or LocalWP on the latest WordPress. Test with the minimum and the latest PHP versions, and with only the required plugins active.
+  - Then activate the free build together with your other plugins that share a library with it, with their license keys saved. A clean site does not show a crash that only happens when they run together.
 
 ## 7. Before you upload
 

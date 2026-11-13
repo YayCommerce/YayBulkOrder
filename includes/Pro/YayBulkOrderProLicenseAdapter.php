@@ -49,7 +49,7 @@ class YayBulkOrderProLicenseAdapter implements \YayBulkOrderScoped\YayCommerce\A
     public function get_plugin_file(): string {
         return YAYBULKORDER_FILE; }
     public function get_item_id(): int {
-        return 1; } // TODO: EDD setup
+        return 69603; }
     public function get_store_url(): string {
         return 'https://yaycommerce.com/'; }
     public function get_store_link(): string {

@@ -4,7 +4,7 @@ Tags: woocommerce, bulk order, product table, quick order, wholesale
 Requires at least: 6.8
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 WC requires at least: 10.0.0
@@ -117,23 +117,16 @@ No. The Product Table is free. Pro adds the Variant Table, Purchase List and Qui
 
 == Changelog ==
 
+= 1.0.3 =
+* Fix a crash when other Pro plugins are active.
+* Fix the table layout in classic themes: width, images, checkboxes and mobile scroll.
+* Fix auto update on Pro version
+
 = 1.0.2 =
-* Check WordPress and PHP versions before loading.
-* Escape output and use the `yaybulkorder` prefix.
-* Limit rows for many variations and unpaginated tables.
-* Hide catalog-hidden products from the table.
-* Add source code links and build steps to the readme.
-
-= 1.0.1 =
-* Fix translations and output buffers, and escape output.
-* Change the logo.
-* Add the license check. (Pro)
-* Add the source code link and remove the updater from the free version.
-
-= 1.0.0 =
 * Initial release.
-* Product Table block, patterns and shortcode.
-* Table builder, filters, search and pagination.
-* Single and bulk add to cart.
-* Shop page table and design presets.
-* Variant Table, Purchase List and Quick CSV Order. (Pro)
+* Added Product Table for ordering multiple products.
+* Added Product Table Builder.
+* Added customizable Columns Manager.
+* Added Full Features and Simple Product Table templates.
+* Added Gutenberg block and shortcode display options.
+* Added general and design settings.

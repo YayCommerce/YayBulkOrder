@@ -107,9 +107,10 @@ if [ "$BUILD_VARIANT" = "lite" ]; then
     rm -rf "$DEST_PATH/assets/dist/purchase-list-store"
     rm -rf "$DEST_PATH/assets/dist/block-checkout-slotfill"
 
-    # Remove the License folder (license client + updater). Lite's adapter is
-    # not a LicenseConfigAdapter, so the admin-shell never loads it.
-    rm -rf "$DEST_PATH/vendor-prefixed/src/License"
+    # Remove the license client and updater. Keep LicenseState.php: the shared
+    # admin shell reads it for other YayCommerce plugins' licenses, and the
+    # site crashes without it when one of them has a license key.
+    find "$DEST_PATH/vendor-prefixed/src/License" -mindepth 1 ! -name 'LicenseState.php' -exec rm -rf {} +
 
     cp "$PROJECT_PATH/composer.json" "$DEST_PATH/composer.json"
     [ -f "$PROJECT_PATH/composer.lock" ] && cp "$PROJECT_PATH/composer.lock" "$DEST_PATH/composer.lock"

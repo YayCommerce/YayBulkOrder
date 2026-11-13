@@ -22,3 +22,6 @@ composer.lock
 tests/e2e/test-results/
 tests/e2e/playwright-report/
 tests/e2e/.state/
+tests/e2e/docs-shots/png/
+tests/e2e/docs-shots/test-results/
+tests/e2e/videos/

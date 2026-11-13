@@ -458,6 +458,82 @@
   .wp-block-yay-bulk-order-product-table-columns .block-editor-button-block-appender {
     margin-left: 8px;
   }
+
+  // Classic (legacy) themes style bare elements
+  & {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .ybod-product-thumbnail {
+    max-width: none !important;
+  }
+
+  .ybod-product-thumbnail__image {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    aspect-ratio: 1 / 1;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  input[type='checkbox'] {
+    appearance: auto;
+    -webkit-appearance: checkbox;
+    border: revert;
+    border-radius: revert;
+    background: revert;
+    box-shadow: none;
+    padding: 0;
+    position: static;
+
+    &::before,
+    &::after {
+      content: none !important;
+    }
+  }
+
+  // Small screens: the table scrolls sideways inside its own box instead of
+  // widening the whole page. `display: block` lets a table scroll; its rows
+  // keep their table layout in an anonymous table box.
+  @media (max-width: 768px) {
+    & {
+      display: block;
+      overflow-x: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    // The table scrolls, so the Product cell can keep room for the name.
+    td.wp-block-yay-bulk-order-product-table-column-product,
+    th.wp-block-yay-bulk-order-product-table-column-product {
+      min-width: 180px;
+    }
+  }
+}
+
+// The filter sidebar's checkboxes, same reason as the table's above.
+.ybod-filter-sidebar input[type='checkbox'] {
+  appearance: auto;
+  -webkit-appearance: checkbox;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  border: revert;
+  border-radius: revert;
+  background: revert;
+  box-shadow: none;
+  padding: 0;
+  position: static;
+  accent-color: var(--ybod-primary-color, #3c434a);
+
+  &::before,
+  &::after {
+    content: none !important;
+  }
 }
 .wp-block-yay-bulk-order-product-table-root {
   // width: 100%;
