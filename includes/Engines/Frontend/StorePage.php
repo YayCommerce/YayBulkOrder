@@ -22,26 +22,6 @@ class StorePage {
         // Store page (Classic theme)
         add_action( 'woocommerce_before_shop_loop', [ $this, 'maybe_start_shop_table_buffer' ], 1 );
         add_action( 'woocommerce_after_shop_loop', [ $this, 'maybe_replace_shop_loop' ], PHP_INT_MAX );
-        add_action( 'template_redirect', [ $this, 'maybe_remove_shop_sidebar' ] );
-    }
-
-    /**
-     * The table needs the full width: no shop sidebar while it replaces the loop.
-     */
-    public function maybe_remove_shop_sidebar(): void {
-        if ( apply_filters( 'yaybulkorder_shop_page_prevent_apply_template', false ) ) {
-            return;
-        }
-
-        if ( ! $this->product_tables_service->is_applied_table_to_shop() ) {
-            return;
-        }
-
-        if ( ! apply_filters( 'yaybulkorder_shop_page_remove_sidebar', true ) ) {
-            return;
-        }
-
-        remove_action( 'woocommerce_sidebar', 'woocommerce_get_sidebar', 10 );
     }
 
     /**

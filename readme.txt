@@ -120,7 +120,7 @@ No. The Product Table is free. Pro adds the Variant Table, Purchase List and Qui
 = 1.0.3 =
 * Fix a crash when other Pro plugins are active.
 * Fix the table layout in classic themes: width, images, checkboxes and mobile scroll.
-* Remove the shop sidebar when the table replaces the shop page.
+* Fix auto update on Pro version
 
 = 1.0.2 =
 * Initial release.
